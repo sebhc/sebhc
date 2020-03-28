@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+
+
+<meta content="text/html; charset=ISO-8859-1" http-equiv="content-type"><title>How to use the H8D format</title></head><body>
+<h1 style="text-decoration: underline; text-align: center;"><a href="index.html"><span style="font-family: Courier New,Courier,monospace;">SEBHC.ORG</span></a></h1>
+<div style="text-align: center;"><span style="font-family: monospace;">Society of Eight-Bit
+Heathkit Computerists</span><br>
+<span style="font-family: monospace;"></span><br>
+<span style="font-family: monospace;">A web site dedicated
+to preserving the Heathkit 8 bit computers</span><br>
+<span style="font-family: monospace;"></span><br>
+<span style="font-family: monospace;"></span></div>
+<hr style="width: 100%; height: 2px; margin-left: auto; margin-right: auto;">
+<div style="text-align: center;"><big><span style="font-family: monospace; font-weight: bold;">H8D FORMAT</span></big><br>
+</div>
+<hr style="width: 100%; height: 2px;">
+<div style="text-align: center;"><span style="font-family: monospace;"><br>
+The
+H8D image format is the standard 10 sector 40 track disk format for
+Heathkit H-8 and H-89 computers. This image format stores the disk
+tracks as groups of 256 byte sectors starting with track 0 and ending
+with track 39. Track 0 occupies the first 2560 bytes (10 sectors, 256
+bytes per sector) followed by track 1 and so on. There are a couple
+ways to use these disk images with your Heathkit computer:<br>
+<br>
+First, you can find and buy an <a href="http://www.thesvd.com" target="_blank">SVD</a>.
+It is an electronic floppy drive that works with several
+different&nbsp;computer models including the Heathkit H-8 and H-89.
+You
+plug the SVD into the floppy cable as if it were a floppy disk drive
+and upload the disk images to it. The computer then thinks it is
+talking to a floppy drive with a Heathkit disk inside.<br>
+<br>
+Second, you can use Dwight Elvey's H89LDR program and my <a href="software/Utilities/H8DUtility.html" target="_blank">H8D
+Utility</a>
+to transfer disk images back and forth to a real floppy disk. Do this
+by connecting your Heathkit computer to a PC using a serial cable and
+then use the software to send/receive disk images. This method will
+work with a real floppy disk inserted into your computer's disk drive.<br>
+<br>
+Third, you can use <span style="font-weight: bold;">H8DIMGR</span> running on a real Heathkit computer and my <span style="font-weight: bold;">H8D Utility V1.51</span> or later to transfer hard sector disk images of any size to and from a floppy disk in your Heathkit computer via a serial port.<br>
+<br>
+For high density hard sector disks the format is as follows: track 0 side 1 2560 bytes, track 0 side 2 </span><span style="font-family: monospace;">2560</span><span style="font-family: monospace;"> bytes, track 1 side 1 </span><span style="font-family: monospace;">2560</span><span style="font-family: monospace;"> bytes, track 1 side 2 </span><span style="font-family: monospace;">2560</span><span style="font-family: monospace;"> bytes, etc. This applies to both HDOS and CPM 200K and 400K disks.<br>
+</span><br>
+</div>
+<hr style="width: 100%; height: 2px; margin-left: auto; margin-right: auto;">
+<div style="text-align: center;"><span style="font-family: monospace;">December 27, 2013</span><br>
+<span style="font-family: monospace;"></span><br>
+<span style="font-family: monospace;"><a href="mailto:lesbird65@gmail.com">e-mail</a></span></div>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-57115219-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+<div style="position:absolute;filter:alpha(opacity=0);opacity:0.001;z-index:10;">      </div></body>
+</html>

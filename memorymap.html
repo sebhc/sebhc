@@ -1,0 +1,109 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+<!-- saved from url=(0038)http://sebhc.lesbird.com/software.html -->
+
+
+
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Heathkit Computer Memory Map</title>
+
+<meta content="Les Bird" name="author">
+<meta content="The memory map for Heathkit 8 bit computers" name="description"></head><body>
+<div style="text-align: center;">
+<h1 style="text-decoration: underline;"><a href="http://www.lesbird.com/sebhc/index.html"><span style="font-family: Courier New,Courier,monospace;">SEBHC.ORG</span></a></h1>
+<span style="font-family: monospace;">Society of Eight-Bit
+Heathkit Computerists<br>
+<br>
+A web site dedicated to preserving the Heathkit 8 bit computers<br>
+</span><span style="font-family: monospace;"><big><big><span style="font-weight: bold; text-decoration: underline;"><br>
+HEATHKIT H8/H89 MEMORY MAP</span></big></big></span><br>
+<br><hr style="width: 100%; height: 2px;"><big><big><span style="font-family: monospace; text-decoration: underline;">From Norberto Collado:<br>
+</span></big></big><span style="font-family: monospace;"><br>
+<a href="pics/H8_I_O_ports.pdf">H8 I/O Port Map</a> (PDF file)<br>
+<br>
+</span>
+<hr style="width: 100%; height: 2px;"><big><big><span style="font-family: monospace; text-decoration: underline;">From Terry Gulczynski:</span></big></big><br style="text-decoration: underline;"><span style="font-family: monospace;">via <a href="http://groups.google.com/group/sebhc" target="_blank">SEBHC forums</a></span><br><br style="font-family: monospace;"><span style="font-family: monospace;">Prior to XCON/8, there were two ROMs used, a version of PAM/8 and the 
+H17ROM:</span><br style="font-family: monospace;"><br style="font-family: monospace;"><code><span style="font-family: monospace;">0000-07FFH - PAM/8 (0-2K)</span><br style="font-family: monospace;"><span style="font-family: monospace;">0800-17FFH - Unassigned 
+(2K-6K)</span><br style="font-family: monospace;"><span style="font-family: monospace;">1800-1FFFH - H17ROM (6K-8K)</span><br style="font-family: monospace;"></code><br style="font-family: monospace;"><span style="font-family: monospace;">(I think some of the earlier 
+versions of PAM/8 were only 1K, but I haven't </span><span style="font-family: monospace;">worked with any of 
+them.)</span><br style="font-family: monospace;"><br style="font-family: monospace;"><span style="font-family: monospace;">When XCON/8 came around, it complicated things just a bit.&nbsp; XCON/8 
+is a 4K </span><span style="font-family: monospace;">EPROM, and it contains an advanced version of PAM/8 and the H17ROM 
+code.&nbsp; The </span><span style="font-family: monospace;">H17 code is stored in the ROM at one location, but copied during 
+the init </span><span style="font-family: monospace;">process to another location, so you have what I'll call a 'boot 
+map' and a </span><span style="font-family: monospace;">'runtime map.'</span><br style="font-family: monospace;"><br style="font-family: monospace;"><span style="font-family: monospace;">Boot Map:</span><br style="font-family: monospace;"><span style="font-family: monospace;">0000-0FFFH - XCON/8 (0-4K - 
+includes PAM/8 and H17ROM)</span><br style="font-family: monospace;"><span style="font-family: monospace;">1000-1FFFH - Unused (4K-8K)</span><br style="font-family: monospace;"><br style="font-family: monospace;"><span style="font-family: monospace;">After init, the 
+runtime map is:</span><br style="font-family: monospace;"><br style="font-family: monospace;"><span style="font-family: monospace;">0000-07FFH - XCON/8 enhanced (0-2K)</span><br style="font-family: monospace;"><span style="font-family: monospace;">0800-0FFFH - Upper 
+half of XCON/8 - H17ROM, but in wrong location (2-4K)</span><br style="font-family: monospace;"><span style="font-family: monospace;">1000-17FFH - unassigned 
+(4-6K)</span><br style="font-family: monospace;"><span style="font-family: monospace;">1800-1FFFH - H17ROM in RAM @ correct location 
+(6-8K)</span><br style="font-family: monospace;"><br style="font-family: monospace;"><br style="font-family: monospace;"><span style="font-family: monospace;">Finally, when PAM/37 is added, the mix is simplified a bit.&nbsp; 
+First, PAM/37 (4K) </span><span style="font-family: monospace;">replaces the XCON/8 ROM as the boot/monitor ROM.&nbsp; XCON/8 
+is then moved within </span><span style="font-family: monospace;">the memory map from the old location of 0000-0FFFH to 
+1000-1FFFH (4K-8K) area:</span><br style="font-family: monospace;"><br style="font-family: monospace;"><span style="font-family: monospace;">0000-0FFFH - PAM/37 (0-4K)</span><br style="font-family: monospace;"><span style="font-family: monospace;">1000-17FFH - 
+XCON/8 lower half - unused, but present (4K-6K)</span><br style="font-family: monospace;"><span style="font-family: monospace;">1800-1FFFH - XCON/8 upper 
+half, which is H17ROM @ correct address (6-8K)</span><br><br style="font-family: monospace;"><span style="font-family: monospace;"></span><span class="Apple-style-span" style="border-collapse: separate; color: rgb(0, 0, 0); font-family: 'Times New Roman'; font-size: medium; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px;"><span class="Apple-style-span" style="text-align: center;"></span></span><hr style="width: 100%; height: 2px;"><span class="Apple-style-span" style="border-collapse: separate; color: rgb(0, 0, 0); font-family: 'Times New Roman'; font-size: medium; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px;"><span class="Apple-style-span" style="text-align: center;"><br></span></span><span class="Apple-style-span" style="border-collapse: separate; color: rgb(0, 0, 0); font-size: medium; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px;"><span class="Apple-style-span" style="text-align: center;"><big style="font-family: monospace;"><big><span style="text-decoration: underline;">From Lee Hart</span><span style="text-decoration: underline;">:</span><br></big></big><span style="font-family: monospace;">via <a href="http://groups.google.com/group/sebhc" target="_blank">SEBHC forums</a></span><br><br style="font-family: monospace;"></span></span><div style="text-align: center;"><span style="font-family: monospace;">I'm not familiar enough with the H8 memory map, but it is similar enough </span><span style="font-family: monospace;">the 
+H89 memory map for the same software to work on both. And I *am* </span><span style="font-family: monospace;">familiar 
+with the H89 map. So let me describe that.</span><br style="font-family: monospace;"><br style="font-family: monospace;"><span style="font-family: monospace;">The main memory is called 
+"system RAM" by Heath. It consists of 1-4 </span><span style="font-family: monospace;">groups of eight 4116 16k dynamic 
+RAM chips. 3 groups fit on the CPU </span><span style="font-family: monospace;">board. A 4th group can be added with a 
+plug-in memory card on the left </span><span style="font-family: monospace;">side memory expansion slots.</span><br style="font-family: monospace;"><br style="font-family: monospace;"><span style="font-family: monospace;">When 
+CP/M is running, you have an all-RAM system starting at address 0 (called 0 org mode) </span><span style="font-family: monospace;">and 
+extending up to 16k, 32k, 48k, or 64k depending on whether you have </span><span style="font-family: monospace;">1, 2, 3, 
+or 4 banks of 16k&nbsp;RAM chips installed.<br><br></span><span style="font-family: monospace;">An all-RAM system is fine, but it 
+must first be initialized. Heath </span><span style="font-family: monospace;">provides a special start-up bank of memory 
+called "Bank 0" for this </span><span style="font-family: monospace;">purpose. Bank 0 contains 1-3 ROMs and 2-4 static 
+RAMs. On power-up or </span><span style="font-family: monospace;">reset, bit 5 of General Purpose Port A (hex address F2) 
+is reset to 0. </span><span style="font-family: monospace;">This enables Bank 0, which replaces the lower 8K of the 
+System memory </span><span style="font-family: monospace;">(0000-1FFF hex). Setting bit 5 high removes Bank 0 memory, 
+giving you an </span><span style="font-family: monospace;">all-RAM system.</span><br style="font-family: monospace;"><span style="font-family: monospace;"><br>When HDOS is running Bank 0 is
+enabled. In this configuration, the first 8k (0000-1FFF hex) still had
+the ROMs and floppy RAM. User programs went into System RAM above 8k
+(2000 hex and up). This meant that even with 64k of RAM installed, user
+programs only had 56k available.</span><br style="font-family: monospace;"><br style="font-family: monospace;"><span style="font-family: monospace;">Here is a chart (view it with a 
+fixed-width font like Courier to make </span><span style="font-family: monospace;">the columns line up):</span><br style="font-family: monospace;"></div><br style="font-family: monospace;"><span style="font-family: monospace;">&nbsp; 
+address</span><br style="font-family: monospace;"><span style="font-family: monospace;">&nbsp; -------&nbsp;&nbsp; _______________________________</span><br style="font-family: monospace;"><span style="font-family: monospace;">&nbsp;
+FFFF&nbsp;&nbsp;&nbsp;&nbsp;
+|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+|</span><br style="font-family: monospace;"><span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |system RAM 16-48k on CPU 
+board,|</span><br style="font-family: monospace;"><span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+|48-64k on memory board&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+|</span><br style="font-family: monospace;"><span style="font-family: monospace;">&nbsp; 2000&nbsp; 
+___|____________________________&nbsp;&nbsp; |</span><br style="font-family: monospace;"><span style="font-family: monospace;">&nbsp;
+1FFF
+|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+|&nbsp; |</span><br style="font-family: monospace;"><span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |2k floppy ROM (U520: 444-19)&nbsp;&nbsp;&nbsp; |&nbsp; |</span><br style="font-family: monospace;"><span style="font-family: monospace;">&nbsp; 1800 
+|________________________________|&nbsp; |</span><br style="font-family: monospace;"><span style="font-family: monospace;">&nbsp;
+17FF
+|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+|&nbsp; |</span><br style="font-family: monospace;"><span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |1k-2k floppy RAM (U522-25: 2114)|&nbsp; |</span><br style="font-family: monospace;"><span style="font-family: monospace;">&nbsp; 1000 
+|________________________________|&nbsp; |</span><br style="font-family: monospace;"><span style="font-family: monospace;">&nbsp;
+0FFF
+|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+|&nbsp; |</span><br style="font-family: monospace;"><span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |upper 2k of MTR-xx ROM (U519)&nbsp;&nbsp; |&nbsp; |</span><br style="font-family: monospace;"><span style="font-family: monospace;">&nbsp; 07FF 
+|________________________________|&nbsp; |</span><br style="font-family: monospace;"><span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+|&nbsp; |</span><br style="font-family: monospace;"><span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |lower 2k of MTR-xx ROM (U518)&nbsp;&nbsp; |__|</span><br><span style="font-family: monospace;">0000 
+|________________________________|</span><br style="font-family: monospace;"><span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Bank 0 memory 
+(enabled)</span><br style="font-family: monospace;"><br style="font-family: monospace;"><span style="font-family: monospace;">With Bank 0 enabled, the lower 8k of System RAM can not be 
+read. </span><span style="font-family: monospace;">However, there is a quirk. If you *write* to the ROM addresses while 
+</span><span style="font-family: monospace;">bank 0 is enabled, the data is written into the System RAM instead (as 
+</span><span style="font-family: monospace;">you obviously can't write to the ROMs). This odd feature is used to 
+</span><span style="font-family: monospace;">initialize the System RAM from 0-8k to boot CP/M.</span> <span style="font-family: monospace;">There is one more 
+quirk. On power-up or reset, bit 7 of port 7F (on the </span><span style="font-family: monospace;">H17 hard-sector floppy 
+controller board) is reset to 0. This </span><span style="font-family: monospace;">write-protects the Bank 0 RAM. To 
+write to the Bank 0 floppy RAM, set </span><span style="font-family: monospace;">bit 7 of port 7F to 1.</span><br style="font-family: monospace;"><br style="font-family: monospace;"><span style="font-family: monospace;">&nbsp; I Hope 
+this helps! I don't know if the H8 copies this setup exactly, </span><span style="font-family: monospace;">or added its 
+own quirks.</span><br style="font-family: monospace;"><br><hr style="width: 100%; height: 2px;"><br><big style="text-decoration: underline;"><big><span style="font-family: monospace;">Dave Wallace</span></big></big><br><span style="font-family: monospace;">via his <a href="http://davidwallace2000.home.comcast.net/%7Edavidwallace2000/h8/The_Heathkit_H8_Digital_Computer.htm" target="_blank">website</a></span><br><br><a style="font-family: monospace;" href="http://davidwallace2000.home.comcast.net/%7Edavidwallace2000/h8/technical.htm" target="_blank">Dave Wallace page</a><span style="font-family: monospace;"> with memory map and other detailed specs</span><br><span style="font-family: monospace;"><a href="http://davidwallace2000.home.comcast.net/%7Edavidwallace2000/h8/notes.htm" target="_blank">Dave Wallace page</a> about H8 emulation on PC hardware</span><br><br>
+<hr style="width: 100%; height: 2px;"><span style="font-family: monospace;">January 26, 2013<br>
+<br>
+<a href="mailto:lesbird65@gmail.com">e-mail</a><br>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-57115219-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+<div style="position:absolute;filter:alpha(opacity=0);opacity:0.001;z-index:10;">      </div></body>
+</html>
