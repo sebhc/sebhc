@@ -1,0 +1,51 @@
+John Dondzila wrote:
+>
+> Does anyone know how to use standard 2716's
+> on a Space Invaders board ?
+>
+> I've been looking all over for pinouts
+> for these damn TMS2716's but have had no luck.
+
+A normal (non-TMS) 2716 versus a TMS2716 pins out like this:
+
+<----- normal 2716 -----><---- TMS2716 pin redefinitions ---->
+
+    +-----+  +-----+
+ A7 |1    +--+   24| VCC  <--- Vcc/PE (PE is Program Enable)
+ A6 |2           23| A8
+ A5 |3           22| A9
+ A4 |4           21| VPP  <--- Vbb (-5 volts)
+ A3 |5           20| /OE  <--- A10
+ A2 |6           19| A10  <--- Vdd (+12 volts)
+ A1 |7    2716   18| /CE  <--- S/PGM (chip select/program)
+ A0 |8           17| D7
+ D0 |9           16| D6
+ D1 |10          15| D5
+ D2 |11          14| D4
+GND |12          13| D3
+    +--------------+
+
+-------------------another comment on these weird TI EPROMs---------------------
+
+These parts (TMS2516's) are extinct. We had to travel to a distant land to 
+find the last of these rare species of eprom's too. When these are gone, 
+well...... They're gone. Nobody is making these anymore. Everybody that does 
+claim to have some of these, probably has pulls. These aren't used. They're
+actually new! Hmm. Now there's a rarity! 
+
+The TMS2516JL-45 is the same exact part as the well know Intel type D2716, 
+although they're worth a bit more. 
+
+Texas Intruments did make a TMS2716, but it used 3 different voltages at once 
+to run it (like the TMS2708 and D2708) which was different than the 2716 that
+everybody else made. 
+
+Engineers not knowing this were getting mad because TI had confused the issue 
+on what was a 2716. So....TI got with the program and made a standard 2716. 
+They had to name it something different than 2716 to differentiate it from the 
+fateful TMS2716. Thus we have the TMS2516!
+
+(Weird, eh!!??)
+
+---------------------------------------------------------------------------------
+
