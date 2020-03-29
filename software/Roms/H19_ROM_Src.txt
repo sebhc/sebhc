@@ -1,0 +1,17 @@
+Les,
+
+I've attached a ZIPped file with several .MAC files in three subdirectories.  Each subdir is a fully independent code set for the H19 ROM.  Each of them can be compiled with MACRO-80.  There is also a MAKE batch file pair (ZEX and COM file) to build the ROM from a single command line entry.
+
+The '00' subdir is the raw disassembler output for the H19 ROM.
+
+The '10' subdir contains my first shot at modifying the code.  If you look at the TERMROM.MAC file, near the beginning, you'll find the ORGH19 equate - if it is set to TRUE, you'll get an exact H19 ROM build.  If you set it to FALSE, you can have several optional code improvements, listed immediately below the H19ROM equate.
+
+The '11' subdir is where I ended up.  I really don't recall anything about it, other than what is shown in the header info.
+
+Feel free to pass it around and let anyone do what they want with any of the files.
+
+Last note...  You can burn a 2732 EPROM for use in the H19, but you'll have to use a daughterboard so you can rearrange a couple of pins.  I forget the details, but it's fairly easy.
+
+
+Terry
+02/20/2010

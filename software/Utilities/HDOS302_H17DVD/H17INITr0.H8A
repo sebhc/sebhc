@@ -1,0 +1,961 @@
+	TITLE	'H17INIT - Initialization Parameters'
+
+***	H17INIT - Initialization Parameters
+*
+*	H17INIT contains the initialization parameters for an H17.
+*	Most of these routines have been taken from previous versions
+*	of INIT.
+*
+*	G. Chandler	/80.05.gc/
+*
+*	Copyright 1980, by:
+*
+*		Heath Co.
+*		Benton Harbor, MI
+*			49022
+*
+*    -> Modified for proper operation at 2 or 4MHz clock.
+*
+*    -> Added Track Skew in IDS.
+*
+*		Bill Parrott		81.11.bp
+*
+*    -> Added support for double-sided and/or double-track density
+*	 (DS/DTD) drives, such as the Tandon TM-100-4.
+*
+*		Bill Parrott		81.12.bp
+***
+*	This code has been revised to work with the distributed Heath
+*	assembler.  The original code was assembled using the Gibson 
+*	Assembler which used pseudo-ops not recognized by the Heath.
+*		Revised by Ken Owen, 30 Dec 2011
+***
+
+VER	EQU	1			; Our version #
+REV	EQU	'J'			; Revision
+
+ON	EQU	0
+OFF	EQU	-1
+
+*	Listing control
+
+	LON	LIC			; use Heath recognized options
+	LOF	G
+
+	STL	'Assembly Constants'
+	EJECT
+
+***	Assembly Constants
+*
+
+ERPTCNT EQU	10			; Soft Error retry count
+
+	STL	'System Definitions'
+	EJECT
+
+	XTEXT	MTR
+	XTEXT	MTRRAM
+	XTEXT	BOODEF
+	XTEXT	DDFDEF
+	XTEXT	ECDEF
+	XTEXT	H17DEF
+	XTEXT	DDDEF
+	XTEXT	PICDEF
+	XTEXT	LABDEF
+	XTEXT	DIRDEF
+	XTEXT	HOSEQU
+	XTEXT	HOSDEF
+	XTEXT	EDCON
+	XTEXT	EDRAM
+	XTEXT	EDVEC
+	XTEXT	ESVAL
+	XTEXT	ESINT
+	XTEXT	H17ROM
+	XTEXT	HDSROM
+	XTEXT	ASCII
+	XTEXT	INIDEF
+
+	STL	'BOOT Read Only Driver'
+	EJECT
+
+***	Drive Parameters
+*
+
+	CODE	P,SB.BOO
+	CODE	+REL
+
+.	EQU	*-SB.BOO
+	ERRNZ	.
+
+	JMP	H17BOOT 		; Jump around the boot data.
+
+	DB	'(c) 1981, D-G Electronic Dev.'
+
+	ERRMI	.+SB.BPE-*
+
+	IF	.+SB.BPE-*		; Do fill if .+SB.BPE-* != 0
+	ELSE
+*	DC	.+SB.BPE-*,#0		; Not recognized by Heath (none needed)
+	ENDIF
+	SPACE	4,10
+***	Entry for primary boot.
+*
+
+H17BOOT LXI	D,BOOTA 		; Disk constant and vector table
+	LXI	H,D.CON 		; RAM destination
+	LXI	B,BOOTAL		; Length of the mess
+	CALL	$MOVE			; Plug it in
+
+*	This code is for the benefit of those systems running MTR89
+*	and X-CON.
+
+	LXI	H,0			; Point to 'ROM'
+	MOV	A,M			; Get the value
+	INR	M			; Try to change it.
+	CMP	M			; Did we change it?
+	MOV	M,A			; Put it back like it was.
+	MVI	A,0			; Assume we have ROM
+	JE	BOOT.			; Couldn't change it so have ROM
+	MVI	A,00100000B		; Set the RAM enable bit.
+
+BOOT.	STA	.CTL2FL 		; Set the value.
+
+*	Replace necessary vectors in the SYDD JMP table.
+
+	LXI	H,H17ROD		; Read-only driver
+	SHLD	D.SYDD+1		; Install it
+	LXI	H,H17MOU		; Special mount routine
+	SHLD	D.MOUNT+1		; Set it
+
+	LXI	D,VECTORS		; Partial vector table
+	LXI	H,D.DTS 		; Replace starting w/ D.DTS
+	LXI	B,VECL			; Table length
+	CALL	$MOVE			; Copy it in
+
+	JMP	SB.SDB			; Entire Boot already in RAM
+	SPACE	4,10
+*	Replacement vectors
+
+VECTORS EQU	*
+
+	JMP	H17DTS
+	JMP	H17SDT
+	JMP	R.MAI
+	JMP	R.MAO
+	JMP	H17LPS
+	JMP	R.RDB
+	JMP	H17SDP
+
+VECL	EQU	*-VECTORS
+
+	STL	'H17ROD - Driver Entry & Dispatch'
+	EJECT
+
+***	H17ROD - H17 Disk Device Driver.
+*
+*	H17ROD is the HDOS H17 read-only device driver.
+*
+*	Entry:	(A) = DC.XXX function code
+*		 Other registers set as needed by function
+*	Exit:	'C' Clear, Ok.
+*		 Registers set by function
+*		'C' Set, Error.
+*		 (A) = Error code
+*	Uses:	All
+
+H17ROD	EQU	*
+
+	CPI	DC.MAX			; Is function code valid?
+	JC	H17ROD. 		; Yes ...
+
+*	Return illegal driver function code.
+
+H17ERR	MVI	A,EC.ILR		; Illegal request
+	STC
+	RET
+
+H17ROD. CALL	$TJMP
+
+$	DW	D.READ			; Read
+	DW	H17ERR			; Write
+	DW	D.READR 		; Read Regardless
+	DW	H17ERR			; Open for Read
+	DW	H17ERR			; Open for Write
+	DW	H17ERR			; Open for Update
+	DW	H17ERR			; Close
+	DW	D.ABORT 		; Abort
+	DW	D.MOUNT 		; Mount device
+	DW	H17ERR			; Load device driver
+	DW	H17ERR			; Device ready
+	DW	H17ERR			; SET
+	DW	H17ERR			; Unload
+	DW	H17ERR			; Interrupt
+	DW	H17ERR			; Device Specific
+
+	ERRNZ	*-$/2-DC.MAX		; Make sure we have right amount.
+
+	STL	'Replacement Routines for Read-only Driver'
+	EJECT
+
+	XTEXT	H17ROD
+
+* BUFF	DC	LAB.VFL+1,#0		; mount buffer, not recognized by Heath
+BUFF	DB	0,0,0,0,0,0,0,0 	; MOUNT buffer, Heath replacement
+	DB	0,0,0,0,0,0,0,0
+	DB	0,0,0,0,0,0,0,0
+	DB	0,0,0,0,0,0,0,0
+	DB	0,0,0,0,0,0,0,0
+	DB	0,0,0,0,0,0,0,0
+	DB	0,0,0
+BUFFL	EQU	*-BUFF
+
+*	NOTE	*			; Not recognized by Heath
+
+	ERRMI	.+SB.SDB-*
+	IF	.+SB.SDB-*		; Do fill if .+SB.SDB-* != 0
+	ELSE
+*	DC	.+SB.SDB-*,#0		; Reserve the rest of the boot track
+	ENDIF				; above not recognized by Heath, none needed.
+
+	STL	'H17INIT - Initialization Parameters'
+	EJECT
+
+***	INIT
+*
+*	INIT processes the sub-functions required by  *INIT*
+*
+
+	ERRNZ	*-SB.SDB
+
+INIT	CPI	INI.MAX
+	CMC
+	RC				; Illegal sub-function code
+
+	CALL	$$TBRA
+INITA	EQU	*
+
+	ERRNZ	*-INITA-INI.CMV
+	DB	CMV-*			; Check Media Validity
+
+	ERRNZ	*-INITA-INI.IDS
+	DB	IDS-*			; Initialize Diskette Surface
+
+	ERRNZ	*-INITA-INI.DBI
+	DB	DBI-*			; Directory Block Interleave
+
+	ERRNZ	*-INITA-INI.PAR
+	DB	PAR-*			; Volume Parameters
+
+	ERRNZ	*-INITA-INI.MAX 	; Insure enough processors exist
+
+	STL	'CMV	- Check Media Validity'
+	EJECT
+
+***	CMV	- Check Media Validity
+*
+*	CMV checks the validity of the media in the specified unit
+*
+*	Entry:	NONE
+*	Exit:	'C' clear if no errors
+*		'C' set if errors
+*	Uses:	ALL
+
+CMV	EQU	*
+
+	CALL	CMV.
+	RNC				; No problems
+
+*	JMP	CMV.			; Try again
+	ERRNZ	*-CMV.
+	SPACE	4,10
+CMV.	MVI	A,DF.MO
+	CALL	OCB
+	CALL	W1S			; Wait one second
+
+	CALL	D.WNH			; Wait no hole
+	CALL	D.WHD			; Wait hole detect
+	CALL	D.WNH			; Wait no hole again
+
+*	CHECK INSERTED MEDIA
+
+	JMP	CIM			; Check inserted media
+	STL	'DBI	- Directory Block Interleave'
+	EJECT
+
+***	DBI	- Directory Block Interleave
+*
+*	DBI returns a pointer to the directory block
+*	interleave table.  The table is in the form
+*	of offsets.
+*
+*	NOTE:	This table specifies the interleaving of the actual
+*		disk groups in the directory, *NOT* the directory
+*		blocks themselves.  Because of this, the higher the
+*		capacity of the disk, the fewer the number of enrties
+*		will be required, because the fewer physical disk
+*		groups will be required.
+*
+*	The table below represents the directory skew for the H17 / DS/DTD
+*	device.  The maximum number of directory blocks is 9, so more
+*	than enough entries have been provided.  No interleaving has been
+*	done because there is really no gain provided by interleaving
+*	directory sectors on this device.
+*
+*	Interleaving is done as follows:
+*
+*		Single side, 48tpi:	0 1 2 3 4 5 6 7 8 9
+*
+*		Double side, 48tpi
+*		Single side, 96tpi:	0 1 2 3 4
+*
+*		Double side, 96tpi:	0 1 2
+*
+
+DBI	LXI	H,DBIA
+	ANA	A
+	RET
+
+DBIA	DB	0,1,2,3,4,5,6,7,8,9
+
+	STL	'PAR	- Volume Parameters'
+	EJECT
+
+***	PAR - Volume Parameters
+*
+*	PAR returns a pointer to the volume parameters as defined
+*	in  *LABDEF*.
+*
+*	NOTE:	These parameters should only be checked after
+*		IDS has been called, in case the volume is of
+*		some special type, eg. double sided, etc.
+*
+*	Entry:	NONE
+*	Exit:	(HL) = Address of Volume Parameters
+*	Uses:	A,F,H,L
+*
+
+PAR	EQU	*
+
+	LXI	H,PARAM
+	ANA	A
+
+	RET
+
+	STL	'IDS - Initialize Disk Surface'
+	EJECT
+
+***	IDS - Initialize Disk Surface.
+*
+*	IDS is called to initialize the disk surface with sector headers
+*	and a test pattern.
+*
+*	Set the value SKEW to the desired track skew factor.  The value
+*	chosen depends upon the rate the drives step at.  A value of
+*	9 seems to be best for 4 to 8ms per track step rate.  For step
+*	rates up to about 28ms, a value of 8 should be about right.
+*
+*	Entry:	None
+*	Exit:	None
+*	Uses:	All
+	SPACE	4,10
+***	The amount of time it takes for a sector to pass (given rotation
+*	at 300 RPM) is given by:
+*
+*	      milliseconds := (( 1 / ( 300 / 60 )) / 10 ) * 1000
+*
+*	The following equations are not used internally by this driver,
+*	but are provided so that the user may better understand why skewing
+*	the tracks as disks are initialized makes things run faster, and to
+*	provide the user with the means to determine a suitable skew factor
+*	for his system.
+
+STIME	EQU	20			; 20ms for a sector to pass
+
+SKEWR	EQU	4			; Use 4ms step to calculate skew
+.SKEW	EQU	SKEWR+4/STIME+1 	; Number of sectors over to skew
+SKEW	EQU	10-.SKEW		; Skew value used in algorithm
+	SPACE	4,10
+***	IDS - Initialize Disk Surface
+*
+
+SSECTOR DB	0			; 1st sector on current track
+
+IDS	CALL	$$DRVR. 		; Reset device
+	DB	DC.ABT
+
+*	Query user about what type of disk we're initializing.
+*
+*	It may be any combination of 48 or 96tpi, and single- or
+*	double-sided.  Unfortunately, since the H17 lacks any sort
+*	of a status port through which we may determine what kind
+*	of hardware is present, we must assume that the user knows
+*	what he is asking for.	There can be no error checking to
+*	determine if the user REALLY has a 96tpi drive, for instance.
+
+*	Query number of sides
+
+	MVI	C,0			; (C) = Flag byte.
+
+IDS0.1	CALL	$$TYPTX
+	DB	NL,'Number of sides (1 or 2)? <1>',240Q
+
+	CALL	$$ITL.			; Read a line
+	RC				; Hit CTRL/D, Exit.
+
+	MOV	A,M			; Get 1st character of answer
+	ANA	A			; Was default?
+	JZ	IDS0.2			; Yes.
+
+	CPI	'1'			; Was Single sided?
+	JE	IDS0.2			; Yep.
+	CPI	'2'			; Was Double sided?
+	JNE	IDS0.1			; No.  Ask again.
+
+	MVI	A,VFL.NSD		; (A) = Flag for 2 sides
+	ORA	C			; Add it to flags in (C)
+	MOV	C,A			; Save it
+
+*	Query recording density
+
+IDS0.2	CALL	$$TYPTX
+	DB	NL,'Recording density (1=48 tpi, 2=96 tpi)? <1>',240Q
+
+	CALL	$$ITL.			; Read his answer
+	RC				; CTRL/D.  Changed his mind.
+
+	MOV	A,M			; Get answer
+	ANA	A
+	JZ	IDS0.3			; Took default.
+
+	CPI	'1'			; Want 48tpi?
+	JE	IDS0.3			; Yes.
+	CPI	'2'			; Could we interest him in 96tpi?
+	JNE	IDS0.2			; Guess not.
+
+	MVI	A,VFL.80T		; (A) = Flag for 80 tracks
+	ORA	C			; Add it to flags in (C)
+	MOV	C,A			; Replace it
+
+IDS0.3	MOV	A,C			; (A) = Volume flags
+	STA	VOLFLG			; Set it in the Volume label
+
+*	Calculate the number of tracks on this disk and set it for
+*	initialization.  The possible values are 40, 80, & 160.
+
+	LXI	H,40			; (HL) = Number of tracks
+
+	RRC				; Rotate side bit into 'C'
+	ERRNZ	VFL.NSD-00000001B	; Make sure its the bit we think
+	JNC	IDS0.4			; Only one side
+
+	DAD	H			; Double the number of tracks
+
+IDS0.4	RRC				; Rotate 96tpi bit into 'C'
+	ERRNZ	VFL.80T-00000010B	; Check that its the right bit
+	JNC	IDS0.5			; Record at 48tpi
+
+	DAD	H			; Double the number of tracks
+
+IDS0.5	SHLD	MAXTRK			; Set maximum number of tracks
+
+	MOV	A,H			; (A) = High order count of tracks
+	ANA	A			; Must be zero.
+	JZ	IDS0.6			; It was.
+
+*	The logic in this driver supports only up to 256 tracks
+*	on a device.  If we get more, something's REALLY wrong!
+
+	STC
+	RET
+
+IDS0.6	LDA	SPT			; (A) = Number of sectors / track
+	XCHG				; (DE) = Number of tracks
+	CALL	$MU86			; (HL) = Number of sectors on this disk
+	SHLD	VOLSIZ			; Set it in volume parameter block
+	SPACE	4,10
+***	Prepare for the actual disk initialization.
+
+RATE	EQU	30/2			; Initialization step rate
+
+IDS0.7	LHLD	D.MOUNT+1		; (HL) = Address of 'H17MOU' in driver
+	DCX	H
+	DCX	H			; ((HL)) = Address of SKEW factor
+	CALL	$HLIHL			; (HL) = Address of skew factor
+	MOV	A,M			; (A) = Skew factor
+	STA	$SKEW			; Set it for the init.
+
+	MVI	A,RATE			; Step rate for init
+	STA	D.MAIA			; Set it
+
+	XRA	A
+	STA	IDSA			; Set volume number
+	OUT	UP.FC			; Set fill character
+	MOV	B,A			; (B) = Track number
+	MOV	C,A			; (C) = Sector number
+	STA	SSECTOR 		; Set starting sector number
+
+	LDA	.CTL2FL 		; Get MTR88
+	ANI	377Q-CB2.SID		; Clear side select
+	STA	.CTL2FL 		; Set control byte
+
+*	Erase this track
+
+IDS1	EI				; Allow interrupts
+
+	MVI	A,DF.MO 		; Select the drive
+	CALL	OCB
+	STA	D.DVCTL 		; Set deivce control
+
+	MVI	A,70/2			; 35ms
+	CALL	D.DLY			; Wait head settle
+
+	LDA	.CTL2FL 		; (A) = MTR88 control byte
+	ORI	CB2.CLI 		; Add in clock
+	OUT	OP2.CTL 		; Select proper side.
+
+	MVI	A,DF.MO+DF.WG		; Write gate
+	CALL	OCB			; Set it
+
+	MVI	A,10+1*STIME/2		; Time for 11 sectors to pass
+	CALL	D.DLY			; Let track erase
+
+	CALL	WIH			; Wait for the index hole
+
+	DI				;; Interlock
+
+*	Write 10 sector headers on this track.
+
+IDS2	MVI	A,377Q
+	STA	D.DLYMO 		;; Ensure a LONG delay before motor off
+
+	CALL	D.WHD			;; Wait for a hole  (start of sector)
+
+	MVI	A,1			;; Pre-SYNC delay
+	MOV	H,C			;; Save sector number
+	MVI	C,10			;; 10 characters in SYNC pattern
+	CALL	D.WSP			;; Write SYNC pattern
+	MOV	C,H			;; Restore sector number
+
+	MVI	A,0			;; (A) = Vol. No.  (zero for 1st track)
+IDSA	EQU	*-1
+	CALL	D.WNB			;; Write volume number
+	MOV	A,B
+	CALL	D.WNB			;; Write track number
+	MOV	A,C
+	CALL	D.WNB			;; Write sector number
+	MOV	A,D
+	CALL	D.WNB			;; Write header checksum
+
+	MVI	A,1			;; Pre-SYNC delay
+	MOV	H,C			;; Save sector number
+	MVI	C,10			;; 10 characters in SYNC pattern
+	CALL	D.WSP			;; Write SYNC pattern
+	MOV	C,H			;; Restore sector number
+
+*	Write a test data pattern.
+
+	MVI	H,256/2
+
+IDS3	MVI	A,'b'			;; Get value
+	CALL	D.WNB			;; Write it
+	MVI	A,'p'			;; Get value
+	CALL	D.WNB			;; Write it too
+	DCR	H			;; Count down
+	JNZ	IDS3			;; Until we got a sector full
+
+	MOV	A,D			;; (A) = Checksum
+	CALL	D.WNB			;; Write it
+
+	MVI	H,3			;; Length of tunnel erase
+IDS3.	XRA	A
+	CALL	D.WNB			;; Write it
+	DCR	H
+	JNZ	IDS3.
+
+	LDA	D.DVCTL
+	OUT	DP.DC			;; Off with write gate
+
+	INR	C			;; Bump sector #
+	MOV	A,C			;; Put sector in (A)
+	CPI	10			;; Wrap around?
+	JC	IDS3.0			;; No.
+	MVI	C,0			;; Set to sector zero
+IDS3.0	LDA	SSECTOR 		;; (A) = Sector we started with
+	CMP	C			;; Back to it?
+	JNE	IDS2			;; No, not new track
+
+	EI				; Restore interrupts
+
+	INR	B			; Count new track
+	LDA	MAXTRK			; Get last track+1
+	CMP	B			; We there?
+	JE	IDS4			; Yep ...
+
+	MVI	A,4/2			; 4ms for write gate to calm down
+	CALL	D.DLY
+
+	CALL	$$VSN			; (A) = Volume number
+	STA	IDSA			; Use it for rest of the tracks
+
+	CALL	INCTRK			; Move to next track
+
+	LDA	SSECTOR 		; Get sector we started with this track
+	ADI	SKEW			; Add track skew
+$SKEW	EQU	*-1
+	CPI	10			; Out of range?
+	JC	IDS3.1			; No.
+	SUI	10			; Do MOD 10
+IDS3.1	STA	SSECTOR 		; Set new starting sector
+	MOV	C,A			; Reset sector #
+
+	JMP	IDS1			; Write next track.
+
+*	All done.  Write a fake VCB so INIT can do his thing.
+
+IDS4	CALL	$$DRVR. 		; Reset device
+	DB	DC.ABT
+
+	LHLD	$$BUFF			; (HL) = Address of buffer in INIT
+
+	PUSH	H			; Save buffer address for write
+
+	MVI	B,0			;
+	ERRNZ	#256
+	CALL	$ZERO			; Zero out buffer
+
+	DCR	H			; (HL) = Start of buffer
+
+	CALL	$$VSN			; (A) = Volume number
+	MOV	M,A			; Set volume number
+	ERRNZ	LAB.SER
+
+	MVI	A,VERS			; (A) = HDOS Version
+	LXI	D,LAB.VER-LAB.SER	; Displace to label version
+	ERRMI	LAB.VER-LAB.SER
+	DAD	D			; (HL) = Label version
+	MOV	M,A			; Set it
+
+	LDA	VOLFLG			; Get volume flag
+	LXI	D,LAB.VFL-LAB.VER	; Displace to volume flag
+	ERRMI	LAB.VFL-LAB.VER
+	DAD	D			; (HL) = Volume flag address
+	MOV	M,A			; Set
+
+*	Do a 'mount' of volume zero.
+*
+*	NOTE:	This code depends upon the MOUNT routine within the
+*		actual device driver returning the address of the
+*		mode flag in (DE).
+
+	MVI	L,0			; Volume zero
+	CALL	$$DRVR. 		; Let driver 'mount' it
+	DB	DC.MOU
+
+	XRA	A			; Should always be writable here!
+	STAX	D			; Zap MODE flag for this unit.
+
+	LXI	H,DDF.LAB		; Volume label sector
+	POP	D			; Address of fake VCB
+	LXI	B,256			; Just 1 sector
+
+	CALL	$$DRVR. 		; Write it
+	DB	DC.WRI
+
+	RET
+	SPACE	4,10
+***	INCTRK - Increment track.
+*
+*	Called to position the arm in and/or to select
+*	the proper head.
+
+INCTRK	LDA	VOLFLG			; (A) = Volume flag
+	RRC				; Rotate sides bit into 'C'
+	ERRNZ	VFL.NSD-00000001B
+	JNC	D.MAI			; Not 2 sided.
+
+*	Odd numbered tracks are on the back.
+
+	LDA	.CTL2FL 		; MTR88 flag
+	ANI	377Q-CB2.SID		; Clear side select
+	STA	.CTL2FL 		; Set the control byte
+
+	MOV	A,B			; (A) = Number of next track
+	RRC				; If 'C' is 0, then its even.
+	JNC	D.MAI			; Its even. Have to move arm.
+
+	LDA	.CTL2FL 		; MTR88 flag
+	ORI	CB2.SID 		; Side select
+	STA	.CTL2FL 		; Set 2nd side
+
+	RET
+
+	STL	'Subroutines - CIM'
+	EJECT
+
+***	CIM - Check Inserted Media.
+*
+*	CIM checks the inserted media to see if it has been
+*	previously initialized.
+*
+*	Entry:	NONE
+*	Exit:	'C' Clear if good media
+*		'C' Set if bad media
+
+CIM.DLY EQU	2			; Number of seconds allowed for check
+CIM.CNT EQU	300/60*11*CIM.DLY*2	; 300 RPM, 5 revs./sec., 11 holes/track
+CIM.MIN EQU	1000*11*CIM.DLY/21/10*2 ; Min. tolerance count = 21ms gap
+CIM.MAX EQU	1000*11*CIM.DLY/19/10*2 ; Max. tolerance count = 19ms gap
+
+
+CIM	LXI	B,0			; Zero transition count
+	LHLD	.TICCNT 		; Get current time from TICCNT
+	LXI	D,CIM.DLY*1000/2	; Delay time
+	DAD	D			; Add it for target
+	CALL	$$CHL			; (HL) = -(HL)
+	MOV	D,H
+	MOV	E,L			; (DE) = -(Target stop time)
+
+*	Initialize hole detect flag
+
+	IN	DP.DC			; Read disk status
+	ANI	DF.HD			; Only interested in HOLE bit
+	STA	CIMA			; Set initial value
+
+*	Count the number of transitions in CIM.DLY seconds
+
+CIM1	LXI	H,CIMA			; ((HL)) = flag byte
+
+	IN	DP.DC			; Read disk status
+	ANI	DF.HD			; Check hole status
+	CMP	M			; Changed since last?
+	JZ	CIM2			; No ...
+
+	INX	B			; Hole has changed, count it.
+	MOV	M,A			; Set new flag
+
+CIM2	LHLD	.TICCNT 		; Get current time
+	DAD	D			; Adjust with stop time
+	MOV	A,H			; Get high order count
+	ANA	A			; Time to stop?
+	JM	CIM1			; No.  Go look some more.
+
+*	Compare the count to expected value.
+
+	MOV	A,B			; (B) = Number of changes/256
+	CPI	CIM.CNT/256		; What we're expecting?
+..	SET	CIM.CNT/256
+	ERRNZ	CIM.MIN/256-..
+	ERRNZ	CIM.MAX/256-..
+	STC				; Assume bad value
+	RNZ				; Not good.  Means no media inserted.
+
+	MOV	A,C			; (A) = Low order number of changes
+	CPI	#CIM.MIN		; High enough?
+	RC				; No, out of range.
+	CPI	#CIM.MAX+1		; Low enough?
+	CMC				; Set 'C' if not.
+
+	RET
+
+CIMA	DB	0
+	STL	'Subroutines - CGT'
+	SPACE	4,10
+***	CGT - Compute Gap Time.
+*
+*	CGT computes the gap time by counting the number of
+*	two-millisecond intervals in the inter-record gap. The
+*	time for the current hole to pass is included in the
+*	count.
+*
+*	Entry:	Disk over beginning of hole
+*	Exit:	(HL) = Count
+*	Uses:	A,F,D,E,H,L
+
+CGT	LHLD	.TICCNT 		; Get current time
+
+*	Wait for the current hole to go away.
+
+CGT1	IN	DP.DC			; Read disk status
+	ERRNZ	DF.HD-1
+	RAR				; Check for a hole.
+	JC	CGT1			; Still got it.  Wait for it to go away.
+
+	CALL	$$CHL
+	MOV	D,H
+	MOV	E,L			; (DE) = -(start time)
+
+*	Wait for a hole to appear.
+
+CGT2	IN	DP.DC			; Read disk status
+	ERRNZ	DF.HD-1
+	RAR				; Got a hole?
+	JNC	CGT2			; No.  Wait some more.
+
+*	Have crossed a gap.  Figure out how long it took.
+
+	LHLD	.TICCNT 		; Get current time
+	DAD	D			; Delay := Current + (-Start)
+
+	RET
+	STL	'Subroutines - OCB'
+	SPACE	4,10
+***	OCB - Output Command Byte
+*
+*	OCB outputs the command byte selecting the unit
+*	specified in AIO.UNI
+*
+*	Entry:	(A) = command byte
+*		AIO.UNI = Unit of device to select
+*	Exit:	NONE
+*	Uses:	A,F
+
+OCB	PUSH	B			; Save (BC)
+	PUSH	PSW			; Save the command.
+	LDA	AIO.UNI 		; (A) = Unit number
+	INR	A			; Change from 0,1,2 to 1,2,3.
+	MOV	B,A			; (B) = Bit number to set.
+	ERRNZ	DF.DS0-2
+	ERRNZ	DF.DS1-4
+	ERRNZ	DF.DS2-8
+	POP	PSW			; (A) = Command
+	CALL	$$BITS			; Mask in the unit
+	POP	B			; Restore (BC)
+	OUT	DP.DC			; Output command to drive
+	RET
+	STL	'Subroutines - W1S'
+	SPACE	4,10
+***	W1S - Wait One Second.
+*
+*	W1S is called to delay one second.
+
+
+W1S	MVI	A,500/2 		; 500ms
+	CALL	D.DLY			; Delay 1/2 second
+	MVI	A,500/2 		; 500ms
+	JMP	D.DLY			; Delay 1/2 second and exit.
+	STL	'Subroutines - WIH'
+	SPACE	4,10
+***	WIH - Wait for Index Hole.
+*
+*	WIH waits until the index hole has passed the sensor.
+*
+*	NOTE:	THIS ROUTINE ASSUMES THAT THE DRIVE WILL NOT BE THAT FAR
+*		OFF IN TOLERANCE AS IT DOES NOT EVEN CHECK THE HIGH ORDER
+*		BYTE OF THE COUNT, WHICH SHOULD BE ZERO!
+*
+*	Entry:	Disk moving
+*	Exit:	Index hole just past (Disk in interhole gap)
+*	Uses:	A,F,H,L
+
+WIH	PUSH	D			; Save (DE)
+	CALL	D.WNH			; Wait for no hole
+WIH1	CALL	D.WHD			; Wait for a hole.
+	CALL	CGT			; Compute time for this gap
+	MOV	A,L			; (A) = Time
+	CPI	1000/100/2+1		; Time for a long gap
+	JC	WIH1			; Was short gap.
+
+*	Have full sector timing.  Wait for short gap now.
+
+WIH2	CALL	CGT			; Time a gap
+	MOV	A,L			; Get the time
+	CPI	1000/100/2+1		; Time for a long gap
+	JNC	WIH2			; Was long gap.  Wait for short.
+
+	POP	D			; Restore (DE)
+	JMP	R.WNH			; Got index hole. Wait for it to pass.
+	SPACE	4,10
+***	D.WHD - Wait Hole Detect
+*
+*	D.WHD waits until a hole is detected
+*
+*	Entry:	None
+*	Exit:	None
+*	Uses:	A,F
+
+D.WHD	EQU	*
+
+	IN	DP.DC
+	ERRNZ	DF.HD-1
+	RAR				; a hole?
+	JNC	D.WHD
+
+	LDA	D.WHDA
+	JMP	D.UDLY
+	SPACE	4,10
+***	D.WNH - Wait Hole Detect
+*
+*	D.WNH waits until a no hole is detected
+*
+*	Entry:	None
+*	Exit:	None
+*	Uses:	A,F
+
+D.WNH	EQU	*
+
+	IN	DP.DC
+	ERRNZ	DF.HD-1
+	RAR				; a hole?
+	JC	D.WNH
+
+	LDA	D.WNHA
+	JMP	D.UDLY
+	STL	'Common Decks'
+	EJECT
+
+	XTEXT	HLIHL
+	XTEXT	MOVE
+	XTEXT	MU86
+	XTEXT	TJMP
+	XTEXT	ZERO
+
+	STL	'Data and Buffers'
+	EJECT
+
+***	Data and Buffers
+*
+
+MAXTRK	DW	40			; Maximum Number of Tracks
+
+* FPSAVE DC	 2,#0			; Save place for front panel sta
+FPSAVE	DB	0,0			; Heath replacement
+	SPACE	4,10
+*	"what" information
+
+	DB	'@(#)HDOS 3.0 H17 INIT Driver',NL
+	DB	45H,21H			; not recognized, subbed orig values
+	DB	17H,34H			; not recognized, subbed orig values
+	SPACE	4,10
+***	Volume Label Parameter Block
+*
+
+PARAM	EQU	*
+
+	ERRNZ	*-PARAM+LAB.VPR-LAB.SIZ
+VOLSIZ	DW	'bp'			; Volume Size (bytes/256)
+
+	ERRNZ	*-PARAM+LAB.VPR-LAB.PSS
+SECSIZ	DW	256			; Physical Sector Size (bytes)
+
+	ERRNZ	*-PARAM+LAB.VPR-LAB.VFL
+VOLFLG	DB	0			; Device/Volume Dependant Flags
+
+	ERRNZ	*-PARAM-LAB.VPL 	; Ensure enough parameters are defined
+	SPACE	4,10
+***	Auxilliary Parameter Block.
+*
+
+NSPT	EQU	10			; Number of sectors / track on H17
+
+PARAM2	EQU	*
+
+	ERRNZ	*-PARAM2-LAB.SPT+LAB.AUX
+SPT	DB	NSPT			; Number of Sectors per Track
+
+	ERRNZ	*-PARAM2-LAB.AXL	; Ensure enough Auxiliary Parameters
+	STL	'PIC Table'
+	EJECT
+	LON	G
+
+	END
+

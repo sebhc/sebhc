@@ -1,0 +1,124 @@
+<html>
+
+<!-- Mirrored from davidwallace2000.home.comcast.net/~davidwallace2000/h8/project8080_archive/pgs/error.html by HTTrack Website Copier/3.x [XR&CO'2010], Mon, 10 Sep 2012 13:15:43 GMT -->
+<head>
+<title>H8 Emulation Help - Error Messages</title>
+<meta name="AppleTitle" content="H8 Emulation Help">
+<meta name="description" content="Error Messages">
+</head>
+
+<!-- updated 12/21/2002, das -->
+
+<body bgcolor="white">
+<p>
+<font size=3 face="Verdana,Geneva" color="0000FF">
+<b>Error Messages</b>
+</font>
+
+<ul>
+<font size="2" face="Geneva,Arial">
+<p>This is a list of the alert boxes that you might see while operating the H8. The alerts are listed here in alphabetical order.</p>
+</font>
+
+<dl>
+<dt><font face="Chicago,Times" size=2>Appearance Manager is required. H8 cannot launch.</font></dt>
+<dd><font face="Geneva,Arial" size=2><p>The Appearance Manager, part of System 8.5 and up, is required in order for the H8 emulator to operate. Install or enable the Appearance Manager, make sure that platinum appearance is enabled, and try again.</p></font></dd>
+<dt><font face="Chicago,Times" size=2>Bad checksum in portable-format disk image.  Cannot insert.</font></dt>
+<dd><font face="Geneva,Arial" size=2><p>The checksum in the portable-format disk image you are trying to load, does not match the checksum calculated based on the data in the sector itself. Recreate the image or use a backup image.</p>
+<p>If you absolutely must mount this image, use a text editor to change all instances of the string ";check:" to something like ";nocheck:". This will bypass the checksum comparison and if all else is well the disk will mount. However, the data may well be corrupted. Use this disk image with extreme caution.</p></font></dd>
+
+<dt><font face="Chicago,Times" size=2>Bad number of sectors in disk image header - cannot insert.</font></dt>
+<dd><font face="Geneva,Arial" size=2><p>The named value in the disk header is incorrect. Recreate the disk or use a backup copy.</p></font></dd>
+
+<dt><font face="Chicago,Times" size=2>Bad number of sides in disk image header - cannot insert.</font></dt>
+<dd><font face="Geneva,Arial" size=2><p>The named value in the disk header is incorrect. Recreate the disk or use a backup copy.</p></font></dd>
+
+
+<dt><font face="Chicago,Times" size=2>Bad number of tracks in disk image header - cannot insert.</font></dt>
+<dd><font face="Geneva,Arial" size=2><p>The named value in the disk header is incorrect. Recreate the disk or use a backup copy.</p></font></dd>
+
+<dt><font face="Chicago,Times" size=2>Do you really want to clear the ENTIRE scroll-back buffer?</font></dt>
+<dd><font face="Geneva,Arial" size=2><p>You pressed command-option-clear to erase the H-19 screen and scroll-back buffer. Click OK to clear or Cancel to abort this operation.</p></font></dd>
+
+<dt><font face="Chicago,Times" size=2>Do you really want to revert to default values? This change takes effect immediately!</font></dt>
+<dd><font face="Geneva,Arial" size=2><p>You clicked the Defaults button in the Emulator Preferences dialog box. Click OK to revert to default values or Cancel to abort this operation. Caution: Defaults are installed immediately. Subsequently canceling out of the Emulator Preferences dialog will not retain your preferred values.</p></font></dd>
+
+<dt><font face="Chicago,Times" size=2>Cannot load ROM images due to an unknown problem with the resource fork.  Contact author!</font></dt>
+<dd><font face="Geneva,Arial" size=2><p>The emulator had a problem opening one of the CODE resources that hold the H8 ROM images. Try replacing the H8 application with a backup copy, or download the package again from the web site. Please send me an e-mail if you ever see this problem.</p></font></dd>
+
+<dt><font face="Chicago,Times" size=2>Could not allocate a print record</font></dt>
+<dd><font face="Geneva,Arial" size=2><p>There was insufficient memory to allocate a print control record. May be due to fragmentation of the process heap. Try restarting the emulator. If the problem persists, contact the author.</p></font></dd>
+
+<dt><font face="Chicago,Times" size=2>Could not open file</font></dt>
+<dd><font face="Geneva,Arial" size=2><p>This should only happen if the file you're trying to open is already in use by some other program. Try quitting other programs and try again.</p></font></dd>
+
+<dt><font face="Chicago,Times" size=2>Could not open spool file - fatal error</font></dt>
+<dd><font face="Geneva,Arial" size=2><p>For some unknown reason, the temporary spooler file would not open. Restart your Mac and try again. Contact the author.</p></font></dd>
+
+<dt><font face="Chicago,Times" size=2>Could not open the serial port driver</font></dt>
+<dd><font face="Geneva,Arial" size=2><p>This is one you should never see. The emulator was not able to open either the input or the output serial port driver for access to the modem. You might try closing any other programs that use the modem, and restart the emulator. In either case, please notify the author.</p></font></dd>
+
+<dt><font face="Chicago,Times" size=2>Disk management window would not open</font></dt>
+<dd><font face="Geneva,Arial" size=2><p>This really shouldn't happen. Either the emulator is out of memory, or there's a problem with the resource fork. Try quitting and restartig the emulator. Notify the author.</p></font></dd>
+
+<dt><font face="Chicago,Times" size=2>Diskette file would not open</font></dt>
+<dd><font face="Geneva,Arial" size=2><p>This should only happen if the file you're trying to open is already in use by some other program. Try quitting other programs and try again.</p></font></dd>
+
+<dt><font face="Chicago,Times" size=2>Diskette structure is incorrect size (too short)</font></dt>
+<dd><font face="Geneva,Arial" size=2><p>The file being loaded appears to be a diskette file from reading its header, but the emulator ran out of file before the structure was completely loaded. Possible problems: The file was damaged, incorrectly saved, or the header was incorrectly modified after being saved (e.g., the header says to expect 800 sectors to follow but there are only 400 sectors following).</p></font></dd>
+
+<dt><font face="Chicago,Times" size=2>Error occurred while printing</font></dt>
+<dd><font face="Geneva,Arial" size=2><p>There was an error in the Macintosh print package. The file will not be printed.</p></font></dd>
+
+<dt><font face="Chicago,Times" size=2>Error reading from serial port driver</font></dt>
+<dd><font face="Geneva,Arial" size=2><p>The emulator got an error code when reading the low-level serial port input driver. If you get this warning, you will probably get it over and over and over... Please notify the author.</p></font></dd>
+
+<dt><font face="Chicago,Times" size=2>Error writing to serial port driver</font></dt>
+<dd><font face="Geneva,Arial" size=2><p>The emulator got an error code when writing the low-level serial port output driver. If you get this warning, you will probably get it over and over and over... Please notify the author.</p></font></dd>
+
+<dt><font face="Chicago,Times" size=2>File Read Failed</font></dt>
+<dd><font face="Geneva,Arial" size=2><p>There was some error reading the file. Try again. Try quitting and restarting the emulator and try again. Try using a backup copy of the file.</p></font></dd>
+
+<dt><font face="Chicago,Times" size=2>Insufficient memory to allocate a diskette structure</font></dt>
+<dd><font face="Geneva,Arial" size=2><p>This really shouldn't happen, with the amount of memory allocated to the emulator. Try quitting and restarting the emulator. If it recurs, add another megabyte to the memory allocated to the emulator. Notify the author if this happens.</p></font></dd>
+
+<dt><font face="Chicago,Times" size=2>Insufficient memory to allocate an H-19 emulator buffer</font></dt>
+<dd><font face="Geneva,Arial" size=2><p>This really shouldn't happen, with the amount of memory allocated to the emulator. Try quitting and restarting the emulator. If it recurs, add another megabyte to the memory allocated to the emulator. Notify the author if this happens.</p></font></dd>
+
+<dt><font face="Chicago,Times" size=2>Insufficient memory to allocate an I/O buffer</font></dt>
+<dd><font face="Geneva,Arial" size=2><p>With the amount of memory allocated to the emulator, this shouldn't happen.</p>
+<p>However, you should note that the emulator allocates a file buffer large enough to read the whole file for input. If you try to pass a huge file to the emulator, you can cause this problem. But then again, you really shouldn't try to read a file larger than an H8 disk.</p>
+<p>You might try stopping and restarting the emulator. If it persists, allocate another megabyte of memory to the emulator.</p></font></dd>
+
+<dt><font face="Chicago,Times" size=2>Insufficient memory to open preferences</font></dt>
+<dd><font face="Geneva,Arial" size=2><p>With the amount of memory allocated to the emulator, this really shouldn't happen. It must be a serious internal fault in the emulator. Contact the author.</p></font></dd>
+
+<dt><font face="Chicago,Times" size=2>Internal Error - Can't find system preferences folder</font></dt>
+<dd><font face="Geneva,Arial" size=2><p>The preferences file can't be opened because the preferences folder in the System folder cannot be located. This is a fatal error.</p></font></dd>
+
+<dt><a name="margin"></a>
+<font face="Chicago,Times" size=2>One or more margins are too small to print without clipping. Click OK to fix them and continue or Cancel to abort the print job.</font></dt>
+<dd><font face="Geneva,Arial" size=2><p>Your preferred print margins are too small for your printer. Click OK to allow the emulator to change the too-small values to the minimums acceptable to your printer, or Cancel to abort the print job and leave your margin preferences as is.</p></font></dd>
+
+<dt><font face="Chicago,Times" size=2>Preferences dialog would not open</font></dt>
+<dd><font face="Geneva,Arial" size=2><p>The emulator was unable to open the preferences dialog box. With the amount of memory available to the emulator, this shouldn't happen. Please notify the author.</p></font></dd>
+
+<dt><font face="Chicago,Times" size=2>This is not an H-17 disk file. Insert failed.</font></dt>
+<dd><font face="Geneva,Arial" size=2><p>You probably tried to mount a 'TEXT' file to a drive, and the 'TEXT' file didn't not contain the proper header identifying it as an H-17 disk.</p></font></dd>
+
+<dt><font face="Chicago,Times" size=2>Zero-length read on H-17 diskette file</font></dt>
+<dd><font face="Geneva,Arial" size=2><p>This was an attempt to read a malformed H-17 disk file. Try a backup copy of the disk. If the emulator is producing malformed disk files, please notify the author.</p></font></dd>
+</dl>
+</ul>
+
+<hr>
+<font face="Geneva,Arial" size=1>
+<center>
+<a href="../h8_toc.html">Table of Contents</a>
+</center>
+<br><br>
+</font>
+</body>
+
+<!-- Mirrored from davidwallace2000.home.comcast.net/~davidwallace2000/h8/project8080_archive/pgs/error.html by HTTrack Website Copier/3.x [XR&CO'2010], Mon, 10 Sep 2012 13:15:43 GMT -->
+</html>

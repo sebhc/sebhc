@@ -1,0 +1,77 @@
+<html>
+
+<!-- Mirrored from davidwallace2000.home.comcast.net/~davidwallace2000/h8/project8080_archive/pgs/limits.html by HTTrack Website Copier/3.x [XR&CO'2010], Mon, 10 Sep 2012 13:15:43 GMT -->
+<head>
+<title>H8 Emulation Help - Limitations</title>
+<meta name="AppleTitle" content="H8 Emulation Help">
+<meta name="description" content="H8 Emulator Limitations">
+</head>
+
+<!-- updated 12/20/2002, das -->
+
+<body bgcolor="white">
+
+<p>
+<font size=3 face="Verdana,Arial"  color="0000FF">
+<b>H8 Emulator Limitations</b>
+</font>
+
+<ul>
+<font face="Geneva,Arial" size=2 color="black">
+<p>
+You would think that emulating an ancient, limited microcomputer on a modern Macintosh would be a walk in the park. Well, stop thinking that! It ain't true! As it happens, there are a number of very simple things done by the H8 that are a real pain to get right in these modern, enlightened times. Here's the short list.
+<p>
+<b><font color="#0000ff">Time</font></b>
+
+<p>Version 5 of the emulator does a good job of emulating the actual speed of an H8 system when set to a 2mhz clock rate, if the host system is sufficiently fast (ref: <a href="req.html">Emulator Requirements</a>).</p>
+<p>
+However, when you drag a window, browse a menu bar, or use a dialog box in a Mac application, the application will get no processor time at all. The only way to maintain a proper emulation environment is to define this time as being outside of the H8 universe. When the user is browsing the menu system, time stops as far as the H8 is concerned.
+<p>
+The emulated H8 clock runs a little slower than a real H8 clock: a real H8 used a 2.048mhz clock, while the one emulated here runs at an even 2mhz. Processor pacing was adjusted to compensate so that code run times are the same, but any code that looks at .TICCNT will need to be adjusted accordingly.
+<p>
+<b><font color="#0000ff">Terminal</font></b>
+<p>The emulator provides complete functional emulation of the H-19 terminal using Heathkit-mode escape sequences. There are a few differences from a real H-19:</p>
+<ul type="disc">
+<li><font size="2" face="Geneva,Arial">ANSI-mode escape sequences are not supported;</font></li>
+<li><font size="2" face="Geneva,Arial">keyboard keys are, by necessity, laid out for the Macintosh keyboard, not the H-19 keyboard; see the <a href="h19kb.html">H-19 Keyboard Map and User Guide</a> for details;</font></li>
+<li><font size="2" face="Geneva,Arial">the terminal modes "key click on" and "key click off" are not supported; the escape sequences can be used but will have no effect;</font></li>
+<li><font size="2" face="Geneva,Arial">the terminal mode "keyboard disabled" is not suported; the escape sequence can be used but will have no effect;</font></li>
+<li><font size="2" face="Geneva,Arial">baud rates are not supported, nor are they needed in the emulator; the escape sequence can be used but will have no effect;</font></li>
+<li><font size="2" face="Geneva,Arial">control-function key will not cause the function key to be acted upon locally, as it is in a real H-19; see the <a href="h19kb.html">H-19 Keyboard Map and User Guide</a> for the short list of keys that have local functionality and how to use them;</font></li>
+<li><font size="2" face="Geneva,Arial">a <a href="h19kb.html#scroll">scroll-back buffer</a> is provided, which can be scrolled through or saved to the Mac disk;</font></li>
+<li><font size="2" face="Geneva,Arial"><a href="menus.html#edit">copy/paste</a> are provided;</font></li>
+<li><font size="2" face="Geneva,Arial">in keeping with modern sensibilities, the terminal uses black text on a white screen; reverse video is white on black.</font></li>
+</ul>
+<font size="2" face="Geneva,Arial">
+
+<p>
+<b><font color="#0000ff">Sound</font></b>
+<p>
+The H8's sound mechanism is crude at best. A bit in a PAM8 control register output is ANDed with a 1000Hz square-wave (produced by dividing the 2.048 MHz bus clock signal by 2048) and the result is sent to the speaker. This is effectively a timed burst of a 1000Hz tone.  The key click is a four-cycle burst of tone, which your ear will perceive as a click. (Hardware information provided by Dave Wallace.)
+<p>
+On a modern Macintosh, we can't even come close to that level of crudity.
+<p>
+The limitations on any existing H8 software are that the attempts we all made to generate "music" using the internal speaker on the H8 by changing the frequency of the clicks, will absolutely not work here. If you've come to this emulator in the desperate hope of once again hearing an H8 squeak out "Mary Had a Little Lamb," I'm sorry to disappoint.
+<p>
+<b><font color="#0000ff">Keypad</font></b>
+<p>
+On a real H8, eight of the front-panel keys return their value in the high-order four bits of the input port, and the other eight use the low-order four bits. This makes various two-key combinations possible. PAM8 uses two such combinations for its RTM/0 and RST/0 functions. Others were available to applications that chose to use them.
+<p>
+Since we have only one mouse, we can't support any two-key combinations at all. RTM/0 and RST/0 can be invoked by holding down the option key while clicking the # and / keys, respectively (ref: <a href="pam8.html">PAM/8 Operation</a>).
+<p>
+Any existing program that uses two-key combinations will either have to be modified, or the emulator modified to support other two-key combinations using modifier keys.
+<p>
+</font>
+</ul>
+
+<hr>
+<font face="Geneva,Arial" size=1>
+<center>
+<a href="../h8_toc.html">Table of Contents</a>
+</center>
+<br><br>
+</font>
+</body>
+
+<!-- Mirrored from davidwallace2000.home.comcast.net/~davidwallace2000/h8/project8080_archive/pgs/limits.html by HTTrack Website Copier/3.x [XR&CO'2010], Mon, 10 Sep 2012 13:15:43 GMT -->
+</html>

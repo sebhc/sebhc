@@ -1,0 +1,1316 @@
+<html>
+
+<!-- Mirrored from davidwallace2000.home.comcast.net/~davidwallace2000/h8/project8080_archive/pgs/8080a.html by HTTrack Website Copier/3.x [XR&CO'2010], Mon, 10 Sep 2012 13:15:41 GMT -->
+<head>
+<title>H8 Emulation Help - 8080A Processor</title>
+<meta name="AppleTitle" content="H8 Emulation Help">
+<meta name="description" content="8080A Processor Technical Documentation">
+</head>
+
+<!-- new 11/24/2002, das -->
+
+<body bgcolor="white">
+
+<p>
+<a name="top"></a>
+<font size=3 face="Verdana,Geneva,Arial" color="0000FF">
+<b>8080A Processor Technical Documentation</b>
+</font>
+
+<font face="Geneva,Arial" size=2>
+<p>This page briefly documents the 8080A processor. While the level of detail isn't enough to learn the 8080A cold, it should be a good refresher and reference for anyone who has programmed one in the past, using assembly language.</p>
+<p>Another good reference would be the emu8080.c source code module, which has a (presumed correct) procedural implementation of each instruction. That is, at least, the definitive documentation of how this particular 8080A processor works.</p>
+<p>There are four sections to this page:</p>
+</font>
+
+<ul>
+<li><font face="Geneva,Arial" size=2><a href="#flags">Flag Byte</a> - Describes the condition flag values and shows the layout of the condition flag byte as it would appear on the stack.</font></li>
+<li><font face="Geneva,Arial" size=2><a href="#registers">Register and Condition Values</a> - Gives the binary subfield values for the various register names, register pair names and condition values. These are used in the instruction definitions.</font></li>
+<li><font face="Geneva,Arial" size=2><a href="#instructions">Instructions</a> - Shows each machine instruction, its mnemonic, opcode value, the position and type of each binary subfield, the numer of machine cycles expended, the condition flags affected, and a short description of the instruction.</font></li>
+<li><font face="Geneva,Arial" size=2><a href="#octal">Octal Reference Summary</a> - A chart that will allow you to quickly convert from a mnemonic to an octal opcode value and back again.</font></li>
+</ul>
+
+<hr>
+<font face="Geneva,Arial,Arial" size=1>
+<center>
+<a href="program.html">Programming Table of Contents</a>
+<br><br>
+<a href="../h8_toc.html">Main Table of Contents</a>
+</center>
+<hr>
+
+<ul>
+<font face="Geneva,Arial" size=2>
+<p>
+<a name="flags"></a>
+<b>Flag Byte</b></p>
+</font>
+
+<font face="Geneva,Arial" size=2>
+<p>There are five condition flags associated with the execution of instructions on the 8080A. They are Zero, Sign, Parity, Carry and Auxiliary Carry, and are each represented by a 1-bit register in the CPU. A flag is "set" by forcing the bit to 1; "reset" by forcing the bit to zero.</p>
+<p>The format of the flag byte on the stack is:</p>
+</font>
+
+<ul>
+<table border="1" cellspacing="0" cellpadding="2">
+<tr align="center" valign="middle">
+	<td width=15><font face="Courier" size=3>S</font></td>
+	<td width=15><font face="Courier" size=3>Z</font></td>
+	<td width=15><font face="Courier" size=3>0</font></td>
+	<td width=15><font face="Courier" size=3>A<br>C</font></td>
+	<td width=15><font face="Courier" size=3>0</font></td>
+	<td width=15><font face="Courier" size=3>P</font></td>
+	<td width=15><font face="Courier" size=3>1</font></td>
+	<td width=15><font face="Courier" size=3>C</font></td>
+</tr>
+</table>
+</ul>
+
+<font face="Geneva,Arial" size=2>
+<p>Unless indicated otherwise, when an instruction affects a flag, it affects it in the following manner:</p>
+</font>
+
+<table border="0" cellspacing="1" cellpadding="4">
+
+<tr align="left" valign="top">
+	<td align="center"><font face="Geneva,Arial" size=2><b>Flag</b></font></td>
+	<td><font face="Geneva,Arial" size=2><b>Description</b></font></td>
+</tr>
+<tr align="left" valign="top">
+	<td align="center"><font face="Geneva,Arial" size=2>S</font></td>
+	<td><font face="Geneva,Arial" size=2>Sign. If the most significant bit of the result of the operation has the value 1, this flag is set; otherwise it is reset.</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td align="center"><font face="Geneva,Arial" size=2>Z</font></td>
+	<td><font face="Geneva,Arial" size=2>Zero. If the result of an instruction has the value of 0, this flag is set; otherwise it is reset.</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td align="center"><font face="Geneva,Arial" size=2>AC</font></td>
+	<td><font face="Geneva,Arial" size=2>Auxiliary Carry. If the instruction caused a carry out of bit 3 and into bit 4 of the resulting value, the auxiliary carry is set; otherwise it is reset. This flag is affected by single precision additions, subtractions, increments, decrements, comparisons and logical operations, but is principally used with additions and increments preceeding a DAA (Decimal Adjust Accumulator) instruction.</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td align="center"><font face="Geneva,Arial" size=2>P</font></td>
+	<td><font face="Geneva,Arial" size=2>Parity. If the modulo 2 sum of the bits of the result of the operation is 0, (i.e., if the result has even parity), this flag is set; otherwise it is reset (i.e., if the result has odd parity).</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td align="center"><font face="Geneva,Arial" size=2>C</font></td>
+	<td><font face="Geneva,Arial" size=2>If the instruction resulted in a carry (from addition) or a borrow (from subtraction or a comparison) out of the high-order bit, this flag is set; otherwise it is reset.</font></td>
+</tr>
+</table>
+
+<font face="Geneva,Arial,Arial" size=2>
+<p>The instruction list (<a href="#instructions">below</a>) will tell you which instructions alter which flags.</p>
+
+<a href="#top">go to top</a>
+
+</ul>
+<hr>
+
+<ul>
+<font face="Geneva,Arial" size=2>
+<p>
+<a name="registers"></a>
+<b>Register and Condition Values</b></p>
+</font>
+
+<font face="Geneva,Arial" size=2>
+<p>Individual instructions contain 2- and 3-bit binary subfields designating which registers are being operated on, or, in the branch group, which condition is being tested. These are labeled ddd (destination), sss (source),  rp (register pair) and ccc (condition) in the instruction descriptions below.</p>
+<p>The following table gives names to the binary values.</p>
+</font>
+
+<table border="1" cellspacing="0" cellpadding="4">
+<tr align="center" valign="bottom">
+	<td><font face="Geneva,Arial" size=2><b>DDD, SSS</b></font></td>
+	<td><font face="Geneva,Arial" size=2><b>Register Name</b></font></td>
+	<td><font face="Geneva,Arial" size=2>&nbsp;</font></td>
+	<td><font face="Geneva,Arial" size=2><b>RP</b></font></td>
+	<td><font face="Geneva,Arial" size=2><b>Register Pair</b></font></td>
+	<td><font face="Geneva,Arial" size=2>&nbsp;</font></td>
+	<td><font face="Geneva,Arial" size=2><b>CCC</b></font></td>
+	<td><font face="Geneva,Arial" size=2><b>Condition</b></font></td>
+</tr>
+<tr align="center" valign="top">
+	<td><font face="Geneva,Arial" size=2>000</font></td>
+	<td><font face="Geneva,Arial" size=2>B</font></td>
+	<td><font face="Geneva,Arial" size=2>&nbsp;</font></td>
+	<td><font face="Geneva,Arial" size=2>00</font></td>
+	<td><font face="Geneva,Arial" size=2>BC</font></td>
+	<td><font face="Geneva,Arial" size=2>&nbsp;</font></td>
+	<td><font face="Geneva,Arial" size=2>000</font></td>
+	<td><font face="Geneva,Arial" size=2>NZ</font></td>
+</tr>
+<tr align="center" valign="top">
+	<td><font face="Geneva,Arial" size=2>001</font></td>
+	<td><font face="Geneva,Arial" size=2>C</font></td>
+	<td><font face="Geneva,Arial" size=2>&nbsp;</font></td>
+	<td><font face="Geneva,Arial" size=2>01</font></td>
+	<td><font face="Geneva,Arial" size=2>DE</font></td>
+	<td><font face="Geneva,Arial" size=2>&nbsp;</font></td>
+	<td><font face="Geneva,Arial" size=2>001</font></td>
+	<td><font face="Geneva,Arial" size=2>Z</font></td>
+</tr>
+<tr align="center" valign="top">
+	<td><font face="Geneva,Arial" size=2>010</font></td>
+	<td><font face="Geneva,Arial" size=2>D</font></td>
+	<td><font face="Geneva,Arial" size=2>&nbsp;</font></td>
+	<td><font face="Geneva,Arial" size=2>10</font></td>
+	<td><font face="Geneva,Arial" size=2>HL</font></td>
+	<td><font face="Geneva,Arial" size=2>&nbsp;</font></td>
+	<td><font face="Geneva,Arial" size=2>010</font></td>
+	<td><font face="Geneva,Arial" size=2>NC</font></td>
+</tr>
+<tr align="center" valign="top">
+	<td><font face="Geneva,Arial" size=2>011</font></td>
+	<td><font face="Geneva,Arial" size=2>E</font></td>
+	<td><font face="Geneva,Arial" size=2>&nbsp;</font></td>
+	<td><font face="Geneva,Arial" size=2>11</font></td>
+	<td><font face="Geneva,Arial" size=2>SP, PSW</font></td>
+	<td><font face="Geneva,Arial" size=2>&nbsp;</font></td>
+	<td><font face="Geneva,Arial" size=2>011</font></td>
+	<td><font face="Geneva,Arial" size=2>C</font></td>
+</tr>
+<tr align="center" valign="top">
+	<td><font face="Geneva,Arial" size=2>100</font></td>
+	<td><font face="Geneva,Arial" size=2>H</font></td>
+	<td><font face="Geneva,Arial" size=2>&nbsp;</font></td>
+	<td><font face="Geneva,Arial" size=2>&nbsp;</font></td>
+	<td><font face="Geneva,Arial" size=2>&nbsp;</font></td>
+	<td><font face="Geneva,Arial" size=2>&nbsp;</font></td>
+	<td><font face="Geneva,Arial" size=2>100</font></td>
+	<td><font face="Geneva,Arial" size=2>PO(dd)</font></td>
+</tr>
+<tr align="center" valign="top">
+	<td><font face="Geneva,Arial" size=2>101</font></td>
+	<td><font face="Geneva,Arial" size=2>L</font></td>
+	<td><font face="Geneva,Arial" size=2>&nbsp;</font></td>
+	<td><font face="Geneva,Arial" size=2>&nbsp;</font></td>
+	<td><font face="Geneva,Arial" size=2>&nbsp;</font></td>
+	<td><font face="Geneva,Arial" size=2>&nbsp;</font></td>
+	<td><font face="Geneva,Arial" size=2>101</font></td>
+	<td><font face="Geneva,Arial" size=2>PE(ven)</font></td>
+</tr>
+<tr align="center" valign="top">
+	<td><font face="Geneva,Arial" size=2>110</font></td>
+	<td><font face="Geneva,Arial" size=2>M</font></td>
+	<td><font face="Geneva,Arial" size=2>&nbsp;</font></td>
+	<td><font face="Geneva,Arial" size=2>&nbsp;</font></td>
+	<td><font face="Geneva,Arial" size=2>&nbsp;</font></td>
+	<td><font face="Geneva,Arial" size=2>&nbsp;</font></td>
+	<td><font face="Geneva,Arial" size=2>110</font></td>
+	<td><font face="Geneva,Arial" size=2>P(lus)</font></td>
+</tr>
+<tr align="center" valign="top">
+	<td><font face="Geneva,Arial" size=2>111</font></td>
+	<td><font face="Geneva,Arial" size=2>A</font></td>
+	<td><font face="Geneva,Arial" size=2>&nbsp;</font></td>
+	<td><font face="Geneva,Arial" size=2>&nbsp;</font></td>
+	<td><font face="Geneva,Arial" size=2>&nbsp;</font></td>
+	<td><font face="Geneva,Arial" size=2>&nbsp;</font></td>
+	<td><font face="Geneva,Arial" size=2>111</font></td>
+	<td><font face="Geneva,Arial" size=2>M(inus)</font></td>
+</tr>
+</table>
+<br>
+<font face="Geneva,Arial" size=2><p>Register "M" refers to the memory location addressed by the HL register pair.</p>
+<p>The register pair SP is used with LXI and DAD. The register pair PSW is used with PUSH and POP.</p>
+<p>When referring to the BC and DE register pairs in an instruction, you will generally use only the letter B or D, though the Heath assembler accepts BC and DE as well.</p></font>
+
+<font face="Geneva,Arial,Arial" size=2>
+<a href="#top">go to top</a>
+
+</ul>
+<hr>
+
+<ul>
+<font face="Geneva,Arial" size=2>
+<p>
+<a name="instructions"></a>
+<b>Instructions</b></p>
+</font>
+
+<font face="Geneva,Arial" size=2>
+<p>This section describes all the instuctions in the 8080A instruction set. See above for the values to substitute for sss, ddd, rp, and ccc in the descriptions below. "nnn" refers to a non-register numeric value given by the instruction operand.</p>
+</font>
+</ul>
+
+<table border="0" cellspacing="0" cellpadding="2">
+
+<tr align="left" valign="top">
+	<td colspan=5><font face="Geneva,Arial" size=2><b>Data Transfer Group</b></font></td>
+</tr>
+<tr align="left" valign="bottom">
+	<td>&nbsp;</td>
+	<td><font face="Geneva,Arial" size=2><b>Mnemonic</b></font></td>
+	<td><font face="Geneva,Arial" size=2><b>Opcode</b></font></td>
+	<td align="center"><font face="Geneva,Arial" size=2><b>Cycles</b></font></td>
+	<td align="center"><font face="Geneva,Arial" size=2><b>Flags Affected</b></font></td>
+	<td><font face="Geneva,Arial" size=2><b>Description</b></font></td>
+</tr>
+<tr align="left" valign="top">
+	<td>&nbsp;</td>
+	<td><font face="Courier" size=2>MOV r1,r2</font></td>
+	<td><font face="Courier" size=2>01dddsss</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>5</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>none</font></td>
+	<td><font face="Geneva,Arial" size=2>Copies the contents of register r2 to r1.</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td>&nbsp;</td>
+	<td><font face="Courier" size=2>MOV M,r2</font></td>
+	<td><font face="Courier" size=2>01110sss</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>7</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>none</font></td>
+	<td><font face="Geneva,Arial" size=2>Copies the contents of register r2 to the byte addressed by the (HL) register pair.</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td>&nbsp;</td>
+	<td><font face="Courier" size=2>MOV r1,M</font></td>
+	<td><font face="Courier" size=2>01ddd110</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>7</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>none</font></td>
+	<td><font face="Geneva,Arial" size=2>Copies the contents of the byte addressed by the (HL) register pair to r1.</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td>&nbsp;</td>
+	<td><font face="Courier" size=2>MVI r1,data</font></td>
+	<td><font face="Courier" size=2>00ddd110</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>7</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>none</font></td>
+	<td><font face="Geneva,Arial" size=2>The content of the 2nd byte of the instruction (immediate data) is copied into the named register.</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td>&nbsp;</td>
+	<td><font face="Courier" size=2>MVI M,data</font></td>
+	<td><font face="Courier" size=2>00110110</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>10</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>none</font></td>
+	<td><font face="Geneva,Arial" size=2>The content of the 2nd byte of the instruction (immediate data) is copied into the byte addressed by the (HL) register pair.</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td>&nbsp;</td>
+	<td><font face="Courier" size=2>LXI rp,data</font></td>
+	<td><font face="Courier" size=2>00rp0001</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>10</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>none</font></td>
+	<td><font face="Geneva,Arial" size=2>The content of byte 2 and 3 of the instruction (immediate data) is copied into the named register pair.</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td>&nbsp;</td>
+	<td><font face="Courier" size=2>LDA addr</font></td>
+	<td><font face="Courier" size=2>00111010</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>13</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>none</font></td>
+	<td><font face="Geneva,Arial" size=2>The content of the memory byte addressed by bytes 2 and 3 of the instruction are copied to register A.</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td>&nbsp;</td>
+	<td><font face="Courier" size=2>STA addr</font></td>
+	<td><font face="Courier" size=2>00110010</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>13</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>none</font></td>
+	<td><font face="Geneva,Arial" size=2>The content of register A is copied to the memory byte addressed by bytes 2 and 3 of the instruction.</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td>&nbsp;</td>
+	<td><font face="Courier" size=2>LHLD addr</font></td>
+	<td><font face="Courier" size=2>00101010</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>16</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>none</font></td>
+	<td><font face="Geneva,Arial" size=2>The content of the word (16 bits) at the address in bytes 2 and 3 of the instruction are copied to the HL register pair.</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td>&nbsp;</td>
+	<td><font face="Courier" size=2>SHLD addr</font></td>
+	<td><font face="Courier" size=2>00100010</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>16</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>none</font></td>
+	<td><font face="Geneva,Arial" size=2>The content of register pair HL are copied to the word (16 bits) at the address given in bytes 2 and 3 of the instruction.</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td>&nbsp;</td>
+	<td><font face="Courier" size=2>LDAX rp</font></td>
+	<td><font face="Courier" size=2>00rp1010</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>7</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>none</font></td>
+	<td><font face="Geneva,Arial" size=2>The content of the byte at the address found in the register pair (BC or DE only) is copied to register A.</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td>&nbsp;</td>
+	<td><font face="Courier" size=2>STAX rp</font></td>
+	<td><font face="Courier" size=2>01rp0010</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>7</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>none</font></td>
+	<td><font face="Geneva,Arial" size=2>The content of register A is copied to memory at the address found in the register pair (BC or DE only).</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td>&nbsp;</td>
+	<td><font face="Courier" size=2>XCHG</font></td>
+	<td><font face="Courier" size=2>11101011</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>4</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>none</font></td>
+	<td><font face="Geneva,Arial" size=2>The contents of the HL and DE register pairs are swapped.</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td colspan=5><font face="Geneva,Arial" size=2><b>Arithmetic Group</b></font></td>
+</tr>
+<tr align="left" valign="bottom">
+	<td>&nbsp;</td>
+	<td><font face="Geneva,Arial" size=2><b>Mnemonic</b></font></td>
+	<td><font face="Geneva,Arial" size=2><b>Opcode</b></font></td>
+	<td align="center"><font face="Geneva,Arial" size=2><b>Cycles</b></font></td>
+	<td align="center"><font face="Geneva,Arial" size=2><b>Flags Affected</b></font></td>
+	<td><font face="Geneva,Arial" size=2><b>Description</b></font></td>
+</tr>
+<tr align="left" valign="top">
+	<td>&nbsp;</td>
+	<td><font face="Courier" size=2>ADD r</font></td>
+	<td><font face="Courier" size=2>10000sss</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>4</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>Z,S,P,C,AC</font></td>
+	<td><font face="Geneva,Arial" size=2>The register is added to register A.</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td>&nbsp;</td>
+	<td><font face="Courier" size=2>ADD M</font></td>
+	<td><font face="Courier" size=2>10000110</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>7</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>Z,S,P,C,AC</font></td>
+	<td><font face="Geneva,Arial" size=2>The byte addressed by the (HL) register pair is added to register A.</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td>&nbsp;</td>
+	<td><font face="Courier" size=2>ADI data</font></td>
+	<td><font face="Courier" size=2>11000110</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>7</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>Z,S,P,C,AC</font></td>
+	<td><font face="Geneva,Arial" size=2>Instruction byte 2 (immediate data) is added to register A.</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td>&nbsp;</td>
+	<td><font face="Courier" size=2>ADC r</font></td>
+	<td><font face="Courier" size=2>10001sss</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>4</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>Z,S,P,C,AC</font></td>
+	<td><font face="Geneva,Arial" size=2>The register and the Carry flag are added to register A.</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td>&nbsp;</td>
+	<td><font face="Courier" size=2>ADC M</font></td>
+	<td><font face="Courier" size=2>10001110</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>7</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>Z,S,P,C,AC</font></td>
+	<td><font face="Geneva,Arial" size=2>The byte addressed by the (HL) register pair and the Carry flag are added to register A.</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td>&nbsp;</td>
+	<td><font face="Courier" size=2>ACI data</font></td>
+	<td><font face="Courier" size=2>11001110</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>7</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>Z,S,P,C,AC</font></td>
+	<td><font face="Geneva,Arial" size=2>Instruction byte 2 (immediate data) and the Carry flag are added to Register A.</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td>&nbsp;</td>
+	<td><font face="Courier" size=2>SUB r</font></td>
+	<td><font face="Courier" size=2>10010sss</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>4</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>Z,S,P,C,AC</font></td>
+	<td><font face="Geneva,Arial" size=2>The register is subtracted from register A.</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td>&nbsp;</td>
+	<td><font face="Courier" size=2>SUB M</font></td>
+	<td><font face="Courier" size=2>10010110</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>7</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>Z,S,P,C,AC</font></td>
+	<td><font face="Geneva,Arial" size=2>The byte addressed by the (HL) register pair is subtracted from register A.</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td>&nbsp;</td>
+	<td><font face="Courier" size=2>SUI data</font></td>
+	<td><font face="Courier" size=2>10010110</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>7</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>Z,S,P,C,AC</font></td>
+	<td><font face="Geneva,Arial" size=2>Instruction byte 2 (immediate data) is subtracted from register A.</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td>&nbsp;</td>
+	<td><font face="Courier" size=2>SBB r</font></td>
+	<td><font face="Courier" size=2>10011sss</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>4</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>Z,S,P,C,AC</font></td>
+	<td><font face="Geneva,Arial" size=2>The register and the Carry flag are subtracted from register A.</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td>&nbsp;</td>
+	<td><font face="Courier" size=2>SBB M</font></td>
+	<td><font face="Courier" size=2>10011110</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>0</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>Z,S,P,C,AC</font></td>
+	<td><font face="Geneva,Arial" size=2>The byte addressed by the (HL) register pair and the Carry flag are subtracted from register A.</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td>&nbsp;</td>
+	<td><font face="Courier" size=2>SBI data</font></td>
+	<td><font face="Courier" size=2>11011110</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>7</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>Z,S,P,C,AC</font></td>
+	<td><font face="Geneva,Arial" size=2>Instruction byte 2 (immediate data) and the Carry flag are subtracted from register A.</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td>&nbsp;</td>
+	<td><font face="Courier" size=2>INR r</font></td>
+	<td><font face="Courier" size=2>00ddd100</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>4</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>Z,S,P,AC</font></td>
+	<td><font face="Geneva,Arial" size=2>The register is incremented. Note that Carry is not affected.</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td>&nbsp;</td>
+	<td><font face="Courier" size=2>INR M</font></td>
+	<td><font face="Courier" size=2>00110100</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>10</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>Z,S,P,AC</font></td>
+	<td><font face="Geneva,Arial" size=2>The byte addressed by the (HL) register pair is incremented. Note that Carry is not affected.</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td>&nbsp;</td>
+	<td><font face="Courier" size=2>DCR r</font></td>
+	<td><font face="Courier" size=2>00ddd101</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>4</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>Z,S,P,AC</font></td>
+	<td><font face="Geneva,Arial" size=2>The register is decremented. Note that Carry is not affected.</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td>&nbsp;</td>
+	<td><font face="Courier" size=2>DCR M</font></td>
+	<td><font face="Courier" size=2>00110101</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>10</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>Z,S,P,AC</font></td>
+	<td><font face="Geneva,Arial" size=2>The byte addressed by the (HL) register pair is decremented. Note that Carry is not affected.</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td>&nbsp;</td>
+	<td><font face="Courier" size=2>INX rp</font></td>
+	<td><font face="Courier" size=2>00rp0011</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>5</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>none</font></td>
+	<td><font face="Geneva,Arial" size=2>The register pair is incremented as a 16-bit number.</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td>&nbsp;</td>
+	<td><font face="Courier" size=2>DCX rp</font></td>
+	<td><font face="Courier" size=2>00rp1011</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>5</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>none</font></td>
+	<td><font face="Geneva,Arial" size=2>The register pair is decremented as a 16-bit number.</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td>&nbsp;</td>
+	<td><font face="Courier" size=2>DAD rp</font></td>
+	<td><font face="Courier" size=2>00rp1001</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>10</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>C</font></td>
+	<td><font face="Geneva,Arial" size=2>The register pair is added to the HL register pair.</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td>&nbsp;</td>
+	<td><font face="Courier" size=2>DAA</font></td>
+	<td><font face="Courier" size=2>00100111</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>4</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>Z,S,P,C,AC</font></td>
+	<td><font face="Geneva,Arial" size=2>Register A is adjusted to form two BCD digits as follows:<br><br>
+	(1) If the value of the least significant 4 bits of register A is greater than 9 or if the AC flag is set, 6 is added to the accumulator.<br><br>
+	(2) If the value of the most significant 4 bits of register A is now greater than 9 or if the C flag is set, 6 is added to the most significant 4 bits of register A.</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td colspan=5><font face="Geneva,Arial" size=2><b>Logical Group</b></font></td>
+</tr>
+<tr align="left" valign="bottom">
+	<td>&nbsp;</td>
+	<td><font face="Geneva,Arial" size=2><b>Mnemonic</b></font></td>
+	<td><font face="Geneva,Arial" size=2><b>Opcode</b></font></td>
+	<td align="center"><font face="Geneva,Arial" size=2><b>Cycles</b></font></td>
+	<td align="center"><font face="Geneva,Arial" size=2><b>Flags Affected</b></font></td>
+	<td><font face="Geneva,Arial" size=2><b>Description</b></font></td>
+</tr>
+<tr align="left" valign="top">
+	<td>&nbsp;</td>
+	<td><font face="Courier" size=2>ANA r</font></td>
+	<td><font face="Courier" size=2>10100sss</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>4</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>Z,S,P,C,AC</font></td>
+	<td><font face="Geneva,Arial" size=2>The register is anded with register A.</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td>&nbsp;</td>
+	<td><font face="Courier" size=2>ANA M</font></td>
+	<td><font face="Courier" size=2>10100110</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>7</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>Z,S,P,C,AC</font></td>
+	<td><font face="Geneva,Arial" size=2>The byte addressed by the (HL) register pair is anded with register A.</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td>&nbsp;</td>
+	<td><font face="Courier" size=2>ANI data</font></td>
+	<td><font face="Courier" size=2>11100110</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>7</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>Z,S,P,C,AC</font></td>
+	<td><font face="Geneva,Arial" size=2>The 2nd byte of the instruction (immediate data) is anded with register A.</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td>&nbsp;</td>
+	<td><font face="Courier" size=2>XRA r</font></td>
+	<td><font face="Courier" size=2>10101sss</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>4</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>Z,S,P,C,AC</font></td>
+	<td><font face="Geneva,Arial" size=2>The register is exclusive-or'd with register A.</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td>&nbsp;</td>
+	<td><font face="Courier" size=2>XRA M</font></td>
+	<td><font face="Courier" size=2>10101110</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>7</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>Z,S,P,C,AC</font></td>
+	<td><font face="Geneva,Arial" size=2>The byte addressed by the (HL) register pair is exclusive-or'd with register A.</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td>&nbsp;</td>
+	<td><font face="Courier" size=2>XRI data</font></td>
+	<td><font face="Courier" size=2>11101110</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>7</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>Z,S,P,C,AC</font></td>
+	<td><font face="Geneva,Arial" size=2>The 2nd byte of the instruction (immediate data) is exclusive-or'd with register A.</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td>&nbsp;</td>
+	<td><font face="Courier" size=2>ORA r</font></td>
+	<td><font face="Courier" size=2>10110sss</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>4</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>Z,S,P,C,AC</font></td>
+	<td><font face="Geneva,Arial" size=2>The register is or'd with register A.</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td>&nbsp;</td>
+	<td><font face="Courier" size=2>ORA M</font></td>
+	<td><font face="Courier" size=2>10110110</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>7</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>Z,S,P,C,AC</font></td>
+	<td><font face="Geneva,Arial" size=2>The byte addressed by the (HL) register pair is or'd with register A.</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td>&nbsp;</td>
+	<td><font face="Courier" size=2>ORI data</font></td>
+	<td><font face="Courier" size=2>11110110</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>7</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>Z,S,P,C,AC</font></td>
+	<td><font face="Geneva,Arial" size=2>The 2nd byte of the instruction (immediate data) is or'd with register A.</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td>&nbsp;</td>
+	<td><font face="Courier" size=2>CMP r</font></td>
+	<td><font face="Courier" size=2>10111sss</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>4</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>Z,S,P,C,AC</font></td>
+	<td><font face="Geneva,Arial" size=2>The register is subtracted from register A and the result discarded; register A remains unchanged. The flags are set based on the result of this subtraction.</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td>&nbsp;</td>
+	<td><font face="Courier" size=2>CMP M</font></td>
+	<td><font face="Courier" size=2>10111110</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>7</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>Z,S,P,C,AC</font></td>
+	<td><font face="Geneva,Arial" size=2>The byte addressed by the (HL) register pair is subtracted from register A and the result discarded; register A remains unchanged. The flags are set based on the result of this subtraction.</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td>&nbsp;</td>
+	<td><font face="Courier" size=2>CPI data</font></td>
+	<td><font face="Courier" size=2>11111110</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>7</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>Z,S,P,C,AC</font></td>
+	<td><font face="Geneva,Arial" size=2>The 2nd byte of the instruction (immediate data) is subtracted from register A and the result discarded; register A remains unchanged. The flags are set based on the result of this subtraction.</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td>&nbsp;</td>
+	<td><font face="Courier" size=2>RLC</font></td>
+	<td><font face="Courier" size=2>00000111</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>4</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>C</font></td>
+	<td><font face="Geneva,Arial" size=2>The contents of register A are shifted left one bit. Both the low-order bit and flag C are set to the value shifted out of the high-order bit. (This is an 8-bit rotate into Carry.)</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td>&nbsp;</td>
+	<td><font face="Courier" size=2>RRC</font></td>
+	<td><font face="Courier" size=2>00001111</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>4</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>C</font></td>
+	<td><font face="Geneva,Arial" size=2>The contents of register A are shifted right one bit. Both the high-order bit and flag C are set to the value shifted out of the low-order bit. (This is an 8-bit rotate into Carry.)</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td>&nbsp;</td>
+	<td><font face="Courier" size=2>RAL</font></td>
+	<td><font face="Courier" size=2>00010111</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>4</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>C</font></td>
+	<td><font face="Geneva,Arial" size=2>The contents of register A are shifted left one bit. The low-order bit is set to the value of flag C. Flag C is set to the value shifted out of the high-order bit. (This is a 9-bit rotate through Carry.)</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td>&nbsp;</td>
+	<td><font face="Courier" size=2>RAR</font></td>
+	<td><font face="Courier" size=2>00011111</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>4</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>C</font></td>
+	<td><font face="Geneva,Arial" size=2>The contents of register A are shifted right one bit. The high-order bit is set to the value of flag C. Flag C is set to the value shifted out of the low-order bit. (This is a 9-bit rotate through Carry.)</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td>&nbsp;</td>
+	<td><font face="Courier" size=2>CMA</font></td>
+	<td><font face="Courier" size=2>00101111</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>4</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>none</font></td>
+	<td><font face="Geneva,Arial" size=2>The contents of register A are complemented: the 1 bits become 0 and the 0 bits become 1.</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td>&nbsp;</td>
+	<td><font face="Courier" size=2>CMC</font></td>
+	<td><font face="Courier" size=2>00111111</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>4</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>C</font></td>
+	<td><font face="Geneva,Arial" size=2>The Carry flag is complemented.</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td>&nbsp;</td>
+	<td><font face="Courier" size=2>STC</font></td>
+	<td><font face="Courier" size=2>00110111</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>4</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>C</font></td>
+	<td><font face="Geneva,Arial" size=2>The Carry flag is forced to 1.</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td colspan=5><font face="Geneva,Arial" size=2><b>Branch Group</b></font></td>
+</tr>
+<tr align="left" valign="bottom">
+	<td>&nbsp;</td>
+	<td><font face="Geneva,Arial" size=2><b>Mnemonic</b></font></td>
+	<td><font face="Geneva,Arial" size=2><b>Opcode</b></font></td>
+	<td align="center"><font face="Geneva,Arial" size=2><b>Cycles&nbsp;*</b></font></td>
+	<td align="center"><font face="Geneva,Arial" size=2><b>Flags Affected</b></font></td>
+	<td><font face="Geneva,Arial" size=2><b>Description</b></font></td>
+</tr>
+<tr align="left" valign="top">
+	<td>&nbsp;</td>
+	<td><font face="Courier" size=2>JMP addr</font></td>
+	<td><font face="Courier" size=2>11000011</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>10</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>none</font></td>
+	<td><font face="Geneva,Arial" size=2>Control is passed to the instruction at the given address.</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td>&nbsp;</td>
+	<td><font face="Courier" size=2>J(condition)</font></td>
+	<td><font face="Courier" size=2>11ccc010</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>10</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>none</font></td>
+	<td><font face="Geneva,Arial" size=2>If the specified condition is true, control is passed to the instruction at the given address.</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td>&nbsp;</td>
+	<td><font face="Courier" size=2>CALL</font></td>
+	<td><font face="Courier" size=2>11001101</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>17</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>none</font></td>
+	<td><font face="Geneva,Arial" size=2>The next instruction address is pushed on the stack. Then control passes to the instruction at the given address.</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td>&nbsp;</td>
+	<td><font face="Courier" size=2>C(condition)</font></td>
+	<td><font face="Courier" size=2>11ccc100</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>11/17</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>none</font></td>
+	<td><font face="Geneva,Arial" size=2>If the specified condition is true, the next instruction address is pushed on the stack. Then control passes to the instruction at the given address.</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td>&nbsp;</td>
+	<td><font face="Courier" size=2>RET</font></td>
+	<td><font face="Courier" size=2>11001001</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>5</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>none</font></td>
+	<td><font face="Geneva,Arial" size=2>Control is passed to the address that is popped from the stack.</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td>&nbsp;</td>
+	<td><font face="Courier" size=2>R(condition)</font></td>
+	<td><font face="Courier" size=2>11ccc000</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>5/11</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>none</font></td>
+	<td><font face="Geneva,Arial" size=2>If the specified condition is true, control is passed to the address that is popped from the stack.</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td>&nbsp;</td>
+	<td><font face="Courier" size=2>RST n</font></td>
+	<td><font face="Courier" size=2>11nnn111</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>11</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>none</font></td>
+	<td><font face="Geneva,Arial" size=2>The next instruction address is pushed onto the stack. Then control is passed to the instruction at address 'n' * 8. (The program counter is set to the value 0000 0000 00nn n000.)</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td>&nbsp;</td>
+	<td><font face="Courier" size=2>PCHL</font></td>
+	<td><font face="Courier" size=2>11101001</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>5</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>none</font></td>
+	<td><font face="Geneva,Arial" size=2>The contents of register pair HL are copied to the program counter, effectively passing control to the instruction at the address in HL.</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td colspan=5><font face="Geneva,Arial" size=2><b>Stack, I/O and Machine Control Group</b></font></td>
+</tr>
+<tr align="left" valign="bottom">
+	<td>&nbsp;</td>
+	<td><font face="Geneva,Arial" size=2><b>Mnemonic</b></font></td>
+	<td><font face="Geneva,Arial" size=2><b>Opcode</b></font></td>
+	<td align="center"><font face="Geneva,Arial" size=2><b>Cycles</b></font></td>
+	<td align="center"><font face="Geneva,Arial" size=2><b>Flags Affected</b></font></td>
+	<td><font face="Geneva,Arial" size=2><b>Description</b></font></td>
+</tr>
+<tr align="left" valign="top">
+	<td>&nbsp;</td>
+	<td><font face="Courier" size=2>PUSH rp</font></td>
+	<td><font face="Courier" size=2>11rp0101</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>11</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>none</font></td>
+	<td><font face="Geneva,Arial" size=2>The named register pair is pushed onto the stack.</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td>&nbsp;</td>
+	<td><font face="Courier" size=2>POP rp</font></td>
+	<td><font face="Courier" size=2>11rp0001</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>10</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>(note)</font></td>
+	<td><font face="Geneva,Arial" size=2>The named register pair is popped off of the stack.</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td>&nbsp;</td>
+	<td><font face="Courier" size=2>XTHL</font></td>
+	<td><font face="Courier" size=2>11100011</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>18</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>none</font></td>
+	<td><font face="Geneva,Arial" size=2>The contents of the HL pair are swapped with the 16-bit value at the top of the stack.</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td>&nbsp;</td>
+	<td><font face="Courier" size=2>SPHL</font></td>
+	<td><font face="Courier" size=2>11111001</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>5</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>none</font></td>
+	<td><font face="Geneva,Arial" size=2>The contents of the HL pair are copied into the SP pair.</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td>&nbsp;</td>
+	<td><font face="Courier" size=2>IN port</font></td>
+	<td><font face="Courier" size=2>11011011</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>10</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>none</font></td>
+	<td><font face="Geneva,Arial" size=2>The port named in the 2nd byte of the instruction (immediate data) is read and the data placed in register A.</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td>&nbsp;</td>
+	<td><font face="Courier" size=2>OUT port</font></td>
+	<td><font face="Courier" size=2>11010011</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>10</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>none</font></td>
+	<td><font face="Geneva,Arial" size=2>The data in register A is written to the port addressed in the 2nd byte of the instruction (immediate data).</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td>&nbsp;</td>
+	<td><font face="Courier" size=2>EI</font></td>
+	<td><font face="Courier" size=2>11111011</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>4</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>none</font></td>
+	<td><font face="Geneva,Arial" size=2>The interrupt system is enabled, following the execution of the next instruction.</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td>&nbsp;</td>
+	<td><font face="Courier" size=2>DI</font></td>
+	<td><font face="Courier" size=2>11110011</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>4</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>none</font></td>
+	<td><font face="Geneva,Arial" size=2>The interrupt system is disabled immediately.</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td>&nbsp;</td>
+	<td><font face="Courier" size=2>HLT</font></td>
+	<td><font face="Courier" size=2>01110110</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>7</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>none</font></td>
+	<td><font face="Geneva,Arial" size=2>The processor is halted. This condition persists until the next interrupt.</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td>&nbsp;</td>
+	<td><font face="Courier" size=2>NOP</font></td>
+	<td><font face="Courier" size=2>00000000</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>4</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>none</font></td>
+	<td><font face="Geneva,Arial" size=2>No operation is performed.</font></td>
+</tr>
+</table>
+<ul>
+<br>
+<font face="Geneva,Arial" size=2><p>* Where there are two values for cycles, the first is for the false condition and the second for the true condition.</p>
+<p><b>Note:</b> A POP instruction naming the BC, DE, or HL register pairs has no effect on the flags. A POP instruction naming the PSW affects all flags.</p></font>
+
+<font face="Geneva,Arial,Arial" size=2>
+<a href="#top">go to top</a>
+
+</ul>
+<hr>
+
+<ul>
+<font face="Geneva,Arial" size=2>
+<p>
+<a name="octal"></a>
+<b>Octal Reference Summary</b></p>
+</font>
+
+<font face="Geneva,Arial" size=2>
+<p>To convert from a mnemonic to an octal opcode:</p>
+</font>
+
+<ul type="disc">
+<li><font face="Geneva,Arial" size=2>find the mnemonic in the table;</font></li>
+<li><font face="Geneva,Arial" size=2>write down the two digits in the left-hand column of the same row;</font></li>
+<li><font face="Geneva,Arial" size=2>add the digit at the top of the same column.</font></li>
+</ul>
+
+<font face="Geneva,Arial" size=2>
+<p>Example: mnemonic MOV C,A is octal opcode 117.</p>
+<p>To convert from an octal opcode to a mnemonic:</p>
+</font>
+
+<ul type="disc">
+<li><font face="Geneva,Arial" size=2>find the first two digits of the octal opcode in the left-hand column;</font></li>
+<li><font face="Geneva,Arial" size=2>find the third digit of the octal opcode at the top;</font></li>
+<li><font face="Geneva,Arial" size=2>use the mnemonic code at the intersection.</font></li>
+</ul>
+
+<font face="Geneva,Arial" size=2>
+<p>Example: octal opcode 064 is mnemonic INR M.</p>
+</font>
+</ul>
+
+<table border="1" cellspacing="0" cellpadding="2">
+<tr align="center" valign="bottom">
+	<td><font face="Geneva,Arial" size=1>&nbsp;</font></td>
+	<td><font face="Geneva,Arial" size=1>0</font></td>
+	<td><font face="Geneva,Arial" size=1>1</font></td>
+	<td><font face="Geneva,Arial" size=1>2</font></td>
+	<td><font face="Geneva,Arial" size=1>3</font></td>
+	<td><font face="Geneva,Arial" size=1>4</font></td>
+	<td><font face="Geneva,Arial" size=1>5</font></td>
+	<td><font face="Geneva,Arial" size=1>6</font></td>
+	<td><font face="Geneva,Arial" size=1>7</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td align="center"><font face="Geneva,Arial" size=1>00_</font></td>
+	<td><font face="Courier" size=2>NOP</font></td>
+	<td><font face="Courier" size=2>LXI B</font></td>
+	<td><font face="Courier" size=2>STAX B</font></td>
+	<td><font face="Courier" size=2>INX B</font></td>
+	<td><font face="Courier" size=2>INR B</font></td>
+	<td><font face="Courier" size=2>DCR B</font></td>
+	<td><font face="Courier" size=2>MVI B</font></td>
+	<td><font face="Courier" size=2>RLC</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td align="center"><font face="Geneva,Arial" size=1>01_</font></td>
+	<td><font face="Courier" size=2>---</font></td>
+	<td><font face="Courier" size=2>DAD B</font></td>
+	<td><font face="Courier" size=2>LDAX B</font></td>
+	<td><font face="Courier" size=2>DCX B</font></td>
+	<td><font face="Courier" size=2>INR C</font></td>
+	<td><font face="Courier" size=2>DCR C</font></td>
+	<td><font face="Courier" size=2>MVI C</font></td>
+	<td><font face="Courier" size=2>RRC</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td align="center"><font face="Geneva,Arial" size=1>02_</font></td>
+	<td><font face="Courier" size=2>---</font></td>
+	<td><font face="Courier" size=2>LXI D</font></td>
+	<td><font face="Courier" size=2>STAX D</font></td>
+	<td><font face="Courier" size=2>INX D</font></td>
+	<td><font face="Courier" size=2>INR D</font></td>
+	<td><font face="Courier" size=2>DCR D</font></td>
+	<td><font face="Courier" size=2>MVI D</font></td>
+	<td><font face="Courier" size=2>RAL</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td align="center"><font face="Geneva,Arial" size=1>03_</font></td>
+	<td><font face="Courier" size=2>---</font></td>
+	<td><font face="Courier" size=2>DAD D</font></td>
+	<td><font face="Courier" size=2>LDAX D</font></td>
+	<td><font face="Courier" size=2>DCX D</font></td>
+	<td><font face="Courier" size=2>INR E</font></td>
+	<td><font face="Courier" size=2>DCR E</font></td>
+	<td><font face="Courier" size=2>MVI E</font></td>
+	<td><font face="Courier" size=2>RAR</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td align="center"><font face="Geneva,Arial" size=1>04_</font></td>
+	<td><font face="Courier" size=2>---</font></td>
+	<td><font face="Courier" size=2>LXI H</font></td>
+	<td><font face="Courier" size=2>SHLD</font></td>
+	<td><font face="Courier" size=2>INX H</font></td>
+	<td><font face="Courier" size=2>INR H</font></td>
+	<td><font face="Courier" size=2>DCR H</font></td>
+	<td><font face="Courier" size=2>MVI H</font></td>
+	<td><font face="Courier" size=2>DAA</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td align="center"><font face="Geneva,Arial" size=1>05_</font></td>
+	<td><font face="Courier" size=2>---</font></td>
+	<td><font face="Courier" size=2>DAD H</font></td>
+	<td><font face="Courier" size=2>LHLD</font></td>
+	<td><font face="Courier" size=2>DCX H</font></td>
+	<td><font face="Courier" size=2>INR L</font></td>
+	<td><font face="Courier" size=2>DCR L</font></td>
+	<td><font face="Courier" size=2>MVI L</font></td>
+	<td><font face="Courier" size=2>CMA</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td align="center"><font face="Geneva,Arial" size=1>06_</font></td>
+	<td><font face="Courier" size=2>---</font></td>
+	<td><font face="Courier" size=2>LXI SP</font></td>
+	<td><font face="Courier" size=2>STA</font></td>
+	<td><font face="Courier" size=2>INX SP</font></td>
+	<td><font face="Courier" size=2>INR M</font></td>
+	<td><font face="Courier" size=2>DCR M</font></td>
+	<td><font face="Courier" size=2>MVI M</font></td>
+	<td><font face="Courier" size=2>STC</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td align="center"><font face="Geneva,Arial" size=1>07_</font></td>
+	<td><font face="Courier" size=2>---</font></td>
+	<td><font face="Courier" size=2>DAD SP</font></td>
+	<td><font face="Courier" size=2>LDA</font></td>
+	<td><font face="Courier" size=2>DCX SP</font></td>
+	<td><font face="Courier" size=2>INR A</font></td>
+	<td><font face="Courier" size=2>DCR A</font></td>
+	<td><font face="Courier" size=2>MVI A</font></td>
+	<td><font face="Courier" size=2>CMC</font></td>
+</tr>
+<tr align="center" valign="top">
+	<td>&nbsp;</td>
+	<td><font face="Geneva,Arial" size=1>0</font></td>
+	<td><font face="Geneva,Arial" size=1>1</font></td>
+	<td><font face="Geneva,Arial" size=1>2</font></td>
+	<td><font face="Geneva,Arial" size=1>3</font></td>
+	<td><font face="Geneva,Arial" size=1>4</font></td>
+	<td><font face="Geneva,Arial" size=1>5</font></td>
+	<td><font face="Geneva,Arial" size=1>6</font></td>
+	<td><font face="Geneva,Arial" size=1>7</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td align="center"><font face="Geneva,Arial" size=1>10_</font></td>
+	<td><font face="Courier" size=2>MOV&nbsp;B,B</font></td>
+	<td><font face="Courier" size=2>MOV&nbsp;B,C</font></td>
+	<td><font face="Courier" size=2>MOV&nbsp;B,D</font></td>
+	<td><font face="Courier" size=2>MOV&nbsp;B,E</font></td>
+	<td><font face="Courier" size=2>MOV&nbsp;B,H</font></td>
+	<td><font face="Courier" size=2>MOV&nbsp;B,L</font></td>
+	<td><font face="Courier" size=2>MOV&nbsp;B,M</font></td>
+	<td><font face="Courier" size=2>MOV&nbsp;B,A</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td align="center"><font face="Geneva,Arial" size=1>11_</font></td>
+	<td><font face="Courier" size=2>MOV&nbsp;C,B</font></td>
+	<td><font face="Courier" size=2>MOV&nbsp;C,C</font></td>
+	<td><font face="Courier" size=2>MOV&nbsp;C,D</font></td>
+	<td><font face="Courier" size=2>MOV&nbsp;C,E</font></td>
+	<td><font face="Courier" size=2>MOV&nbsp;C,H</font></td>
+	<td><font face="Courier" size=2>MOV&nbsp;C,L</font></td>
+	<td><font face="Courier" size=2>MOV&nbsp;C,M</font></td>
+	<td><font face="Courier" size=2>MOV&nbsp;C,A</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td align="center"><font face="Geneva,Arial" size=1>12_</font></td>
+	<td><font face="Courier" size=2>MOV&nbsp;D,B</font></td>
+	<td><font face="Courier" size=2>MOV&nbsp;D,C</font></td>
+	<td><font face="Courier" size=2>MOV&nbsp;D,D</font></td>
+	<td><font face="Courier" size=2>MOV&nbsp;D,E</font></td>
+	<td><font face="Courier" size=2>MOV&nbsp;D,H</font></td>
+	<td><font face="Courier" size=2>MOV&nbsp;D,L</font></td>
+	<td><font face="Courier" size=2>MOV&nbsp;D,M</font></td>
+	<td><font face="Courier" size=2>MOV&nbsp;D,A</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td align="center"><font face="Geneva,Arial" size=1>13_</font></td>
+	<td><font face="Courier" size=2>MOV&nbsp;E,B</font></td>
+	<td><font face="Courier" size=2>MOV&nbsp;E,C</font></td>
+	<td><font face="Courier" size=2>MOV&nbsp;E,D</font></td>
+	<td><font face="Courier" size=2>MOV&nbsp;E,E</font></td>
+	<td><font face="Courier" size=2>MOV&nbsp;E,H</font></td>
+	<td><font face="Courier" size=2>MOV&nbsp;E,L</font></td>
+	<td><font face="Courier" size=2>MOV&nbsp;E,M</font></td>
+	<td><font face="Courier" size=2>MOV&nbsp;E,A</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td align="center"><font face="Geneva,Arial" size=1>14_</font></td>
+	<td><font face="Courier" size=2>MOV&nbsp;H,B</font></td>
+	<td><font face="Courier" size=2>MOV&nbsp;H,C</font></td>
+	<td><font face="Courier" size=2>MOV&nbsp;H,D</font></td>
+	<td><font face="Courier" size=2>MOV&nbsp;H,E</font></td>
+	<td><font face="Courier" size=2>MOV&nbsp;H,H</font></td>
+	<td><font face="Courier" size=2>MOV&nbsp;H,L</font></td>
+	<td><font face="Courier" size=2>MOV&nbsp;H,M</font></td>
+	<td><font face="Courier" size=2>MOV&nbsp;H,A</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td align="center"><font face="Geneva,Arial" size=1>15_</font></td>
+	<td><font face="Courier" size=2>MOV&nbsp;L,B</font></td>
+	<td><font face="Courier" size=2>MOV&nbsp;L,C</font></td>
+	<td><font face="Courier" size=2>MOV&nbsp;L,D</font></td>
+	<td><font face="Courier" size=2>MOV&nbsp;L,E</font></td>
+	<td><font face="Courier" size=2>MOV&nbsp;L,H</font></td>
+	<td><font face="Courier" size=2>MOV&nbsp;L,L</font></td>
+	<td><font face="Courier" size=2>MOV&nbsp;L,M</font></td>
+	<td><font face="Courier" size=2>MOV&nbsp;L,A</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td align="center"><font face="Geneva,Arial" size=1>16_</font></td>
+	<td><font face="Courier" size=2>MOV&nbsp;M,B</font></td>
+	<td><font face="Courier" size=2>MOV&nbsp;M,C</font></td>
+	<td><font face="Courier" size=2>MOV&nbsp;M,D</font></td>
+	<td><font face="Courier" size=2>MOV&nbsp;M,E</font></td>
+	<td><font face="Courier" size=2>MOV&nbsp;M,H</font></td>
+	<td><font face="Courier" size=2>MOV&nbsp;M,L</font></td>
+	<td><font face="Courier" size=2>HLT</font></td>
+	<td><font face="Courier" size=1>MOV&nbsp;M,A</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td align="center"><font face="Geneva,Arial" size=2>17_</font></td>
+	<td><font face="Courier" size=2>MOV&nbsp;A,B</font></td>
+	<td><font face="Courier" size=2>MOV&nbsp;A,C</font></td>
+	<td><font face="Courier" size=2>MOV&nbsp;A,D</font></td>
+	<td><font face="Courier" size=2>MOV&nbsp;A,E</font></td>
+	<td><font face="Courier" size=2>MOV&nbsp;A,H</font></td>
+	<td><font face="Courier" size=2>MOV&nbsp;A,L</font></td>
+	<td><font face="Courier" size=2>MOV&nbsp;A,M</font></td>
+	<td><font face="Courier" size=2>MOV&nbsp;A,A</font></td>
+</tr>
+<tr align="center" valign="top">
+	<td>&nbsp;</td>
+	<td><font face="Geneva,Arial" size=1>0</font></td>
+	<td><font face="Geneva,Arial" size=1>1</font></td>
+	<td><font face="Geneva,Arial" size=1>2</font></td>
+	<td><font face="Geneva,Arial" size=1>3</font></td>
+	<td><font face="Geneva,Arial" size=1>4</font></td>
+	<td><font face="Geneva,Arial" size=1>5</font></td>
+	<td><font face="Geneva,Arial" size=1>6</font></td>
+	<td><font face="Geneva,Arial" size=1>7</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td align="center"><font face="Geneva,Arial" size=1>20_</font></td>
+	<td><font face="Courier" size=2>ADD B</font></td>
+	<td><font face="Courier" size=2>ADD C</font></td>
+	<td><font face="Courier" size=2>ADD D</font></td>
+	<td><font face="Courier" size=2>ADD E</font></td>
+	<td><font face="Courier" size=2>ADD H</font></td>
+	<td><font face="Courier" size=2>ADD L</font></td>
+	<td><font face="Courier" size=2>ADD M</font></td>
+	<td><font face="Courier" size=2>ADD A</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td align="center"><font face="Geneva,Arial" size=1>21_</font></td>
+	<td><font face="Courier" size=2>ADC B</font></td>
+	<td><font face="Courier" size=2>ADC C</font></td>
+	<td><font face="Courier" size=2>ADC D</font></td>
+	<td><font face="Courier" size=2>ADC E</font></td>
+	<td><font face="Courier" size=2>ADC H</font></td>
+	<td><font face="Courier" size=2>ADC L</font></td>
+	<td><font face="Courier" size=2>ADC M</font></td>
+	<td><font face="Courier" size=2>ADC A</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td align="center"><font face="Geneva,Arial" size=1>22_</font></td>
+	<td><font face="Courier" size=2>SUB B</font></td>
+	<td><font face="Courier" size=2>SUB C</font></td>
+	<td><font face="Courier" size=2>SUB D</font></td>
+	<td><font face="Courier" size=2>SUB E</font></td>
+	<td><font face="Courier" size=2>SUB H</font></td>
+	<td><font face="Courier" size=2>SUB L</font></td>
+	<td><font face="Courier" size=2>SUB M</font></td>
+	<td><font face="Courier" size=2>SUB A</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td align="center"><font face="Geneva,Arial" size=1>23_</font></td>
+	<td><font face="Courier" size=2>SBB B</font></td>
+	<td><font face="Courier" size=2>SBB C</font></td>
+	<td><font face="Courier" size=2>SBB D</font></td>
+	<td><font face="Courier" size=2>SBB E</font></td>
+	<td><font face="Courier" size=2>SBB H</font></td>
+	<td><font face="Courier" size=2>SBB L</font></td>
+	<td><font face="Courier" size=2>SBB M</font></td>
+	<td><font face="Courier" size=2>SBB A</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td align="center"><font face="Geneva,Arial" size=1>24_</font></td>
+	<td><font face="Courier" size=2>ANA B</font></td>
+	<td><font face="Courier" size=2>ANA C</font></td>
+	<td><font face="Courier" size=2>ANA D</font></td>
+	<td><font face="Courier" size=2>ANA E</font></td>
+	<td><font face="Courier" size=2>ANA H</font></td>
+	<td><font face="Courier" size=2>ANA L</font></td>
+	<td><font face="Courier" size=2>ANA M</font></td>
+	<td><font face="Courier" size=2>ANA A</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td align="center"><font face="Geneva,Arial" size=1>25_</font></td>
+	<td><font face="Courier" size=2>XRA B</font></td>
+	<td><font face="Courier" size=2>XRA C</font></td>
+	<td><font face="Courier" size=2>XRA D</font></td>
+	<td><font face="Courier" size=2>XRA E</font></td>
+	<td><font face="Courier" size=2>XRA H</font></td>
+	<td><font face="Courier" size=2>XRA L</font></td>
+	<td><font face="Courier" size=2>XRA M</font></td>
+	<td><font face="Courier" size=2>XRA A</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td align="center"><font face="Geneva,Arial" size=1>26_</font></td>
+	<td><font face="Courier" size=2>ORA B</font></td>
+	<td><font face="Courier" size=2>ORA C</font></td>
+	<td><font face="Courier" size=2>ORA D</font></td>
+	<td><font face="Courier" size=2>ORA E</font></td>
+	<td><font face="Courier" size=2>ORA H</font></td>
+	<td><font face="Courier" size=2>ORA L</font></td>
+	<td><font face="Courier" size=2>ORA M</font></td>
+	<td><font face="Courier" size=2>ORA A</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td align="center"><font face="Geneva,Arial" size=1>27_</font></td>
+	<td><font face="Courier" size=2>CMP B</font></td>
+	<td><font face="Courier" size=2>CMP C</font></td>
+	<td><font face="Courier" size=2>CMP D</font></td>
+	<td><font face="Courier" size=2>CMP E</font></td>
+	<td><font face="Courier" size=2>CMP H</font></td>
+	<td><font face="Courier" size=2>CMP L</font></td>
+	<td><font face="Courier" size=2>CMP M</font></td>
+	<td><font face="Courier" size=2>CMP A</font></td>
+</tr>
+<tr align="center" valign="top">
+	<td>&nbsp;</td>
+	<td><font face="Geneva,Arial" size=1>0</font></td>
+	<td><font face="Geneva,Arial" size=1>1</font></td>
+	<td><font face="Geneva,Arial" size=1>2</font></td>
+	<td><font face="Geneva,Arial" size=1>3</font></td>
+	<td><font face="Geneva,Arial" size=1>4</font></td>
+	<td><font face="Geneva,Arial" size=1>5</font></td>
+	<td><font face="Geneva,Arial" size=1>6</font></td>
+	<td><font face="Geneva,Arial" size=1>7</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td align="center"><font face="Geneva,Arial" size=1>30_</font></td>
+	<td><font face="Courier" size=2>RNZ</font></td>
+	<td><font face="Courier" size=2>POP B</font></td>
+	<td><font face="Courier" size=2>JNZ</font></td>
+	<td><font face="Courier" size=2>JMP</font></td>
+	<td><font face="Courier" size=2>CNZ</font></td>
+	<td><font face="Courier" size=2>PUSH B</font></td>
+	<td><font face="Courier" size=2>ADI</font></td>
+	<td><font face="Courier" size=2>RST 0</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td align="center"><font face="Geneva,Arial" size=1>31_</font></td>
+	<td><font face="Courier" size=2>RZ</font></td>
+	<td><font face="Courier" size=2>RET</font></td>
+	<td><font face="Courier" size=2>JZ</font></td>
+	<td><font face="Courier" size=2>---</font></td>
+	<td><font face="Courier" size=2>CZ</font></td>
+	<td><font face="Courier" size=2>CALL</font></td>
+	<td><font face="Courier" size=2>ACI</font></td>
+	<td><font face="Courier" size=2>RST 1</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td align="center"><font face="Geneva,Arial" size=1>32_</font></td>
+	<td><font face="Courier" size=2>RNC</font></td>
+	<td><font face="Courier" size=2>POP D</font></td>
+	<td><font face="Courier" size=2>JNC</font></td>
+	<td><font face="Courier" size=2>OUT</font></td>
+	<td><font face="Courier" size=2>CNC</font></td>
+	<td><font face="Courier" size=2>PUSH D</font></td>
+	<td><font face="Courier" size=2>SUI</font></td>
+	<td><font face="Courier" size=2>RST 2</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td align="center"><font face="Geneva,Arial" size=1>33_</font></td>
+	<td><font face="Courier" size=2>RC</font></td>
+	<td><font face="Courier" size=2>---</font></td>
+	<td><font face="Courier" size=2>JC</font></td>
+	<td><font face="Courier" size=2>IN</font></td>
+	<td><font face="Courier" size=2>CC</font></td>
+	<td><font face="Courier" size=2>---</font></td>
+	<td><font face="Courier" size=2>SBI</font></td>
+	<td><font face="Courier" size=2>RST 3</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td align="center"><font face="Geneva,Arial" size=1>34_</font></td>
+	<td><font face="Courier" size=2>RPO</font></td>
+	<td><font face="Courier" size=2>POP H</font></td>
+	<td><font face="Courier" size=2>JPO</font></td>
+	<td><font face="Courier" size=2>XTHL</font></td>
+	<td><font face="Courier" size=2>CPO</font></td>
+	<td><font face="Courier" size=2>PUSH H</font></td>
+	<td><font face="Courier" size=2>ANI</font></td>
+	<td><font face="Courier" size=2>RST 4</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td align="center"><font face="Geneva,Arial" size=1>35_</font></td>
+	<td><font face="Courier" size=2>RPE</font></td>
+	<td><font face="Courier" size=2>PCHL</font></td>
+	<td><font face="Courier" size=2>JPE</font></td>
+	<td><font face="Courier" size=2>XCHG</font></td>
+	<td><font face="Courier" size=2>CPE</font></td>
+	<td><font face="Courier" size=2>---</font></td>
+	<td><font face="Courier" size=2>XRI</font></td>
+	<td><font face="Courier" size=2>RST 5</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td align="center"><font face="Geneva,Arial" size=1>36_</font></td>
+	<td><font face="Courier" size=2>RP</font></td>
+	<td><font face="Courier" size=2>POP PSW</font></td>
+	<td><font face="Courier" size=2>JP</font></td>
+	<td><font face="Courier" size=2>DI</font></td>
+	<td><font face="Courier" size=2>CP</font></td>
+	<td><font face="Courier" size=2>PUSH PSW</font></td>
+	<td><font face="Courier" size=2>ORI</font></td>
+	<td><font face="Courier" size=2>RST 6</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td align="center"><font face="Geneva,Arial" size=1>37_</font></td>
+	<td><font face="Courier" size=2>RM</font></td>
+	<td><font face="Courier" size=2>SPHL</font></td>
+	<td><font face="Courier" size=2>JM</font></td>
+	<td><font face="Courier" size=2>EI</font></td>
+	<td><font face="Courier" size=2>CM</font></td>
+	<td><font face="Courier" size=2>---</font></td>
+	<td><font face="Courier" size=2>CPI</font></td>
+	<td><font face="Courier" size=2>RST 7</font></td>
+</tr>
+</table>
+<br><br>
+<font face="Geneva,Arial,Arial" size=2>
+<a href="#top">go to top</a>
+
+</ul>
+<hr>
+
+<font face="Geneva,Arial,Arial" size=1>
+<center>
+<a href="program.html">Programming Table of Contents</a>
+<br><br>
+<a href="../h8_toc.html">Main Table of Contents</a>
+</center>
+<br><br>
+</body>
+
+<!-- Mirrored from davidwallace2000.home.comcast.net/~davidwallace2000/h8/project8080_archive/pgs/8080a.html by HTTrack Website Copier/3.x [XR&CO'2010], Mon, 10 Sep 2012 13:15:41 GMT -->
+</html>
+

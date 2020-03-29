@@ -1,0 +1,1516 @@
+<html>
+
+<!-- Mirrored from davidwallace2000.home.comcast.net/~davidwallace2000/h8/project8080_archive/pgs/basic.html by HTTrack Website Copier/3.x [XR&CO'2010], Mon, 10 Sep 2012 13:15:41 GMT -->
+<head>
+<title>H8 Emulation Help - Basic Language Documentation</title>
+<meta name="AppleTitle" content="H8 Emulation Help">
+<meta name="description" content="Basic Language Documentation">
+</head>
+
+<!-- updated 10/8/2002, das -->
+
+<body bgcolor="white">
+<a name="top"></a>
+<p>
+<font size=3 face="Verdana,Geneva" color="0000FF">
+<b>Basic Language Documentation</b>
+</font>
+
+<ul>
+<font size="2" face="Geneva,Arial">
+
+<p>This page presents a summary of the Benton Harbor Basic programming language dialect. This material is <b>believed</b> to be correct and complete, if somewhat terse, but if you have additional material or notice an error in this material, please forward it to the author for inclusion in the next update.</p>
+
+</font>
+</ul>
+<hr>
+<font face="Geneva,Arial" size=1>
+<center>
+<a href="program.html">Programming Table of Contents</a>
+<br><br>
+<a href="../h8_toc.html">Main Table of Contents</a>
+</center>
+<br>
+<hr>
+<table border="0" cellspacing="2" cellpadding="2">
+<tr align="left" valign="top">
+	<td width="50"><font size=3 face="Verdana,Geneva" color="0000FF"><b>Page Index</b></font></td>
+	<td width="130"><font face="Geneva" size=2><b>Commands</b></font></td>
+	<td width="35">&nbsp;</td>
+	<td width="35">&nbsp;</td>
+</tr>
+<tr align="left" valign="top">
+	<td>&nbsp;</td>
+	<td><font face="Geneva" size=2>&nbsp;&nbsp;<a href="#commands">Commands</a></font></td>
+	<td><font face="Geneva" size=2>
+		<a href="#bye">BYE</a><br>
+		<a href="#build">BUILD</a><br>
+		<a href="#free">FREE</a><br>
+		<a href="#clear">CLEAR</a><br>
+		<a href="#scratch">SCRATCH</a><br>
+		<a href="#list">LIST</a>
+	</font></td>
+	<td><font face="Geneva" size=2>
+		<a href="#delete">DELETE</a><br>
+		<a href="#run">RUN</a><br>
+		<a href="#continue">CONTINUE</a><br>
+		<a href="#step">STEP</a><br>
+		<a href="#lock">LOCK</a><br>
+		<a href="#unlock">UNLOCK</a>
+	</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td>&nbsp;</td>
+	<td><font face="Geneva" size=2>&nbsp;&nbsp;<a href="#source">Source File Access</a></font></td>
+	<td><font face="Geneva" size=2>
+		<a href="#old">OLD</a><br>
+		<a href="#save">SAVE</a><br>
+		<a href="#replace">REPLACE</a>
+	</font></td>
+	<td><font face="Geneva" size=2>
+		<a href="#unsave">UNSAVE</a><br>
+		<a href="#freeze">FREEZE</a><br>
+		<a href="#unfreeze">UNFREEZE</a>
+	</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td>&nbsp;</td>
+	<td><font face="Geneva" size=2><b>Statements</b></font></td>
+	<td>&nbsp;</td>
+	<td>&nbsp;</td>
+</tr>
+<tr align="left" valign="top">
+	<td>&nbsp;</td>
+	<td><font face="Geneva" size=2>&nbsp;&nbsp;<a href="#statements">Program Statements</a></font></td>
+		<td><font face="Geneva" size=2>
+		<a href="#rem">REM</a><br>
+		<a href="#let">LET</a><br>
+		<a href="#print">PRINT</a><br>
+		<a href="#if">IF</a><br>
+		<a href="#for">FOR / NEXT</a><br>
+		<a href="#goto">GOTO</a><br>
+		<a href="#gosub">GOSUB / RETURN</a><br>
+		<a href="#on">ON</a><br>
+		<a href="#input">INPUT</a><br>
+		<a href="#line">LINE INPUT</a>
+	</font></td>
+	<td><font face="Geneva" size=2>
+		<a href="#data">DATA</a><br>
+		<a href="#read">READ</a><br>
+		<a href="#restore">RESTORE</a><br>
+		<a href="#chain">CHAIN</a><br>
+		<a href="#end">END</a><br>
+		<a href="#stop">STOP</a><br>
+		<a href="#pause">PAUSE</a><br>
+		<a href="#dim">DIM</a><br>
+		<a href="#def">DEF FN</a>
+	</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td>&nbsp;</td>
+	<td><font face="Geneva" size=2>&nbsp;&nbsp;<a href="#operators">Operators</a></font></td>
+	<td><font face="Geneva" size=2>
+		+<br>
+		'<br>
+		*<br>
+		/<br>
+		^
+	</font></td>
+	<td><font face="Geneva" size=2>
+		&lt;<br>
+		><br>
+		=<br>
+		&lt;>
+	</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td>&nbsp;</td>
+	<td><font face="Geneva" size=2>&nbsp;&nbsp;<a href="#logical">Logical Operators</a></font></td>
+	<td><font face="Geneva" size=2>
+		<a href="#and">AND</a><br>
+		<a href="#or">OR</a><br>
+		<a href="#not">NOT</a>
+	</font></td>
+	<td>&nbsp;</td>
+</tr>
+<tr align="left" valign="top">
+	<td>&nbsp;</td>
+	<td><font face="Geneva" size=2>&nbsp;&nbsp;<a href="#file">File Access Statements</a></font></td>
+	<td><font face="Geneva" size=2>
+		<a href="#open">OPEN</a><br>
+		<a href="#finput">INPUT</a><br>
+		<a href="#fline">LINE INPUT</a>
+	</font></td>
+	<td><font face="Geneva" size=2>
+		<a href="#close">CLOSE</a><br>
+		<a href="#cin">CIN()</a>
+	</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td>&nbsp;</td>
+	<td><font face="Geneva" size=2>&nbsp;&nbsp;<a href="#hardware">Hardware Access</a></font></td>
+	<td><font face="Geneva" size=2>
+		<a href="#pin">PIN()</a><br>
+		<a href="#out">OUT</a><br>
+		<a href="#peek">PEEK()</a><br>
+		<a href="#poke">POKE</a>
+	</font></td>
+	<td><font face="Geneva" size=2>
+		<a href="#cntrl">CNTRL</a><br>
+		<a href="#seg">SEG()</a><br>
+		<a href="#pad">PAD()</a>
+	</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td>&nbsp;</td>
+	<td><font face="Geneva" size=2><b>Functions</b></font></td>
+	<td>&nbsp;</td>
+	<td>&nbsp;</td>
+</tr>
+<tr align="left" valign="top">
+	<td>&nbsp;</td>
+	<td><font face="Geneva" size=2>&nbsp;&nbsp;<a href="#math">Math Functions</a></font></td>
+	<td><font face="Geneva" size=2>
+		<a href="#abs">ABS()</a><br>
+		<a href="#int">INT()</a><br>
+		<a href="#max">MAX()</a><br>
+		<a href="#min">MIN()</a><br>
+		<a href="#rnd">RND()</a><br>
+		<a href="#sgn">SGN()</a><br>
+		<a href="#sqr">SQR()</a>
+	</font></td>
+	<td><font face="Geneva" size=2>
+		<a href="#sin">SIN()</a><br>
+		<a href="#cos">COS()</a><br>
+		<a href="#tan">TAN()</a><br>
+		<a href="#atn">ATN()</a><br>
+		<a href="#log">LOG()</a><br>
+		<a href="#exp">EXP()</a>
+	</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td>&nbsp;</td>
+	<td><font face="Geneva" size=2>&nbsp;&nbsp;<a href="#string">String Functions</a></font></td>
+	<td><font face="Geneva" size=2>
+		<a href="#left">LEFT$()</a><br>
+		<a href="#mid">MID$()</a><br>
+		<a href="#right">RIGHT$()</a>
+	</font></td>
+	<td><font face="Geneva" size=2>
+		<a href="#len">LEN()</a><br>
+		<a href="#match">MATCH()</a>
+	</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td>&nbsp;</td>
+	<td><font face="Geneva" size=2>&nbsp;&nbsp;<a href="#conversion">Conversion Functions</a></font></td>
+	<td><font face="Geneva" size=2>
+		<a href="#asc">ASC()</a><br>
+		<a href="#chr">CHR$()</a><br>
+		<a href="#val">VAL()</a>
+	</font></td>
+	<td><font face="Geneva" size=2>
+		<a href="#str">STR$()</a><br>
+		<a href="#lno">LNO()</a>
+	</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td>&nbsp;</td>
+	<td><font face="Geneva" size=2>&nbsp;&nbsp;<a href="#printf">Print Functions</a></font></td>
+	<td><font face="Geneva" size=2>
+		<a href="#spc">SPC()</a><br>
+		<a href="#tab">TAB()</a><br>
+		<a href="#pos">POS()</a>
+	</font></td>
+	<td>&nbsp;</td>
+</tr>
+</table>
+
+
+<hr>
+
+
+
+<a name="commands"></a>
+<font size=2 face="Geneva,Arial" color="#0000FF">
+<p><b>Commands</b></p>
+</font>
+
+<ul>
+<font size="2" face="Geneva,Arial">
+<p>The commands in this group are used to control the Basic interpreter itself and are not used as Basic program statements.</p>
+</font>
+
+<dl>
+<dt><a name="bye"></a><font face="Courier" size=2>BYE</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>Exit the Basic interpreter. You will have to confirm that you want to leave by answering "y" to the prompt.</p></font>
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+<dt><a name="build"></a><font face="Courier" size=2>BUILD n,n</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>This is used to auto-number Basic programs when you are first building them. It takes two arguments: the first is the first line number to use, and the second is the line number increment.</p>
+<p>Example:</p></font>
+<font face="Courier" size=2>&nbsp;&nbsp;BUILD 20,10</font>
+<font face="Geneva,Arial" size=2>
+<p>You will be prompted for programs starting at line number 20, followed by 30, 40, 50, .etc. Use Ctl-C to return to a command prompt.</p></font>
+
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+<dt><a name="free"></a><font face="Courier" size=2>FREE</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>Displays various categories of memory usage statistics. The most important of these is the free memory byte count at the bottom of the list.</p></font>
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+<dt><a name="clear"></a><font face="Courier" size=2>CLEAR [variable]</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>Throws away all dynamic variables and other work space, freeing memory. All that's left is the program text itself. If the optional variable name is included, only that variable is cleared.</p></font>
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+<dt><a name="scratch"></a><font face="Courier" size=2>SCRATCH</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>Resets the workspace to its initial state as if you had just started the Basic interpreter. Use this command before starting a new program. You will need to confirm this command by answering "y" to the prompt.</p></font>
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+<dt><a name="list"></a><font face="Courier" size=2>LIST [n[,n]]</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>List the program source. If entered without the optional argument, the entire program will be listed. You can enter one line number to list only that line, or two line numbers to list a block of statements.</p></font>
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+<dt><a name="delete"></a><font face="Courier" size=2>DELETE n[,n]</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>Delete one program statement, or a block of program statements.</p></font>
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+<dt><a name="run"></a><font face="Courier" size=2>RUN</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>Run the program currently in the workspace. The program will continue to run until:
+</p></font>
+<ul type=disc>
+<li><font face="Geneva" size=2>an <a href="#end">END</a> statement is executed;</font></li>
+<li><font face="Geneva" size=2>a <a href="#stop">STOP</a> statement is executed;</font></li>
+<li><font face="Geneva" size=2>an error is detected;</font></li>
+<li><font face="Geneva" size=2>you type Ctl-C.</font></li>
+</ul>
+<font face="Geneva,Arial" size=2><p>Stopping via STOP and Ctl-C allow you to continue execution where you left off, using the CONTINUE command.</p></font>
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+<dt><a name="continue"></a><font face="Courier" size=2>CONTINUE</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>If the running program stopped due to execution of a <a href="#stop">STOP</a> statement, or because you pressed Ctl-C, this command will cause the program to continue operation where it left off. A CONTINUE command following a <a href="#clear">CLEAR</a> command or an <a href="#end">END</a> statement is treated the same as a <a href="#run">RUN</a> command; the program is started at the first line.</p></font>
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+<dt><a name="step"></a><font face="Courier" size=2>STEP n</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>Execute "n" statements of the program and then stop. This is very useful for debugging.</p>
+<p>If the program has not been run, step will actually execute "n-1" statements the first time it's used. Each subsequent use will execute "n" statements.</p></font>
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+<dt><a name="lock"></a><font face="Courier" size=2>LOCK</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>Locks the program so that the text cannot be changed or deleted.</p></font>
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+<dt><a name="unlock"></a><font face="Courier" size=2>UNLOCK</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>Unlocks the program so that changes can be made.</p></font></dd>
+</dl>
+
+</ul>
+
+<hr>
+
+<a name="source"></a>
+<font size=2 face="Geneva,Arial" color="0000FF">
+<p><b>Source File Access Commands</b></p>
+</font>
+
+<ul>
+<font size="2" face="Geneva,Arial">
+<p>These commands are used to read Basic programs from disk, save them to disk, and otherwise manage source program files.</p>
+<p>In each of these commands, "filename" refers to a file on one of the H-17 disk drives. You may specify the drive ("sy1:myprog") or leave it off to read from sy0: ("myprog"). You may include the .bas file extension, but it is not necessary.</p>
+</font>
+
+<dl>
+<dt><a name="old"></a></font><font face="Courier" size=2>OLD "filename"</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>Opens the program file and reads it into memory. If a program was already in memory when this command was entered, the Basic interpreter will clear the workspace before reading the new program. You do not need to enter SCRATCH first.</p></font>
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+<dt><a name="save"></a><font face="Courier" size=2>SAVE "filename"</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>Creates a new file and saves the Basic program text in it. If "filename" already exists, an error message will be displayed. The file will not be overwritten. See <a href="#replace">REPLACE</a> and <a href="#unsave">UNSAVE</a>.</p></font>
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+<dt><a name="replace"></a><font face="Courier" size=2>REPLACE "filename"</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>Overwrites "filename" with the Basic program currently in memory.</p></font>
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+<dt><a name="unsave"></a><font face="Courier" size=2>UNSAVE "filename"</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>Deletes "filename" from disk. You will <b>not</b> be prompted to confirm the delete, so use care.</p></font>
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+<dt><a name="freeze"></a><font face="Courier" size=2>FREEZE "filename"</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>This command saves the entire Basic interpreter and its workspace, including variables, arrays, etc., to disk as filename.baf. This file can be unfrozen (see <a href="#unfreeze">UNFREEZE</a> below) to continue work.</p>
+<p>This command allows you to stop the execution of a long-running program and resume execution at another date. It also allows you to stop a long debugging session and resume it at a later date.</p></font>
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+<dt><a name="unfreeze"></a><font face="Courier" size=2>UNFREEZE "filename"</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>Read in a frozen "filename.baf" file, including source code, variables, etc., and prepare to continue running the program.</p>
+<p>(Note that the "filename.baf" file is in ABS file format. Instead of running Basic then using the UNFREEZE command, you can simply run "filename.baf" from an HDOS command prompt.)</p></font>
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+</dl>
+
+
+</ul>
+<hr>
+
+<a name="statements"></a>
+<font size=2 face="Geneva,Arial" color="0000FF">
+<p><b>Program Statements</b></p>
+</font>
+
+<ul>
+<font size="2" face="Geneva,Arial">
+<p>Basic language statements start with a line number and contain one or more program statements.</p>
+<p>You may place more than one statement on a line by separating them with a colon (":"). Example:</p>
+</font>
+
+<font face="Courier" size=2>
+00010 PRINT "There is one statement on this line."<br>
+00020 PRINT:PRINT:PRINT "But there are three on this line."
+</font>
+
+<font size="2" face="Geneva,Arial">
+<p>Be aware that you can only <a href="#goto">GOTO</a> or <a href="#gosub">GOSUB</a> to the beginning of a numbered line, so if a given statement is to be the target of a GOTO or GOSUB, it must be at the beginning of a line of code.</p>
+<p>Variables are dynamically created when a value is first assigned to them. Variable names consist of a single letter or a letter and number. String variables add a "$" to the end of the name. Letter case is ignored.</p>
+<p>These are all valid variable names:</p>
+</font>
+
+<font face="Courier" size=2>
+a, a1, d7, b$, b9$
+</font>
+
+<font size="2" face="Geneva,Arial">
+<p>See the <a href="#dim">DIM</a> statement below for information on array variables.</p></font>
+
+
+<dl>
+
+<dt><a name="rem"></a><a name=""></a><font face="Courier" size=2>REM</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>This is a source comment. The remark continues to the end of the line. Examples:</p>
+</font>
+
+<font face="Courier" size=2>
+00010 REM This is a comment<br>
+00020 a=10 : REM it works here, too<br>
+</font>
+
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+<dt><a name="let"></a><font face="Courier" size=2>LET</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>This optional keyword begins an assignment statement of the form "LET variable = expression". LET is assumed if it is omitted; the following two statements are equivalent:</p></font>
+
+<font face="Courier" size=2>
+00010 LET a = b * 10<br>
+00010 a = b * 10<br>
+</font>
+
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+<dt><a name="print"></a><font face="Courier" size=2>PRINT</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>Prints output to the console. (See also <a href="#file">File Access Statements</a> below for the form of PRINT to write to files.)</p>
+<p>One PRINT statement can print a number of variables, literals, expressions or strings. If the arguments are separated by commas, they will be printed in zones that are 14 print positions wide by default (see <a href="#cntrl">CNTRL 3</a> in <a href="#hardware">Hardware Access Statements</a>). If the arguments are separated by semicolons, they will be printed one after the other. Examples:</p></font>
+
+<font face="Courier" size=2>
+00010 PRINT "This is a string"<br>
+00020 PRINT "Sum:";a+b;"and Product:";a*b<br>
+00030 PRINT "zones",a,b,c,d<br>
+</font>
+
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+<dt><a name="if"></a><font face="Courier" size=2>IF (expression) THEN (statement)</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>Evaluate the expression and execute the statement if the condition is true. Examples:</p></font>
+
+<font face="Courier" size=2>
+00010 a=10<br>
+00020 b=20<br>
+00030 IF a &lt; b THEN a = a * 23<br>
+00040 IF a = b THEN GOTO 100
+</font>
+
+<font face="Geneva,Arial" size=2>
+<p>If the conditional statement is a <a href="#goto">GOTO</a>, as in line #40 above, you can omit the GOTO keyword:</p></font>
+
+<font face="Courier" size=2>
+00040 IF a = b THEN 100<br>
+</font>
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+<dt><a name="for"></a><font face="Courier" size=2>FOR / NEXT</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>These statements provide a looping mechanism in Basic. The statements between FOR and NEXT are executed repeatedly while varying the value of a variable. Examples:</p></font>
+
+<font face="Courier" size=2>
+00010 FOR i=1 TO 10<br>
+00020 PRINT i<br>
+00030 NEXT i
+</font>
+
+<font face="Geneva" size=2>
+<p>...will print a list of the integers 1 through 10. The variable is incremented by one on each pass through the loop.</p>
+<p>If you want to increment by a value other than 1, or use a decrement instead of an increment, then add the STEP keyword:</p></font>
+
+<font face="Courier" size=2>
+00010 FOR i=100 TO 0 STEP -10<br>
+00020 PRINT i<br>
+00030 NEXT i
+</font>
+
+<font face="Geneva" size=2>
+<p>...will print the numbers 100, 90, 80, etc. through 0 on the console.</p>
+<p>FOR/NEXT loops can be nested. Make sure that you close the inner loop before closing the outer loop.</p></font>
+
+<font face="Courier" size=2>
+00010 FOR i=1 TO 5<br>
+00020 FOR j=1 TO 5<br>
+00030 PRINT i*j<br>
+00040 NEXT j<br>
+00050 FOR k=10 to 15<br>
+00060 PRINT i+k<br>
+00070 NEXT k<br>
+00080 NEXT i<br>
+</font>
+
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+<dt><a name="goto"></a><font face="Courier" size=2>GOTO</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>Use the GOTO statement to branch to a different line in the program. Example:</p></font>
+
+<font face="Courier" size=2>
+00010 PRINT "Infinite Loop!"<br>
+00020 PRINT "Type Ctl-C to stop this program!"<br>
+00030 GOTO 10<br>
+</font>
+
+
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+<dt><a name="gosub"></a><font face="Courier" size=2>GOSUB / RETURN</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>Branch to a different line in the program and run that section of code as a subroutine. When a RETURN statement is executed, execution will continue at the statement following the GOSUB command. Example:</p></font>
+
+<font face="Courier" size=2>
+00010 a=1<br>
+00020 GOSUB 100 : REM Print a<br>
+00030 a=a+10<br>
+00040 GOSUB 100<br>
+00050 END<br>
+00100 REM This is a subroutine<br>
+00110 PRINT "The value of 'a' is";a<br>
+00120 RETURN<br>
+</font>
+
+
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+<dt><a name="on"></a><font face="Courier" size=2>ON</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>The ON command is a simple "computed GOTO/GOSUB" which will branch to one of a list of program statements depending on the value of a variable. (See also the LNO() function in <a href="#conversion">Data Conversion Functions</a>.) Example program fragment:</p></font>
+
+<font face="Courier" size=2>
+00110 GOSUB 1000 : REM print the menu on the console<br>
+00120 INPUT "What is your choice? ";c<br>
+00130 IF c&lt;1 OR c>5 THEN 160<br>
+00140 ON c GOSUB 200, 250, 300, 350, 400<br>
+00150 GOTO 110<br>
+00160 PRINT "Incorrect selection!" : GOTO 110
+</font>
+
+<font face="Geneva" size=2><p>If the user enters 4 at statement 120, the program will execute the subroutine starting at line 350, the fourth line number in the list.</p></font>
+
+
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+<dt><a name="input"></a><font face="Courier" size=2>INPUT ["prompt";]variable</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>Request input from the console. If the optional prompt is included, it will be printed on the console before waiting for input. If not, a "?" is used as a prompt.</p>
+<p>The variable may be a numeric or string variable. If a string is entered into a numeric variable, an error message will be printed and the program will stop.</p></font>
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+<dt><a name="line"></a><font face="Courier" size=2>LINE INPUT "prompt";variable$</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>This statement is equivalent to 'INPUT "prompt";variable$' with one exception: LINE INPUT will accept a null entry and return a zero-length string, while INPUT will not..</p></font>
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+<dt><a name="data"></a><font face="Courier" size=2>DATA</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>This statement defines data to be stored as part of the program text. The data is read using the <a href="#read">READ</a> statement (below). This is typically used to initialize arrays.</p></font>
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+<dt><a name="read"></a><font face="Courier" size=2>READ</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>Read data from the data table. Example:</p></font>
+
+<font face="Courier" size=2>
+00010 REM sum a list of numbers<br>
+00020 REM -1 ends the list<br>
+00030 READ a<br>
+00040 IF a=-1 THEN END<br>
+00050 t=t+a<br>
+00060 GOTO 30<br>
+00100 DATA 1,2,4,5,6,7,9,10,14,23<br>
+00110 DATA 27,14,3,-1
+</font>
+
+<font face="Geneva" size=2><p>DATA can be numbers, strings, or a mix. Your program must be aware of the order of mixed data so that you don't try to read a string into a numeric variable.</p></font>
+
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+<dt><a name="restore"></a><font face="Courier" size=2>RESTORE</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>If you need to read a list of data more than once, you use the RESTORE statement to reset the <a href="#data">DATA</a> pointer to the first DATA item.</p></font>
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+<dt><a name="chain"></a><font face="Courier" size=2>CHAIN "filename"</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>Use CHAIN to read a new program off the disk and begin execution of that program. Any open files are still open; all defined variables are still defined. You can use CHAIN as a command; it's the same as using <a href="#old">OLD</a> followed by <a href="#run">RUN</a>.</p></font>
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+<dt><a name="end"></a><font face="Courier" size=2>END</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>Use END to end execution of a program.</p></font>
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+<dt><a name="stop"></a><font face="Courier" size=2>STOP</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>Use STOP to stop execution of a program.</p>
+<p>The only difference between STOP and <a href="#end">END</a> involves the <a href="#continue">CONTINUE</a> statement. If you enter CONTINUE after a STOP, the program will continue operation with the statement following the STOP statement. If you enter CONTINUE after an END, the program will start at the top as if you had entered a RUN command.</p></font>
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+<dt><a name="pause"></a><font face="Courier" size=2>PAUSE [ticks]</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>Use PAUSE to pause execution. If you include the optional integer argument, the program will pause for "ticks" clock ticks (or ticks * 2 milliseconds). If this is omitted, the program will pause until the user presses the enter key.</p></font>
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+<dt><a name="dim"></a><font face="Courier" size=2>DIM</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>DIM is used to define and dimension an array. Example:</p></font>
+
+<font face="Courier" size=2>
+00010 DIM m$(5)<br>
+00020 FOR i=0 TO 5<br>
+00030 READ m$(i)<br>
+00040 NEXT i<br>
+00050 REM now print them back<br>
+00060 FOR i=0 TO 5<br>
+00070 PRINT m$(i)<br>
+00080 NEXT i<br>
+00090 END<br>
+00100 DATA "zero","one","two","three"<br>
+00110 DATA "four","five"
+</font>
+
+<font face="Geneva" size=2><p>The value in parenthesis gives the highest valid index that can be used to access the array. The lowest valid index is zero, as shown in the example.</p>
+<p>Arrays can be dimensioned with any reasonable number of indices. These are two and three dimensional tables:</p></font>
+
+<font face="Courier" size=2>
+00010 DIM a(5,5)<br>
+00020 DIM b(10,2,80)<br>
+</font>
+
+<font face="Geneva" size=2><p>Array b in the example above consists of 1,600 floating point numbers and uses 10,704 bytes of storage. Be careful with multidimensional arrays.</p></font>
+
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+<dt><a name="def"></a><font face="Courier" size=2>DEF FN</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>DEF FN is used to create user-defined functions. These functions can accept one or more arguments of either numeric or string type and can return a numeric or string value. The following program uses a function to convert degrees to radians for use with the <a href="#sin">SIN()</a> function:</p></font>
+
+<font face="Courier" size=2>
+00010 DEF FN r(d) = d / 57.29578<br>
+00020 FOR i=30 TO 45<br>
+00030 PRINT "Sine of";i;"degrees is";SIN(FN r(i))<br>
+00040 NEXT i<br>
+00050 END 
+</font>
+
+<font face="Geneva" size=2><p>Here is an example using a mix of strings and numbers. A function is used to convert a number to a string exactly 6 characters long (including the trailing space).</p></font>
+
+<font face="Courier" size=2>
+00010 DEF FN s$(n) = right$("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+str$(n),6)<br>
+00020 PRINT "'";FN s$(10);"'"<br>
+</font>
+
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+</dl>
+</ul>
+<hr>
+
+<a name="operators"></a>
+<font size=2 face="Geneva,Arial" color="0000FF">
+<p><b>Operators</b></p>
+</font>
+
+<ul>
+<dl>
+<dt><font face="Courier" size=2>+ (add, concat.)</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>Add two numbers, or concatenate strings:</p></font>
+<ul type=disc>
+<li><font face="Geneva" size=2>the result of 2+2 is 4;</font></li>
+<li><font face="Geneva" size=2>the result of "abc"+"xyz" is "abcxyz".</font></li>
+</ul>
+
+
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+<dt><font face="Courier" size=2>- (subtract)</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>Subtract two numbers. 4-2 is 2.</p></font>
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+<dt></a><font face="Courier" size=2>* (multiply)</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>Multiply two numbers. 2*3 is 6.</p></font>
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+<dt><font face="Courier" size=2>/ (divide)</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>Divide two numbers 5/3 is 1.66667.</p></font>
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+<dt><font face="Courier" size=2>^ (exponent)</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>Raise a number to a power. 2^3 is 8. 2^.333333 is 1.25992 (the cube root of 2).</p></font>
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+<dt><font face="Courier" size=2>&lt; (less than)</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>Used in IF statements to compare two values:</p></font>
+
+<font face="Courier" size=2>
+00120 IF a&lt;b THEN GOTO 90<br>
+</font>
+
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+<dt><font face="Courier" size=2>> (greater than)</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>Used in IF statements to compare two values:</p></font>
+
+<font face="Courier" size=2>
+00120 IF a$>b$ THEN GOTO 90<br>
+</font>
+
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+<dt><font face="Courier" size=2>= (equal to)</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>Used in IF statements to compare two values:</p></font>
+
+<font face="Courier" size=2>
+00120 IF a=b THEN GOTO 90<br>
+</font>
+
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+<dt><font face="Courier" size=2>&lt;> (not equal to)</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>Used in IF statements to compare two values:</p></font>
+
+<font face="Courier" size=2>
+00120 IF a&lt;>b THEN GOTO 90<br>
+</font>
+
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+</dl>
+
+<font face="Geneva" size=2><p><b>Note on operator precedence</b></p>
+
+<p>The standard rules of algebra apply: multiply and divide operations are done before add and subtract. The expression 1+2*3 will evaluate to 7.</p>
+<p>Parenthesis can be used to change the order of evaluation. (1+2)*3 will evaluate to 9. Parenthesis can be nested to any reasonable level. (If you think that 15 levels is "reasonable," the author suggests that you forget about Basic and switch to Lisp!)</p></font>
+
+<font face="Geneva" size=2><a href="#top">go to top</a></font>
+
+</ul>
+
+<hr>
+
+
+<a name="logical"></a>
+<font size=2 face="Geneva,Arial" color="0000FF">
+<p><b>Logical Operators</b></p>
+</font>
+
+<ul>
+<font size="2" face="Geneva,Arial">
+<p>These operators can be used to combine comparison operators in an IF statement, and to perform boolean operations on numeric values.</p>
+</font>
+
+<dl>
+<dt><a name="and"></a><font face="Courier" size=2>AND</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>Perform a binary AND operation on two values, or combine comparison operators in an IF statement.</p></font>
+
+<font face="Courier" size=2>
+15 AND 19 evaluates to 3<br>
+<br>
+(  15 = 0000 1111 )<br>
+(  19 = 0001 0011 )<br>
+(AND = 0000 0011 )
+</font>
+
+<font face="Geneva" size=2><p>When used with an IF statement, both conditions must be true for the conditional statement to be executed:</p></font>
+
+<font face="Courier" size=2>
+00110 IF a&lt;b AND $b="abc" THEN GOSUB 1200<br>
+</font>
+
+
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+<dt><a name="or"></a><font face="Courier" size=2>OR</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>Perform a binary OR operation on two values, or combine comparison operators in an IF statement.</p></font>
+
+<font face="Courier" size=2>
+15 OR 19 evaluates to 31<br>
+<br>
+(  15 = 0000 1111 )<br>
+(  19 = 0001 0011 )<br>
+( OR = 0001 1111 )
+</font>
+
+<font face="Geneva" size=2><p>When used with an IF statement, if either condition is true the conditional statement will be executed:</p></font>
+
+<font face="Courier" size=2>
+00110 IF a&lt;b OR $b="abc" THEN GOSUB 1200<br>
+</font>
+
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+<dt><a name="not"></a><font face="Courier" size=2>NOT</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>Perform a binary NOT operation on a single variable; flip the '1' bits to '0' and the '0' bits to '1'.</p></font>
+<font face="Courier" size=2>
+NOT 2 evaluates to 65533<br>
+<br>
+(NOT 0000 0010 evaluates to 1111 1101)<br>
+</font>
+
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+</dl>
+</ul>
+
+<hr>
+
+
+
+<a name="file"></a>
+<font size=2 face="Geneva,Arial" color="0000FF">
+<p><b>File Access Statements</b></p>
+</font>
+
+<ul>
+<font size="2" face="Geneva,Arial">
+<p>These statements allow a Basic program to open data files on the H-17 disk system and read and write the files.</p>
+</font>
+
+<dl>
+<dt><a name="open"></a><font face="Courier" size=2>OPEN</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>Opens a file for read or write access, and assigns a channel number to the file:</p></font>
+
+<font face="Courier" size=2>
+00010 OPEN "input.dat" FOR READ AS FILE #1<br>
+00020 OPEN "sy1:output.dat" FOR WRITE AS FILE #2<br>
+</font>
+
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+<dt><a name="finput"></a><font face="Courier" size=2>INPUT</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>This is the same input statement documented above. The channel number parameter is added to allow the data to be read from an open input file:</p></font>
+
+<font face="Courier" size=2>
+00010 OPEN "errormsg.sys" FOR READ AS FILE #1<br>
+00020 INPUT #1,"";a$<br>
+00030 PRINT a$<br>
+00040 GOTO 20<br>
+</font>
+<font face="Geneva,Arial" size=2><p>There is no end-of-file indication available; if you read past the end of the file, the next INPUT statement will cause an error and the program will end. You should include an end-of-data marker in the data, or see the CIN() function below for another approach.</p></font>
+
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+<dt><a name="fline"></a><font face="Courier" size=2>LINE INPUT</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>This exactly duplicates the INPUT statement and has the same format. But LINE INPUT will accept null input and return a zero-length string, so LINE INPUT may be preferred, depending on what you are reading from the file.</p></font>
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+<dt><a name="close"></a><font face="Courier" size=2>CLOSE</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>Closes a file and frees the channel number. Output files <b>must</b> be closed for the output to be saved.</p></font>
+
+<font face="Courier" size=2>
+01230 CLOSE #1<br>
+01240 CLOSE #2<br>
+</font>
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+<dt><a name="cin"></a><font face="Courier" size=2>CIN(channel)</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>This function reads a single character from a file open for read access, and returns the ordinal value of the ASCII character. CIN returns the value -1 at end of file. This example reads and prints "errormsg.sys" one character at a time... slowly:</p></font>
+
+<font face="Courier" size=2>
+00010 OPEN "errormsg.sys" FOR READ AS FILE #1<br>
+00020 a=CIN(1)<br>
+00030 IF a=-1 THEN 60<br>
+00040 PRINT CHR$(a);<br>
+00050 GOTO 20<br>
+00060 CLOSE #1<br>
+00070 END<br>
+</font>
+
+<font face="Geneva,Arial" size=2>
+<p>CIN can be used to solve the INPUT statement end-of-file problem discussed with the INPUT statement. Let's rewrite that program to eliminate the read error.</p></font>
+
+<font face="Courier" size=2>
+00010 OPEN "errormsg.sys" FOR READ AS FILE #1<br>
+00020 a=CIN(1)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: REM read first char in line<br>
+00030 IF a=0 THEN 20&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: REM strip nulls<br>
+00040 IF a=-1 THEN 90&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: REM EOF<br>
+00050 LINE INPUT #1,"";a$&nbsp;: REM read rest of line<br>
+00060 a$=CHR$(a)+a$&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: REM reassemble entire line<br>
+00070 PRINT a$<br>
+00080 GOTO 20<br>
+00090 CLOSE #1<br>
+00100 PRINT :PRINT "we're at end of file":PRINT<br>
+00110 END<br>
+</font>
+
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+</dl>
+</ul>
+
+<hr>
+
+
+
+<a name="hardware"></a>
+<font size=2 face="Geneva,Arial" color="0000FF">
+<p><b>Hardware Access Statements</b></p>
+</font>
+
+<ul>
+<font size="2" face="Geneva,Arial">
+<p>These statements and functions allow direct access to H8 hardware: I/O ports, memory, and the front panel.</p>
+</font>
+
+<dl>
+<dt><a name="pin"></a><font face="Courier" size=2>PIN(port)</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>Read a byte from the specified port. Example:</p></font>
+
+<font size="2" face="courier">
+PRINT PIN(237)
+</font>
+
+<font face="Geneva" size=2><p>This reads the console UART's Line Status Register. The response should be 96 decimal (140 octal), which indicates that the transmitter holding register and the transmitter shift register are empty.</p></font>
+
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+<dt><a name="out"></a><font face="Courier" size=2>OUT port,value</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>Write a byte to the named port. Example:</p></font>
+
+<font size="2" face="courier">
+OUT 232,7
+</font>
+
+<font face="Geneva,Arial" size=2>
+<p>This will write an ASCII BEL character to the console port (232 decimal = 350 octal), sounding the bell.</p></font>
+
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+<dt><a name="peek"></a><font face="Courier" size=2>PEEK(address)</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>Read a byte from a memory address, expressed in decimal. See the <a href="#rnd">RND()</a> function below for an example.</p></font>
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+<dt><a name="poke"></a><font face="Courier" size=2>POKE address,value</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>Write a byte to memory address, both expressed in decimal. See the <a href="#seg">SEG()</a> function below for an example.</p></font>
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+<dt><a name="cntrl"></a><font face="Courier" size=2>CNTRL</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>This command has five options that allow you to access certain hardware functions and change certain options in the Basic interpreter itself.</p>
+<p>All of these can be used as commands. All but CNTRL 4 can be used as program statements.</p></font>
+
+<font size="2" face="courier"><p>CNTRL 0,line</p></font>
+<ul>
+<font face="Geneva" size=2><p>This specifies a line to go to when the user presses Ctl-B. Example:</p></font>
+
+<font size="2" face="courier">
+00010 CNTRL 0,40<br>
+00020 PRINT "Endless loop! Press Ctl-B!"<br>
+00030 GOTO 20<br>
+00040 PRINT "Whew! Thanks."<br>
+00050 END
+</font>
+
+<font face="Geneva" size=2><p>While you can use it as in the preceding example, the function actually executes a GOSUB to the target line. Compare the program above with this one:</p></font>
+
+<font size="2" face="courier">
+00010 CNTRL 0,40<br>
+00020 PRINT "Endless loop! Press Ctl-B!"<br>
+00030 GOTO 20<br>
+00040 PRINT:PRINT "That was a nice break":PRINT<br>
+00050 RETURN
+</font>
+
+<font face="Geneva" size=2><p>You might use this function to, say, report progress on demand in a long-running program.... "We are on loop 345 of 10,000. Be patient!" You can see an example of this in the <a href="#rnd">RND()</a> function example in <a href="#math">Mathmatical Functions</a>.</p></font>
+</ul>
+
+<font size="2" face="courier"><p>CNTRL 1,value</p></font>
+<ul>
+<font face="Geneva" size=2><p>This sets the number of digits (1 to 6) to print to the left of the E in scientific format. If a number is too big to print in this many digits, it will be changed to scientific format. Example:</p></font>
+
+<font size="2" face="courier">
+*PRINT 12345<br>
+&nbsp;12345<br>
+*CNTRL 1,3<br>
+*PRINT 12345<br>
+&nbsp;1.23E+04
+</font>
+</ul>
+
+<font size="2" face="courier"><p>CNTRL 2,value</p></font>
+<ul>
+<font face="Geneva" size=2><p>This controls the front panel LED display. A value of zero turns the display off (default condition after loading the Basic interpeter; the LEDs are normally off becaise updating the display takes up to 15% of the processor and you need all you can get to run Basic at a 2 mhz clock rate.)</p>
+<p>A value of one turns the display on, but with update disabled. This allows you to write to the display yourself. See examples with the SEG() function below.</p>
+<p>A value of two turns the display on with updates enabled, as it normally is when HDOS is running.</p></font>
+</ul>
+
+<font size="2" face="courier"><p>CNTRL 3,value</p></font>
+<ul>
+<font face="Geneva" size=2><p>This command sets the width of the print zones. By default, the print zones are 14 columns wide, but they can be made larger or smaller with this command. Example:</p></font>
+
+<font size="2" face="courier">
+*PRINT 1,2,3<br>
+&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3<br>
+*CNTRL 3,4<br>
+*PRINT 1,2,3<br>
+&nbsp;1&nbsp;&nbsp;&nbsp;2&nbsp;&nbsp;&nbsp;3
+</font>
+</ul>
+
+<font size="2" face="courier"><p>CNTRL 4,value</p></font>
+<ul>
+<font face="Geneva" size=2><p>This command is used to load and unload the main HDOS overlay, HDOSOVL0. This is a command only; this <b>cannot</b> be used as a program statement. It should be used before a program is loaded into memory.</p>
+<p>Normally, Basic allocates the maximum amount of available memory for your program, leaving the overlay on disk. This slows the execution of statements like OPEN and CLOSE, and slows the delivery of error messages, which are read from errormsg.sys. Loading the overlay into memory will reduce available memory by about 2.9 K/bytes, but will greatly speed the execution of your programs.</p></font>
+
+<font size="2" face="courier">
+*CNTRL 4,1&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;load the overlay<br>
+*CNTRL 4,0&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;unload the overlay
+</font>
+<font face="Geneva" size=2><p>This command has no effect if you are running HDOS in stand-alone mode.</p></font>
+</ul>
+
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+<dt><a name="seg"></a><font face="Courier" size=2>SEG(value)</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>This function will take a decimal value from zero through nine and convert it to the binary pattern needed to display that value in the front-panel LEDs. The following example will put the digits 9 through 1 into the front panel LEDs:</p></font>
+
+<font size="2" face="courier">
+00010 CNTRL 2,1 : REM turn on LEDs without update<br>
+00020 a=9<br>
+00030 FOR i=8203 TO 8211 : REM ref. <a href="memory.html">memory map</a><br>
+00040 POKE i,SEG(a)<br>
+00050 a=a-1<br>
+00060 NEXT i<br>
+</font>
+
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+<dt><a name="pad"></a><font face="Courier" size=2>PAD(0)</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>Read a value from the H8 front panel keypad. Example:</p></font>
+
+<font size="2" face="courier">
+00010 a=PAD(0)<br>
+00020 PRINT a<br>
+00030 IF a&lt;>15 THEN 10<br>
+00040 STOP
+</font>
+
+<font face="Geneva" size=2>
+<p>Click the keys to see what decimal value is assigned to each key. Click the "." key to quit. ("." gives the value 15 decimal.) Here's another example:</p></font>
+
+<font size="2" face="courier">
+00005 PRINT "Click on the keypad; click '.' key to quit"<br>
+00010 CNTRL 2,1<br>
+00020 i=8203<br>
+00030 s=PAD(0)<br>
+00040 IF s=15 THEN END <br>
+00050 POKE i,SEG(s)<br>
+00060 i=i+1<br>
+00070 IF i>8211 THEN i=8203<br>
+00080 GOTO 30<br>
+</font>
+
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+</dl>
+</ul>
+
+<hr>
+
+
+
+<a name="math"></a>
+<font size=2 face="Geneva,Arial" color="0000FF">
+<p><b>Mathmatical Functions</b></p>
+</font>
+
+<ul>
+<dl>
+<dt><a name="abs"></a><font face="Courier" size=2>ABS(value)</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>Returns the absolute value (e.g., positive value) of the argument.</p></font>
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+<dt><a name="int"></a><font face="Courier" size=2>INT(value)</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>Returns the integer portion of the argument. INT(123.456) will return 123.</p></font>
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+<dt><a name="max"></a><font face="Courier" size=2>MAX(value,value,...)</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>Returns the largest of a list of values or numeric variables.</p></font>
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+<dt><a name="min"></a><font face="Courier" size=2>MIN(value,value,...)</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>Returns the smallest of a list of values or numeric variables.</p></font>
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+<dt><a name="rnd"></a><font face="Courier" size=2>RND(arg)</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>This is the pseudo-random number function. "arg" has three possible value ranges:</p></font>
+<ul type=disc>
+<li><font face="Geneva" size=2>&lt; 0: sets the random number "seed";</font></li>
+<li><font face="Geneva" size=2>> 0: returns the next random number in the sequence;</font></li>
+<li><font face="Geneva" size=2>= 0: returns the same random number as the last one.</font></li>
+</ul>
+<font face="Geneva" size=2>
+<p>If you start with the same seed value, you will get the same sequence of random numbers out of the generator. This can be good for testing but terrible for any real use, so the seed should be different from run to run. PAM/8's 16-bit .TICCNT is a reasonable source for a different number every time, as shown in this sample, which shows the average value of 10,000 random numbers. (The closer to .5, the better.)</p></font>
+
+<font size="2" face="courier">
+00010 REM Randomize using .ticcnt<br>
+00020 r=PEEK(8219)+PEEK(8220)*256<br>
+00040 r=RND(-r)<br>
+00045 CNTRL 0,150 : REM on demand report<br>
+00050 FOR i=1 TO 10<br>
+00060 FOR j=1 TO 1000<br>
+00070 t=t+RND(1)<br>
+00080 NEXT j<br>
+00090 PRINT ".";<br>
+00100 NEXT i<br>
+00110 PRINT :PRINT "Total is";t<br>
+00120 PRINT "Average is";t/10000<br>
+00130 END <br>
+00150 REM on demand progress report<br>
+00160 PRINT <br>
+00170 PRINT "We are on number";(i-1)*1000+j;"of 10,000"<br>
+00180 RETURN <br>
+</font>
+
+<font face="Geneva" size=2><p>This program will run quite a long time, so we included a line-of-dots progress indicator (one dot per 1000 generated numbers) and an on-demand progress report accessed by typing Ctl-B. (Refer to <a href="#cntrl">CNTRL</a> 0 in <a href="#hardware">Hardware Access Statements</a>.)</p></font>
+
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+<dt><a name="sgn"></a><font face="Courier" size=2>SGN(value)</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>Get the sign of the value. Returns 1 if the value is positive, and -1 if the value is negative.</p></font>
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+<dt><a name="sqr"></a><font face="Courier" size=2>SQR(value)</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>Returns the square root of the value.</p></font>
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+<dt><a name="sin"></a><font face="Courier" size=2>SIN(radians)</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>Returns the sine of the angle, which must be expressed in radians (degrees divided by 57.29578).</p></font>
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+<dt><a name="cos"></a><font face="Courier" size=2>COS(radians)</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>Returns the cosine of the angle, which must be expressed in radians.</p></font>
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+<dt><a name="tan"></a><font face="Courier" size=2>TAN(radians)</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>Returns the tangent of the angle, which must be expressed in radians.</p></font>
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+<dt><a name="atn"></a><font face="Courier" size=2>ATN(radians)</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>Returns the arctangent of the angle, which must be expressed in radians.</p></font>
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+<dt><a name="log"></a><font face="Courier" size=2>LOG(value)</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>Returns the natural logarithm of the value.</p></font>
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+<dt><a name="exp"></a><font face="Courier" size=2>EXP(value)</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>Returns e raised to value power. EXP(LOG(10)) = 10.</p></font>
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+</dl>
+</ul>
+
+<hr>
+
+
+<a name="string"></a>
+<font size=2 face="Geneva,Arial" color="0000FF">
+<p><b>String Functions</b></p>
+</font>
+
+<ul>
+<dl>
+<dt><a name="left"></a><font face="Courier" size=2>LEFT$(str$,len)</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>Returns the left-most 'len' characters of the passed string.</p></font>
+<font size="2" face="courier"><p>
+LEFT$("Hello there, Bob!",5) returns "Hello"
+</p></font>
+
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+<dt><a name="mid"></a><font face="Courier" size=2>MID$(str$,start,len)</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>Returns a substring from the center of a string, starting at 'start' offset from the left and running for 'len' characters.</p></font>
+<font size="2" face="courier">
+<p>MID$("Hello there, Bob!",7,5) returns "there"
+</p></font>
+
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+<dt><a name="right"></a><font face="Courier" size=2>RIGHT$(str$,len)</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>Returns the right-most 'len' characters of the passed string.</p></font>
+<font size="2" face="courier"><p>
+RIGHT$("Hello there, Bob!",4) returns "Bob!"
+</p></font>
+
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+<dt><a name="len"></a><font face="Courier" size=2>LEN(str$)</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>Returns the length of the string.</p></font>
+<font size="2" face="courier"><p>
+LEN("Hello there, Bob!") returns 17
+</p></font>
+
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+<dt><a name="match"></a><font face="Courier" size=2>MATCH(stringa$,stringb$,start)</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>This function searches 'stringa' for an occurrence of 'stringb', starting at 'start' offset into 'stringa'.</p>
+<p>The following example looks for every occurrence of a given substring in a string, and prints the location where it is found, as well as the breakdown of the string to the left and right of the substring. This is a comprehensive example showing the use of MATCH, GOSUB, LEFT$(), MID$(), RIGHT$() and LEN().</p></font>
+
+<font face="Courier" size=2>
+*list<br>
+00010 a$="the cat in the hat hit the mat"<br>
+00020 b$="the"<br>
+00030 PRINT "Looking for '";b$;"' in '";a$;"'."<br>
+00040 s=1<br>
+00050 PRINT "starting at";s;"..."<br>
+00060 m=MATCH(a$,b$,s)<br>
+00070 IF m=0 THEN 120<br>
+00080 GOSUB 150<br>
+00090 s=m+1<br>
+00100 GOTO 50<br>
+00120 PRINT "no more matches"<br>
+00130 END <br>
+00150 PRINT "match at";m<br>
+00160 PRINT TAB(5);"left&nbsp;&nbsp;='";LEFT$(a$,m-1);"'"<br>
+00170 PRINT TAB(5);"mid&nbsp;&nbsp;&nbsp;='";MID$(a$,m,LEN(b$));"'"<br>
+00180 PRINT TAB(5);"right&nbsp;='";<br>
+00190 PRINT RIGHT$(a$,LEN(a$)-m-LEN(b$)+1);"'"<br>
+00200 RETURN<br>
+*run<br>
+Looking for 'the' in 'the cat in the hat hit the mat'.<br>
+starting at 1 ...<br>
+match at 1<br>
+&nbsp;&nbsp;&nbsp;&nbsp;left&nbsp;&nbsp;= ''<br>
+&nbsp;&nbsp;&nbsp;&nbsp;mid&nbsp;&nbsp;&nbsp;= 'the'<br>
+&nbsp;&nbsp;&nbsp;&nbsp;right&nbsp;= ' cat in the hat hit the mat'<br>
+starting at 2 ...<br>
+match at 12<br>
+&nbsp;&nbsp;&nbsp;&nbsp;left&nbsp;&nbsp;= 'the cat in '<br>
+&nbsp;&nbsp;&nbsp;&nbsp;mid&nbsp;&nbsp;&nbsp;= 'the'<br>
+&nbsp;&nbsp;&nbsp;&nbsp;right&nbsp;= ' hat hit the mat'<br>
+starting at 13 ...<br>
+match at 24<br>
+&nbsp;&nbsp;&nbsp;&nbsp;left&nbsp;&nbsp;= 'the cat in the hat hit '<br>
+&nbsp;&nbsp;&nbsp;&nbsp;mid&nbsp;&nbsp;&nbsp;= 'the'<br>
+&nbsp;&nbsp;&nbsp;&nbsp;right&nbsp;= ' mat'<br>
+starting at 25 ...<br>
+no more matches<br>
+End At Line&nbsp;&nbsp;130<br>
+*<br>
+</font>
+
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+</dl>
+</ul>
+
+<hr>
+
+
+<a name="conversion"></a>
+<font size=2 face="Geneva,Arial" color="0000FF">
+<p><b>Data Conversion Functions</b></p>
+</font>
+
+<ul>
+<font size="2" face="Geneva,Arial">
+<p>These functions all convert data from one form to another in interesting ways.</p>
+</font>
+
+<dl>
+<dt><a name="asc"></a><font face="Courier" size=2>ASC(str$)</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>The ASCII function returns the ordinal value of the first character in the passed string. ASC("ABC") will return 65; upper-case 'A' is the 65th ASCII character.</p></font>
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+<dt><a name="chr"></a><font face="Courier" size=2>CHR$(value)</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>This function returns the character that corresponds to the ordinal 'value' in the ASCII character set. CHR$(65) will return "A".</p>
+<p>CHR$(ASC("A")) will return "A".</p></font>
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+<dt><a name="val"></a><font face="Courier" size=2>VAL(str$)</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>The value function will return the numeric value of the first numeric substring in the passed string. Evaluation starts with the first non-blank character in the string and ends with the first non-numeric character.</p></font>
+<font size="2" face="courier">
+VAL("123.45")&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- returns the number 123.45<br>
+VAL("123&nbsp;&nbsp;&nbsp;456&nbsp;&nbsp;876")&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- returns the number 123<br>
+VAL(" 123 is my address")&nbsp;- returns the number 123<br>
+VAL("12digits long")&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- returns the number 12<br>
+VAL("my name is Dave")&nbsp;&nbsp;&nbsp;&nbsp;- returns the number 0<br>
+</p></font>
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+<dt><a name="str"></a><font face="Courier" size=2>STR$(value)</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>This function returns a string containing the value of the passed expression, padded with spaces. STR$(123.45) returns "<font face="courier" size=2>&nbsp;123.45&nbsp;</font>" (note the leading and trailing spaces).</p></font>
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+<dt><a name="lno"></a><font face="Courier" size=2>LNO(expression)</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>This is a different kind of conversion altogether: LNO() converts the passed expression into a Basic line number.</p>
+<p>It's illegal to use a numeric variable as a GOTO or GOSUB target:</p></font>
+
+<font size="2" face="courier">
+00010 REM This is not legal<br>
+00020 a=50<br>
+00030 GOTO a
+</font>
+
+<font face="Geneva" size=2><p>But this can be made legal by using the LNO() function:</p></font>
+
+<font size="2" face="courier">
+00010 REM LNO() function to the rescue<br>
+00020 a=50<br>
+00030 GOTO LNO(a)
+</font>
+
+<font face="Geneva" size=2><p>LNO() gives us a very powerful computed-GOTO/GOSUB capability. To rewrite the ON ... GOSUB example from above:</p></font>
+
+<font face="Courier" size=2>
+00110 GOSUB 1000 : REM print the menu on the console<br>
+00120 INPUT "What is your choice? ";c<br>
+00130 IF c&lt;1 OR c>5 THEN 160<br>
+00135 REM compute line 200, 250, 300, 350, 400<br>
+00140 GOSUB LNO((c - 1) * 50 + 200)<br>
+00150 GOTO 110<br>
+00160 PRINT "Incorrect selection!" : GOTO 110
+</font>
+
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+</dl>
+</ul>
+
+<hr>
+
+
+<a name="printf"></a>
+<font size=2 face="Geneva,Arial" color="0000FF">
+<p><b>Printing Functions</b></p>
+</font>
+
+<ul>
+<font size="2" face="Geneva,Arial">
+<p>The first two functions in this group are only valid in a PRINT statement. The last one, POS(0), is related to print output.</p>
+</font>
+
+<dl>
+<dt><a name="spc"></a><font face="Courier" size=2>SPC(count)</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>Print 'count' spaces on the console. Rather than trying to count the blanks you are typing between quotes, you can use this function to output a precise number of spaces.</p></font>
+
+<font size="2" face="courier">
+PRINT "Ten";SPC(10);"spaces"<br>
+</font>
+
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+<dt><a name="tab"></a><font face="Courier" size=2>TAB(column)</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>TAB moves the print cursor ahead to 'column'. Note the difference between TAB() and SPC(): the following example prints two identical lines of output.</p></font>
+
+<font size="2" face="courier">
+00010 PRINT TAB(10);"a";TAB(20);"b";TAB(30);"c"<br>
+00020 PRINT SPC(9); "a";SPC(9); "b";SPC(9); "c"<br>
+</font>
+
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+<dt><a name="pos"></a><font face="Courier" size=2>POS(0)</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>POS(0) returns the postion of the cursor on the console, <i>based on the number of characters printed with PRINT statements</i>. If you move the cursor to the right by hand using the cursor keys or the space bar, POS() will not register the move. Example:</p></font>
+
+<font size="2" face="courier">
+00010 INPUT "enter a number from 1 to 50: ";n<br>
+00020 IF n&lt;1 or n>50 THEN 10<br>
+00030 FOR i=1 TO n<br>
+00040 PRINT ".";<br>
+00050 NEXT i<br>
+00060 p=POS(0)<br>
+00070 PRINT "x"<br>
+00080 PRINT "that 'x' is in column";p;"of the screen"<br>
+00090 END
+</font>
+
+<font face="Geneva" size=2><p>Only pass the value zero to the function, as shown. Other positive values will return a nonsense result.</p></font>
+
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+</dl>
+</ul>
+
+<hr>
+<font face="Geneva,Arial" size=1>
+<center>
+<a href="program.html">Programming Table of Contents</a>
+<br><br>
+<a href="../h8_toc.html">Main Table of Contents</a>
+</center>
+<br><br>
+</font>
+</body>
+
+<!-- Mirrored from davidwallace2000.home.comcast.net/~davidwallace2000/h8/project8080_archive/pgs/basic.html by HTTrack Website Copier/3.x [XR&CO'2010], Mon, 10 Sep 2012 13:15:41 GMT -->
+</html>

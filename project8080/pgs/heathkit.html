@@ -1,0 +1,666 @@
+<html>
+
+<!-- Mirrored from davidwallace2000.home.comcast.net/~davidwallace2000/h8/project8080_archive/pgs/heathkit.html by HTTrack Website Copier/3.x [XR&CO'2010], Mon, 10 Sep 2012 13:15:41 GMT -->
+<head>
+<title>H8 Emulation Help - Heathkit Software</title>
+<meta name="AppleTitle" content="H8 Emulation Help">
+<meta name="description" content="Heathkit Software Operation">
+</head>
+
+<!-- updated 10/29/2002, das -->
+
+<body bgcolor="white">
+
+<p>
+<font size=3 face="Verdana,Arial" color="#0000FF">
+<b>Heathkit Software Operation</b>
+</font>
+
+<ul>
+<font face="Geneva,Arial" size=2 color="black">
+<p>
+What follows are some general notes about how to use the various Heath-provided programs that are included with HDOS. It's been some years since many of us saw a working H8 and memories fade. It took the author a while to get back on the horse; I thought I'd pass along what I found out!
+<p>
+These notes are not complete and will never be complete, but they should be a good starting point for your own hacking. The author would appreciate any suggestions for additions to this help file.
+</font>
+</ul>
+
+<p>
+<font face="Verdana,Arial" color="#0000ff" size=3>
+<b>A note on control characters</b>
+</font>
+
+<ul>
+<font face="Geneva,Arial" size=2 color=black>
+<p>
+In general, you can quit any program by typing Ctl-D.
+<p>
+Also in general, Ctl-C is used as a "cancel current operation" key. Sometimes Ctl-A is used in the same way.
+<p>
+You can use Ctl-S to pause terminal output so you can read what's scrolling by. Use Ctl-Q to resume output.
+</font>
+</ul>
+
+<p>
+<a name="index"></a>
+<font face="Verdana,Arial" size=3 color="#0000ff">
+<b>HDOS Program Index</b>
+</font></p>
+
+<ul>
+<table border=0>
+<tr>
+<td width=95><font face="Geneva,Arial" size=2><a href="#command">Command</a></font></td>
+<td width=95><font face="Geneva,Arial" size=2><a href="#init">Init</a></font></td>
+<td width=95><font face="Geneva,Arial" size=2><a href="asm.html#xref">Xref</a></font></td>
+<td width=95><font face="Geneva,Arial" size=2><a href="#patch">Patch</a></font></td>
+</tr>
+<tr>
+<td width=95><font face="Geneva,Arial" size=2><a href="#pip">Pip</a></font></td>
+<td width=95><font face="Geneva,Arial" size=2><a href="#sysgen">Sysgen</a></font></td>
+<td width=95><font face="Geneva,Arial" size=2><a href="#dbug">Dbug</a></font></td>
+<td width=95><font face="Geneva,Arial" size=2><a href="#boot">Boot</a></font></td>
+</tr>
+<tr>
+<td width=95><font face="Geneva,Arial" size=2><a href="#set">Set</a></font></td>
+<td width=95><font face="Geneva,Arial" size=2><a href="#edit">Edit</a></font></td>
+<td width=95><font face="Geneva,Arial" size=2><a href="basic.html">Basic</a></font></td>
+<td width=95><font face="Geneva,Arial" size=2>&nbsp;</font></td>
+</tr>
+<tr>
+<td width=95><font face="Geneva,Arial" size=2><a href="#flags">Flags</a></font></td>
+<td width=95><font face="Geneva,Arial" size=2><a href="asm.html">Asm</a></font></td>
+<td width=95><font face="Geneva,Arial" size=2><a href="#test">Test17</a></font></td>
+<td width=95><font face="Geneva,Arial" size=2>&nbsp;</font></td>
+</tr>
+</table>
+<br>
+
+<font face="Geneva,Arial" size=2 color=black>
+
+<p>The Asm, Xref and Basic links will take you to another page in this help system.</p>
+
+<p>Back to <a href="../h8_toc.html">Table of Contents</a>.</p>
+
+
+
+<p>
+<a name="command"></a>
+<b><font color="#0000ff">The Command Prompt (command.sys)</font></b>
+<p>
+Type "help" for a list of commands. However, the list is not complete and is in one case inaccurate:</p>
+
+<ul type="disc">
+<li><font size="2" face="Geneva,Arial">the "<font face="Courier">status</font>" command no longer gives disk statistics; it gives the memory-residence status of the overlays and drivers instead (there is a utility on the project web site that displays statistics in the old HDOS 1.6 format);</font></li>
+<li><font size="2" face="Geneva,Arial">you can use the "<font face="Courier">load &lt;dev:></font>" command to load a device driver into memory;</font></li>
+<li><font size="2" face="Geneva,Arial">as long as you have 'set hdos stand-alone' at some point, you can use the "<font face="Courier">reset</font>" command to dismount/mount a disk;</font></li>
+<li><font size="2" face="Geneva,Arial">the <font size="2" face="courier">list</font> command is equivalent to the <font size="2" face="courier">type</font> command.</font></li>
+</ul>
+
+<font size="2" face="Geneva,Arial">
+<p>
+Reset wants a little more explanation. On a real H8, you could "<font face="Courier">reset sy0:</font>" then open and close the door and sy0: would immediately remount.
+<p>
+On the emulator, you can issue the 'reset' command, then open the <a href="menus.html#window">H-17 Management window</a> and click the Reset button associated with the drive. This will simulate opening and closing the door. Or, you can 'reset', open the Manage Diskettes dialog box, and change disks. HDOS will detect the disk swap and mount the new disk.</p>
+
+<p>
+<a href="#index">back to index</a>
+
+<p>
+<a name="pip"></a>
+<b><font color="#0000ff">Pip</font></b>
+<p>
+After entering Pip, type "<font face="Courier">help</font>". All but two of the command-line switches are included in the help file.
+<p>If you are getting a catalog listing, you can add the "/all" switch to see how many disk sectors are allocated to the file, instead of the usual display of how many are used by the file. Remember that sectors are allocated in clusters; your files will be allocated even units of clusters, though they may not fill up the last cluster completely. This option will let you see what's being wasted.</p>
+<p>You can also add the "/jgl" switch when displaying a catalog listing. This will activate the "/s" switch (show system files) automatically, and will show the hidden "C" flag that indicates that a file occupies contiguous space on the diskette.</p>
+<p>
+Remember that the order of operation in a copy operation is &lt;to file>=&lt;from file>.
+<p>
+<a href="#index">back to index</a>
+
+<p>
+<a name="set"></a>
+<b><font color="#0000ff">Set</font></b>
+<p>
+This is used to set options in device drivers. Use "<font face="Courier">set &lt;dev:> help</font>" to learn what options are available. Use "<font face="Courier">set hdos help</font>" to learn the options in the HDOS operating system itself.
+<p>
+The "Gen Master" disk has had the following customizations done to the drivers and HDOS. If you sysgen using Gen Master, you won't have to redo these sets. If you make your own disk from the HDOS distribution disks, you should repeat these commands on your disk.</p>
+
+<ul>
+<p><font face="Courier" size=2>
+set sy0: step 8<br>
+set sy1: step 8<br>
+set sy2: step 8<br>
+set tt: bks<br>
+set tt: tab<br>
+set tt: nomli<br>
+set tt: nomlo<br>
+set tt: bkm<br>
+set tt: fill 10 0<br>
+set tt: fill 13 0<br>
+set hdos stand-alone<br>
+</font></p>
+</ul>
+
+<font size="2" face="Geneva,Arial">
+<p>
+The last one is not included in the "<font face="Courier">help</font>" for HDOS. This sets a flag allowing HDOS to go into stand-alone mode. Without stand-alone mode, you have more memory available to user programs because the drivers and overlays can be swapped in from disk. But it does operate more slowly and you can't dismount sy0: (ref: <a href="memory.html#addr">Address Space Utilization</a>).
+<p>
+With stand-alone mode enabled, you can dismount and remount sy0: to force the overlays into memory. After that, sy0: can be dismounted at will and HDOS will still function. The system is faster, but you do have a little less memory available to user programs.
+<p>
+If you are using stand-alone mode, make sure you load your LP: and AT: drivers first or you won't be able to print or transfer files without rebooting.
+<p>
+<a href="#index">back to index</a>
+
+<p>
+<a name="flags"></a>
+<b><font color="#0000ff">Flags</font></b>
+<p>
+This is used to change the directory flags ('s', 'w', or 'l') on your files.
+The instructions provided by the program are all you should need.
+<p>
+<a href="#index">back to index</a>
+
+<p>
+<a name="init"></a>
+<b><font color="#0000ff">Init</font></b>
+<p>
+This is used to initialize a new disk. The instructions provided by the program are all that you should need.
+<p>
+I would note, however, that when prompted for bad sectors, you can <i>always</i> simply press return. The possibility of bad sectors is something that I really don't want to have to emulate!
+<p><b>Caution</b> - init.abs is not compatible with speeds in excess of 2 mhz. At the start of a format operation, it will appear to "hang" with interrupts disabled. Simply select 2 mhz on the Speed menu and init will complete the initialization correctly. Best to select 2 mhz before running init.
+
+<p>HUG replacement SY: driver notes:</p>
+</font>
+<ul type=disc>
+<li><font face="Geneva" size=2>You'll be prompted for number of sides when you init on a drive that supports two sides.</font></li>
+<li><font face="Geneva" size=2>If you reformat a disk and don't change the original format (e.g., you use the same volume number and number of sides), you can opt to not reformat the disk. It will still lose all its files (it gets a fresh directory, etc.).</font></li>
+<li><font face="Geneva" size=2>You can do a media test after an init. Why you would want to media-test the emulator, I have no idea. But there it is.</font></li>
+</ul>
+<font face="Geneva" size=2>
+<p>See the HUG SY: driver documentation for full information on Init when using that driver.</p>
+<p>
+<a href="#index">back to index</a>
+
+<p>
+<a name="sysgen"></a>
+<b><font color="#0000ff">Sysgen</font></b>
+<p>
+Sysgen is used to take an initialized disk and make it bootable. It transfers the necessary system files to the new disk and sets a 'bootable' flag in the label sector.
+<p>
+There are three formats of the command:</p>
+
+<dl>
+<dt><font face="Courier" size=2>sysgen</font></dt>
+<dd><font face="Geneva,Arial" size=2><p>Transfer a standard set of files to the new disk. The standard set of files have to be present on the source disk. Unfortunately, I don't have any documentation showing what this set of files might be.</p></font></dd>
+
+<dt><font face="Courier" size=2>sysgen&nbsp;/min</font></dt>
+<dd><font face="Geneva,Arial" size=2><p>Transfer only the minimum required files to the new disk. You can then copy over whatever files that you need on this disk.</p></font></dd>
+
+<dt><font face="Courier" size=2>sysgen&nbsp;*.*</font></dt>
+<dd><font face="Geneva,Arial" size=2><p>Transfer all files from the source disk to the new disk.</p></font></dd>
+</dl>
+
+<font size="2" face="Geneva,Arial">
+<p>
+The author recommends that you use the "Gen Master" disk and the 3rd form of the command to create disks for this emulator. That way you will have the correct driver settings (see <a href="#set">set</a> above) and the correct LP: and AT: drivers.
+<p>
+<a href="#index">back to index</a>
+
+<p>
+<a name="edit"></a>
+<b><font color="#0000ff">Edit</font></b>
+<p>
+The worst text editor ever devised by man, I swear. The author strongly suggests that you download Pie from the web site or use a Mac editor and transfer the resulting text file to the H8!
+<p>
+That said, here's a quick command reference. Edit uses "command completion" so you only have to type the lower-case letters in the example below; edit fills in the upper-case letters. Expressions [in brackets] are optional. Expressions &lt;in angle brackets> are place-holders for values.</p>
+
+<dl>
+<dt><font face="Courier" size=2>nEwiN/&lt;file spec>/</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>Open a file for input</p></font></dd>
+<dt><font face="Courier" size=2>nEwoUT/&lt;file spec>/</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>Open a file for output</p></font></dd>
+<dt><font face="Courier" size=2>rEAD</font></dt>
+<dd><font="geneva,arial" size=2>
+<p>Fill the editing buffer from the input file</p></font></dd>
+<dt><font face="Courier" size=2>[&lt;range>]wRITE</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>Write the selected range to the output file</p></font></dd>
+<dt><font face="Courier" size=2>fLUSH</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>Flush the buffer and unread input to the output file</p></font></dd>
+<dt><font face="Courier" size=2>nExT</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>Flush the buffer to the output file then fill from the input file</p></font></dd>
+<dt><font face="Courier" size=2>byE</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>Flush the buffer then quit</p></font></dd>
+<dt><font face="Courier" size=2>blITZ</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>Clear the buffer after confirmation</p></font></dd>
+<dt><font face="Courier" size=2>iNSERT</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>Lets you insert new lines at the insertion point; type Ctl-C to stop</p></font></dd>
+<dt><font face="Courier" size=2>[&lt;range>]dELETE</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>Delete the selected range from the buffer</p></font></dd>
+<dt><font face="Courier" size=2>[&lt;range>]['&lt;filter>']eDIT/from/to/[count]</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>Change text in range, for an optional number of changes (count), but first occurrence per line</p></font></dd>
+<dt><font face="Courier" size=2>[&lt;range>]pRINT['&lt;filter>']</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>Print the range with optional filtering</p></font></dd>
+<dt><font face="Courier" size=2>Ctl-D</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>Quit after prompt, abandoning the buffer</p></font></dd>
+</dl>
+
+<p>
+<font face="Geneva,Arial" size=2>
+"Range" tells edit what lines to work on. A space means the entire buffer. '=' means the range last used in a previous command. A null range means operate on the current line only. The "current line" is the top line of the previous range. Here are some command examples with range expressions:</p>
+<dl>
+<dt><font face="Courier" size=2>^,$pRINT</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>Print from the top line (^) to the bottom line ($);
+This is the same as using a single space for the range</p></font></dd>
+<dt><font face="Courier" size=2> pRINT</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>Same as above; note the single space ahead of the print command</p></font></dd>
+<dt><font face="Courier" size=2>^,+22pRINT</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>Print the first 22 lines of the buffer</p></font></dd>
+<dt><font face="Courier" size=2>^+22,+22pRINT</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>Print lines 22 through 44 of the buffer</p></font></dd>
+<dt><font face="Courier" size=2>+22,+22pRINT</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>Print the next 22 lines of the buffer</p></font></dd>
+<dt><font face="Courier" size=2>=pRINT'Heathkit'</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>Print the same range but only lines with the string 'Heathkit' in them</p></font></dd>
+<dt><font face="Courier" size=2>='H-19'eDIT/Heathkit/H8/5</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>In the same range, for every line that contains the string 'H-19', change the string 'Heathkit' to the string 'H8', but only the first five occurrences</p></font></dd>
+<dt><font face="Courier" size=2>$-22,$pRINT</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>Print the last 22 lines of the buffer</p></font></dd>
+</dl>
+
+<font face="Geneva,Arial" size=2>
+<p>Before doing anything permanent, like deleting a range of lines, I'd recommend that you use the "=print" command to verify that the range of lines is what you want it to be. And use the "print" command, without a range, to verify that the current line is what you think it is.</p>
+<p>
+That should be enough to get you through!
+<p>
+<a href="#index">back to index</a>
+
+<p>
+<a name="dbug"></a>
+<b><font color="#0000ff">Dbug</font></b>
+<p>
+A not bad system debugger. As I recall, there is a bug in dbug that causes it to mess up the terminal settings when you single step. Dbug has command completion but it goes away when this happens. (There are two patches on the project web site.)
+<p>
+With command completion, you only have to type the lower-case letters shown. Dbug responds with the upper-case letters.
+<p>
+<b>Note:</b> You should make sure the console is set to a width of 80 characters ("<font face="Courier" size=2>set tt: width 80</font>") before starting dbug. Dbug uses the console width to know when to insert a New Line character to wrap output. If you have already started dbug, you can change the width in memory using the debugger (you type the underlined characters): 
+<p>
+<font face="Courier" size=2>:B:<u>D40331=</u>255/<u>80</u></font>
+</font>
+<font face="Geneva,Arial" size=2>
+<p>
+A partial list of dbug commands follows. Expressions [in brackets] are optional. Expressions &lt;in angle brackets> are place-holders for values.</p>
+
+<dl>
+<dt><font face="Courier" size=2>[format][&lt;address>|&lt;range>]&lt;space></font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>Press space to display one or more memory bytes at the optional address or range of addresses; if range is null, only one byte will be displayed at the "current location."</p>
+<p>Format is a single character that changes the format of the displayed memory locations:</p></font>
+
+<table border="1" cellspacing="0" cellpadding="2">
+	<caption><font face="Geneva" size=2><b>Format Modifier</b></font></caption>
+<tr align="left" valign="top">
+	<td align="center"><font face="Geneva" size=2><b>Modifier</b></font></td>
+	<td><font face="Geneva" size=2><b>Format</b></font></td>
+	<td><font face="Geneva" size=2><b>Example</b></font></td>
+</tr>
+<tr align="left" valign="top">
+	<td align="center"><font face="Geneva" size=2>none</font></td>
+	<td><font face="Geneva" size=2>Octal</font></td>
+	<td><font face="Courier" size=2>
+	:B:40322/2 001 060<br>
+	:B:
+	</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td align="center"><font face="Geneva" size=2>D</font></td>
+	<td><font face="Geneva" size=2>Decimal</font></td>
+	<td><font face="Courier" size=2>
+	:B:D40322/2 001 048<br>
+	:B:
+	</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td align="center"><font face="Geneva" size=2>F</font></td>
+	<td><font face="Geneva" size=2>Fullword</font></td>
+	<td><font face="Courier" size=2>
+	:B:F40322 060001<br>
+	:B:FD40322 12289<br>
+	:B:
+	</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td align="center"><font face="Geneva" size=2>A</font></td>
+	<td><font face="Geneva" size=2>ASCII</font></td>
+	<td><font face="Courier" size=2>
+	:B:40277/9 061 061 055 016 145 142 055 017 062<br>
+	:B:A40277/9 1 1 - F e b - 9 2<br>
+	:B:
+	</font></td>
+</tr>
+</table>
+
+<br>
+</dd>
+<dt><font face="Courier" size=2>[format][&lt;address>|&lt;range>]=&lt;value> &lt;value> ...</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>Change memory at the optional address or range of addresses; if the range is null, the change will start at the "current address"; note that the values are separated by spaces. The format character is the same as above. If you use the D modifier, enter values in decimal. If you use the F modifier, enter full word values as in this example:</p></font>
+<font face="Courier" size=2>
+:B:F40000=000000/40100<br>
+:B:F40000 040100<br>
+:B:40000/2 100 040<br>
+</font>
+
+</dd>
+<dt><font face="Courier" size=2>Ctl-R</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>Display all the registers. This command will accept the 'D' or 'A' format characters before the Ctl-R.</p></font></dd>
+<dt><font face="Courier" size=2>rEG&lt;register>&lt;space></font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>Display one register; &lt;register> is a single character register name (a, b, c, ...) and the command must be followed by a space. This command will accept the 'D' or 'A' format characters.</p></font></dd>
+<dt><font face="Courier" size=2>rEG&lt;register>=&lt;value>&lt;space></font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>Change a register; the command must be followed by a space. This command will accept the 'D' or 'A' format characters.</p></font></dd>
+<dt><font face="Courier" size=2>gO[&lt;address>]</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>Start execution at &lt;address> if specified, or the current (PC) location if not</p></font></dd>
+<dt><font face="Courier" size=2>sTEP[&lt;address>]/&lt;count></font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>Single-step &lt;count> instructions at &lt;address> if given or the current (PC) location if not</p></font></dd>
+<dt><font face="Courier" size=2>bKPT&lt;address>[/&lt;count>]</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>Set a breakpoint at &lt;address>; the optional count says to stop on &lt;count> executions of the instruction; you must press return after this command</p></font></dd>
+<dt><font face="Courier" size=2>bKPT dISPLAY</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>display the breakpoint table</p></font></dd>
+</dl>
+
+<font face="Geneva,Arial" size=2>
+<p>
+Range can be a from-to address pair like <font face="Courier">40000-42200</font>, or it can be an address/length combination like <font face="Courier">24000/255</font>. In the second case, the length is entered in decimal and must be from 1 to 255.
+<p>
+Example dbug session:</p>
+
+<p><font face="Courier" size=2>
+>dbug<br>
+:B:100000/10=112/000 104/000 115/000 052/000 133/000<br>
+100004 112/000 345/000 011/303 172/000 263/100<br>
+:B:100000/10 000 000 000 000 000 000 000 303 000 100<br>
+:B:BKPT 100004/25<br>
+<br>
+:B:BKPT DSPLY 100004/25<br>
+:B:REGP=042200/100000<br>
+:B:REGP =100000<br>
+:B:GO<br>
+<br>
+-P=100004-<br>
+:B:REGP =100004<br>
+:B:^D<br>
+Are You SURE?
+</font></p>
+
+
+<font face="Geneva,Arial" size=2>
+<p>
+<a href="#index">back to index</a>
+
+<p>
+<a name="test"></a>
+<b><font color="#0000ff">Test17</font></b>
+<p>
+This is the disk test system. The documentation that comes with the package is sufficient to run it with one exception: Unless you are in stand-alone mode with a printer driver already loaded, make sure to load the LP: driver if you want to get a listing during execution.
+<p><b>Caution</b> - Test17 doesn't work at all with the HUG enhanced driver. Use a boot disk with an original HDOS SY: driver to run test17.</p>
+<p>
+As of Release 5 of the emulator, all tests work fine. But the program is, ultimately, pointless. Its use was to test potentially flawed media and to make sure the disk hardware was functioning correctly. In the emulator, both the media and the mechanism are emulated in memory structures. You will have no errors unless something is very, very wrong!
+<p>
+Note to H89 users: Given the lack of audible feedback, these tests won't make sense at all if you don't have the H8 GUI displayed on the screen. Watching the front panel LEDs will give good cues as to what is happening:
+<p>
+<ul type="disc">
+<li><font size="2" face="Geneva,Arial">When running the rotation speed test, the front panel as well as the terminal will show the rotation speed;</li>
+<li><font size="2" face="Geneva,Arial">When running the media test, the first byte of the address field shows the test phase and the second shows the track currently being tested. The Data byte should be ignored.</li>
+<li><font size="2" face="Geneva,Arial">When running the general drive diagnostic and track-to-track step speed tests, the address is set to 40.240A and the data byte shows the target track number for the current seek operation.</li>
+</ul>
+<font face="Geneva,Arial" size=2>
+<p>
+<a href="#index">back to index</a>
+
+
+<p>
+<a name="patch"></a>
+<b><font color="#0000ff">Patch</font></b>
+<p>Patch is used to make changes to .abs (binary executable) files. The general flow is as follows:</p>
+</font>
+<ol>
+<li><font face="Geneva,Arial" size=2>Run patch.</font></li>
+<li><font face="Geneva,Arial" size=2>At the prompt, enter the name of the .abs file you are patching.</font></li>
+<li><font face="Geneva,Arial" size=2>Enter the address of the first change, in split octal. Leave out the '.' and 'A', so to patch address 52.123A you would enter "52123."</font></li>
+<li><font face="Geneva,Arial" size=2>Patch will prompt for bytes to change, showing you the current value and a slash. Enter the new value in octal and press Return, or press Return to leave that byte alone. Enter Ctl-D when through with this change.</font></li>
+<li><font face="Geneva,Arial" size=2>Repeat steps 3 and 4 for each change in the program.</font></li>
+<li><font face="Geneva,Arial" size=2>When through, type Ctl-D at the Address prompt to save the altered file.</font></li>
+<li><font face="Geneva,Arial" size=2>Type Ctl-D at the File Name prompt to quit the program.</font></li>
+</ol>
+<font face="Geneva,Arial" size=2>
+<p>If you want to quit without changing the file, type Ctl-C. You'll be taken back to the file-name prompt; the file you were patching won't be saved.</p>
+<p>Heath-provided software has a patch history sector appended to the .abs file. When this sector is present, you must enter additional information, the patch id, prerequisite code and check code, to patch that program. This information is provided with the patch instructions. See the example below.</p>
+</font>
+<ul>
+<font face="courier" size=2>
+>PATCH<br>
+<br>
+PATCH Issue #50.06.00.<br>
+<br>
+File Name? ASM<br>
+patch id? ifojic<br>
+prerequisite code? ifbeiadpgeffcf<br>
+address? 64210<br>
+064210 = 022/021<br>
+064211 = 032/^D&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(control-D)<br>
+Address? ^D<br>
+Patch Check Code? EDKIJHLG <br>
+<br>
+PATCH Issue #50.06.00.<br>
+<br>
+File Name? ^D<br>
+>
+</font>
+</ul>
+<font face="Geneva,Arial" size=2>
+<p>It's possible to patch Heath-provided software without this extra information. It involves making a copy of the .abs file but not including the patch history sector (e.g., copy all but the last sector of the file). Then patch won't know it's Heath provided and will allow patching.</p>
+<p>
+<a href="#index">back to index</a>
+
+<p>
+<a name="boot"></a>
+<b><font color="#0000ff">Boot</font></b>
+<p>The three supported <b>physical</b> HDOS disk units are numbered 0, 1, and 2. They are normally assigned <b>logical</b> numbers that are the same as the physical numbers; hence they are referred to as SY0:, SY1: and SY2:. You normally boot from physical drive 0, and the logical and physical unit numbers are the same.</p>
+<p>Boot is a small program that allows you to cause the system to boot from a different <b>physical</b> drive than drive 0. The drive you boot from using Boot is now <b>logical</b> sy0: and the remaining drives are renumbered accordingly.</p>
+<p>We'll use an example to illustrate how this works. This is a normal boot and mount of two other disks. The disk on SY1: has been sysgened.</p></font>
+<ul>
+<font face="courier" size=2>
+ACTION? <boot> BOOT<br>
+<br>
+SYSTEM HAS 56K OF RAM<br>
+<br>
+HDOS Version 2.0<br>
+&nbsp;Issue # 50.06.00<br>
+Date (28-Oct-92)?<br>
+<br>
+Volume 003, Mounted on SY0:<br>
+Label: HDOS 2.0 Application boot disk 8-Dec-2001<br>
+<br>
+>mount sy1:<br>
+Volume 002, Mounted on SY1:<br>
+Label: Sysgen Master Disk<br>
+>mount sy2:<br>
+Volume 021, Mounted on SY2:<br>
+Label: Test programs<br>
+>
+</font>
+</ul>
+
+<font face="Geneva,Arial" size=2>
+<p>Now, leaving the three disks in their current physical drives, we're going to reboot the system from logical and physical drive #1:</p></font>
+
+<ul>
+<font face="courier" size=2>
+><b>boot sy1:</b><br>
+Volume 021, Dismounted from SY2:<br>
+Label: Test programs<br>
+Volume 002, Dismounted from SY1:<br>
+Label: Sysgen Master Disk<br>
+Volume 003, Dismounted from SY0:<br>
+Label: HDOS 2.0 Application boot disk 8-Dec-2001<br>
+<br>
+<br>
+ACTION? <boot> BOOT<br>
+<br>
+SYSTEM HAS 56K OF RAM<br>
+<br>
+HDOS Version 2.0<br>
+&nbsp;Issue # 50.06.00<br>
+Date (28-Oct-92)?<br>
+<br>
+Volume 002, Mounted on SY0:<br>
+Label: Sysgen Master Disk<br>
+<br>
+>mount sy1:<br>
+Volume 021, Mounted on SY1:<br>
+Label: Test programs<br>
+>mount sy2:<br>
+Volume 003, Mounted on SY2:<br>
+Label: HDOS 2.0 Application boot disk 8-Dec-2001<br>
+>
+</font>
+</ul>
+
+<font face="Geneva,Arial" size=2>
+<p>As you can see by pairing up the volume numbers and names in the first and second boot, the physical and logical drive numbers now align as follows:</p></font>
+
+<ul>
+<font face="Geneva,Arial" size=2>
+<p>
+Physical drive #0 is now logical drive SY2:<br>
+Physical drive #1 is now logical drive SY0:<br>
+Physical drive #2 is now logical drive SY1:</p>
+</font>
+</ul>
+
+<font face="Geneva,Arial" size=2>
+<p>In other words, the logical numbers start with zero at the physical boot drive and are assigned to the remaining units in a round-robin fashion.</p>
+
+<p>These drive assignments will stay in effect until the system is reset or the boot program is used to reassign the drives. Let's fix it with boot. Note that we have to name logical drive SY2: in the command; this is both the disk we want to boot from, and it's the one in <b>physical</b> drive #0.</p></font>
+
+<ul>
+<font face="courier" size=2>
+><b>boot sy2:</b><br>
+Volume 003, Dismounted from SY2:<br>
+Label: HDOS 2.0 Application boot disk 8-Dec-2001<br>
+Volume 021, Dismounted from SY1:<br>
+Label: Test programs<br>
+Volume 002, Dismounted from SY0:<br>
+Label: Sysgen Master Disk<br>
+<br>
+<br>
+ACTION? <boot> BOOT<br>
+<br>
+SYSTEM HAS 56K OF RAM<br>
+<br>
+HDOS Version 2.0<br>
+&nbsp;Issue # 50.06.00<br>
+Date (28-Oct-92)?<br>
+<br>
+Volume 003, Mounted on SY0:<br>
+Label: HDOS 2.0 Application boot disk 8-Dec-2001<br>
+<br>
+>mount sy1:<br>
+Volume 002, Mounted on SY1:<br>
+Label: Sysgen Master Disk<br>
+>mount sy2:<br>
+Volume 021, Mounted on SY2:<br>
+Label: Test programs<br>
+>
+</font>
+</ul>
+
+<font face="Geneva,Arial" size=2>
+<p>Now:</p></font>
+
+<ul>
+<font face="Geneva,Arial" size=2>
+<p>
+Physical drive #0 is now logical drive SY0:<br>
+Physical drive #1 is now logical drive SY1:<br>
+Physical drive #2 is now logical drive SY2:</p>
+</font>
+</ul>
+
+<font face="Geneva,Arial" size=2>
+<p>... which is the normal drive arrangement.</p>
+
+<p><b>What's going on under the covers...</b></p>
+
+<p>This behavior is controlled by a System Unit Number (M.SUNI) byte which is at offset 021Q from the start of the System Data Table. The address of the System Data Table is stored in <a href="memory.html#hdosram">S.DLINK (40.346A)</a>. Normally, M.SUNI contains 000Q, which means that physical drive #0 is the system drive, which is given the logical name SY0:.</p>
+<p>When you enter "<font face="courier" size=2>boot sy1:</font>", the disks are dismounted and M.SUNI is changed to 001Q, indicating that physical drive #1 is now the system drive and will be given the logical name SY0:.</p>
+<p>HDOS maintains a table of disk-unit information which has three entries stored in physical-unit order. When HDOS needs to access that information starting from a logical drive number, it maps the logical drive to the physical drive number along the lines of the following example, courtesy of S. Webb, which can be found in the Drive Configuration (DC) program on the HUG replacement driver disk, which is available on the project web site.</p>
+
+<font face="courier" size=2>
+S.DLINK&nbsp;EQU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;40346A<br>
+M.SUNI&nbsp;&nbsp;EQU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;21Q<br>
+. . . .<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LHLD&nbsp;&nbsp;&nbsp;&nbsp;S.DLINK<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LXI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;D,M.SUNI<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DAD&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;D<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOV&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;L,M&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;get system unit number<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LDA&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MNU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;get maximum number of units<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOV&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;D,A<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOV&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A,B&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;get logical unit number<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ADD&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;L&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;compute (A + L) mod D<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SUB&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;D<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;JNC&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MAPDD1<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ADD&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;D<br>
+MAPDD1&nbsp;&nbsp;EQU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(A) = physical unit number<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LHLD&nbsp;&nbsp;&nbsp;&nbsp;DDTAB.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ADD&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;two bytes per entry, so double<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CALL&nbsp;&nbsp;&nbsp;&nbsp;$DADA<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SHLD&nbsp;&nbsp;&nbsp;&nbsp;DDTAB&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;point to correct DDTAB entry<br>
+</font>
+<p>(Example simplied slightly for illustration purposes.)</p>
+
+<p>Assume that we enter this code having booted from physical drive #1 and we want to find logical drive SY2:. Register (B) would have the value of 002Q at the top of this routine.</p>
+<p>After the first four lines of code, register (L) contains 001Q, the physical boot drive. MNU is the maximum number of units, or 003Q, which ends up in register (L).</p>
+<p>Logical drive 002Q + boot physical drive 001Q = 003Q, minus a MNU of 003Q, gives us <b>physical</b> unit 000Q, which is where we would expect to find <b>logical</b> drive SY2:. The code takes the JNC jump and we compute the unit table offset for physical drive #0.</p>
+<p>
+<a href="#index">back to index</a>
+</ul>
+
+<hr>
+<font face="Geneva,Arial" size=1>
+<center>
+<a href="../h8_toc.html">Table of Contents</a>
+</center>
+<br><br>
+</font>
+</body>
+
+<!-- Mirrored from davidwallace2000.home.comcast.net/~davidwallace2000/h8/project8080_archive/pgs/heathkit.html by HTTrack Website Copier/3.x [XR&CO'2010], Mon, 10 Sep 2012 13:15:42 GMT -->
+</html>

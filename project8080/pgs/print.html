@@ -1,0 +1,81 @@
+<html>
+
+<!-- Mirrored from davidwallace2000.home.comcast.net/~davidwallace2000/h8/project8080_archive/pgs/print.html by HTTrack Website Copier/3.x [XR&CO'2010], Mon, 10 Sep 2012 13:15:43 GMT -->
+<head>
+<title>H8 Emulation Help - Printing</title>
+<meta name="AppleTitle" content="H8 Emulation Help">
+<meta name="description" content="How To Print">
+</head>
+
+<!-- updated 12/20/2002, das -->
+
+<body bgcolor="white">
+
+<p>
+<font size=3 face="Verdana,Geneva" color="0000FF">
+<b>How To Print</b>
+</font>
+
+<ul>
+<font face="Geneva,Arial" size=2 color="black">
+
+<p>
+To print, simply write to the LP: driver. When the LP: driver is subsequently closed, you will be presented with the Print Style dialog where you can select things like the page orientation, and the Print Job dialog where you can select the page range and number of copies. The file is then printed.</p>
+<p>
+</font>
+<font size=2 face="Geneva,Arial" color="0000FF">
+<p><b>Example</b></p>
+</font>
+
+<font face="Courier" size=2 color="black">
+pip lp:=errormsg.sys<br>
+asm sy1:prog,lp:=sy1:prog/page:45<br>
+
+</font>
+
+<font size=2 face="Geneva,Arial" color="0000FF">
+<p><b>Manually Closing a Print Job</b></p>
+</font>
+
+<font size=2 face="Geneva,Arial" >
+<p>If you cancel a program that's printing to the LP: driver, and HDOS clears the file channel rather than closing the file channel, the LP: driver won't be notified and can't cause the emulator to close the temporary spool file. This will also happen if you reset the H8 system while a print job is underway.</p>
+<p>When this happens, you can use the menu item "Close Print Job" to close the print job manually.This menu item is enabled only when there is a channel open to the LP: driver. (Ref: <a href="menus.html#file">File Menu</a>)</p>
+</font>
+
+<font size=2 face="Geneva,Arial" color="0000FF">
+<p><b>Specifications</b></p>
+</font>
+
+<font size=2 face="Geneva,Arial" >
+<p>The printer defaults to 10-point Courier font for 12 characters per inch. The default margins are 1/2 (36 points) on all four sides of the page; see <a href="menus.html#emupref">Emulator Preferences</a> to change the default margins. Tab stops are fixed on 8-character boundaries, just like the terminal.</p>
+<p>Both portrait and landscape printing are supported. The number of lines you will get per page will vary among the various Macintosh printers and drivers available; do a test print and adjust from there. The maximum line width supported by the emulator is 150 characters.</p>
+<p>Refer to the <a href="printer.html">Printer Documentation</a> page in the <a href="program.html">Programming Information</a> section for a list of control characters and escape sequences that the printer responds to.</p>
+
+</ul>
+
+<p>
+<font size=3 face="Verdana,Geneva" color="0000FF">
+<b>Important</b>
+</font>
+
+<ul>
+<font face="Geneva,Arial" size=2 color="black">
+<p>
+Make sure to use the LP: driver that's included on the bootable "HDOS 2.0 Gen Master" distribution disk, or on the "Mac H8 Emulator Drivers Release 2.3" source disk. This driver has been customized to work with the Mac H8 Emulator.
+<p>
+The use of any other print driver on the H8 system will give undefined results. Translation: Your guess is as good as mine, but I'm sure it won't print anything useful.
+<p>
+</font>
+</ul>
+
+<hr>
+<font face="Geneva,Arial" size=1>
+<center>
+<a href="../h8_toc.html">Table of Contents</a>
+</center>
+<br><br>
+</font>
+</body>
+
+<!-- Mirrored from davidwallace2000.home.comcast.net/~davidwallace2000/h8/project8080_archive/pgs/print.html by HTTrack Website Copier/3.x [XR&CO'2010], Mon, 10 Sep 2012 13:15:43 GMT -->
+</html>

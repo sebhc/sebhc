@@ -1,0 +1,51 @@
+H8-4 MATERIAL LIST
+
+ICs
+==================================
+75189				4
+75188				4
+74LS02				4
+74LS03				1
+74LS20				1
+74LS04				1
+74LS74				1
+74LS42				2
+74LS242				3
+74LS245				1
+
+16C550				4
+
+PASSIVE COMPONENTS
+==================================
+.1uf ceramic cap (.1 spacing)	20
+1K 10-pin bussed resistor pack	1
+470ohm 1/4w resistor		1
+
+CONNECTORS
+==================================
+MOLEX 25 PIN RECEPTACLE		2
+22-16-2251
+
+HEADERS w/.1" centers
+==================================
+2 x 5 header			4
+2 x 15 header			4
+1 x 15 header			8
+
+OSCILLATOR
+==================================
+1.8432MHz half can osc		1
+
+ILLUMINATION
+==================================
+5mm red LED			1
+
+
+FOR H-8 POWER SUPPLY THE FOLLOWING
+ARE NEEDED (not required for ATX
+power supply)
+==================================
+2.2uf 35V tantalum cap		8
+LM7805 (+5V regulator)		2
+LM7812 (+12V regulator)		1
+LM7912 (-12V regulator)		1

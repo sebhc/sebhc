@@ -1,0 +1,65 @@
+CP/M to HDOS File Transfer Utility Programs
+
+These program are set up to work under the following configuration:
+
+Physical device numbers used below.
+SY0:	40 track, 1 side, standard Heath drive
+SY1:	40 track, 2 sides
+SY2:	80 track, 2 sides
+
+The programs should work if you have three drives by just SETting your drive 
+parameters.  If you have fewer drives, you may need to edit the basic programs 
+to use the drive configuration you have.
+
+The following directions are for the configuration listed above.
+
+	In the steps below, <lower case text> is what you type.
+
+My system disk is booted from SY1: physical -- H: Boot1
+
+Initialize a floppy for the data transfer process in SY2: logical (SY0: 
+physical).  This will be referred to as the transfer disk below.
+
+Create the CP/M Space by running:
+	MBASIC FMTCPM<cr>
+	ENTER DRIVE TO BE FORMATTED: <SY2:>
+	INSERT DISK TO BE FORMATTED INTO DRIVE SY2: AND PRESS RETURN.
+	PLEASE REPLACE DISKETTE IN SY2:
+	      <open, replace disk if needed and close drive door>
+	VOLUME xxx, MOUNTED ON SY2:
+	LABEL: <your disk label>
+	FUNCTION COMPLETE.
+	ANY MORE DISKS TO BE FORMATTED? <N> <cr>if done or <y> to continue
+
+Repeat the steps for each transfer disk you will be using.
+
+When done, you should have a file on the transfer disk(s):
+	Name	Ext	Size
+	CPM    .SPC	114
+
+Boot CP/M.  Perform a directory of the transfer disk and delete files no longer needed.  Copy the files to be transferred to the disk.
+NOTE:  The maximum file size is 20 KBytes.
+
+Boot the HDOS File Transfer System disk.
+
+Mount SY1: (80 trk, 2s, HDOS format) and SY2: (40 trk, 1s, transfer disk).
+
+Run:	MBASIC RDCPMSPC
+
+	WHAT DRIVE IS THE TRANSFER DISK ON? : <SY2:>
+	WHAT IS THE FILENAME TO BE TRANSFERRED? :  <filename.ext>
+	INSERT THE PROPER DISK IN THE DESIGNATED DRIVE AND PRESS RETURN. <cr>
+	PLEASE REPLACE DISKETTE IN SY2:  
+	      <open, change disks if needed and close the drive door>
+	VOLUME xxx MOUNTED ON SY2:
+	LABEL: your disk label
+	 nn
+	WHAT DRIVE IS THE TRANSFER DISK ON? : <^C if done or SY2: to continue>
+
+	If you are done and typed ^C, type:  SYSTEM to return to HDOS.
+
+Repeat the above steps for each file copied to the transfer disk(s).
+
+done and typed ^C, type:  SYSTEM to return to HDOS.
+
+Repeat the above steps for

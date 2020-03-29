@@ -1,0 +1,101 @@
+Patches for Dwight Elvey's Disk Image Transfer Program Vers. 9 06/06/04
+to use H89 serial port D0H (320 octal) instead of port E0H (340 octal)
+
+Dan Johansson 2006-07-23
+
+1. A bootstrap routine listing for port D0H (320Q) is included in file
+   BootstrapD0.ocl
+
+2. The original H89LDR2.BIN file is Hex edited
+   Remember to first save a backup of the original H89LDR2.BIN as H89LDR2E0.BIN
+   or similar if you do this.
+
+SINT4 at 9 positions
+0064: E3 -> D3
+0066: E1 -> D1
+0068: E4 -> D4
+006B: E3 -> D3
+006F: E0 -> D0
+0072: E1 -> D1
+0076: E3 -> D3
+0078: E5 -> D5
+007A: E0 -> D0
+
+CHRIN4 at 2 positions
+00CA: E5 -> D5
+00D0: E0 -> D0
+
+CHRO4 at 2 positions
+00DC: E5 -> D5
+00E6: E0 -> D0
+
+The edited file is saved as H89LDR2D0.BIN
+This must be copied (and/or renamed) to H89LDR2.BIN to work with H89TRANS.COM
+
+
+3. Comments
+
+The H89 serial port D0H (320Q) is a DCE similar to the LP port E0H (340Q).
+It is the middle of the 3 DB25 connectors on the back of a H89.
+My original serial card had only UARTs installed at DCE port E0H (LP) and
+on the DTE port D8H (330Q) but I moved the "DTE" UART to the middle position
+on the serial card to get a second DCE port to be used for direct cable
+connection to a PC. This way the LP port can still be connected to a printer.
+
+A connection to the 9 pin serial port found on most modern PC's is easy
+using a standard 9 to 25 pin cable with a female 9 pin contact and a male
+25 pin contact. Check with an ohmmeter that pin 2 on the 25 side of the
+cable connects to pin (or rather hole) 3 on the 9 side and pin 3(25) connects
+to pin 2(9). It must be a standard "modem" cable typically used for connection
+of an external modem to a PC-AT or later computers with a 9 pin DTE serial port.
+Note!
+The cable should not be straight 1-1 coupled in the sense of pin 2 on one end
+goes to pin 2 on the other end.
+A straight 1-1 cable should be used for a DB25/DB25 DTE to DCE connection but
+not for DB9/DB25 DTE to DCE. The RS-232 standard is a veird business !
+
+Regarding RS-232 a good src for more info is:
+http://www.camiresearch.com/Data_Com_Basics/RS232_standard.html
+
+Before entering the bootstrap code, a check MUST be made to ensure that the
+IRQ jumper on the serial card for the used H89 port is set to off. If the IRQ
+is set to n=3,4 or 5 the loading of H89LDR2.BIN will not work.
+On my H89A, a pgm. access of a port with the IRQ set to n is replaced by a
+RSTn instruction by the CPU logic board hardware. As no jump to a service
+routine is added in the .UIVEC vector by the bootstrap code, this will
+hang or crash the pgm., even if UART interrupts are disabled in the 8250 setup.
+
+This IRQ thing also makes it difficult to use the console port on the CPU card
+instead a serial card port. The console port IRQ is fixed to interrupt level 3
+by hardware and only possible to remove by cutting aways some parts on the
+CPU board. Only thing is to write a interrupt handling routine and put a jump
+at .UIVEC for RST3
+
+The Image Transfer Pgm. seem to work perfectly once the bootstrap code is
+entered and saved on a bootdisk. Very good program.
+
+
+4. Next version ?
+
+Although it's generally not a good idea to change anything that is working OK,
+I have some suggestion for future versions:
+
+A. Include a CRC-16 checksum calculation for both the H89LDR2.BIN part and the
+   transfered data for each track. File CASIO.ACM include the CRC code used by
+   the HDOS cassette driver.
+   The H89TRANS pgm can then both check for a CRC correct loaded H89LDR2.BIN
+   and a bitwise correct transmission of data for each track. Even if 16 bit
+   CRC is marginal for 2560 byte datablocks, it's better than nothing.
+B. If checksum is not OK, order a retransmission by sending a different handshake
+   character. Only max 3 to 4 retries should be allowed before abort.
+C. Add a time-out counter to break hangup if a byte is lost in the transmission.
+D. Init the 8250 in a more silent manner to avoid disturbance of the PC serial
+   port. See example in file NewBootstrap=.asm
+
+   The startcode for 8251 is different from the "default" method used by the
+   HDOS casette driver; i.e. to send 81H twice in order to set 8251 in a
+   known state. See routine TPINIT in file CASIO.ACM
+   This is kludge code to work around the lack of a hardware reset signal on
+   the H8 casette interface board ? but it might be a good idea to use also for
+   the other H8 serial cards ?
+   

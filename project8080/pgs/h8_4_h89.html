@@ -1,0 +1,121 @@
+<html>
+
+<!-- Mirrored from davidwallace2000.home.comcast.net/~davidwallace2000/h8/project8080_archive/pgs/h8_4_h89.html by HTTrack Website Copier/3.x [XR&CO'2010], Mon, 10 Sep 2012 13:15:46 GMT -->
+<head>
+<title>H8 Emulation Help - H8 for H89 Users</title>
+<meta name="AppleTitle" content="H8 Emulation Help">
+<meta name="description" content="H8 Emulator for the H89 User">
+</head>
+
+<!-- updated 2/23/2003, das -->
+
+<body bgcolor="white">
+
+<p>
+<font size=3 face="Verdana,Arial" color="0000FF">
+<b>H8 Emulator for the H89 User</b>
+</font>
+<ul>
+<font face="Geneva,Arial" size=2 color="black">
+<p>
+After they're booted, the H8 and the H89 are equivalent systems. Yes, the H89 has a Z80 processor, but all Heath-written software will run on either system. So, if you had and H89 and you want to relive the early days of home computing, you can use the emulator.
+<p>
+Just make sure you don't try to run any software that requires a Z80 processor. That would not be good.
+</ul>
+
+<p>
+<font size=3 face="Verdana,Arial" color="#0000FF">
+<b>Booting an H8 for the H89 User</b>
+</font>
+
+<ul>
+<font face="Geneva,Arial" size=2 color="black">
+<p>The first time you start the emulator, change the preferred ROM image to the PAM/GO ROM. See <a href="menus.html#emupref">Emulator Preferences</a> on the <a href="menus.html#edit">edit</a> menu for directions. Then quit and restart the H8. You should see "030 000 PC" in the LEDs on the GUI window.</p>
+
+<p>With the H8 GUI window front, do the following:</p>
+</font>
+
+<table>
+<tr>
+<td width=5 valign="top">
+<font face="Verdana,Arial" size=2 color="#0000ff">1</font>
+</td>
+
+<td>
+<font face="Geneva,Arial" size=2 color="black">
+Select Manage Diskettes... from the File menu. Make sure you have a bootable volume inserted in the SY0: drive.
+</td>
+</tr>
+
+<tr>
+<td width=5 valign="top">
+<font face="Verdana,Arial" size=2 color="#0000ff">2</font>
+</td>
+
+<td>
+<font face="Geneva,Arial" size=2 color="black">
+Click the "GO" button (#4) on the GUI, or press the "g" key on the Macintosh keyboard.
+</td>
+</tr>
+
+<tr>
+<td width=5 valign="top">
+<font face="Verdana,Arial" size=2 color="#0000ff">3</font>
+</td>
+
+<td>
+<font face="Geneva,Arial" size=2 color="black">
+If the H-19 window pops open, press Command-8 then Command-W to select then hide the H8 GUI.
+</td>
+</tr>
+
+<tr>
+<td width=5 valign="top">
+<font face="Verdana,Arial" size=2 color="#0000ff">4</font>
+</td>
+
+<td>
+<font face="Geneva,Arial" size=2 color="black">
+If the H8 beeps and displays the word "SPACE" in the LEDs. press Command-T to display the terminal window, press the space bar once to set the console baud rate, then press Command-8 / Command-W to select then hide the H8 GUI.
+</td>
+</tr>
+
+<tr>
+<td width=5 valign="top">
+<font face="Verdana,Arial" size=2 color="#0000ff">5</font>
+</td>
+
+<td>
+<font face="Geneva,Arial" size=2 color="black">
+
+Press return to boot.
+</td>
+</tr>
+</table>
+
+<font face="Geneva,Arial" size=2 color="black">
+<p>
+With the H8 window hidden, it should be impossible to tell that you are using an H8 emulator and not an H89 emulator.
+<p>
+There is, however, one good reason for leaving the H8 GUI window visible in the background, and that is so that you can "see" disk activity. On a real H89, you could hear the diskettes grinding away and know that the system was doing something where there was nothing happening on the console. This emulator doesn't provide audible feedback, but you will see the execution address change and the LEDs blink in response to disk activity. It is at least some assurance that the system has not hung.
+<p>
+By the way, it's normal for the LEDs to blink and even go blank at times. HDOS disables interrupts frequently, causing PAM/8 to miss an LED refresh cycle. This would cause the LEDs to blink on a real system. That same behavior is emulated here.
+<p>
+Also, please be aware that Basic will turn the front panel LEDs off altogether in an attempt to gain some speed from not having to refresh their content. Again, this is normal and should not cause you any concern.
+<p>
+Please refer to <a href="boot.html">Booting HDOS 2.0</a> for more information on booting HDOS on the emulator.
+<p>
+</font>
+</ul>
+
+<hr>
+<font face="Geneva,Arial" size=1>
+<center>
+<a href="../h8_toc.html">Table of Contents</a>
+</center>
+<br><br>
+</font>
+</body>
+
+<!-- Mirrored from davidwallace2000.home.comcast.net/~davidwallace2000/h8/project8080_archive/pgs/h8_4_h89.html by HTTrack Website Copier/3.x [XR&CO'2010], Mon, 10 Sep 2012 13:15:46 GMT -->
+</html>

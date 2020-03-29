@@ -1,0 +1,1163 @@
+	TITLE	'H17DVD - H17 / DS/DTD 5" Device Driver'
+
+***	H17DVD - H17 / DS/DTD 5" Device Driver.
+*
+*	-------------------------------------------
+*	Original in H17 ROM by J.G. Letwin, Oct. 77
+*	-------------------------------------------
+*
+*	Adapted and modified for HDOS 3.0 device driver.
+*
+*	Dynamic support for double-sided and/or double-track density
+*	 (DS/96 TPI) drives added, such as the Tandon TM-100-4.
+*
+*	Settable Track/sector initialzation skew.
+*
+*	Auto retry of hard I/O errors at settable pre-determined step rate.
+*
+*	Corrected firmware incompatibilities with H/Z89 and Z90.
+*
+*	Moved detail error counters to within driver code itself and
+*	extended accuracy to 16-bits.
+*
+***
+*	This code is modified to change the pseudo-ops for the Gibson assembler
+*	to something accepted by the distributed Heath assembler to result in 
+*	the same H17 driver as distributed with HDOS 3.02.
+*		Revised by Ken Owen, 30 Dec 2011
+***
+	SPACE	3
+**	H17DVD - System Device Driver.
+*
+*	H17DVD is the device driver for an H17 mini-floppy, consisting
+*	of one or more of any of the following:
+*
+*		Wangco 82
+*		Tandon TM-100 and TM-100-4  (or equivalent)
+*		Siemens FDD-100-5  (Wangco equivalent)
+*
+	SPACE	3
+***	Assembly Constants
+
+H17MAX	EQU	3			; Allow three units
+MI.CPI	EQU	376Q			; 'CPI' instruction
+
+*	Default Values.
+
+DFLT.ST EQU	30/2			; Default step time (30ms/track)
+RTRY.ST EQU	30/2			; Retry step time (for hard error retry)
+DFLT.RC EQU	10			; Number of tries before hard error
+DFLT.TM EQU	20			; Default motor time (seconds)
+DFLT.SK EQU	7			; Default track skew
+
+*	Program Revision.
+
+REV	EQU	1			; Version number
+SUBREV	EQU	'J'			; Revision
+
+*	Conditional Assembly Equates.
+
+ON	EQU	0			; Option ON
+OFF	EQU	-1			; Option OFF
+
+TRACE	EQU	OFF			; TRACE mode
+
+*	Listing control.
+
+	LON	LIC			; revised to use Heath options
+	LOF	G
+
+	STL	'External Definitions'
+	EJECT
+
+	XTEXT	HOSBASE
+	XTEXT	HOSDEF
+	XTEXT	HOSEQU
+	XTEXT	EDCON
+	XTEXT	EDVEC
+	XTEXT	EDRAM
+	XTEXT	ESVAL
+	XTEXT	DIRDEF
+	XTEXT	ESINT
+	XTEXT	MTR
+	XTEXT	MTRRAM
+	XTEXT	ECDEF
+	XTEXT	ASCII
+	XTEXT	DDDEF
+	XTEXT	DEVDEF
+	XTEXT	H17DEF
+	XTEXT	PICDEF
+	XTEXT	DVDDEF
+	XTEXT	DDFDEF
+	XTEXT	LABDEF
+	XTEXT	SETCAL
+
+	STL	'Device Unit Definition'
+	EJECT
+
+***	Device Unit Definition
+*
+	CODE	PIC
+
+H17CAP	SET	DT.CW+DT.CR+DT.DD+DT.RN ; Read, Write, Directory, Random
+H17CAP	SET	H17CAP+DT.UL		; Please notify of UNLOAD
+
+	ERRNZ	*-DVD.DVD
+	DB	DVDFLV			; flag byte
+
+	ERRNZ	*-DVD.CAP
+	DB	H17CAP			; device capabilities
+
+	ERRNZ	*-DVD.MUM
+	DB	0			; mounted units mask
+
+	ERRNZ	*-DVD.MNU
+H17MNU	DB	H17MAX			; number of units
+
+	ERRNZ	*-DVD.UFL
+*	DC	H17MAX,#H17CAP		; unit capabilities, not recognized by Heath
+	DB	#H17CAP,#H17CAP,#H17CAP	; Heath replacement
+*	DC	8-H17MAX,#0		;  (fill out table), not recognized by Heath
+	DB	0,0,0,0,0		; Heath replacement
+
+	ERRNZ	*-DVD.SET
+	DB	DVDFLV			; -DVDFLV if takes SET options
+
+	ERRNZ	*-DVD.INP
+	DW	0			; offset to INIT program
+
+	ERRNZ	*-DVD.V30
+	DB	DVDFLV			; is 3.0 driver
+
+	ERRNZ	*-DVD.SPL
+	DB	SPL-1			; SET preamble length (pages/2)
+
+*	DC	20,#0			; fill out, not recognized by Heath
+	DB	0,0,0,0,0		; Heath replacement
+	DB	0,0,0,0,0
+	DB	0,0,0,0,0
+	DB	0,0,0,0,0
+
+	ERRNZ	*-DVD.STE
+
+	XTEXT	H17SET
+	STL	'H17DVD - End of SET Preamble'
+	EJECT
+***	End of SET Preamble
+*
+
+	CODE	-REL
+
+	ERRNZ	DVD.ENT-512
+
+ASPL	EQU	*			; SET Preamble length (bytes)
+SPLS	EQU	*+511/512*512-ASPL	; Slack space (bytes)
+SPL	EQU	ASPL+SPLS/512		; Length (pages/2)
+
+*	DC	SPLS,#0 		; fill out preamble (no fill needed)
+
+*	NOTE	ASPL			; not recognized by Heath
+*	NOTE	SPLS			; not recognized by Heath
+*	NOTE	SPL			; not recognized by Heath
+
+*	ERRNZ	*%DVD.ENT		; must align, mod not reconized by Heath
+					; on page boundary, nothing needed
+	CODE	+REL
+	STL	'H17DVD - Driver Entry & Dispatch'
+	EJECT
+
+***	H17DVD - H17 Disk Device Driver.
+*
+*	H17DVD is the HDOS H17 device driver.
+*
+*	Entry:	(A) = DC.xxx function code
+*		Other registers set as needed by function
+*	Exit:	'C' Clear, Ok.
+*		 Registers set by function
+*		'C' Set, Error.
+*		 (A) = Error code
+*	Uses:	All
+
+H17DVD	EQU	*
+
+	IF	TRACE
+	CALL	$TRACE
+	DB	'/'
+	ENDIF
+
+	CPI	DC.MAX			; Is function code valid?
+	JC	H17DVD. 		; Start with Spd Change Code
+
+*	Return illegal driver function code.
+
+	MVI	A,EC.ILR		; Illegal request
+	STC
+	RET
+
+H17DVD. CALL	$TJMP
+
+H17DVD0 EQU	*
+
+	ERRNZ	*-H17DVD0/2-DC.REA
+	DW	D.READ			; Read
+	ERRNZ	*-H17DVD0/2-DC.WRI
+	DW	D.WRITE 		; Write
+	ERRNZ	*-H17DVD0/2-DC.RER
+	DW	D.READR 		; Read Regardless
+	ERRNZ	*-H17DVD0/2-DC.OPR
+	DW	H17NOP			; Open for Read
+	ERRNZ	*-H17DVD0/2-DC.OPW
+	DW	H17NOP			; Open for Write
+	ERRNZ	*-H17DVD0/2-DC.OPU
+	DW	H17NOP			; Open for Update
+	ERRNZ	*-H17DVD0/2-DC.CLO
+	DW	H17NOP			; Close
+	ERRNZ	*-H17DVD0/2-DC.ABT
+	DW	D.ABORT 		; Abort
+	ERRNZ	*-H17DVD0/2-DC.MOU
+	DW	D.MOUNT 		; Mount device
+	ERRNZ	*-H17DVD0/2-DC.LOD
+	DW	H17LOA			; Load device driver
+	ERRNZ	*-H17DVD0/2-DC.RDY
+	DW	H17RDY			; Device ready
+	ERRNZ	*-H17DVD0/2-DC.SET
+	DW	H17SET			; SET parameters
+	ERRNZ	*-H17DVD0/2-DC.UNL
+	DW	H17UNL			; Unload
+	ERRNZ	*-H17DVD0/2-DC.INT
+	DW	H17NOP			; Interrupt
+	ERRNZ	*-H17DVD0/2-DC.DSF
+	DW	H17NOP			; Device specific function
+
+	ERRNZ	*-H17DVD0/2-DC.MAX	; Make sure we got 'em all!
+
+	STL	'H17LOA - Load Driver'
+	EJECT
+
+	XTEXT	H17LOA
+
+	STL	'H17UNL - Unload Driver'
+	EJECT
+
+	XTEXT	H17UNL
+
+	STL	'H17RDY - Ready Processor'
+	EJECT
+
+	XTEXT	H17RDY
+
+	STL	'H17SET2 - Dynamic SET'
+	EJECT
+
+	XTEXT	H17SET2
+
+	STL	'H17MOU - Mount New Device'
+	EJECT
+
+PERRTAB DW	ERRTAB
+
+.SKEW.	DW	$$SKEW			; Address of SKEW factor
+
+	ERRNZ	H17MOU-.SKEW.-2
+	ERRNZ	H17MOU-PERRTAB-4
+
+	XTEXT	H17MOU
+
+	STL	'H17ABT - Abort Any Active I/O'
+	EJECT
+
+	XTEXT	H17ABT
+
+	STL	'H17REA - Read from Disk'
+	EJECT
+
+	XTEXT	H17REA
+
+	STL	'H17RER - Read Regardless'
+	EJECT
+
+	XTEXT	H17RER
+
+	STL	'H17WRI - Process Disk Write.'
+	EJECT
+
+	XTEXT	H17WRI
+
+	STL	'H17CLK - 2 Millisecond Clock'
+	EJECT
+
+	XTEXT	H17CLK
+
+	STL	'Subroutines			H17CDE'
+	EJECT
+
+***	H17CDE - Count Disk Errors.
+*
+*	H17CDE is called when a disk soft error occurs.  If there have
+*	occured 10 soft errors for this operation, then a hard error
+*	is flagged.  To prevent crash during retry of an operation,
+*	the motor timeout is reset.
+*
+*	Entry:	None
+*	Exit:	'C' set if hard error
+*		 Interrupts enabled
+*	Uses:	A,F,H,L
+
+H17CDE	EQU	*
+
+	IF	TRACE
+	CALL	$TRACE
+	DB	'E'
+	ENDIF
+
+	LDA	XITA			; Get timeout value
+	STA	D.DLYMO 		; Reset it so we don't crash
+
+	EI				; Restore interrupts
+
+	CALL	D.STZ			; Seek track zero
+	RC				; Can't find track zero!
+	CALL	D.SDT			; Seek desired track
+	ANA	A			; Clear 'C'
+	LHLD	D.SECNT
+	INX	H
+	SHLD	D.SECNT 		; Increment soft error count
+	LXI	H,D.OECNT		; (HL) = # operation error count
+	DCR	M
+	RNZ				; Not too many
+
+*	Back out soft errors and bump hard error.
+
+	PUSH	D			; Save (DE)
+	LHLD	ERPTCNT 		; Get retry count
+	CALL	$CHL			; (HL) = -Retry count
+	XCHG				; Save it in (DE)
+	LHLD	D.SECNT 		; Get soft errors
+	DAD	D			; Back it out
+	SHLD	D.SECNT 		; Replace it
+	LXI	H,D.HECNT		; Point to hard counter
+	INR	M			; Bump it
+	POP	D			; Restore (DE)
+
+	LHLD	D.TT			; Where the error occured
+	SHLD	D.ERTS			; Set it for STAT command
+	STC				; Signal an error
+
+	RET
+	STL	'Subroutines			H17ERRT'
+	SPACE	4,10
+***	H17ERRT - Disk Error.
+*
+*	This routine modified to use 16-bit error counters.
+*
+*	This routine altered to use internal error registers so
+*	the hyper folks who like to think of one missing header
+*	sync as a hard error won't have to worry about it any more.
+
+H17ERRT PUSH	PSW			; Save (AF)
+	PUSH	H			;  and (HL)
+	MOV	A,L			; (A) = Error type
+	SUI	#D.ERR			; Make the error an index
+	ADD	A			; Double it
+	LHLD	PERRTAB 		; Pointer to start of error table
+	CALL	$DADA			; (HL) = Pointer to error
+	INR	M			; Bump it
+	JNC	ERRT0			; No overflow
+	INX	H
+	INR	M			; Bump up high-order half
+ERRT0	POP	H			; Restore (HL)
+	POP	PSW			;  and (AF)
+	RET
+	STL	'Subroutines			H17DTS'
+	SPACE	4,10
+***	H17DTS - Decode Track and Sector.
+*
+*	H17DTS decodes the track and sector number from
+*	the supplied sector index.
+*
+*	Entry:	(HL) = Sector index
+*		 Interrupts enabled
+*	Exit:	D.TS = Sector number
+*		T.TT = Track number
+*	Uses:	A,F,H,L
+
+H17DTS	EQU	*
+
+	IF	TRACE
+	CALL	$TRACE
+	DB	'T'
+	ENDIF
+
+	PUSH	B			; Save (BC)
+	LXI	B,-10
+	MOV	A,B			; (A) = 377Q
+
+DTS1	INR	A
+	DAD	B
+	JC	DTS1
+
+	STA	D.TT			; Set track number
+	MOV	A,L
+	ADI	10
+	STA	D.TS			; Set sector number
+
+	POP	B
+	JMP	D.SDT
+	STL	'Subroutines			H17SDT'
+	SPACE	4,10
+***	H17SDT - Seek Desired Track.
+*
+*	H17SDT moves the disk arm to the desired (D.TT) track
+*
+*	Entry:	None
+*	Exit:	None
+*	Uses:	A,F,H,L
+
+H17SDT	EQU	*
+
+	IF	TRACE
+	CALL	$TRACE
+	DB	'K'
+	ENDIF
+
+*	Clear any side select
+
+	LDA	.CTL2FL 		; MTR88 flag
+	ANI	377Q-CB2.SID		; Clear side-select bit
+	STA	.CTL2FL 		; Set control byte
+
+	PUSH	B			; Save (BC)
+
+	CALL	MODE			; Find unit mode flag
+	MOV	C,M			; Move into (C)
+	LHLD	D.TRKPT 		; ((HL)) = Track number
+
+	JMP	SDT0			; Enter.
+
+*	Move up to higher track
+
+SDT2	INR	M			; Increment track number
+	MOV	A,C			; (A) = Flags
+	RAR				; 'C' = number of sides
+	ERRNZ	MODE.2S-00000001B
+	PUSH	PSW			; Save flags
+	JNC	SDT2.1			; Only one side on this disk
+	MOV	A,M			; (A) = Track number
+	RAR				; Odd tracks are on the back
+	JC	SDT3			; Have odd track.
+
+SDT2.1	EQU	*
+
+	CALL	D.MAI			; Move arm in
+	POP	PSW			; (A) = Flags
+	RAR				; Double step?
+	ERRNZ	MODE.DS-00000010B
+	CC	D.MAI			; Move arm in
+
+*	Check to see if we're at the proper track.
+
+SDT0	LDA	D.TT			; (A) = Destination track number
+	CMP	M			; Are we there yet?
+	JE	SDTXIT			; Yep.
+	JNC	SDT2			; Have to move to higher track.
+
+*	Move down to lower track
+
+SDT1	DCR	M			; Decrement track number
+	MOV	A,C			; (A) = Flags
+	RAR				; 'C' = number of sides
+	ERRNZ	MODE.2S-00000001B
+	PUSH	PSW			; Save flags
+	JNC	SDT1.1			; Only one side on this disk
+	MOV	A,M			; (A) = Track number
+	RAR				; Odd tracks are on the back
+	JNC	SDT3			; Have even track.
+
+SDT1.1	EQU	*
+
+	CALL	D.MAO			; Move arm out
+	POP	PSW			; (A) = Flags
+	RAR				; Double step?
+	ERRNZ	MODE.DS-00000010B
+	CC	D.MAO			; Move arm out
+	JMP	SDT0
+
+*	Have odd track on 2-sided disk.  Clear stack and go again.
+
+SDT3	POP	PSW			; Clear off flags from stack
+	JMP	SDT0
+
+*	Arrived at our track.  Select proper side (if necessary)
+
+SDTXIT	MOV	A,C			; (A) = Flags
+
+	POP	B			; Restore (BC)
+
+	RAR				; Is two-sided?
+	ERRNZ	MODE.2S-00000001B
+	JNC	D.STS
+
+*	Have 2-sided disk.  If odd track, select the back side.
+
+	MOV	A,M			; (A) = Track number
+	RAR				; If odd, then 'C' = 1.
+	JNC	D.STS
+
+	LDA	.CTL2FL 		; MTR88 byte
+	ORI	CB2.SID 		; Set side-select
+	STA	.CTL2FL 		; Set control byte.
+
+	JMP	D.STS
+	STL	'Subroutines			H17MAI'
+	SPACE	4,10
+***	H17MAI - Move disk arm in one track.
+*
+*	Usage:	See MAO
+	SPACE	2
+**	H17MAO - Move disk arm out one track.
+*
+*	Entry:	None
+*	Exit:	None
+*	Uses:	A,F
+
+H17MAI	MVI	A,DF.DI 		; Set direction
+
+	DB	MI.CPI			; Skip over next instruction
+H17MAO	XRA	A			; Set direction
+
+	PUSH	H
+	MOV	H,A
+	LDA	D.DVCTL
+	ANI	377Q-DF.DI-DF.ST
+	ORA	H			; Set direction
+	OUT	DP.DC			; Do it
+	POP	H			; Restore (HL)
+	ORI	DF.ST
+	OUT	DP.DC			; Start step
+	PUSH	PSW			; Save (A)
+	MVI	A,2			; Delay time is about 7us @ 4MHz
+	CALL	D.UDLY
+	POP	PSW			; Restore (A)
+	XRI	DF.ST
+	OUT	DP.DC			; Complete step
+	LDA	D.MAIA			; (A) = ms/2 for track timing
+	JMP	D.DLY
+	STL	'Subroutines			H17DLY'
+	SPACE	4,10
+***	H17DLY - Delay by front panel clock.
+*
+*	Entry:	(A) = Millisecond count / 2
+*	Exit:	None
+*	Uses:	A,F
+
+H17DLY	EQU	.DLY			; Use existing code
+	STL	'Subroutines			H17LPS'
+	SPACE	4,10
+***	H17LPS - Locate proper sector.
+*
+*	H17LPS reads over sector headers until the proper sector
+*	is found.
+*
+*	Upon entry, the arm should be positioned over the sector.
+*
+*	D.TT = Desired track
+*	D.TS = Desired sector
+*
+*	Entry:	None
+*	Exit:	Interrupts disabled
+*		 'C' set if error
+*	Uses:	A,F,B,D,E,H,L
+
+LPS0	EQU	*
+
+	CALL	D.STS			; Skip over sector
+
+H17LPS	EQU	*
+
+	LDA	LPSA			; (A) = # of trys for this sector
+	MOV	B,A
+	LDA	D.DLYHS
+	ANA	A
+	JNZ	LPS0			; Wait for heads to settle
+
+LPS1	DI				;; Disable interrupts
+	CALL	D.WSC			;; Wait for SYNC character
+	JC	LPS3			;; None
+	LHLD	D.VOLPT
+	CALL	D.RDB
+	CMP	M			;; See if proper volume
+	JNE	LPS4			;; Wrong volume
+	LXI	H,D.TT
+	CALL	D.RDB
+	CMP	M			;; See if proper track
+	JNE	LPS5			;; Wrong track
+	ERRNZ	D.TS-D.TT-1
+	INX	H
+	CALL	D.RDB
+	CMP	M
+	JNE	LPS2			;; Wrong sector
+
+*	Got right sector, read checksum
+
+	MOV	H,D			;; (H) = Calculated checksum
+	CALL	D.RDB
+	CMP	H			;; Same?
+	RE				;; All ok
+
+	MVI	L,#D.E.HCK		;; Header checksum error
+
+LPS1.5	MVI	H,D.ERR/256		;; (HL) = Error byte address
+.	SET	D.ERR/256
+	ERRNZ	D.ERRL/256-.		;; Must be in same page
+	CALL	D.ERRT
+
+*	Wrong sector or bad data, try some more.
+
+LPS2	EQU	*
+
+	CALL	D.STS			;; Skip a sector
+	DCR	B
+	JNZ	LPS1			;; Try again
+	STC				;; Enough trys
+	RET				;; Error
+
+LPS3	MVI	L,#D.E.HSY		;; Header SYNC error
+	JMP	LPS1.5
+
+LPS4	MVI	L,#D.E.VOL		;; Bad volume number
+	JMP	LPS1.5
+
+LPS5	MVI	L,#D.E.TRK		;; Bad track number
+	JMP	LPS1.5
+	STL	'Subroutines			H17RDB'
+	SPACE	4,10
+***	H17RDB - Read byte from disk.
+*
+*	H17RDB reads the next byte from the disk.
+*
+*	Entry:	(D) = Checksum
+*	Exit:	(A) = Byte
+*		(D) Updated
+*	Uses:	A,F,D,E
+
+H17RDB	IN	UP.ST
+	ERRNZ	UF.RDA-1
+	RAR
+	JNC	H17RDB			; Not ready yet
+	IN	UP.DP			; (A) = Data
+	MOV	E,A
+	XRA	D			; Differ
+	RLC				; Shift left
+	MOV	D,A			; Replace
+	MOV	A,E			; (A) = Character
+	RET				; Exit
+	STL	'Subroutines			H17SDP'
+	SPACE	4,10
+***	H17SDP - Set device parameters.
+*
+*	H17SDP sets up arguments for the specific unit.
+*
+*	D.DVCTL = Motor on, device select
+*	D.TRKPT = Address of device track number
+*
+*	This routine includes support for units 0 thru 2, and
+*	allows for different step times per unit.
+*
+*	Entry:	AIO.UNI = Unit number
+*	Exit:	(HL) = (D.TRKPT)
+*	Uses;	A,F,H,L
+
+H17SDP	EQU	*
+
+	IF	TRACE
+	CALL	$TRACE
+	DB	'P'
+	ENDIF
+
+	LDA	ERPTCNT
+	STA	D.OECNT 		; Set max error count for operation
+	LDA	AIO.UNI
+	PUSH	PSW			; Save unit on stack
+
+*	Set step time from table.
+
+	LXI	H,S.TAB 		; Step time table
+	CALL	$DADA			; (HL) points to correct value
+	MOV	A,M			; (A) = Value
+	STA	D.MAIA			; Set step time
+	POP	PSW			; (A) = Unit number
+
+*	Determine mask to select proper unit.
+
+	PUSH	PSW			; Save unit number
+	CPI	2			; Is unit 2?
+	JC	SDP0.1			; No ...
+	MVI	A,3			; Set (A) to 3
+
+SDP0.1	INR	A			; A=1 if dev 0, 2 if dev 1, 4 if dev 2.
+	ADD	A			; Make it 2, 4, or 8.
+
+	ERRNZ	DF.DS0-2
+	ERRNZ	DF.DS1-4
+	ERRNZ	DF.DS2-8
+
+*	Select unit w/o write gate.
+
+	DI				;; Interlock clock interrupts
+	LXI	H,D.DVCTL
+	XRA	M
+	ANI	377Q-DF.WR
+	XRA	M			;; Merge with DF.WR bit from D.DVCTL
+	ORI	DF.MO			;; Motor on
+	MOV	M,A			;; Update
+	OUT	DP.DC			;; Select drive, load head
+
+*	See if heads have been unloaded long enough to require load delay.
+
+	LXI	H,D.DLYHS
+	MOV	A,M			;; (A) = Flag set by XIT
+	ANA	A
+	MVI	M,0			;; Assume no reload
+	JNZ	SDP1			;; No reload
+	LDA	SDPA			;; (A) = Head settle wait time/4
+	MOV	M,A			;; Set for clock timer
+SDP1	DCX	H
+	ERRNZ	D.DLYMO-D.DLYHS+1	;; (HL) = #D.DLYMO
+	MOV	A,M			;; (A) = Motor on delay
+	PUSH	PSW			;; Save it
+	LDA	XITA			;; Motor on time
+	MOV	M,A			;; Set it
+	POP	PSW			;; Restore time
+	ANA	A			;; 'Z' if motor turned off
+	INX	H			;; (HL) = #D.DLYHS
+	JNZ	SDP2			;; Motor is still on
+	LDA	SDPB			;; (A) = Motor wait time (ms/4)
+	MOV	M,A
+SDP2	EI				;; Restore interrupts
+	POP	PSW			; (A) = Unit number
+	ADD	A			; (A) = 2 * Unit number
+	LXI	H,D.DRVTB
+	ADD	L
+	MOV	L,A			; (HL) = Address of track entry
+	SHLD	D.TRKPT
+	INX	H
+	SHLD	D.VOLPT 		; Set volume number
+
+	RET
+	STL	'Subroutines			H17STS'
+	SPACE	4,10
+***	H17STS - Skip this sector.
+*
+*	H17STS is called to skip the current sector, regardless of where
+*	the head is positioned.
+*
+*	H17STS will exit at the beginning of the next sector.
+*
+*	1. If the head is not over a hole, wait 8ms while
+*	   hole checking. If no hole in this time, when we are in
+*	   a regular gap. Wait for the next hole and exit.
+*
+*	2. If the head is over a hole, or becomes so during the 8ms
+*	   wait, then wait for the hole to pass, wait 12 milliseconds
+*	   in case of the index hole, then wait for the next hole and exit.
+*
+*	Entry:	None
+*	Exit:	Interrupts disabled
+*	Uses:	A,F,H,L
+
+H17STS	EQU	*
+
+	IF	TRACE
+	CALL	$TRACE
+	DB	'k'
+	ENDIF
+
+	LDA	.CTL2FL 		; (A) = MTR88 Control byte
+	ORI	CB2.CLI 		; Make sure we keep clock in!
+	OUT	OP2.CTL 		; Select proper side
+
+	EI
+	PUSH	B			; Save (BC)
+	IN	DP.DC
+	ERRNZ	DF.HD-1
+	RAR
+	JC	STS2			; Am currently over hole
+
+*	No hole yet, wait 8ms min (10 max) for hole to appear
+
+	LXI	H,.TICCNT
+	MOV	B,M			; (B) = Current time
+STS1	IN	DP.DC
+	RAR
+	ERRNZ	DF.HD-1
+	JC	STS2			; Got hole
+	LDA	STSA			; (A) = Delay count
+	ADD	B			; 10ms max, 8ms min
+	CMP	M
+	JNE	STS1			; 8ms not up yet
+	JMP	STS3			; Am in sector gap
+
+*	Have hole. Skip it and wait 12ms.
+
+STS2	CALL	WNH			; Wait for no hole
+	LDA	STSB			; (A) = Count (10ms min, 12ms max)
+	CALL	D.DLY			; Wait
+
+STS3	POP	B			; Restore (BC)
+	DI
+
+*	JMP	WHD			;; Wait hole detect
+	ERRNZ	WHD-*
+	STL	'Subroutines			H17WHD'
+	SPACE	4,10
+***	WHD - Wait Hole Detect
+*
+*	WHD waits until a hole is located.
+*
+*	Entry:	None
+*	Exit:	None
+*	Uses:	A,F
+
+WHD	IN	DP.DC
+	ERRNZ	DF.HD-1
+	RAR
+	JNC	WHD			;; Wait until found
+	LDA	WHDA			;; (A) = Loop delay count
+	JMP	D.UDLY
+	STL	'Subroutines			H17STZ'
+	SPACE	4,10
+***	H17STZ - Seek Track Zero.
+*
+*	H17STZ seekd the selected unit arm outwards until it reaches
+*	track zero.  The arm position byte is then updated to 0.
+*
+*	If track zero is not reached in 128 pulses, the step time for
+*	the unit in incermented by 10ms and replaced in the running
+*	version of the driver.	This continues until the step time
+*	overflows (>510ms).  At that time the assumption is made that
+*	the drive is broken, a message is issued, and an error is
+*	returned to the caller.
+*
+*	Entry:	Interrupts Enabled
+*	Exit:	Interrupts Enabled
+*	Uses:	A,F,H,L
+
+H17STZ	EQU	*
+
+	IF	TRACE
+	CALL	$TRACE
+	DB	'Z'
+	ENDIF
+
+	MVI	H,100			; Try for track zero 100 times
+
+STZ0	IN	DP.DC			; (A) = Drive status
+	ANI	DF.T0			; Track zero signaled?
+	JNZ	STZ1			; Yes ... exit with 'C' clear
+
+	CALL	D.MAO			; Move arm out
+
+	DCR	H			; Time up?
+	JNZ	STZ0			; No ...
+
+	LDA	AIO.UNI 		; (A) = Unit number
+	LXI	H,S.TAB 		; Step table
+	CALL	$DADA			; ((HL)) = Step time for this unit
+	MVI	A,10/2			; Amount to increment step time
+	ADD	M			; Bump it up
+	JC	STZ2			; Overflow!!!
+	MOV	M,A			; Replace the step time
+	STA	D.MAIA			; Also here
+
+	JMP	D.STZ			; Re-enter
+
+*	Are unable to reach track zero.  Tell the user and abort.
+
+STZ2	LDA	RESTEP			; (A) = Retry time
+	MOV	M,A			; Reset time for this unit
+
+	LDA	AIO.UNI 		; (A) = Unit number
+	ADI	'0'			; Make it ASCII
+	STA	STZUNI			; Set for display
+
+	CALL	$TYPTX
+	DB	NL,'? H17 - Unable to reach track 0 on unit '
+STZUNI	DB	'0.',ENL
+
+	MVI	A,EC.DDA		; Driver abort
+	STC				; Flag error
+
+STZ1	LHLD	D.TRKPT
+	MVI	M,0			; Set track pointer
+
+	PUSH	PSW			; Save (AF)
+	LDA	.CTL2FL 		; MTR88 flag
+	ANI	377Q-CB2.SID		; Clear side select
+	STA	.CTL2FL 		; Clear control byte
+	POP	PSW			; (AF) = Status
+
+	RET
+
+	STL	'Subroutines			H17WNH'
+	SPACE	4,10
+***	WNH - Wait for No Hole.
+*
+*	WNH waits until the current hole has passed.
+*
+*	Entry:	None
+*	Exit:	None
+*	Uses:	A,F
+
+WNH	IN	DP.DC
+	ERRNZ	DF.HD-1
+	RAR
+	JC	WNH			;; Still hole
+	LDA	WNHA			;; (A) = Debounce count
+	JMP	D.UDLY			;; Short pause
+	STL	'Subroutines			H17UDLY'
+	SPACE	4,10
+***	H17UDLY - Microsecond Delay.
+*
+*	H17UDLY is called (with interrupts disabled)
+*	to wait for a certain number of microseconds.
+*
+*	Each time through the delay loop (DCR/JNZ) causes
+*	a pause as follows:
+*
+*	    CPU      CLOCK    STATES   DELAY	REL.SPEED
+*	    ---      -----    ------   -----	---------
+*	   8080    2.048 MHz	15    7.324us	  1.000
+*	    Z80    2.048 MHz	14    6.836us	  0.933
+*	    Z80    4.096 MHz	14    3.418us	  0.467
+*
+*	Entry:	(A) = Loop count
+*	Exit:	(A) = 0
+*	Uses:	A,F
+
+H17UDLY DCR	A			;; Count down
+	JNZ	H17UDLY 		;; Not done ...
+	RET
+	STL	'Subroutines			H17WSC'
+	SPACE	4,10
+***	H17WSC - Wait SYNC Character.
+*
+*	H17WSC waits for the appearance of a SYNC character. The disk should be
+*	selected, moving, and the head should be over the pre-SYNC zero band.
+*
+*	If a SYNC is not detected in 25 character times, an error is returned.
+*
+*	Entry:	None
+*	Exit:	'C' clear if ok, SYNC character read.
+*		 (D) = 0 (CHECKSUM)
+*		'C' set if no SYNC found
+*	Uses:	A,F,D
+
+H17WSC	MVI	A,C.DSYN
+	OUT	UP.SC			;; Set SYNC character
+	IN	UP.SR			;; Reset SYNC search
+	PUSH	H			;; Save (HL)
+	LHLD	WSCA			;; (HL) = Number of loops in 25 characte
+
+WSC1	IN	DP.DC
+	ANI	DF.SD			;; See if SYNC
+	JNZ	WSC2			;; Got SYNC
+	DCX	H			;; Count it down
+	MOV	A,H
+	ORA	L			;; Done?
+	JNZ	WSC1			;; Try some more
+
+*	Couldn't find SYNC.
+
+	POP	H			;; Restore (HL)
+	STC				;; Can't find it
+	RET
+
+*	Found it.
+
+WSC2	POP	H			;; Restore (HL)
+	IN	UP.DP			;; Gobble SYNC character
+	MVI	D,0			;; Clear checksum
+	RET
+	STL	'Subroutines			H17WSP'
+	SPACE	4,10
+***	H17WSP - Write SYNC Pattern.
+*
+*	H17WSP writes a SYNC pattern of zeros, followed by a SYNC
+*	character.
+*
+*	Entry:	(A) = Initial delay counter
+*		(C) = # of zero bytes to write
+*	Exit:	(D) = Checksum
+*		(C) = 0
+*	Uses:	A,F,C,D,E
+
+H17WSP	DCR	A
+	JNZ	H17WSP			;; Delay
+
+*	Delay is up, on write gate.
+
+	LDA	D.DVCTL
+	ERRNZ	DF.WG-1
+	INR	A			;; Set write gate
+	OUT	DP.DC
+
+WSP1	XRA	A
+	CALL	D.WNB
+	DCR	C
+	JNZ	WSP1			;; Do more
+	MVI	A,C.DSYN
+	MOV	D,A			;; Pre-clear checksum so WNB exits with 
+	JMP	D.WNB
+	STL	'Subroutines			H17WNB'
+	SPACE	4,10
+***	H17WNB - Write Next Byte.
+*
+*	H17WNB writes a byte to the disk, assuming that the write gate
+*	is already selected.
+*
+*	Entry:	(A) = Character
+*		(D) = Checksum
+*	Exit:	(D) = Checksum
+*	Uses:	A,F,D,E
+
+H17WNB	MOV	E,A
+WNB1	IN	UP.ST
+	ANA	A
+	ERRNZ	UF.TBM-200Q
+	JP	WNB1				;; Not ready
+	MOV	A,E
+	OUT	UP.DP				;; Out data
+	XRA	D
+	RLC
+	MOV	D,A
+	RET
+
+	STL	'Common Decks'
+	EJECT
+***	HDOS Common Decks
+*
+
+	XTEXT	BITC
+	XTEXT	BITS
+	XTEXT	CDEHL
+	XTEXT	CHL
+	XTEXT	DADA
+	XTEXT	DADA2
+	XTEXT	HLIHL
+	XTEXT	MOVE
+	XTEXT	SAVALL
+	XTEXT	TJMP
+	IF	TRACE
+	XTEXT	TRACE
+	ENDIF
+	XTEXT	TYPTX
+	XTEXT	UDD
+	XTEXT	ZERO
+	XTEXT	ZEROS
+	STL	'Data and Initialization Tables'
+	EJECT
+
+***	Disk constants.
+*
+*	Values marked with (*) require modification for
+*	clocks other than 2.048 MHz.
+
+.XITA	EQU	 2*256+120		; Head unsettle & motor on times
+XITA	DW	.XITA
+.WRITA	EQU	 20		 (*)	; Guardband count for write
+WRITA	DB	.WRITA
+.WRITB	EQU	 10			; Number of zero characters after hole e
+WRITB	DB	.WRITB
+.WRITC	EQU	 128/8		 (*)	; Two character delay before writing
+WRITC	DB	.WRITC
+.LPSA	EQU	 20			; Number of trys for correct sector
+LPSA	DB	.LPSA
+.SDPA	EQU	 70/4			; 70 milliseconds wait for head settle
+SDPA	DB	.SDPA
+.SDPB	EQU	 1000/4 		; 1 second wait for motor on
+SDPB	DB	.SDPB
+.STSA	EQU	 8/2+1			; ms/2 to wait for index hole
+STSA	DB	.STSA
+.STSB	EQU	 12/2+1 		; ms/2 to wait past index hole
+STSB	DB	.STSB
+.WHDA	EQU	 20		 (*)	; UDLY count for hole debounce
+WHDA	DB	.WHDA
+.WNHA	EQU	 20		 (*)	; UDLY count for hole debounce
+WNHA	DB	.WNHA
+.WSCA	EQU	 96*25/20	 (*)	; Loop count for 25 characters
+WSCA	DW	.WSCA
+	SPACE	4,10
+***	Settable values.
+
+SETTAB	EQU	*			; All settable values
+
+S.TAB	EQU	*			; step time table
+*	DC	H17MAX,#DFLT.ST 	; default step rates, Not recognized by Heath
+	DB	#DFLT.ST,#DFLT.ST,#DFLT.ST	; Heath replacement
+	ERRNZ	*-S.TAB-H17MAX		; ensure full table
+
+ERPTCNT DW	DFLT.RC 		; Retry count
+
+MOTOR	DB	DFLT.TM*2		; Motor on timer (seconds)
+
+$$SKEW	DB	DFLT.SK 		; Initialization track/sector skew
+
+RESTEP	DB	RTRY.ST 		; Retry step rate
+
+SETTABL EQU	*-SETTAB
+	SPACE	4,10
+***	Unit Mode flags
+
+MODE.2S EQU	00000001B		; Unit is double sided
+MODE.DS EQU	00000010B		; Unit is 80 track w/ 40 track media
+
+MODETBL DB	'wgp'			; Device mode table
+	ERRNZ	*-MODETBL-H17MAX
+	SPACE	4,10
+***	I/O Retry Flag, work cell, and error counters.
+
+RETRY	DB	0			; 1 = Retrying after I/O error
+
+RESTEP2 DB	0			; Save place for step rate
+
+ERRTAB	EQU	*
+
+ERRMDS	DW	0			; Missing data sync
+ERRHSY	DW	0			; Missing header sync
+ERRCHK	DW	0			; Data checksum
+ERRHCK	DW	0			; Header checksum
+ERRVOL	DW	0			; Wrong volume number
+ERRTRL	DW	0			; Bad track seek
+	SPACE	4,10
+***	This buffer is required for driver MOUNT code.
+
+BUFF	DB	'(c) 1981 by D-G Electronic Developments, Inc.'
+BUFFL	EQU	*-BUFF
+
+	ERRMI	*-BUFF-LAB.VFL-1	; Need enough to hold 1st part of VCB
+	SPACE	4,10
+*	"what" information
+
+	DB	'@(#)HDOS 3.0 H17 Driver',NL
+	DB	45H,21H 		; assembled date (subbed orig values)
+	DB	17H,32H 		; assembled time (subbed orig values)
+	SPACE	4,10
+
+***	Patch area
+*	DC	32,#0AAH			; Not recognized by Heath
+	DB	0AAH,0AAH,0AAH,0AAH	; Heath replacement
+	DB	0AAH,0AAH,0AAH,0AAH
+	DB	0AAH,0AAH,0AAH,0AAH
+	DB	0AAH,0AAH,0AAH,0AAH
+	DB	0AAH,0AAH,0AAH,0AAH
+	DB	0AAH,0AAH,0AAH,0AAH
+	DB	0AAH,0AAH,0AAH,0AAH
+	DB	0AAH,0AAH,0AAH,0AAH
+
+	DW	'BP'			; patch for PIC table entries
+	STL	'PIC Table'
+	EJECT
+	LON	G
+
+	END
+                                                                                                                                       

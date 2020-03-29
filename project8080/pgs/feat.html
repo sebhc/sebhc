@@ -1,0 +1,262 @@
+<html>
+
+<!-- Mirrored from davidwallace2000.home.comcast.net/~davidwallace2000/h8/project8080_archive/pgs/feat.html by HTTrack Website Copier/3.x [XR&CO'2010], Mon, 10 Sep 2012 13:15:43 GMT -->
+<head>
+<title>H8 Emulation Help - Features</title>
+<meta name="AppleTitle" content="H8 Emulation Help">
+<meta name="description" content="H8 Emulator Features">
+</head>
+
+<!-- updated 2/23/2003, das -->
+
+<body bgcolor="white">
+
+<p>
+<font size=3 face="Verdana,Arial" color="0000FF">
+<b>H8 Emulator Features</b>
+</font>
+<ul>
+<font face="Geneva,Arial" size=2 color="black">
+<p>
+The emulator supports the following features:
+<p>
+<b><font color="#0000ff">Memory</font></b>
+<p>
+The emulator supports a 64K address space laid out as follows:</p>
+</font>
+
+<table border="0" cellspacing="1" cellpadding="2">
+<tr align="left" valign="top">
+	<td align="center"><font face="Geneva" size=2><b>Address Range</b></font></td>
+	<td>&nbsp;</td>
+	<td><font face="Geneva" size=2><b>Description</b></font></td>
+</tr>
+
+<tr align="left" valign="top">
+	<td align="center"><font face="Geneva" size=2>000.000A-003.377A</font></td>
+	<td>&nbsp;</td>
+	<td><font face="Geneva" size=2>PAM/8 or PAM/GO ROM</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td align="center"><font face="Geneva" size=2>004.000A-023.377A</font></td>
+	<td>&nbsp;</td>
+	<td><font face="Geneva" size=2>Unused memory space - all zero</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td align="center"><font face="Geneva" size=2>024.000A-027.377A</font></td>
+	<td>&nbsp;</td>
+	<td><font face="Geneva" size=2>Write-protected RAM used by H-17</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td align="center"><font face="Geneva" size=2>030.000A-037.377A</font></td>
+	<td>&nbsp;</td>
+	<td><font face="Geneva" size=2>HDOS ROM (H-17 driver basics and initial boot code)</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td align="center"><font face="Geneva" size=2>040.000A-377.377A</font></td>
+	<td>&nbsp;</td>
+	<td><font face="Geneva" size=2>56K of RAM</font></td>
+</tr>
+</table>
+
+<font face="Geneva,Arial" size=2 color="black">
+<p>More details are available <a href="memory.html#addr">here</a>.</p>
+<p>A "real" H8 with the ORG-zero option installed supports 8K of "shadow RAM" in the low 8K of address space, allowing standard CP/M to be used on the hardware. This is not supported by the emulator.</p>
+
+
+<p><b><font color="#0000ff">Serial Ports</font></b></p>
+<p>
+The emulator supports one 8251-based and four 8250-based serial ports. The 8250 port addresses are:</p>
+
+</font>
+
+<table border="0" cellspacing="1" cellpadding="2">
+<tr align="left" valign="top">
+	<td align="center"><font face="Geneva" size=2><b>Address Range</b></font></td>
+	<td>&nbsp;</td>
+	<td><font face="Geneva" size=2><b>Description</b></font></td>
+</tr>
+<tr align="left" valign="top">
+	<td align="center"><font face="Geneva" size=2>350Q-357Q</font></td>
+	<td>&nbsp;</td>
+	<td><font face="Geneva" size=2>Console (H-19)</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td align="center"><font face="Geneva" size=2>340Q-347Q</font></td>
+	<td>&nbsp;</td>
+	<td><font face="Geneva" size=2>LP: output (Ref: <a href="print.html">Printing</a>)</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td align="center"><font face="Geneva" size=2>330Q-337Q</font></td>
+	<td>&nbsp;</td>
+	<td><font face="Geneva" size=2>Modem support (see below)</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td align="center"><font face="Geneva" size=2>320Q-327Q</font></td>
+	<td>&nbsp;</td>
+	<td><font face="Geneva" size=2>AT: port input and output (Ref: <a href="xfer.html">Transferring Files</a>)</font></td>
+</tr>
+</table>
+
+<font size="2" face="Geneva,Arial">
+<p>
+The 8251 port (address 170-171q) is used to support PAM/8 tape load and dump. This is a very limited emulation of an 8251; only the data I/O port and status flags are provided, the minimum necessary to support PAM/8 load and dump.
+
+<p>
+<b><font color="#0000ff">Interrupts</font></b>
+<p>
+All the standard interrupts are supported:</p>
+</font>
+
+<table border="0" cellspacing="1" cellpadding="2">
+<tr align="left" valign="top">
+	<td><font face="Geneva" size=2><b>Interrupt Source</b></font></td>
+	<td>&nbsp;</td>
+	<td><font face="Geneva" size=2><b>Interrupt Vector</b></font></td>
+</tr>
+<tr align="left" valign="top">
+	<td><font face="Geneva" size=2>Master clear / reset</font></td>
+	<td>&nbsp;</td>
+	<td><font face="Geneva" size=2>vector 0 (000.000A)</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td><font face="Geneva" size=2>Clock ticks / RTM key seq.</font></td>
+	<td>&nbsp;</td>
+	<td><font face="Geneva" size=2>vector 1 (000.010A)</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td><font face="Geneva" size=2>Single-step hardware</font></td>
+	<td>&nbsp;</td>
+	<td><font face="Geneva" size=2>vector 2 (000.020A)</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td><font face="Geneva" size=2>Console (port 350q)</font></td>
+	<td>&nbsp;</td>
+	<td><font face="Geneva" size=2>vector 3 (000.030A)</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td><font face="Geneva" size=2>Reserved for RTC - unused here</font></td>
+	<td>&nbsp;</td>
+	<td><font face="Geneva" size=2>vector 4 (000.040A)</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td><font face="Geneva" size=2>Reserved for H-47 - unused here</font></td>
+	<td>&nbsp;</td>
+	<td><font face="Geneva" size=2>vector 5 (000.050A)</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td><font face="Geneva" size=2>User / modem</font></td>
+	<td>&nbsp;</td>
+	<td><font face="Geneva" size=2>vector 6 (000.060A)</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td><font face="Geneva" size=2>HDOS system calls (software only)</font></td>
+	<td>&nbsp;</td>
+	<td><font face="Geneva" size=2>vector 7 (000.070A)</font></td>
+</tr>
+</table>
+
+<font face="Geneva,Arial" size=2>
+<p>
+Output is driven directly to the "attached device." Because there is no actual serial transfer of bits to the emulated device, output is instantaneous. For that reason, the use of transmitter interrupts is neither necessary nor recommended. If used, the system will be in interrupt service constantly until the message is fully transmitted.
+<p>
+Receiver interrupts should not be used on the AT port (320-327q). Input pacing for file transfers into the H8 is done by supplying the next character to be input when the program polls the status port. If you rely on receiver interrupts and don't poll the status port, input will stall. In any case, no interrupt vector has been assigned to the AT: and LP: ports.
+<p>
+<b><font color="#0000ff">H-17 Disks</font></b>
+<p>
+Three H-17 disk drives are provided: sy0:, sy1:, and sy2:.
+The disks included with the release package contain the original SY: driver, which supports 100K/byte (40-track, single side) disks. The emulator supports the HUG replacement SY: driver which supports 80-track and double-sided drives. The HUG driver can be downloaded from the project web site.
+<p>
+"Disks" are actually files on the Mac hard drive. They are held in memory when mounted on the drive. A GUI (Ref: <a href="menus.html">Emulator Menus</a>) lets you mount existing disks, create new ones, and dismount disks. Disk images are saved on dismount.
+<p>
+You can change the write-protected state of disks that you create. (Disks supplied with the emulator are locked, meaning you cannot remove write protection.)
+The write protection state is saved with the disk image, so it will be the same the next time you mount the disk.
+<p>
+You can specify which diskettes, if any, are to be automatically inserted into drives when the emulator is started. See the Preferences item under the Edit menu in <a href="menus.html">Emulator Menus</a> for more information.
+<p>
+The emulator can be launched by opening a diskette or tape file in the Finder. The diskette will be mounted if there is a free drive. The tape will be opened for input to PAM/8.
+<p>
+<b><font color="#0000ff">H-19 Terminal</font></b>
+<p>Near complete emulation of the H-19 Video Display Terminal is provided, using Heath escape sequences only. Please refer to <a href="h19kb.html">H-19 Keyboard Map and User Guide</a> and <a href="h19esc.html">H-19 Programming Information</a> for a full list of features and how to access them. See <a href="limits.html">Limitations</a> for a list of H-19 terminal features not implemented. </p>
+<p>The emulator limits the throughput of the H-19 terminal to 2,000 characters per second, maximum, to make the system usable on faster machines using Turbo Mode.</p>
+
+<p>
+<b><font color="#0000ff">Modem Support</font></b>
+<p>The emulator provides access to the Macintosh modem, mapping H8 I/O ports 330-337Q to the Mac Modem serial port. In the current release, the modem configuration is fixed as follows:</p>
+</font>
+
+<ul type="disc">
+<li><font face="Geneva" size=2>9600 bps</font></li>
+<li><font face="Geneva" size=2>8 data bits</font></li>
+<li><font face="Geneva" size=2>no parity</font></li>
+<li><font face="Geneva" size=2>1 stop bit</font></li>
+</ul>
+
+<font face="Geneva" size=2>
+<p>Characters are "paced" into H8 I/O port 330Q at a rate of approx. 500 per second in order to simulate something of a serial line and to prevent port overrun.</p>
+<p>Full bidirectional Xon/Xoff flow control is supported. Make sure that any remote system that you connect to will support Xon/Xoff flow control, and there should be no data loss.</p>
+<p>This inflexible configuration may be enhanced in a future release if there is any demand for it. Frankly, with the wide availability of the Internet, there are few async BBS systems still in operation, and in any case there are much better communications tools available for the Macintosh. This feature was included only for "completeness," really.</p>
+<p>The modem must be allocated to the H8 before use, and freed when you are done. Please see <a href="menus.html">Emulator Menus</a> to learn how to do this.</p>
+
+<p>
+<a name="files"></a>
+<b><font color="#0000ff">File Types</font></b>
+<p>
+All disk and tape files created by the emulator use the creator signature 'h8h8'.
+The emulator creates files of the following types:<p>
+
+<table border="0" cellspacing="1" cellpadding="4">
+<tr align="left" valign="top">
+	<td align="center"><font size="2" face="Geneva,Arial"><b>File&nbsp;Type</b></font></td>	
+	<td>&nbsp;</td>
+	<td><font size="2" face="Geneva,Arial"><b>Description</b></font></td>
+</tr>
+<tr align="left" valign="top">
+	<td align="center"><font size="2" face="Geneva,Arial">'h8tp'</font></td>
+	<td>&nbsp;</td>
+	<td><font size="2" face="Geneva,Arial">PAM/8 tape files. The icon is a bad representation of a Phillips cassette tape.
+The file content is the exact series of bytes, 8 bits per byte, that were output by PAM/8 when the file was dumped.</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td align="center"><font size="2" face="Geneva,Arial">'h8dk'</font></td>	
+	<td>&nbsp;</td>
+	<td><font size="2" face="Geneva,Arial">H-17 disks written in compressed, non-portable format. The icon is a representation of a diskette, with 'H-17' written on the large icons.
+The file content is a 16-byte header containing the volume serial number, protection flag, number of sides, tracks, and sectors per track, along with some expansion space. This is followed by a number of 256-byte sector images, the actual count depending on the disk format. There are no delimeters.</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td align="center"><font size="2" face="Geneva,Arial">'TEXT'</font></td>	
+	<td>&nbsp;</td>
+	<td><font size="2" face="Geneva,Arial">H-17 disks written in expanded text, known as the portable format. This format is common among all known H8 emulator systems. The icon is the same as the compressed format, except that the word 'TEXT' is displayed on the large icon.
+The content is the same as the 'h8dk' file, except (a) each byte is written as three ascii, octal digits; and (b) there are carriage returns and comments inserted to help make the disk readable by humans.</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td align="center"><font size="2" face="Geneva,Arial">'pref'</font></td>	
+	<td>&nbsp;</td>
+	<td><font size="2" face="Geneva,Arial">The preferences file, saved in the System Preferences folder under the name "H8 Emulator Preferences." If this file does not exist it's created with default values.</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td align="center"><font size="2" face="Geneva,Arial">'trsh'</font></td>	
+	<td>&nbsp;</td>
+	<td><font size="2" face="Geneva,Arial">The private spool file, which supports printing, is created in the temporary folder with a 'trsh' file type. It is deleted when you quit the emulator.</font></td>
+</tr>
+</table>
+
+<font size="2" face="Geneva,Arial">
+<p>
+Filters are used in the standard file open dialogs so that only 'h8tp' files are shown when opening a PAM/8 tape, and only 'TEXT' and 'h8dk' files are shown when opening a disk. A header check is performed on disk files; the emulator will not open a 'TEXT' file that does not conform to the H-17 internal disk format.
+<p>
+File transfer to the Mac or saving the H-19 scroll-back buffer creates files of type 'TEXT'. The creators can be changed on the <a href="menus.html#edit">Emulator Preferences dialog</a>; they default to 'ttxt' (SimpleText).
+</font>
+</ul>
+
+<hr>
+<font face="Geneva,Arial" size=1>
+<center>
+<a href="../h8_toc.html">Table of Contents</a>
+</center>
+<br><br>
+</font>
+</body>
+
+<!-- Mirrored from davidwallace2000.home.comcast.net/~davidwallace2000/h8/project8080_archive/pgs/feat.html by HTTrack Website Copier/3.x [XR&CO'2010], Mon, 10 Sep 2012 13:15:43 GMT -->
+</html>

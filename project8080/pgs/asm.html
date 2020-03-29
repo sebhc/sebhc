@@ -1,0 +1,927 @@
+<html>
+
+<!-- Mirrored from davidwallace2000.home.comcast.net/~davidwallace2000/h8/project8080_archive/pgs/asm.html by HTTrack Website Copier/3.x [XR&CO'2010], Mon, 10 Sep 2012 13:15:46 GMT -->
+<head>
+<title>H8 Emulation Help - Assembly Language Documentation</title>
+<meta name="AppleTitle" content="H8 Emulation Help">
+<meta name="description" content="Assembly Language Documentation">
+</head>
+
+<!-- updated 10/9/2002, das -->
+
+<body bgcolor="white">
+<a name="top"></a>
+<p>
+<font size=3 face="Verdana,Geneva" color="0000FF">
+<b>Assembly Language Documentation</b>
+</font>
+
+<ul>
+<font size="2" face="Geneva,Arial">
+<p>This page gives a brief presentation of the command input accepted by and pseudo opcodes used by the Heath HDOS assembler. This discussion does not include the 8080A opcodes themselves. For that information you should refer to <a href="8080a.html">8080A Processor Technical Documentation</a>.</p>
+</font>
+</ul>
+<hr>
+<font face="Geneva,Arial" size=1>
+<center>
+<a href="program.html">Programming Table of Contents</a>
+<br><br>
+<a href="../h8_toc.html">Main Table of Contents</a>
+</center>
+<hr>
+<table border="0" cellspacing="0" cellpadding="2">
+<tr align="left" valign="top">
+	<td width="100"><font size=3 face="Verdana,Geneva" color="0000FF"><b>Page Index</b></font></td>
+	<td width="120"><font face="Geneva" size=2><a href="#command">Command Line</a></font></td>
+	<td>&nbsp;</td>
+</tr>
+<tr align="left" valign="top">
+	<td>&nbsp;</td>
+	<td><font face="Geneva" size=2><a href="#names">Names & Numbers</a></font></td>
+	<td>&nbsp;</td>
+</tr>
+<tr align="left" valign="top">
+	<td>&nbsp;</td>
+	<td><font face="Geneva" size=2><a href="#pseudo">Pseudo Opcodes</a></font></td>
+	<td>&nbsp;</td>
+</tr>
+<tr align="left" valign="top">
+	<td>&nbsp;</td>
+	<td><font face="Geneva" size=2>&nbsp;&nbsp;<a href="#data">Data Definition</a></font>
+	<td><font face="Geneva" size=2>DB, DW, DS</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td>&nbsp;</td>
+	<td><font face="Geneva" size=2>&nbsp;&nbsp;<a href="#listing">Listing Control</a></font>
+	<td><font face="Geneva" size=2>TITLE, STL, EJECT, SPACE, LON, LOF, LARGE, ERR, WIDE</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td>&nbsp;</td>
+	<td><font face="Geneva" size=2>&nbsp;&nbsp;<a href="#address">Address Assignment</a></font>
+	<td><font face="Geneva" size=2>ORG, EQU, SET, END</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td>&nbsp;</td>
+	<td><font face="Geneva" size=2>&nbsp;&nbsp;<a href="#copy">Copying Code</a></font>
+	<td><font face="Geneva" size=2>XTEXT, INCLU</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td>&nbsp;</td>
+	<td><font face="Geneva" size=2>&nbsp;&nbsp;<a href="#operators">Operators</a></font>
+	<td><font face="Geneva" size=2>+, -, *, /, #</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td>&nbsp;</td>
+	<td><font face="Geneva" size=2>&nbsp;&nbsp;<a href="#error">Assumption Checking</a></font>
+	<td><font face="Geneva" size=2>ERRNZ, ERRZR, ERRPL, ERRMI</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td>&nbsp;</td>
+	<td><font face="Geneva" size=2>&nbsp;&nbsp;<a href="#cond">Conditional Assembly</a></font>
+	<td><font face="Geneva" size=2>IF, ELSE, ENDIF</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td>&nbsp;</td>
+	<td><font face="Geneva" size=2>&nbsp;&nbsp;<a href="#code">Relocatable Code</a></font>
+	<td><font face="Geneva" size=2>CODE</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td>&nbsp;</td>
+	<td><font face="Geneva" size=2>&nbsp;&nbsp;<a href="#errors">Errors</a></font>
+	<td>&nbsp;</td>
+</tr>
+<tr align="left" valign="top">
+	<td>&nbsp;</td>
+	<td><font face="Geneva" size=2><a href="#xref">Cross Reference Listing</a></font></td>
+	<td>&nbsp;</td>
+</tr>
+</table>
+
+<hr>
+
+<a name="command"></a>
+<p><font size=3 face="Verdana,Geneva" color="0000FF"><b>Command Line</b></font></p>
+<ul>
+
+<font face="Geneva" size=2>
+<p>The general format of the command line is:</p></font>
+
+<font size="2" face="courier">
+&nbsp;&nbsp;asm [out][,list][,xref]=source[,copydrv[,...]][/sw:val[/...]]
+</font>
+
+<font face="Geneva" size=2>
+<p>Optional parameters are shown [inside brackets].</p>
+<p>You may key the entire command on one line, as shown, or you can launch the assembler and then key the rest of the command at the prompt.</p>
+<p>Most of the parameters are optional. We'll step through them one by one.</p></font>
+
+<dl>
+<dt><font size="2" face="courier">=source</font></dt>
+<dd><font face="Geneva" size=2>
+<p>This is the only required parameter; it names the source file to be assembled. The drive may be specified; if left off the default is SY0: as normal. The extension may be specified; if left off the default is .ASM.</p>
+<p>If this is in fact the only parameter specified on the command line, the source file will be assembled and any error messages displayed on the console. There will be no listing and the executable output will not be generated.</p></font>
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+<dt><font size="2" face="courier">[out]</font></dt>
+<dd><font face="Geneva" size=2>
+<p>This optional parameter names the output executable file. The default file extension is .ABS. Example:</p></font>
+
+<font size="2" face="courier">
+&nbsp;&nbsp;asm outfile=source
+</font>
+
+<font face="Geneva" size=2>
+<p>This will assemble the source file, keep the executable code generated by the assembly, and report any errors on the console.</p></font>
+
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+<dt><font size="2" face="courier">[,list]</font></dt>
+<dd><font face="Geneva" size=2>
+<p>This optional parameter names the listing output file. This can be a file or a serial device driver. If it is a file, the default file extention is .LST.</p>
+<p>Examples:</p></font>
+
+<font size="2" face="courier">
+&nbsp;&nbsp;asm outfile,lp:=source<br>
+&nbsp;&nbsp;asm ,listing=source
+</font>
+
+<font face="Geneva" size=2>
+<p>The first example keeps the executable code and produces a listing on the printer. The second example does not generate executable code but does print a listing, which goes to a file named sy0:listing.lst.</p></font>
+
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+<dt><font size="2" face="courier">[,xref]</font></dt>
+<dd><font face="Geneva" size=2>
+<p>This optional parameter names a work file for use by the cross reference utility, xref.abs. If this work file is included, all symbol definitions and references will be written to the work file, and the xref utility will be run after the assembly is complete. The cross reference listing is a continuation of the assembly listing. For further information, please see <a href="#xref">Cross Reference Listing</a> below.</p></font>
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+<dt><font size="2" face="courier">[,copydrv[,...]]</font></dt>
+<dd><font face="Geneva" size=2>
+<p>If you use the <a href="#copy">XTEXT or INCLU</a> pseudo opcodes to copy source files into your main source file, the assembler will look for these files on the same disk as the source file. If they are not found there, the assembler will look at SY0:. You can name one or more alternate search drives with these parameters; alternate drives are searched first. Example:</p></font>
+
+<font size="2" face="courier">
+&nbsp;&nbsp;asm sy1:myprog,lp:=sy1:myprog,sy2:
+</font>
+
+<font face="Geneva" size=2>
+<p>This command says, assemble sy1:myprog.asm and save the executable file as sy1:myprog.abs. Create a listing on the printer. Included files are searched for on sy2:, then sy1:, and finally sy0:.</p></font>
+
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+<dt><font size="2" face="courier">[/sw:val[/...]]</font></dt>
+<dd><font face="Geneva" size=2>
+<p>These optional parameters are command line switches used to override standard assembly parameters or options that you have selected in the source file.</p>
+
+<p>These switches are available:</p></font>
+
+<table border="1" cellspacing="0" cellpadding="2">
+<tr align="left" valign="top">
+	<td><font face="Geneva" size=2><p></p><b>Switch</b></font></td>
+	<td><font face="Geneva" size=2><p><b>Function</b></p></font></td>
+</tr>
+<tr align="left" valign="top">
+	<td><font face="Courier" size=2><p>/form:nn</p></font></td>
+	<td><font face="Geneva" size=2>
+	<p>This switch overrides the form size default, which is to ignore the size of the form and send a form-feed to the printer at the end of the page. By setting a line count, you disable form feeds and cause the assembler to send CR/LF's to space down to the next page.</p>
+	<p>This switch does not need to be used with the emulator.</p></font></td>
+</tr>
+<tr align="left" valign="top">
+	<td><font face="Courier" size=2><p>/page:nn</p></font></td>
+	<td><font face="Geneva" size=2>
+	<p>This switch overrides the standard page size of 60 lines. After nn lines are printed, the listing will advance to the next page.</p>
+	<p>This is best used when you are going to print a listing in landscape format. Your page size may vary, but try this as a starting point:</p></font>
+	<font face="Courier" size=2><p>asm ,lp:=source/page:45</p></font>
+	<font face="Geneva" size=2>
+	<p>When prompted, select landscape output for the listing. This produces an excellent listing on the author's system.</p></font>
+	</td>
+</tr>
+<tr align="left" valign="top">
+	<td><font face="Courier" size=2><p>/lon:codes</p></font></td>
+	<td><font face="Geneva" size=2>
+	<p>This overrides any listing options set by default or by any LON or LOF pseudo opcodes in the program source, by forcing the named listing options on. Valid codes are:</p>
+	<p>
+	<font face="Courier">L</font> - produce a listing<br>
+	<font face="Courier">C</font> - print copied code<br>
+	<font face="Courier">I</font> - print code skipped by an IF statement<br>
+	<font face="Courier">G</font> - print all generated bytes (the assembler generally prints only three bytes generated by any statement)<br>
+	<font face="Courier">R</font> - write statements that reference labels to the cross reference output file (this is the default condition)
+	</p></font></td>
+</tr>
+<tr align="left" valign="top">
+	<td><font face="Courier" size=2><p>/lof:codes</p></font></td>
+	<td><font face="Geneva" size=2>
+	<p>This overrides any listing options set by default or by any LON or LOF pseudo opcodes in the program source, by forcing the named listing options off. Valid codes are the same as above.</p>
+	<p>One very useful use of the /lof switch is to get a hardcopy listing of only the errors in a source file:</p></font>
+	<font size="2" face="courier">
+	<p>&nbsp;&nbsp;asm ,lp:=source/lof:l</p></font>
+	<font face="Geneva" size=2>
+	<p>This produces a listing but turns off the listing output, which seems silly. But errors are printed regardless of any listing options, so the result is a listing of just the errored lines.</p></font>
+	</td>
+</tr>
+<tr align="left" valign="top">
+	<td><font face="Courier" size=2><p>/large</p></font></td>
+	<td><font face="Geneva" size=2>
+	<p>The assembler will normally keep the overlays in memory to speed processing. The /large switch will cause it to leave them on disk to make approx. 2.5K of additional memory available to the assembler.</p></font>
+	</td>
+</tr>
+<tr align="left" valign="top">
+	<td><font face="Courier" size=2><p>/err</p></font></td>
+	<td><font face="Geneva" size=2>
+	<p>If you are creating a listing file, error messages will be written to the listing only and not to the console. This switch will cause error messages to be written to the console in addition to the listing file.</p></font>
+	</td>
+</tr>
+<tr align="left" valign="top">
+	<td><font face="Courier" size=2><p>/wide</p></font></td>
+	<td><font face="Geneva" size=2>
+	<p>This tells the assembler that the printer has a wide carriage: 132 columes. The author has not found the use of this switch to be necessary in practice.</p></font>
+	</td>
+</tr>
+</table>
+
+
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+</dl>
+</ul>
+<hr>
+
+<a name="names"></a>
+<p><font size=3 face="Verdana,Geneva" color="0000FF"><b>Names & Numbers</b></font></p>
+<ul>
+<font face="Geneva" size=2>
+<p>Names are defined in the label field of an assembly language statement. Valid names consist of the characters A-Z, 0-9, $ and . (period). Lower-case characters can also be used, but the name will be case sensitive, and opcodes and register names cannot be entered in lower case, so it's traditional (and easier) to use upper-case characters only.</p>
+
+<p>Names can be from one to seven characters in length. They must start with an alphabetic character, $ or . (period); they may not start with a digit. Following are examples of valid names:</p></font>
+
+<font size="2" face="courier">
+&nbsp;&nbsp;AFIELD, TUESDAY, $123, .TICCNT, .27, LOOP.CT, OCT2DEC
+</font>
+
+<font face="Geneva" size=2>
+<p>Literal numbers can be entered in decimal, octal, split octal, hexadecimal and binary notation. A number must begin with a digit (0-9). The last character in the number (the radix) will indicate the base of the number, according to the following table:</p></font>
+<ul>
+<table border="1" cellspacing="0" cellpadding="4">
+<tr align="left" valign="top">
+	<td align="center"><font face="Geneva" size=2><b>Radix</b></font></td>
+	<td><font face="Geneva" size=2><b>Number Base</b></font></td>
+	<td><font face="Geneva" size=2><b>Example Value</b></font></td>
+</tr>
+<tr align="left" valign="top">
+	<td align="center"><font face="Geneva" size=2>none</font></td>
+	<td><font face="Geneva" size=2>Decimal</font></td>
+	<td><font face="Geneva" size=2>8192</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td align="center"><font face="Geneva" size=2>D</font></td>
+	<td><font face="Geneva" size=2>Decimal</font></td>
+	<td><font face="Geneva" size=2>8192D</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td align="center"><font face="Geneva" size=2>Q</font></td>
+	<td><font face="Geneva" size=2>Octal</font></td>
+	<td><font face="Geneva" size=2>300Q</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td align="center"><font face="Geneva" size=2>O</font></td>
+	<td><font face="Geneva" size=2>Octal</font></td>
+	<td><font face="Geneva" size=2>300O</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td align="center"><font face="Geneva" size=2>A</font></td>
+	<td><font face="Geneva" size=2>Split Octal</font></td>
+	<td><font face="Geneva" size=2>40200A</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td align="center"><font face="Geneva" size=2>H</font></td>
+	<td><font face="Geneva" size=2>Hexadecimal</font></td>
+	<td><font face="Geneva" size=2>1BH</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td align="center"><font face="Geneva" size=2>B</font></td>
+	<td><font face="Geneva" size=2>Binary</font></td>
+	<td><font face="Geneva" size=2>11001001B</font></td>
+</tr>
+</table>
+</ul>
+
+<font face="Geneva" size=2>
+<p>Because O ("oh") is so easily mistaken for 0 ("zero"), it's rarely used. Use Q instead to indicate Octal.</p>
+<p>Take special care with hexadecimal numbers to make sure they start with a digit. The assembler will interpret AH as a symbol. 0AH is a hexadecimal number.</p>
+<p>Take care to note the difference between octal and split octal notation: split octal notation, a Heathkit invention, I believe, uses the first three digits to represent the high-order byte of the number, and the last three digits to represent the low-order byte of the number. Octal simply uses a digit to represent 3 bits. Thus, while the maximum 16-bit split octal number is 377377A, the maximum 16-bit octal number is 177777Q. Both of these numbers will evaluate to 16 binary '1' bits, or decimal 65,535.</p>
+</font>
+
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</ul>
+<hr>
+
+<a name="pseudo"></a>
+<font size=3 face="Verdana,Geneva" color="0000FF">
+<p><b>Pseudo Opcodes</b></p></font>
+<ul>
+
+<a name="data"></a>
+<font face="Geneva" size=2>
+<p><b>Data Definition</b></p>
+
+<p>These pseudo opcodes generate data output, or reserve space for data in the program.</p>
+</font>
+
+<dl>
+<dt><font size="2" face="courier">[label]&nbsp;&nbsp;DB&nbsp;&nbsp;parameters</font></dt>
+<dd><font face="Geneva" size=2>
+<p>The Define Byte opcode stores one or more individual bytes or strings of bytes at the current assembly address. Characters and strings are enclosed by 'single quotes'. Multiple parameters are separated by a comma. Any valid literal value can be used as well, as long as it resolves to an 8-bit value. The label is optional. Examples:</p></font>
+
+<font size="2" face="courier">
+MESSAGE&nbsp;DB&nbsp;&nbsp;'This is a string',212Q<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DB&nbsp;&nbsp;ESC,'A'<br>
+SOHCHAR&nbsp;DB&nbsp;&nbsp;01H<br>
+</font>
+
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+<dt><font size="2" face="courier">[label]&nbsp;&nbsp;DW&nbsp;&nbsp;parameters</font></dt>
+<dd><font face="Geneva" size=2>
+<p>The Define Word opcode stores one or more 16-bit values at the current assembly address. Values are stored low-order byte first, as is standard for Intel processors. Characters and strings of two characters are valid, as are any literal or symbolic values that resolve to a 16-bit number. Multiple parameters are separated by a comma. The label is optional. Examples:</p></font>
+
+<font size="2" face="courier">
+WORDS&nbsp;&nbsp;&nbsp;DW&nbsp;&nbsp;12Q,10000<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DW&nbsp;&nbsp;ADDR.1,ADDR.2<br>
+TWOBYTE&nbsp;DW&nbsp;&nbsp;'AB'
+</font>
+
+<font face="Geneva" size=2>
+<p>Note that TWOBYTE will be stored as "BA" in memory, as words are always stored low-order byte first. When you execute an LHLD&nbsp;TWOBYTE instruction, 'A' will be in register H and 'B' will be in register L.</p></font>
+
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+<dt><font size="2" face="courier">[label]&nbsp;&nbsp;DS&nbsp;&nbsp;parameter</font></dt>
+<dd><font face="Geneva" size=2>
+<p>The Define Space opcode reserves storage space by advancing the output pointer 'parameter' bytes. The defined space should be considered to be uninitialized at run time.</p></font>
+
+<font size="2" face="courier">
+LISTBUF&nbsp;DS&nbsp;&nbsp;256<br>
+TRK.BUF&nbsp;DS&nbsp;&nbsp;10*256&nbsp;&nbsp;&nbsp;&nbsp;10 sectors of space<br>
+</font>
+
+<font face="Geneva" size=2>
+<p>Space reserved with DS can baloon the size of your .ABS file. In this example, there will be 11 sectors worth of empty space in the .ABS file. For this reason, this space is generally allocated at the end of the program, and the ORG pseudo opcode is used to eliminate it from the output file. See <a href="#address">ORG</a> for an example.</p></font>
+
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+</dl>
+
+<a name="listing"></a>
+<font face="Geneva" size=2>
+<p><b>Listing Control</b></p>
+
+<p>These pseudo opcodes simply effect the appearance of the listing and what gets printed on it. They have no effect on the real work of the assembler. Each of these statements is optional.</p></font>
+
+<dl>
+<dt><font size="2" face="courier">TITLE&nbsp;&nbsp;'string'</font></dt>
+<dd><font face="Geneva" size=2>
+<p>Specifies a string to be printed as a title at the top of each page of the listing. This statement, when used, is generally the first statement in the program.</p></font>
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+<dt><font size="2" face="courier">STL&nbsp;&nbsp;'string'</font></dt>
+<dd><font face="Geneva" size=2>
+<p>Specifies a string to be printed as a subtitle on line #2 of each subsequent page of the listing. This statement, when used, generally precedes each major section of code.</p></font>
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+<dt><font size="2" face="courier">EJECT</font></dt>
+<dd><font face="Geneva" size=2>
+<p>Advances the listing to the top of the next page.</p></font>
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+<dt><font size="2" face="courier">SPACE&nbsp;&nbsp;n[,m]</font></dt>
+<dd><font face="Geneva" size=2>
+<p>Advances the listing 'n' blank lines. If the second parameter is included, the assembler checks to see whether there are 'm' lines left on the current page. If not, the opcode is treated like an EJECT. Example:</p></font>
+
+<font size="2" face="courier">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;POP&nbsp;&nbsp;H<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;POP&nbsp;&nbsp;PSW<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RET<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SPACE&nbsp;2,10<br>
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Next Routine<br>
+*<br>
+LABEL&nbsp;&nbsp;&nbsp;EQU&nbsp;&nbsp;*<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LXI&nbsp;&nbsp;H,ADDRESS<br>
+...etc.<br>
+</font>
+
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+<dt><font size="2" face="courier">LON&nbsp;&nbsp;parameters</font></dt>
+<dd><font face="Geneva" size=2>
+<p>Turns on listing parameters for all following code up to the next LOF statement which names the same parameters. The parameters are the same as discussed above under <a href="#command">Command Line</a>. The command line LON and LOF switches override matching parameters set here. See example below.</p></font>
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+<dt><font size="2" face="courier">LOF&nbsp;&nbsp;parameters</font></dt>
+<dd><font face="Geneva" size=2>
+<p>Turns off listing parameters for all following code up to the next LON statement which names the same parameters. The parameters are the same as discussed above under <a href="#command">Command Line</a>. The command line LON and LOF switches override matching parameters set here.</p>
+<p>LON and LOF example:</p></font>
+
+<font size="2" face="courier">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LOF&nbsp;&nbsp;&nbsp;C&nbsp;&nbsp;&nbsp;&nbsp;Don't print these<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;XTEXT&nbsp;HDOS<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;XTEXT&nbsp;ASCII<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LON&nbsp;&nbsp;&nbsp;CG&nbsp;&nbsp;&nbsp;Print copied code and all output bytes<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;XTEXT&nbsp;MYCODE<br>
+</font>
+
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+</dl>
+
+<a name="address"></a>
+<font face="Geneva" size=2>
+<p><b>Address Assignment</b></p>
+
+<p>These opcodes assign values (frequently address values) to symbols, change the code output address, and set the entry point address.</p>
+
+<p><b>Note:</b> The character "*", when used in the place of a number or symbol, represents the current assembly address. You can do arithmatic on this address, just like any other number or symbol. So "*-10" means "10 bytes back from the current assembly address" and "**2" means "the current assembly address times 2."</p></font>
+
+<dl>
+<dt><font size="2" face="courier">ORG&nbsp;&nbsp;address</font></dt>
+<dd><font face="Geneva" size=2>
+<p>The Origin pseudo opcode sets the assembler's output location pointer. It's generally used at the top of a program to set the load address, which is the same as the address of the first byte of assembly object output. Example:</p></font>
+
+<font size="2" face="courier">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;XTEXT&nbsp;&nbsp;HDOS<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ORG&nbsp;&nbsp;&nbsp;&nbsp;USERFWA<br>
+BEGIN&nbsp;&nbsp;&nbsp;EQU&nbsp;&nbsp;&nbsp;&nbsp;*<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LXI&nbsp;&nbsp;&nbsp;&nbsp;SP,STACK
+</font>
+
+<font face="Geneva" size=2>
+<p>The address given can be symbolic, as shown, or a literal address.</p>
+<p>Programmers frequently use a series of DS statements to assign sequential values to a series of labels. ORG is used to set the origin to zero to start the list. You may need to save and restore the current origin (ref. SET opcode below):</p></font>
+
+<font size="2" face="courier">
+.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SET&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;Save origin<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ORG&nbsp;&nbsp;&nbsp;&nbsp;0<br>
+V.ZERO&nbsp;&nbsp;DS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;&nbsp;assign the value "0"<br>
+V.ONE&nbsp;&nbsp;&nbsp;DS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;&nbsp;assign the value "1"<br>
+V.TWO&nbsp;&nbsp;&nbsp;DS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;&nbsp;assign the value "2"<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ORG&nbsp;&nbsp;&nbsp;&nbsp;.&nbsp;&nbsp;Restore origin
+</font>
+
+<font face="Geneva" size=2>
+<p>One useful trick is to move all of your large DS assignments to the very end of your program and then ORG above them just before the END statement. This will prevent the assembler from writing all that empty space to your .ABS file, resulting in a smaller .ABS file. But be sure to use the <a href="scalls.html#settop">.SETTOP</a> syscall to allocate the space to your program. Example (ref. END opcode below):</p></font>
+
+<font size="2" face="courier">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ORG&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;USERFWA<br>
+BEGIN&nbsp;&nbsp;&nbsp;EQU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LXI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;H,HIGHADR<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SCALL&nbsp;&nbsp;&nbsp;.SETTOP&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Allocate our memory<br>
+. . .<br>
+. . .<br>
+LASTCON&nbsp;EQU&nbsp;&nbsp;&nbsp;&nbsp;*<br>
+*<br>
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Large buffer defs<br>
+*<br>
+PRT.BUF&nbsp;DS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;256<br>
+FILEBUF&nbsp;DS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;256<br>
+SCREEN&nbsp;&nbsp;DS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1920<br>
+*<br>
+HIGHADR&nbsp;EQU&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.SETTOP to here<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ORG&nbsp;&nbsp;&nbsp;&nbsp;LASTCON<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;END&nbsp;&nbsp;&nbsp;&nbsp;BEGIN
+</font>
+
+<font face="Geneva" size=2>
+<p>The net effect of this technique in the example was to reduce the size of the .ABS file by 9-10 sectors.</p></font>
+
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+<dt><font size="2" face="courier">label&nbsp;&nbsp;EQU&nbsp;&nbsp;value</font></dt>
+<dd><font face="Geneva" size=2>
+<p>The Equate opcode permanently assigns a value to a symbol. The value can be any legal literal or address value, a calculated value, even a relocatable expression when writing position-independent code (ref. <a href="#code">Relocatable Code</a>). Examples:</p></font>
+
+<font size="2" face="courier">
+.TICCNT&nbsp;EQU&nbsp;&nbsp;&nbsp;&nbsp;40033A<br>
+NL&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;EQU&nbsp;&nbsp;&nbsp;&nbsp;12Q<br>
+ENL&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;EQU&nbsp;&nbsp;&nbsp;&nbsp;NL+200Q<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ORG&nbsp;&nbsp;&nbsp;&nbsp;USERFWA<br>
+BEGIN&nbsp;&nbsp;&nbsp;EQU&nbsp;&nbsp;&nbsp;&nbsp;*
+</font>
+
+<font face="Geneva" size=2>
+<p>When the value expression contains a symbol, as in the ENL example above, the symbol must have been defined earlier in the program; symbols referenced in EQU statements must be known on the first assembly pass.</p></font>
+
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+<dt><font size="2" face="courier">label&nbsp;&nbsp;SET&nbsp;&nbsp;value</font></dt>
+<dd><font face="Geneva" size=2>
+<p>The SET opcode works exactly like EQU, except that the value is temporarily assigned to the name. The name can be redefined in a subsequent SET command.</p>
+<p>There's a good example of the use of SET in ORG (above) and in <a href="#code">Relocatable Code</a>.</p></font>
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+<dt><font size="2" face="courier">END&nbsp;&nbsp;[entry-point]</font></dt>
+<dd><font face="Geneva" size=2>
+<p>The END opcode is the last statement in the souce program. It is a required statement.</p>
+<p>The entry-point address is required if the output code type is ABS. This is the address that HDOS jumps to after first loading your program into memory. The entry-point address must <b>not</b> be used if the output code type is PIC (ref. <a href="#code">Relocatable Code</a>).</p>
+
+<p>See ORG above for an example of the END opcode in an ABS program.</p></font>
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+</dl>
+
+<a name="copy"></a>
+<font face="Geneva" size=2>
+<p><b>Copying Code</b></p>
+
+<dl>
+<dt><font size="2" face="courier">XTEXT&nbsp;&nbsp;filename</font></dt>
+<dd><font face="Geneva" size=2>
+<p>This opcode is used to copy "external text" into your program for assembly. The file "filename.ACM" will be located and assembled as if it were included in your program in place of the XTEXT statement. This makes it very convenient to put common definitions into a so-called "common deck" for use by all the programs you write.</p>
+
+<p>There are several examples of the use of XTEXT in previous sections; I won't repeat them here.</p>
+
+<p>The assembler looks for the common deck on the same drive as the source file, on SY0:, and on any other named drive. Refer to <a href="#command">Command Line</a> for more information.</p></font>
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+<dt><font size="2" face="courier">INCLU&nbsp;&nbsp;filename</font></dt>
+<dd><font face="Geneva" size=2>
+<p>This is an optional spelling of XTEXT; the statement does the same thing as XTEXT.</p></font>
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+</dl>
+
+<a name="operators"></a>
+<font face="Geneva" size=2>
+<p><b>Operators</b></p>
+
+<p>These operators can be used to cause the assembler to do simple arithmatic for you. There are very few restrictions; almost any legal value can be operated on. For example, 'a'+3 will evaluate to 'd'.</p>
+
+<p>Expression evaluation always procedes from left to right. There is no operator precedence, and you can't alter the order of evaluation with parenthesis. 1+2*3 is 9. If you wanted 7, you should have coded 3*2+1.</p>
+
+<p>See <a href="#code">Relocatable Code</a> for restrictions on address manipulation when you are producing PIC output.</p></font>
+
+<dl>
+<dt><font size="2" face="courier">+ (add)</font></dt>
+<dd><font face="Geneva" size=2>
+<p>Add two values together:</p></font>
+
+<font size="2" face="courier">
+NL+200Q&nbsp;&nbsp;&nbsp;- add the high bit to NL<br>
+BUFFER+10 - the 10th byte past BUFFER<br>
+</font>
+
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+<dt><font size="2" face="courier">- (subtract, unary minus)</font></dt>
+<dd><font face="Geneva" size=2>
+<p>Subtract two values (3-2) or make a single number negative (-2).</p></font>
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+<dt><font size="2" face="courier">* (multiply)</font></dt>
+<dd><font face="Geneva" size=2>
+<p>Multiply two values.</p></font>
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+<dt><font size="2" face="courier">/ (divide)</font></dt>
+<dd><font face="Geneva" size=2>
+<p>Divide two values. This will return the integer result with no rounding, so 7/3=2, not 2.5.</p></font>
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+<dt><font size="2" face="courier"># (strip)</font></dt>
+<dd><font face="Geneva" size=2>
+<p>Return the low-order byte of a 16-bit value. Assuming that the label BEGIN had a value of 42.200A in split octal notation, #BEGIN would return 200Q, a value that will fit in a single byte.</p></font>
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+</dl>
+
+<a name="error"></a>
+<font face="Geneva" size=2>
+<p><b>Assumption Checking</b></p>
+
+<p>These pseudo opcodes help the programmer validate assumptions about the relative location of variables in a program, and produce error messages if those assumptions are not true.</p></font>
+
+<dl>
+<dt><font size="2" face="courier">ERRNZ&nbsp;&nbsp;expression</font></dt>
+<dd><font face="Geneva" size=2>
+<p>If the evaluated expression is not zero, an error is flagged. This is the most commonly used form of the ERRxx series of pseudo opcodes. Example:</p></font>
+
+<font size="2" face="courier">
+FRSTBYT&nbsp;DS&nbsp;&nbsp;&nbsp;&nbsp;1<br>
+SCNDBYT&nbsp;DS&nbsp;&nbsp;&nbsp;&nbsp;1<br>
+...<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LXI&nbsp;&nbsp;&nbsp;H,FRSTBYT<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOV&nbsp;&nbsp;&nbsp;E,M<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;INX&nbsp;&nbsp;&nbsp;H&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Step to SCNDBYT<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ERRNZ&nbsp;SCNDBYT-FRSTBYT-1<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOV&nbsp;&nbsp;&nbsp;D,M
+</font>
+
+<font face="Geneva" size=2>
+<p>In using the INX H instead of another LXI H, the programmer saved two bytes and some execution time, but created a potential future error. If someone comes along later and inserts a field between FRSTBYT and SCNDBYT, the code will no longer work. But there will be no other error generated, because the assembler has no way to know that you meant to step ahead from FRSTBYT to SCNDBYT.</p>
+
+<p>The ERRNZ statement says, subtract the two addresses, giving 1, and then subtract 1 from that, which should give zero. That arrangement of these two fields will allow this code to work. If someone inserts a field between FRSTBYT and SCNDBYT, this will no longer evaluate to zero and an error will be flagged. The programmer can then decide whether to revise the code or move the new field.</p></font>
+
+
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+<dt><font size="2" face="courier">ERRZR&nbsp;&nbsp;expression</font></dt>
+<dd><font face="Geneva" size=2>
+<p>If the evaluated expression is zero, an error is flagged.</p></font>
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+<dt><font size="2" face="courier">ERRPL&nbsp;&nbsp;expression</font></dt>
+<dd><font face="Geneva" size=2>
+<p>If the evaluated expression is a positive number, an error is flagged.</p></font>
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+<dt><font size="2" face="courier">ERRMI&nbsp;&nbsp;expression</font></dt>
+<dd><font face="Geneva" size=2>
+<p>If the evaluated expression is a negative number, an error is flagged.</p></font>
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+</dl>
+
+
+<a name="cond"></a>
+<font face="Geneva" size=2>
+<p><b>Conditional Assembly</b></p>
+
+<p>The IF/ELSE/ENDIF statements allow you to conditionally assemble parts of your program. This allows the source code to reconfigure itself based on options selected or changes made.</p></font>
+
+<dl>
+<dt><font size="2" face="courier">IF&nbsp;&nbsp;expression</font></dt>
+<dd><font face="Geneva" size=2>
+<p>Evaluate the expression. If it is true, assemble the following code. If it is not true, do not assemble the following code.</p>
+<p>The expression is considered 'true' if it evaluates to a value of zero. It is considered 'not true' if it evaluates to a non-zero value.</p>
+<p>By default, code that is not assembled because of an IF statement, will not be listed in the listing file. This default condition can be changed by using the LON I pseudo opcode or command-line switch. See <a href="#command">Command Line</a> and <a href="#listing">Listing Control</a> above.</p>
+<p>Refer to the examples following the ENDIF opcode.</p></font>
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+<dt><font size="2" face="courier">ELSE</font></dt>
+<dd><font face="Geneva" size=2>
+<p>This is only valid inside an IF block. This reverses the evaluation from true to false or false to true.</p></font>
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+<dt><font size="2" face="courier">ENDIF</font></dt>
+<dd><font face="Geneva" size=2>
+<p>Ends an IF block.</p>
+<p>Examples:</p></font>
+
+<font size="2" face="courier">
+TRUE&nbsp;&nbsp;&nbsp;&nbsp;EQU&nbsp;&nbsp;&nbsp;&nbsp;0<br>
+FALSE&nbsp;&nbsp;&nbsp;EQU&nbsp;&nbsp;&nbsp;&nbsp;1<br>
+*<br>
+FRENCH&nbsp;&nbsp;EQU&nbsp;&nbsp;&nbsp;&nbsp;FALSE<br>
+...<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FRENCH<br>
+HELLO&nbsp;&nbsp;&nbsp;DB&nbsp;&nbsp;&nbsp;&nbsp;'Salut!'<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ELSE<br>
+HELLO&nbsp;&nbsp;&nbsp;DB&nbsp;&nbsp;&nbsp;&nbsp;'Hello!'<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ENDIF
+</font>
+
+<font face="Geneva" size=2>
+<p>Here we can have one set of source code that can be assembled into both English and French versions. The example shown is the English version. You can change to French by simply changing one equate from FALSE to TRUE and reassembling.</p>
+
+<p>Now, here's a different (somewhat contrived) way to solve the problem in the ERRNZ example above.</p></font>
+
+<font size="2" face="courier">
+FRSTBYT&nbsp;DS&nbsp;&nbsp;&nbsp;&nbsp;1<br>
+SCNDBYT&nbsp;DS&nbsp;&nbsp;&nbsp;&nbsp;1<br>
+...<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LXI&nbsp;&nbsp;&nbsp;H,FRSTBYT<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOV&nbsp;&nbsp;&nbsp;E,M<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;&nbsp;&nbsp;&nbsp;SCNDBYT-FRSTBYT-1<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;INX&nbsp;&nbsp;&nbsp;H&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Step to SCNDBYT<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ELSE<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LXI&nbsp;&nbsp;&nbsp;H,SCNDBYT<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ENDIF<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOV&nbsp;&nbsp;&nbsp;D,M
+</font>
+
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+</dl>
+
+
+<a name="code"></a>
+<font face="Geneva" size=2>
+<p><b>Relocatable Code</b></p>
+
+<p>A fair piece of HDOS, including HDOS.SYS, the overlays and all the drivers, were written in Position Independent Code, or PIC. PIC is assembled from an origin of zero. When the code is loaded into memory, a relocation table appended to the end of the PIC file is used to find any addresses that need relocation. Relocation is done by adding the load address to the address in the program, giving the relocated address.</p>
+
+<p>Symbols that are defined relative to the current assembly address are considered to be relocatable, and 16-bit references to these symbols will be placed in the relocation table. There are three rules to keep in mind when doing arithmatic on relocatable symbols:</p></font>
+
+<ol>
+<li><font face="Geneva" size=2><p>If you add or subtract a non-relocatable value, the result is still relocatable. So if BEGIN is relocatable, so is BEGIN+10.</p></font></li>
+<li><font face="Geneva" size=2><p>If you subtract two relocatable symbols, the result is a simple number that is not relocatable. So END-START would be a constant not subject to relocation. (This should make sense: references to both END and START will be relocated at load time, but the distance between them remains constant.)</p></font></li>
+<li><font face="Geneva" size=2><p>You can't subtract a relocatable symbol from a non-relocatable value. 10-BEGIN makes no sense and will be flagged as an error. This one causes us to have to jump a hurdle or two when writing device drivers; see below.</p></font></li>
+</ol>
+
+<font face="Geneva" size=2>
+<p>This is all controlled by the CODE statement. This statement must be issued before any output is written by the assembler:</p></font>
+
+<font size="2" face="courier">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CODE&nbsp;&nbsp;&nbsp;PIC</font>
+
+<font face="Geneva" size=2>
+<p>This enables the generation of Position Independent Code.</p>
+
+<p>(Note that there is a corresponding CODE ABS statement that specifies that the output should be in ABS format. However, this is the default case and you will never see one used in a program.)</p>
+
+<p>A common problem occurs when writing device drivers: You frequently have to waste some space between the header and the entry point for SET processing (at label DVD.STE) and again between SET processing and the main driver entry point (at label DVD.ENT). The normal way to move the assembly location ahead would be something like:</p></font>
+
+<font size="2" face="courier">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DS&nbsp;&nbsp;&nbsp;&nbsp;DVD.ENT-*
+</font>
+
+<font face="Geneva" size=2>
+<p>But that would violate rule #3, since "*" is, by definition, relocatable, and DVD.ENT is a simple constant. What we need to do is create a non-relocatable label that represents the current assembly address, using two different operands on the CODE statement:</p></font>
+
+<font size="2" face="courier">
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Waste space up to DVD entry point<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CODE&nbsp;&nbsp;&nbsp;-REL<br>
+.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SET&nbsp;&nbsp;&nbsp;&nbsp;*<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CODE&nbsp;&nbsp;&nbsp;+REL<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ERRMI&nbsp;&nbsp;DVD.ENT-.&nbsp;&nbsp;If minus, we overran<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DVD.ENT-.&nbsp;&nbsp;Spin ahead
+</font>
+
+<font face="Geneva" size=2>
+<p>CODE -REL turns relocation off. The subsequent SET command creates a non-relocatable symbol. We can then turn relocation back on with CODE +REL and DS the space between the entry point and where we are.</p>
+
+<p>(The example is from the emulator's AT device driver source code.)</p></font>
+
+
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+
+<a name="errors"></a>
+<font face="Geneva" size=2>
+<p><b>Errors</b></p>
+
+<p>The assembler flags errors by writing one or more single characters at the left-hand margin of the assembly listing. Following is a listing of the errors that the author has been able to generate; it may not be an exhaustive list.</p>
+</font>
+
+<ul>
+<table border="1" cellspacing="0" cellpadding="2">
+<tr align="left" valign="top">
+	<td align="center"><font size="2" face="Geneva"><b>Error Code</b></font></td>
+	<td><font face="Geneva" size=2><b>Description</b></font></td>
+</tr>
+<tr align="left" valign="top">
+	<td align="center"><font size="2" face="Geneva">O</font></td>
+	<td><font face="Geneva" size=2>Unknown opcode</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td align="center"><font size="2" face="Geneva">A</font></td>
+	<td><font face="Geneva" size=2>Illegal or missing argument (a string missing a quote, wrong digit like 239Q, no entry point on END, etc.)</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td align="center"><font size="2" face="Geneva">V</font></td>
+	<td><font face="Geneva" size=2>Value out of range (example: DB 1000)</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td align="center"><font size="2" face="Geneva">U</font></td>
+	<td><font face="Geneva" size=2>Undefined symbol</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td align="center"><font size="2" face="Geneva">R</font></td>
+	<td><font face="Geneva" size=2>Register unknown. Also relocation error (10-*)</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td align="center"><font size="2" face="Geneva">F</font></td>
+	<td><font face="Geneva" size=2>Illegal label</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td align="center"><font size="2" face="Geneva">D</font></td>
+	<td><font face="Geneva" size=2>Duplicate label</font></td>
+</tr>
+</table>
+</ul>
+
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+
+</ul>
+
+<hr>
+
+<a name="xref"></a>
+<font size=3 face="Verdana,Geneva" color="0000FF">
+<p><b>Cross Reference Listing</b></p></font>
+<ul>
+<font face="Geneva" size=2>
+<p>You need to do two things to get a symbol cross reference listing:</p></font>
+
+<ol>
+<li><font face="Geneva" size=2>
+<p>Make sure that the program xref.abs is on the same disk as the assembler, asm.abs.</p></font></li>
+<li><font face="Geneva" size=2>
+<p>Specify the name of a cross reference work file on the assembly command line:</p></font>
+<font size="2" face="courier">asm ,lp:,xref=sy1:source</font>
+<font face="Geneva" size=2>
+&nbsp;&nbsp;&nbsp;(ref. <a href="#command">Command Line</a>)
+<p>The drive that you use for the cross reference work file must have sufficient free space in order to hold the file. Unfortunately, there is no good way to know how big that is; the file is deleted when the assembly is complete. The author uses a 2-sided 40-track drive as his development system volume and always has 200-300 free sectors available, and there has never been a problem.</p></font>
+</li>
+</ol>
+
+<font face="Geneva" size=2>
+<p>There are two sections to the cross reference listing, the Symbol Table and the Cross Reference Table.</p>
+
+<p><b>Symbol Table</b></p>
+
+<p>The symbol table is a dump of the entire symbol table, in alphabetical order. The table shows the name of the symbol and the symbol's value in split-octal notation. Here is a small subset of a symbol table:</p></font>
+
+<font size="2" face="courier">
+SYMBOL&nbsp;TABLE<br>
+<br>
+&nbsp;&nbsp;$CDEHL&nbsp;&nbsp;030216&nbsp;&nbsp;&nbsp;$CHL&nbsp;&nbsp;&nbsp;&nbsp;030224&nbsp;&nbsp;&nbsp;$COMP&nbsp;&nbsp;&nbsp;030060&nbsp;&nbsp;&nbsp;$DADA&nbsp;&nbsp;&nbsp;030072<br>
+&nbsp;&nbsp;$DADA.&nbsp;&nbsp;030101&nbsp;&nbsp;&nbsp;$DU66&nbsp;&nbsp;&nbsp;030106&nbsp;&nbsp;&nbsp;$HLIHL&nbsp;&nbsp;030211&nbsp;&nbsp;&nbsp;$INDL&nbsp;&nbsp;&nbsp;030234<br>
+&nbsp;&nbsp;$MOVE&nbsp;&nbsp;&nbsp;030252&nbsp;&nbsp;&nbsp;$MU10&nbsp;&nbsp;&nbsp;030324&nbsp;&nbsp;&nbsp;$MU66&nbsp;&nbsp;&nbsp;030337&nbsp;&nbsp;&nbsp;$MU86&nbsp;&nbsp;&nbsp;031007<br>
+&nbsp;&nbsp;$RSTALL&nbsp;031047&nbsp;&nbsp;&nbsp;$SAVALL&nbsp;031054&nbsp;&nbsp;&nbsp;$TBRA&nbsp;&nbsp;&nbsp;031076&nbsp;&nbsp;&nbsp;$TJMP&nbsp;&nbsp;&nbsp;031061<br>
+&nbsp;&nbsp;$TYPTX&nbsp;&nbsp;031136&nbsp;&nbsp;&nbsp;$TYPTX.&nbsp;031144&nbsp;&nbsp;&nbsp;$UDD&nbsp;&nbsp;&nbsp;&nbsp;031157&nbsp;&nbsp;&nbsp;$ZERO&nbsp;&nbsp;&nbsp;031212<br>
+&nbsp;&nbsp;.CHFLG&nbsp;&nbsp;000060&nbsp;&nbsp;&nbsp;.CLEAR&nbsp;&nbsp;000055&nbsp;&nbsp;&nbsp;.CLOSE&nbsp;&nbsp;000046&nbsp;&nbsp;&nbsp;.CLRCO&nbsp;&nbsp;000007<br>
+&nbsp;&nbsp;.CONSL&nbsp;&nbsp;000006&nbsp;&nbsp;&nbsp;.CTLC&nbsp;&nbsp;&nbsp;000041&nbsp;&nbsp;&nbsp;.DECODE&nbsp;000053&nbsp;&nbsp;&nbsp;.DELETE&nbsp;000050<br>
+&nbsp;&nbsp;.DMNMS&nbsp;&nbsp;000203&nbsp;&nbsp;&nbsp;.DMOUN&nbsp;&nbsp;000201&nbsp;&nbsp;&nbsp;.ERROR&nbsp;&nbsp;000057&nbsp;&nbsp;&nbsp;.EXIT&nbsp;&nbsp;&nbsp;000000<br>
+&nbsp;&nbsp;.LINK&nbsp;&nbsp;&nbsp;000040&nbsp;&nbsp;&nbsp;.LOADD&nbsp;&nbsp;000062&nbsp;&nbsp;&nbsp;.LOADO&nbsp;&nbsp;000010&nbsp;&nbsp;&nbsp;.MFLAG&nbsp;&nbsp;040010<br>
+&nbsp;&nbsp;.MONMS&nbsp;&nbsp;000202&nbsp;&nbsp;&nbsp;.MOUNT&nbsp;&nbsp;000200&nbsp;&nbsp;&nbsp;.NAME&nbsp;&nbsp;&nbsp;000054&nbsp;&nbsp;&nbsp;.OPENR&nbsp;&nbsp;000042<br>
+&nbsp;&nbsp;.OPENU&nbsp;&nbsp;000044&nbsp;&nbsp;&nbsp;.OPENW&nbsp;&nbsp;000043&nbsp;&nbsp;&nbsp;.POSIT&nbsp;&nbsp;000047&nbsp;&nbsp;&nbsp;.PRINT&nbsp;&nbsp;000003<br>
+&nbsp;&nbsp;.READ&nbsp;&nbsp;&nbsp;000004&nbsp;&nbsp;&nbsp;.RENAME&nbsp;000051&nbsp;&nbsp;&nbsp;.RESET&nbsp;&nbsp;000204&nbsp;&nbsp;&nbsp;.SCIN&nbsp;&nbsp;&nbsp;000001<br>
+&nbsp;&nbsp;.SCOUT&nbsp;&nbsp;000002&nbsp;&nbsp;&nbsp;.SETTOP&nbsp;000052&nbsp;&nbsp;&nbsp;.VERS&nbsp;&nbsp;&nbsp;000011&nbsp;&nbsp;&nbsp;.WRITE&nbsp;&nbsp;000005<br>
+</font>
+
+<font face="Geneva" size=2>
+<p><b>Cross Reference Table</b></p>
+
+<p>The cross reference listing shows the name and value of each symbol used in the program, along with the line number of each source code statement that references the symbol. Here is a small subset of a cross reference table:</p>
+</font>
+
+<font size="2" face="courier">
+CROSS&nbsp;REFERENCE&nbsp;TABLE<br>
+<br>
+&nbsp;&nbsp;AC2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;044034&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;386&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;389E<br>
+&nbsp;&nbsp;AC3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;044121&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;394&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;398E<br>
+&nbsp;&nbsp;ALEDS&nbsp;&nbsp;&nbsp;040013&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;89L<br>
+&nbsp;&nbsp;BEGIN&nbsp;&nbsp;&nbsp;042200&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;299E&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;475<br>
+&nbsp;&nbsp;BEL&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;000007&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;203E<br>
+&nbsp;&nbsp;BS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;000010&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;204E<br>
+&nbsp;&nbsp;C1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;042223&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;305&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;308E<br>
+&nbsp;&nbsp;C2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;042247&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;310&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;313E<br>
+&nbsp;&nbsp;C3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;042301&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;316&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;319E<br>
+&nbsp;&nbsp;C4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;042331&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;321&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;324E<br>
+&nbsp;&nbsp;CEVEN&nbsp;&nbsp;&nbsp;044235&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;418&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;433E<br>
+&nbsp;&nbsp;CHECKER&nbsp;044151&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;366&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;405E<br>
+&nbsp;&nbsp;CK1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;044156&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;409E&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;415<br>
+&nbsp;&nbsp;CK2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;044163&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;412&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;414L<br>
+&nbsp;&nbsp;CO.FLG&nbsp;&nbsp;000001&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;150E<br>
+&nbsp;&nbsp;COUT&nbsp;&nbsp;&nbsp;&nbsp;044273&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;426&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;429&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;438&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;442E<br>
+&nbsp;&nbsp;CR&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;000015&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;211E&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;212<br>
+&nbsp;&nbsp;CS.FLG&nbsp;&nbsp;000200&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;151E<br>
+</font>
+
+<font face="Geneva" size=2>
+<p>The first colum lists the symbol name. The next column lists its value.</p>
+
+<p>To the right of the value is a list of statement numbers where this symbol is referenced. The letters following the line number indicate where and how the symbol was defined. For example, ALEDS was defined on line 89 of the source listing, as the label of an opcode or pseudo opcode other than EQUate. The symbol is not used anywhere else in this program. (This symbol is defined as part of HDOS.ACM, which was copied into the program.) Symbol COUT was defined by an EQUate statement at source line number 442, and was referenced in three other places.</p>
+</font>
+
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</ul>
+
+<hr>
+<font face="Geneva,Arial" size=1>
+<center>
+<a href="program.html">Programming Table of Contents</a>
+<br><br>
+<a href="../h8_toc.html">Main Table of Contents</a>
+</center>
+<br><br>
+</font>
+</body>
+
+<!-- Mirrored from davidwallace2000.home.comcast.net/~davidwallace2000/h8/project8080_archive/pgs/asm.html by HTTrack Website Copier/3.x [XR&CO'2010], Mon, 10 Sep 2012 13:15:46 GMT -->
+</html>

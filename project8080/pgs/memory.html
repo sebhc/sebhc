@@ -1,0 +1,1295 @@
+<html>
+
+<!-- Mirrored from davidwallace2000.home.comcast.net/~davidwallace2000/h8/project8080_archive/pgs/memory.html by HTTrack Website Copier/3.x [XR&CO'2010], Mon, 10 Sep 2012 13:15:41 GMT -->
+<head>
+<title>H8 Emulation Help - Memory Map</title>
+<meta name="AppleTitle" content="H8 Emulation Help">
+<meta name="description" content="Memory Map">
+</head>
+
+<!-- updated 11/20/2002, das -->
+
+<body bgcolor="white">
+<a name="top"></a>
+<p>
+<font size=3 face="Verdana,Geneva" color="0000FF">
+<b>Memory Map</b>
+</font>
+
+<ul>
+<font size="2" face="Geneva,Arial">
+<p>This page will present overall address space utilization, the ROM entry points, and low-memory addresses of interest to programmers. Assembly language is required to take advantage of most of this information, but the memory addresses are presented in both split octal and decimal notation so that Basic programmers can use them (ref. <a href="basic.html#peek">PEEK</a>).</p>
+</font>
+</ul>
+<hr>
+<font face="Geneva,Arial" size=1>
+<center>
+<a href="program.html">Programming Table of Contents</a>
+<br><br>
+<a href="../h8_toc.html">Main Table of Contents</a>
+</center>
+<hr>
+<table border="0" cellspacing="2" cellpadding="2">
+<tr align="left" valign="top">
+	<td width="100"><font size=3 face="Verdana,Geneva" color="0000FF"><b>Page Index</b></font></td>
+	<td><font face="Geneva" size=2><a href="#addr">Address Space Utilization</a></font></td>
+</tr>
+<tr align="left" valign="top">
+	<td>&nbsp;</td>
+	<td><font face="Geneva" size=2><a href="#pamrom">PAM/8 ROM Entry Points</a></font></td>
+</tr>
+<tr align="left" valign="top">
+	<td>&nbsp;</td>
+	<td><font face="Geneva" size=2><a href="#pamram">PAM/8 RAM Locations</a></font></td>
+</tr>
+<tr align="left" valign="top">
+	<td>&nbsp;</td>
+	<td><font face="Geneva" size=2><a href="#hdosrom">HDOS ROM Entry Points</a></font></td>
+</tr>
+<tr align="left" valign="top">
+	<td>&nbsp;</td>
+	<td><font face="Geneva" size=2><a href="#hdosram">HDOS RAM Locations</a></font>
+</tr>
+<tr align="left" valign="top">
+	<td>&nbsp;</td>
+	<td><font face="Geneva" size=2><a href="#dates">Note on dates</a></font>
+</tr>
+</table>
+
+<hr>
+
+<a name="addr"></a>
+<font size=3 face="Verdana,Geneva" color="0000FF">
+<b>Address Space Utilization</b>
+</font>
+<ul>
+<font face="Geneva" size=2>
+<p>A real H8 would support from 8 to 56K of static RAM installed in a 64K address space. The H8 emulator supports a full 56K of RAM.</p>
+<p>Assuming that the original HDOS 2.0 H-17 disk driver is being used, the address space is used as follows:</p>
+</font>
+<ul>
+<table border="1" cellspacing="0" cellpadding="4">
+	<caption><font face="Geneva" size=2><b>Address Space</b></font></caption>
+<tr align="left" valign="top">
+	<th><font face="Geneva" size=2>Area</font></th>
+	<th><font face="Geneva" size=2>Size</font></th>
+	<th><font face="Geneva" size=2>From</font></th>
+	<th><font face="Geneva" size=2>To</font></th>
+</tr>
+<tr align="left" valign="top">
+	<td><font face="Geneva" size=2>PAM/8 ROM</font></td>
+	<td align="right" ><font face="Geneva" size=2>1.00K</font></td>
+	<td><font face="Geneva" size=2>000.000A</font></td>
+	<td><font face="Geneva" size=2>003.377A</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td><font face="Geneva" size=2>unused</font></td>
+	<td align="right"><font face="Geneva" size=2>4.00K</font></td>
+	<td><font face="Geneva" size=2>004.000A</font></td>
+	<td><font face="Geneva" size=2>023.377A</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td><font face="Geneva" size=2>H-17 RAM</font></td>
+	<td align="right"><font face="Geneva" size=2>1.00K</font></td>
+	<td><font face="Geneva" size=2>024.000A</font></td>
+	<td><font face="Geneva" size=2>027.377A</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td><font face="Geneva" size=2>H-17 ROM</font></td>
+	<td align="right"><font face="Geneva" size=2>2.00K</font></td>
+	<td><font face="Geneva" size=2>030.000A</font></td>
+	<td><font face="Geneva" size=2>037.377A</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td><font face="Geneva" size=2>PAM/8 RAM</font></td>
+	<td align="right"><font face="Geneva" size=2>64 bytes</font></td>
+	<td><font face="Geneva" size=2>040.000A</font></td>
+	<td><font face="Geneva" size=2>040.077A</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td><font face="Geneva" size=2>HDOS RAM</font></td>
+	<td align="right"><font face="Geneva" size=2>576 bytes</font></td>
+	<td><font face="Geneva" size=2>040.100A</font></td>
+	<td><font face="Geneva" size=2>042.177A</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td><font face="Geneva" size=2>User RAM</font></td>
+	<td align="right"><font face="Geneva" size=2>45.43K</font></td>
+	<td><font face="Geneva" size=2>042.200A</font></td>
+	<td><font face="Geneva" size=2>330.066A</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td><font face="Geneva" size=2>"Shared"</font></td>
+	<td align="right"><font face="Geneva" size=2>5.37K</font></td>
+	<td><font face="Geneva" size=2>330.067A</font></td>
+	<td><font face="Geneva" size=2>355.257A</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td><font face="Geneva" size=2>Resident HDOS</font></td>
+	<td align="right"><font face="Geneva" size=2>4.58K</font></td>
+	<td><font face="Geneva" size=2>355.260A</font></td>
+	<td><font face="Geneva" size=2>377.377A</font></td>
+</tr>
+</table>
+</ul>
+<font face="Geneva" size=2>
+<p>The H-17 driver is included in the resident HDOS area. The HUG replacement driver is 320 bytes larger than the original Heath version pushing everything else down by that amount, reducing by that amount the memory available to user programs.</p>
+<p>What I've called the "shared" space is used to load the HDOS overlays and loadable device drivers, such as the AT: and LP: drivers. These are loaded on demand and, in the case of the overlays, user RAM can be swapped to disk temporarily to make room for them. The sizes of these components, in the current version, are:</p>
+</font>
+
+<ul>
+<table border="1" cellspacing="0" cellpadding="4">
+
+<tr align="left" valign="top">
+	<th><font face="Geneva" size=2>&nbsp;</font></th>
+	<th colspan="3"><font face="Geneva" size=2>Component size expressed in...</font></th>
+</tr><tr align="left" valign="top">
+	<th><font face="Geneva" size=2>Component</font></th>
+	<th align="center" ><font face="Geneva" size=2>Split Octal</font></th>
+	<th align="right" ><font face="Geneva" size=2>Decimal</font></th>
+	<th align="center" ><font face="Geneva" size=2>K/bytes</font></th>
+</tr>
+<tr align="left" valign="top">
+	<td><font face="Geneva" size=2>HDOSOVL0</font></td>
+	<td align="center" ><font face="Geneva" size=2>013.307A</font></td>
+	<td align="right" ><font face="Geneva" size=2>3015</font></td>
+	<td align="center" ><font face="Geneva" size=2>2.9K</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td><font face="Geneva" size=2>HDOSOVL1</font></td>
+	<td align="center" ><font face="Geneva" size=2>010.134A</font></td>
+	<td align="right" ><font face="Geneva" size=2>2140</font></td>
+	<td align="center" ><font face="Geneva" size=2>2.1K</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td><font face="Geneva" size=2>LP:</font></td>
+	<td align="center" ><font face="Geneva" size=2>000.176A</font></td>
+	<td align="right" ><font face="Geneva" size=2>126</font></td>
+	<td align="center" ><font face="Geneva" size=2>0.1K</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td><font face="Geneva" size=2>AT:</font></td>
+	<td align="center" ><font face="Geneva" size=2>000.330A</font></td>
+	<td align="right" ><font face="Geneva" size=2>216</font></td>
+	<td align="center" ><font face="Geneva" size=2>0.2K</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td><font face="Geneva" size=2>Total</font></td>
+	<td align="center" ><font face="Geneva" size=2>025.171A</font></td>
+	<td align="right" ><font face="Geneva" size=2>5497</font></td>
+	<td align="center" ><font face="Geneva" size=2>5.4K</font></td>
+</tr>
+</table>
+</ul>
+<font face="Geneva" size=2>
+<p>(These are the module sizes after they are loaded into memory. The size on disk will differ.)</p>
+<p>The maximum memory available to a user program is 50.8K/bytes.  A program this size would have two constraints:</p>
+</font>
+<ol>
+<li><font face="Geneva" size=2><p>Whenever an overlay-resident <a href="scalls.html">syscall</a> is executed, user memory must be written to SY0: and the overlay read in, the syscall executed, and the user memory restored. This has a significant performance impact.</p></font></li>
+<li><font face="Geneva" size=2><p>The data being worked on by the overlay-resident syscall can't be present in the "shared" block of memory that's swapped out.</p></font></li>
+</ol>
+<font face="Geneva" size=2>
+<p>Generally, an application will perform better if it loads the overlays and drivers into memory before allocating all system memory to itself. Cautions:</p>
+</font>
+<ul type="disc">
+<li><font face="Geneva" size=2><p>Load both <a href="scalls.html#loado">overlays</a> and any <a href="scalls.html#loadd">drivers</a> you might need before dismounting the system disk. If you don't, the dismount will fail with an <a href="scalls.html#errtab">error code</a> of EC.NPM ("no provisions made for remounting more disks").</p></font></li>
+<li><font face="Geneva" size=2><p>Load the overlays and any drivers you might need before allocating all available system memory to your application (ref: <a href="scalls.html#settop">.settop</a> syscall). If you don't, the overlay load will fail with an error code of EC.NEM ("not enough RAM for this program").</p></font></li>
+</ul>
+<font face="Geneva" size=2>
+<p>Given that we're only talking about 5K/bytes in round numbers, it's worth it for overall flexibility and performance to run HDOS in stand-alone mode, preloading all the overlays and drivers. You will have to issue the command "set hdos stand-alone" once on the bootable disk, then you can use a PROLOGUE.SYS program to:</p>
+</font>
+<ol>
+<li><font face="Geneva" size=2>load the overlays (<a href="scalls.html#loado">.LOADO</a> syscalls)</font></li>
+<li><font face="Geneva" size=2>load the drivers (<a href="scalls.html#loadd">.LOADD</a> syscalls)</font></li>
+<li><font face="Geneva" size=2>dismount SY0: (<a href="scalls.html#dmoun">.DMOUN</a> or <a href="scalls.html#dmnms">.DMNMS</a> syscall)</font></li>
+<li><font face="Geneva" size=2>mount SY0: (<a href="scalls.html#mount">.MOUNT</a> or <a href="scalls.html#monms">.MONMS</a> syscall)</font></li>
+</ol>
+<font face="Geneva" size=2>
+<p>...at boot time. You can also load the drivers by hand using the LOAD <a href="heathkit.html#command">command</a> and RESET SY0: to cause the command handler to load the overlays.</p>
+<p>I wouldn't expect any changes in HDOS (!) but the drivers may change over time making them larger or smaller, so you should always use the <a href="scalls.html#settop">.settop</a> syscall to size available user memory and not rely on the addresses shown in the table above.</p>
+</font>
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</ul>
+
+<hr>
+
+<a name="pamrom"></a>
+<font size=3 face="Verdana,Geneva" color="0000FF">
+<b>PAM/8 ROM Entry Points</b>
+</font>
+<ul>
+<font face="Geneva" size=2>
+<p>There are three ROM routines that may be of interest:</p></font>
+
+<dl>
+<dt><font size="2" face="courier">ALARM (002.136A)</font></dt>
+<dd><font face="Geneva" size=2>
+<p>Alarm will sound the front panel alarm for about 1/2 second. There are no entry or exit parameters.</p></font></dd>
+
+<dt><font size="2" face="courier">CRC (002.347A)</font></dt>
+<dd><font face="Geneva" size=2>
+<p>CRC calculates a 16-byte cyclic redundancy check sequence for you. This is the same calculation as used on PAM/8 tape files.</p>
+<p>You must initialize CRCSUM to zero (ref. <a href="#pamram">PAM/8 RAM Locations</a>). Pass each byte to CRC in register (A). The final CRC will be in CRCSUM.</p>
+<p>This CRC is calculated such that if you pass the calculated CRC bytes through CRC and the result in CRCSUM is zero, the data block is good. Otherwise, there is an error.</p></font></dd>
+
+<dt><font size="2" face="courier">RCK (003.260A)</font></dt>
+<dd><font face="Geneva" size=2>
+<p>Read the front panel key pad. You get full debounce and audio feedback (though the emulator will "swallow" the short click) and keycode translation to a simple numeric value. This is the routine that Basic calls when you use the PAD() function.</p>
+<p>Note that you will stay in RCK until a key is read. If you want to check for a key first, you can IN 360Q; if the value you read is 377Q, there is no key down. Otherwise, you can call RCK to get the key value. This is a better approach for most real-time uses of the keypad.</p>
+<p>The key value is returned in register (A) as per the following table. All values given are in decimal.</p></font></dd>
+
+<ul>
+<table border="1" cellspacing="0" cellpadding="4">
+	<caption><font face="Geneva" size=2><b>RCK Key Values</b></font></caption>
+<tr align="center" valign="top">
+	<td><font face="Geneva" size=2><b>Key</b></font></td>
+	<td><font face="Geneva" size=2><b>Value</b></font></td>
+	<td><font face="Geneva" size=2><b>Key</b></font></td>
+	<td><font face="Geneva" size=2><b>Value</b></font></td>
+</tr>
+<tr align="center" valign="top">
+	<td><font face="Geneva" size=2>0</font></td>
+	<td><font face="Geneva" size=2>0</font></td>
+	<td><font face="Geneva" size=2>8</font></td>
+	<td><font face="Geneva" size=2>8</font></td>
+</tr>
+<tr align="center" valign="top">
+	<td><font face="Geneva" size=2>1</font></td>
+	<td><font face="Geneva" size=2>1</font></td>
+	<td><font face="Geneva" size=2>9</font></td>
+	<td><font face="Geneva" size=2>9</font></td>
+</tr>
+<tr align="center" valign="top">
+	<td><font face="Geneva" size=2>2</font></td>
+	<td><font face="Geneva" size=2>2</font></td>
+	<td><font face="Geneva" size=2>+</font></td>
+	<td><font face="Geneva" size=2>10</font></td>
+</tr>
+<tr align="center" valign="top">
+	<td><font face="Geneva" size=2>3</font></td>
+	<td><font face="Geneva" size=2>3</font></td>
+	<td><font face="Geneva" size=2>-</font></td>
+	<td><font face="Geneva" size=2>11</font></td>
+</tr>
+<tr align="center" valign="top">
+	<td><font face="Geneva" size=2>4</font></td>
+	<td><font face="Geneva" size=2>4</font></td>
+	<td><font face="Geneva" size=2>*</font></td>
+	<td><font face="Geneva" size=2>12</font></td>
+</tr>
+<tr align="center" valign="top">
+	<td><font face="Geneva" size=2>5</font></td>
+	<td><font face="Geneva" size=2>5</font></td>
+	<td><font face="Geneva" size=2>/</font></td>
+	<td><font face="Geneva" size=2>13</font></td>
+</tr>
+<tr align="center" valign="top">
+	<td><font face="Geneva" size=2>6</font></td>
+	<td><font face="Geneva" size=2>6</font></td>
+	<td><font face="Geneva" size=2>#</font></td>
+	<td><font face="Geneva" size=2>14</font></td>
+</tr>
+<tr align="center" valign="top">
+	<td><font face="Geneva" size=2>7</font></td>
+	<td><font face="Geneva" size=2>7</font></td>
+	<td><font face="Geneva" size=2>. (dot)</font></td>
+	<td><font face="Geneva" size=2>15</font></td>
+</tr>
+</table>
+</ul>
+
+<font face="Geneva" size=2>
+<p>Neither RCK nor the emulator support 2-key sequences.</p>
+<p>If you want to read the keypad yourself without the support of RCK, here are the key values. The no-key-down value is 377Q.</p></font>
+
+<ul>
+<table border="1" cellspacing="0" cellpadding="4">
+	<caption><font face="geneva" size="2"><b>Key code Values</b></caption>
+
+<tr align="center" valign="top">
+	<th><font face="geneva" size="2"><b>Key</b></th>
+	<th><font face="geneva" size="2"><b>Value</b></th>
+	<th><font face="geneva" size="2"><b>Key</b></th>
+	<th><font face="geneva" size="2"><b>Value</b></th>
+</tr>
+<tr align="center" valign="top">
+	<td><font face="courier" size="2">0</td>
+	<td><font face="courier" size="2">0xfe</td>
+	<td><font face="courier" size="2">8</td>
+	<td><font face="courier" size="2">0xef</td>
+</tr>
+<tr align="center" valign="top">
+	<td><font face="courier" size="2">1</td>
+	<td><font face="courier" size="2">0xfc</td>
+	<td><font face="courier" size="2">9</td>
+	<td><font face="courier" size="2">0xcf</td>
+</tr>
+<tr align="center" valign="top">
+	<td><font face="courier" size="2">2</td>
+	<td><font face="courier" size="2">0xfa</td>
+	<td><font face="courier" size="2">+</td>
+	<td><font face="courier" size="2">0xaf</td>
+</tr>
+<tr align="center" valign="top">
+	<td><font face="courier" size="2">3</td>
+	<td><font face="courier" size="2">0xf8</td>
+	<td><font face="courier" size="2">-</td>
+	<td><font face="courier" size="2">0x8f</td>
+</tr>
+<tr align="center" valign="top">
+	<td><font face="courier" size="2">4</td>
+	<td><font face="courier" size="2">0xf6</td>
+	<td><font face="courier" size="2">*</td>
+	<td><font face="courier" size="2">0x6f</td>
+</tr>
+<tr align="center" valign="top">
+	<td><font face="courier" size="2">5</td>
+	<td><font face="courier" size="2">0xf4</td>
+	<td><font face="courier" size="2">/</td>
+	<td><font face="courier" size="2">0x4f</td>
+</tr>
+<tr align="center" valign="top">
+	<td><font face="courier" size="2">6</td>
+	<td><font face="courier" size="2">0xf2</td>
+	<td><font face="courier" size="2">#</td>
+	<td><font face="courier" size="2">0x2f</td>
+</tr>
+<tr align="center" valign="top">
+	<td><font face="courier" size="2">7</td>
+	<td><font face="courier" size="2">0xf0</td>
+	<td><font face="courier" size="2">. (dot)</td>
+	<td><font face="courier" size="2">0x0f</td>
+</tr>
+</table>
+</ul>
+
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+
+</dl>
+</ul>
+<hr>
+
+<a name="pamram"></a>
+<font size=3 face="Verdana,Geneva" color="0000FF">
+<b>PAM/8 RAM Locations</b>
+</font>
+
+<ul>
+<font face="Geneva" size=2>
+<p>PAM/8 uses the memory from 040.000A through 040.064A for local workspace and to store hardware control and interrupt vector access areas.</p>
+
+<p>In general, you should stay away from modifying CTLFLG. The rest of it is fair game.</p></font>
+		
+<table border="1" cellspacing="0" cellpadding="2">
+<tr align="left" valign="top">
+	<td>&nbsp;</td>
+	<td align="center" colspan="2"><font face="geneva" size="2"><b>Address</b></font></td>
+	<td>&nbsp;</td>
+	<td>&nbsp;</td>
+<tr align="left" valign="top">
+	<td><font face="geneva" size="2"><b>Name</b></font></td>
+	<td align="center"><font face="geneva" size="2"><b>Octal</b></font></td>
+	<td align="center"><font face="geneva" size="2"><b>Dec.</b></font></td>
+	<td align="center"><font face="geneva" size="2"><b>Len.</b></font></td>
+	<td><font face="geneva" size="2"><b>Description</b></font></td>
+</tr>
+<tr align="left" valign="top">
+	<td><font face="courier" size="2">REGI</font></td>
+	<td align="center"><font face="courier" size="2">40.005A</font></td>
+	<td align="center"><font face="courier" size="2">8197</font></td>
+	<td align="center"><font face="courier" size="2">1</font></td>
+	<td><font face="geneva" size="2">
+	Register index tells PAM/8 which register pair is being displayed when we're in register display mode. Values (decimal):</font><br><br>
+	<font face="courier" size="2">
+	00 - SP&nbsp;&nbsp;&nbsp;&nbsp;06 - DE<br>
+	02 - AF&nbsp;&nbsp;&nbsp;&nbsp;08 - HL<br>
+	04 - BC&nbsp;&nbsp;&nbsp;&nbsp;10 - PC
+	</font>
+	</td>
+</tr>
+<tr align="left" valign="top">
+	<td><font face="courier" size="2">DSPMOD</font></td>
+	<td align="center"><font face="courier" size="2">40.007A</font></td>
+	<td align="center"><font face="courier" size="2">8199</font></td>
+	<td align="center"><font face="courier" size="2">1</font></td>
+	<td><font face="geneva" size="2">
+	<p>Display mode tells PAM/8 which mode the front panel LED display is in. Values (decimal):</p></font>
+	<font face="courier" size="2">
+	0 - memory read (decimals off) *<br>
+	1 - memory write (decimals rotating)<br>
+	2 - register read (decimals off) *<br>
+	3 - register write (decimals rotating)<br>
+	</font>
+	<font face="Geneva" size=2><p>* - these are the only values available to a user program; setting 1 and 3 will have no effect.</p></font>
+	</td>
+</tr>
+<tr align="left" valign="top">
+	<td><font face="courier" size="2">.MFLAG</font></td>
+	<td align="center"><font face="courier" size="2">40.010A</font></td>
+	<td align="center"><font face="courier" size="2">8200</font></td>
+	<td align="center"><font face="courier" size="2">1</font></td>
+	<td><font face="geneva" size="2">
+	<p>Mode flag provides controls over PAM/8's operation. This is a one-byte bit mask. Mask bits are:</p></font>
+	<font face="courier" size="2">
+	UO.HLT - 10000000B - Disable HALT proc.<br>
+	UO.NFR - 01000000B - No LED refresh<br>
+	UO.DDU - 00000010B - No LED update<br>
+	UO.CLK - 00000001B - User gets clock int.<br>
+	</font>
+	<font face="Geneva" size=2><p>UO.NFR disables front panel refresh; the LEDs will remain dark. UO.DDU leaves the LEDs lighted but they are not refreshed so you can put your own content on the front panel. These are equivalent to Basic's CNTRL 2,0 and CNTRL 2,1 commands.</p>
+	<p>HDOS sets UO.HLT and UO.CLK; please don't mess with them. If you need clock interrupts, save the HDOS vector at 40.038A and insert your own. After your clock processing, jump to HDOS's processing address.</p></font>
+	</td>
+</tr>
+<tr align="left" valign="top">
+	<td><font face="courier" size="2">CTLFLG</font></td>
+	<td align="center"><font face="courier" size="2">40.011A</font></td>
+	<td align="center"><font face="courier" size="2">8201</font></td>
+	<td align="center"><font face="courier" size="2">1</font></td>
+	<td><font face="geneva" size="2">
+	This is PAM/8's control byte, used to determine what mode she's in from entry to entry. Except for CB.CLI, it's best to not mess with it, as any changes can have unintended consequences. For example, turning on CB.MTL will light the monitor lamp, but it will also cause PAM/8 to take partial control of the machine. This is a one-byte bit mask. Values are:</font><br><br>
+	<font size="2" face="courier">
+	CB.SSI - 00000010B - Single step int. off<br>
+	CB.MTL - 00000100B - Monitor lamp on<br>
+	CB.CLI - 01000000B - Clock disabled<br>
+	CB.SPK - 10000000B - Speaker off
+	</font>
+	<font face="Geneva" size=2>
+	<p>You can set CB.CLI to disable the clock tick while leaving interrupts on. This will maximize performance, but .TICCNT will not advance and the disk system won't operate correctly. Take caution, here.</p></font>
+	</td>
+</tr>
+<tr align="left" valign="top">
+	<td><font face="courier" size="2">ALEDS</font></td>
+	<td align="center"><font face="courier" size="2">40.013A</font></td>
+	<td align="center"><font face="courier" size="2">8203</font></td>
+	<td align="center"><font face="courier" size="2">6</font></td>
+	<td><font face="geneva" size="2">
+	<p>These are the six address LEDs. If you set UO.DDU, you can put your own segment patterns in them. Bits are active off; e.g., a zero bit lights the corresponding segment. The segment pattern is:</p></font>
+	<font size="2" face="courier">
+	11111110B (376Q) - center segment on<br>
+	11111101B (375Q) - top segment on<br>
+	11111011B (373Q) - top-right segment on<br>
+	11110111B (367Q) - bottom-right segment on<br>
+	11101111B (357Q) - bottom segment on<br>
+	11011111B (337Q) - bottom-left segment on<br>
+	10111111B (277Q) - top-left segment on<br>
+	01111111B (177Q) - decimal point on<br>
+	</font>
+	<font face="Geneva" size=2>
+	<p>So, for example, the number '2' would be 11001000B (310Q). Try this in the debugger:</p></font>
+	
+	<font size="2" face="courier">
+	:B:40010=201/203<br>
+	:B:40013/9=xxx/376 xxx/375 xxx/373 xxx/367<br>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xxx/357 xxx/337 xxx/277 xxx/177<br>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xxx/310<br>
+		</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td><font face="courier" size="2">DLEDS</font></td>
+	<td align="center"><font face="courier" size="2">40.021A</font></td>
+	<td align="center"><font face="courier" size="2">8209</font></td>
+	<td align="center"><font face="courier" size="2">3</font></td>
+	<td><font face="geneva" size="2">
+	<p>These are the three data LEDs. If you set UO.DDU, you can put your own segment patterns in them. See above for segment patterns.</p></font></td>
+</tr>
+<tr align="left" valign="top">
+	<td><font face="courier" size="2">ABUSS</font></td>
+	<td align="center"><font face="courier" size="2">40.024A</font></td>
+	<td align="center"><font face="courier" size="2">8212</font></td>
+	<td align="center"><font face="courier" size="2">2</font></td>
+	<td><font face="geneva" size="2">
+	<p>If PAM/8 is displaying or modifying memory, this is the address of the memory byte. You can change this in your program to control which memory location is being displayed.</p></font></td>
+</tr>
+<tr align="left" valign="top">
+	<td><font face="courier" size="2">CRCSUM</font></td>
+	<td align="center"><font face="courier" size="2">40.027A</font></td>
+	<td align="center"><font face="courier" size="2">8215</font></td>
+	<td align="center"><font face="courier" size="2">2</font></td>
+	<td><font face="geneva" size="2">
+	<p>The 16-bit CRC accumulated by calling CRC.</p></font></td>
+</tr>
+<tr align="left" valign="top">
+	<td><font face="courier" size="2">TICCNT</font></td>
+	<td align="center"><font face="courier" size="2">40.033A</font></td>
+	<td align="center"><font face="courier" size="2">8219</font></td>
+	<td align="center"><font face="courier" size="2">2</font></td>
+	<td><font face="geneva" size="2">
+	<p>The 16-bit 2ms tick counter. Use this as a stable source for timing information.</p></font></td>
+</tr>
+<tr align="left" valign="top">
+	<td><font face="courier" size="2">UIVEC</font></td>
+	<td align="center"><font face="courier" size="2">40.037A</font></td>
+	<td align="center"><font face="courier" size="2">8223</font></td>
+	<td align="center"><font face="courier" size="2">21</font></td>
+	<td><font face="geneva" size="2">
+	<p>Interrupt vector jump table. Install a jump instruction (303Q following by your routine address) before enabling an interrupt.</p></font></td>
+</tr>
+<tr align="left" valign="top">
+	<td><font face="courier" size="2">clock</font></td>
+	<td align="center"><font face="courier" size="2">40.037A</font></td>
+	<td align="center"><font face="courier" size="2">8223</font></td>
+	<td align="center"><font face="courier" size="2">3</font></td>
+	<td><font face="geneva" size="2">
+	<p>If HDOS is running, this vector will be loaded with HDOS's clock interrupt handler. If you absolutely have to have clock interrupts, replace HDOS's routine address with your own, and jump to HDOS's handler when you are through. Before exiting your program, replace HDOS's handler address.</p></font></td>
+</tr>
+<tr align="left" valign="top">
+	<td><font face="courier" size="2">sstep</font></td>
+	<td align="center"><font face="courier" size="2">40.042A</font></td>
+	<td align="center"><font face="courier" size="2">8226</font></td>
+	<td align="center"><font face="courier" size="2">3</font></td>
+	<td><font face="geneva" size="2">
+	<p>Jump to single-step handler. If PAM/8 didn't initiate a single step, she assumes that someone else did and jumps to this address.</p></font></td>
+</tr>
+<tr align="left" valign="top">
+	<td><font face="courier" size="2">console</font></td>
+	<td align="center"><font face="courier" size="2">40.045A</font></td>
+	<td align="center"><font face="courier" size="2">8229</font></td>
+	<td align="center"><font face="courier" size="2">3</font></td>
+	<td><font face="geneva" size="2">
+	<p>If HDOS is running, this will contain a jump to HDOS's console input handler. If you want to install your own, save HDOS's address and install yours and you will start getting receiver interrupts immediately. Reset the interrupt enable register to interrupt only on receiver full and replace HDOS's handler address before you exit.</p></font></td>
+</tr>
+<tr align="left" valign="top">
+	<td><font face="courier" size="2">vec4</font></td>
+	<td align="center"><font face="courier" size="2">40.050A</font></td>
+	<td align="center"><font face="courier" size="2">8232</font></td>
+	<td align="center"><font face="courier" size="2">3</font></td>
+	<td><font face="geneva" size="2">
+	<p>Jump for interrupt vector 4 - unused by the emulator.</p></font></td>
+</tr>
+<tr align="left" valign="top">
+	<td><font face="courier" size="2">vec5</font></td>
+	<td align="center"><font face="courier" size="2">40.053A</font></td>
+	<td align="center"><font face="courier" size="2">8235</font></td>
+	<td align="center"><font face="courier" size="2">3</font></td>
+	<td><font face="geneva" size="2">
+	<p>Jump for interrupt vector 5 - unused by the emulator.</p></font></td>
+</tr>
+<tr align="left" valign="top">
+	<td><font face="courier" size="2">modem</font></td>
+	<td align="center"><font face="courier" size="2">40.056A</font></td>
+	<td align="center"><font face="courier" size="2">8238</font></td>
+	<td align="center"><font face="courier" size="2">3</font></td>
+	<td><font face="geneva" size="2">
+	<p>Jump for the modem interrupt. Install a jump to your handler before enabling interrupts on the modem UART.</p></font></td>
+</tr>
+<tr align="left" valign="top">
+	<td><font face="courier" size="2">scall</font></td>
+	<td align="center"><font face="courier" size="2">40.061A</font></td>
+	<td align="center"><font face="courier" size="2">8241</font></td>
+	<td align="center"><font face="courier" size="2">3</font></td>
+	<td><font face="geneva" size="2">
+	<p>This vector contains a jump to HDOS's system call handler.</p></font></td>
+</tr>
+</table>
+
+
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</ul>
+
+<hr>
+
+<a name="hdosrom"></a>
+<font size=3 face="Verdana,Geneva" color="0000FF">
+<b>HDOS ROM Entry Points</b>
+</font>
+<ul>
+<font face="Geneva" size=2>
+<p>These utility routines are in the so-called HDOS ROM that occupies address range 030.000A-037.377A.</p></font>
+
+<dl>
+
+<dt><font face="courier" size="2">$COMP (030.060A)</font>
+<dd><font face="geneva,arial" size="2">
+<p>Compare the string at (HL) with the string at (DE) for a length of (C). Return 'Z' if the strings are equal, 'C' if ((DE)) &lt; ((HL)).</p></font>
+<font face="geneva,arial" size="2"><p>$COMP uses registers A,F,C,D,E,H,L.</p></font>
+</dd>
+
+<dt><font face="courier" size="2">$DADA (030.072A)</font>
+<dd><font face="geneva,arial" size="2">
+<p>Add the value in register (A) to the (HL) register pair. (A) is not altered.</p></font>
+<font face="geneva,arial" size="2"><p>$DADA uses registers F,H,L.</p></font>
+</dd>
+
+<dt><font face="courier" size="2">$DADA. (030.101A)</font>
+<dd><font face="geneva,arial" size="2">
+<p>Add the value in register (A) to the (HL) register pair. Faster than $DADA but (A) is altered.</p></font>
+<font face="geneva,arial" size="2"><p>$DADA. uses registers A,F,H,L.</p></font>
+</dd>
+
+<dt><font face="courier" size="2">$DU66 (030.106A)</font>
+<dd><font face="geneva,arial" size="2">
+<p>Divide the (BC) register pair by the (DE) register pair and return the integer result in the (HL) register pair.</p></font>
+<font face="geneva,arial" size="2"><p>$DU66 uses all registers.</p></font>
+</dd>
+
+<dt><font face="courier" size="2">$HLIHL (030.211A)</font>
+<dd><font face="geneva,arial" size="2">
+<p>Load (HL) indirect through (HL): Load the 16-bit word at the address in the (HL) pair into the (HL) register pair. Trivial example to illustrate:</p></font>
+<font face="courier" size="2">
+STRING&nbsp;&nbsp;DB&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'Print me',ENL<br>
+ADDR&nbsp;&nbsp;&nbsp;&nbsp;DW&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;STRING<br>
+*<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LXI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;H,ADDR<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CALL&nbsp;&nbsp;&nbsp;&nbsp;$HLIHL&nbsp;&nbsp;&nbsp;&nbsp;Get string address<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SCALL&nbsp;&nbsp;&nbsp;.PRINT<br>
+</font>
+</font>
+<font face="geneva,arial" size="2">
+<p>Calling $HLIHL is equivalent to you coding:</p></font>
+<font face="courier" size="2">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOV&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A,M<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;INX&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;H<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOV&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;H,M<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOV&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;L,A<br>
+</font>
+<font face="geneva,arial" size="2">
+<p>...but shorter. This comes in very handy when you want to walk through HDOS memory data structures.</p></font>
+<font face="geneva,arial" size="2"><p>$HLIHL uses registers A,H,L.</p></font>
+</dd>
+
+<dt><font face="courier" size="2">$CDEHL (030.216A)</font>
+<dd><font face="geneva,arial" size="2">
+<p>Compare the (DE) and (HL) register pairs for equality <b>only</b>. Sets the 'Z' flag if they are equal.</p></font>
+<font face="geneva,arial" size="2"><p>$CDEHL uses registers A,F.</p></font>
+</dd>
+
+<dt><font face="courier" size="2">$CHL (030.224A)</font>
+<dd><font face="geneva,arial" size="2">
+<p>Complement the (HL) register pair.</p></font>
+<font face="geneva,arial" size="2"><p>$CHL uses registers A,F,H,L.</p></font>
+</dd>
+
+<dt><font face="courier" size="2">$INDL (030.234A)</font>
+<dd><font face="geneva,arial" size="2">
+<p>Indexed full word load. Load the (DE) pair with the word that is at the address in the (HL) pair plus the 16-bit displacement that immediately follows the call. Returns to the program following the displacement. This is used to pick 16-bit values out of a memory structure pointed to by the (HL) pair.</p>
+<p>As an example, assume that you have the address of the device table entry for the 'SY' device in the (HL) register pair, and you want to pick out the address of the unit specific table, which is at offset DEV.UNT from the front of the table (see the note at the bottom of this page):</p></font>
+<font face="courier" size="2">
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Entry: (HL) has address of table entry<br>
+*<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CALL&nbsp;&nbsp;&nbsp;&nbsp;$INDL<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DW&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DEV.UNT<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;XCHG&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(HL) has UST address<br>
+</font>
+<font face="geneva,arial" size="2">
+<p>HDOS makes heavy use of this to get around the lack of an indexed load instruction in the 8080A chip.</p></font>
+<font face="geneva,arial" size="2"><p>$INDL uses registers A,F,D,E.</p></font>
+</dd>
+
+<dt><font face="courier" size="2">$MOVE (030.252A)</font>
+<dd><font face="geneva,arial" size="2">
+<p>Move the contents of memory at the address in the (DE) register pair to the address in the (HL) register pair. The length of the move is in the (BC) register pair. If the two areas overlap, $MOVE will work from back to front so that the block is moved correctly without a "ripple" effect.</p></font>
+<font face="geneva,arial" size="2"><p>$MOVE uses all registers.</p></font>
+</dd>
+
+<dt><font face="courier" size="2">$MU10 (030.324A)</font>
+<dd><font face="geneva,arial" size="2">
+<p>Multiply the contents of the (DE) register pair by 10. Return the result in the (HL) register pair. Watch for overflow - the maximum result is 65,535.</p></font>
+<font face="geneva,arial" size="2"><p>$MU10 uses registers F,D,E,H,L.</p></font>
+</dd>
+
+<dt><font face="courier" size="2">$MU66 (030.337A)</font>
+<dd><font face="geneva,arial" size="2">
+<p>Multiply the contents of the (DE) register pair by the contents of the (BC) register pair and return the result in the (HL) register pair. Watch for overflow - the maximum result is 65,535.</p></font>
+<font face="geneva,arial" size="2"><p>$MU66 uses all registers.</p></font>
+</dd>
+
+<dt><font face="courier" size="2">$MU86 (031.007A)</font>
+<dd><font face="geneva,arial" size="2">
+<p>Multiply the contents of the (DE) register pair by the contents of register (A) and return the result in the (HL) register pair. Watch for overflow - the maximum result is 65,535.</p></font>
+<font face="geneva,arial" size="2"><p>$MU66 uses all registers.</p></font>
+</dd>
+
+<dt><font face="courier" size="2">$RSTALL (031.047A)</font>
+<dd><font face="geneva,arial" size="2">
+<p>Restore all registers. You would normally JMP to $RSTALL. See $SAVALL below for an example of its use.</p></font>
+<font face="geneva,arial" size="2"><p>$RSTALL, obviously, uses all registers.</p></font>
+</dd>
+
+<dt><font face="courier" size="2">$SAVALL (031.054A)</font>
+<dd><font face="geneva,arial" size="2">
+<p>Save all registers. You would normally call $SAVALL at the top of a called subroutine, when you want to exit that routine without altering any of the registers or flags. To exit the subroutine, JMP to $RSTALL. Example:</p></font>
+<font face="courier" size="2">
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This is my subroutine<br>
+*<br>
+SUBRTN&nbsp;&nbsp;EQU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CALL&nbsp;&nbsp;&nbsp;&nbsp;$SAVALL<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;...&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;do whatever I do<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;JMP&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$RSTALL&nbsp;&nbsp;&nbsp;Restore and return<br>
+</font>
+<font face="geneva,arial" size="2"><p>$SAVALL uses registers H, L.</p></font>
+</dd>
+
+<dt><font face="courier" size="2">$TJMP (031.061A)</font>
+<dd><font face="geneva,arial" size="2">
+<p>Table jump. The call is followed by a table of 16-bit addresses. Register (A) must contain a table entry number (0, 1, 2, etc.). $TJMP will jump to the content of the entry that is ((A) * 2) bytes past the call. Example:</p></font>
+<font face="courier" size="2">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MVI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A,2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Select entry 2<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CALL&nbsp;&nbsp;&nbsp;&nbsp;$TJMP<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DW&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TARGET0<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DW&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TARGET1<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DW&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TARGET2&nbsp;This is the one we'll get<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DW&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TARGET3<br>
+*<br>
+TARGET0&nbsp;EQU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*<br>
+</font>
+<font face="geneva,arial" size="2"><p>$TJMP uses registers A, F.</p></font>
+</dd>
+
+<dt><font face="courier" size="2">$TBRA (031.076A)</font>
+<dd><font face="geneva,arial" size="2">
+<p>Table branch. The call is followed by a table of 8-bit address offsets. Register (A) must contain a table entry number (0, 1, 2, etc.). $TBRA will add (A) to the address of the beginning of the table to find the correct offset. It will then add that offset to the address of the offset to find the routine address. That address will be loaded into the (PC) register pair.</p>
+<p>The routines addressed by the table must be within 256 bytes of the call to $TBRA - you'll get assembly errors if they are not. Example:</p>
+<font face="courier" size="2">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MVI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A,2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Select entry<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CALL&nbsp;&nbsp;&nbsp;&nbsp;$TBRA<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DB&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TARGET0-*<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DB&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TARGET1-*<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DB&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TARGET2-*&nbsp;&nbsp;This is the one we'll get<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DB&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TARGET3-*<br>
+*<br>
+TARGET0&nbsp;EQU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*<br>
+</font>
+
+<font face="Geneva" size=2>
+<p>You'll find $TBRA used in both the AT and LP device drivers.</p></font>
+<font face="geneva,arial" size="2"><p>$TBRA uses registers F,H, L.</p></font>
+</dd>
+
+<dt><font face="courier" size="2">$TYPTX (031.136A)</font>
+<dd><font face="geneva,arial" size="2">
+<p>Type on the console the text that immediately follows the call, and return to the instruction following the text. Make sure to use a high-order 1-bit delimeter at the end of the text. Example:</p></font>
+<font face="courier" size="2">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CALL&nbsp;&nbsp;&nbsp;&nbsp;$TYPTX<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DB&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'Type me',NL+200Q<br>
+*<br>
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;resume execution here<br>
+</font>
+<font face="geneva,arial" size="2"><p>$TYPTX uses registers A,F.</p></font>
+</dd>
+
+<dt><font face="courier" size="2">$TYPTX. (031.144A)</font>
+<dd><font face="geneva,arial" size="2">
+<p>Type the text at the address in the (HL) register pair. Equivalent to the .PRINT Scall.</p></font>
+<font face="geneva,arial" size="2"><p>$TYPTX. uses registers A,F.</p></font>
+</dd>
+
+<dt><font face="courier" size="2">$UDD (031.157A)</font>
+<dd><font face="geneva,arial" size="2">
+<p>Unpack Decimal Digits - Convert the number in the (BC) register pair to ASCII decimal. Put the result at the address in the (HL) register pair, for a length of (A). The result is right-adjusted in the output field and filled with leading zeros as required.</p></font>
+<font face="geneva,arial" size="2"><p>$UDD uses all registers.</p></font>
+</dd>
+
+<dt><font face="courier" size="2">$ZERO (031.212A)</font>
+<dd><font face="geneva,arial" size="2">
+<p>Zero a block of memory. The memory address is in the (HL) register pair. The length of the block is in register (B).</p></font>
+<font face="geneva,arial" size="2"><p>$ZERO uses registers A,F,B,H,L.</p></font>
+</dd>
+
+</dl>
+
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</ul>
+
+<hr>
+
+<a name="hdosram"></a>
+<font size=3 face="Verdana,Geneva" color="0000FF">
+<b>HDOS RAM Locations</b>
+</font>
+<ul>
+<font face="Geneva" size=2>
+<p>These are interesting low-memory locations used by resident HDOS code to manage the system. I would caution that these should be considered to be read-only locations. If you start writing down here, you're on your own.</p></font>
+
+<table border="1" cellspacing="0" cellpadding="2">
+<tr align="left" valign="top">
+	<td>&nbsp;</td>
+	<td align="center" colspan="2"><font face="geneva" size="2"><b>Address</b></font></td>
+	<td>&nbsp;</td>
+	<td>&nbsp;</td>
+<tr align="left" valign="top">
+	<td><font face="geneva" size="2"><b>Name</b></font></td>
+	<td align="center"><font face="geneva" size="2"><b>Octal</b></font></td>
+	<td align="center"><font face="geneva" size="2"><b>Dec.</b></font></td>
+	<td align="center"><font face="geneva" size="2"><b>Len.</b></font></td>
+	<td><font face="geneva" size="2"><b>Description</b></font></td>
+</tr>
+<tr align="left" valign="top">
+	<td><font face="courier" size="2">D.SYDD</font></td>
+	<td align="center"><font face="courier" size="2">40.130A</font></td>
+	<td align="center"><font face="courier" size="2">8280</font></td>
+	<td align="center"><font face="courier" size="2">3</font></td>
+	<td><font face="geneva" size="2">
+	Jump to low-level disk driver.
+	</font>
+	</td>
+</tr>
+<tr align="left" valign="top">
+	<td><font face="courier" size="2">D.TT</font></td>
+	<td align="center"><font face="courier" size="2">40.240A</font></td>
+	<td align="center"><font face="courier" size="2">8352</font></td>
+	<td align="center"><font face="courier" size="2">1</font></td>
+	<td><font face="geneva" size="2">
+	Current disk operation target track - great to watch in the front panel LEDs.
+	</font>
+	</td>
+</tr>
+<tr align="left" valign="top">
+	<td><font face="courier" size="2">D.TS</font></td>
+	<td align="center"><font face="courier" size="2">40.241A</font></td>
+	<td align="center"><font face="courier" size="2">8353</font></td>
+	<td align="center"><font face="courier" size="2">1</font></td>
+	<td><font face="geneva" size="2">
+	Current disk operation target sector.
+	</font>
+	</td>
+</tr>
+<tr align="left" valign="top">
+	<td><font face="courier" size="2">D.DRVTB</font></td>
+	<td align="center"><font face="courier" size="2">40.251A</font></td>
+	<td align="center"><font face="courier" size="2">8361</font></td>
+	<td align="center"><font face="courier" size="2">8</font></td>
+	<td><font face="geneva" size="2">
+	Current track number (where the heads are) and volume number for four drives, organized as sy0: tracks and volume, sy1: tracks and volume,....
+	</font>
+	</td>
+</tr>
+<tr align="left" valign="top">
+	<td><font face="courier" size="2">D.HECNT</font></td>
+	<td align="center"><font face="courier" size="2">40.261A</font></td>
+	<td align="center"><font face="courier" size="2">8369</font></td>
+	<td align="center"><font face="courier" size="2">1</font></td>
+	<td><font face="geneva" size="2">
+	Hard error count.
+	</font>
+	</td>
+</tr>
+<tr align="left" valign="top">
+	<td><font face="courier" size="2">D.SECNT</font></td>
+	<td align="center"><font face="courier" size="2">40.262A</font></td>
+	<td align="center"><font face="courier" size="2">8370</font></td>
+	<td align="center"><font face="courier" size="2">2</font></td>
+	<td><font face="geneva" size="2">
+	Soft error count.
+	</font>
+	</td>
+</tr>
+<tr align="left" valign="top">
+	<td><font face="courier" size="2">D.OECNT</font></td>
+	<td align="center"><font face="courier" size="2">40.264A</font></td>
+	<td align="center"><font face="courier" size="2">8372</font></td>
+	<td align="center"><font face="courier" size="2">1</font></td>
+	<td><font face="geneva" size="2">
+	Operation error count.
+	</font>
+	</td>
+</tr>
+<tr align="left" valign="top">
+	<td><font face="courier" size="2">D.E.MDS</font></td>
+	<td align="center"><font face="courier" size="2">40.265A</font></td>
+	<td align="center"><font face="courier" size="2">8373</font></td>
+	<td align="center"><font face="courier" size="2">1</font></td>
+	<td><font face="geneva" size="2">
+	Missing data sync errors.
+	</font>
+	</td>
+</tr>
+<tr align="left" valign="top">
+	<td><font face="courier" size="2">D.E.HSY</font></td>
+	<td align="center"><font face="courier" size="2">40.266A</font></td>
+	<td align="center"><font face="courier" size="2">8374</font></td>
+	<td align="center"><font face="courier" size="2">1</font></td>
+	<td><font face="geneva" size="2">
+	Missing header sync errors.
+	</font>
+	</td>
+</tr>
+<tr align="left" valign="top">
+	<td><font face="courier" size="2">D.E.CHK</font></td>
+	<td align="center"><font face="courier" size="2">40.267A</font></td>
+	<td align="center"><font face="courier" size="2">8375</font></td>
+	<td align="center"><font face="courier" size="2">1</font></td>
+	<td><font face="geneva" size="2">
+	Data checksum errors.
+	</font>
+	</td>
+</tr>
+<tr align="left" valign="top">
+	<td><font face="courier" size="2">D.E.HCK</font></td>
+	<td align="center"><font face="courier" size="2">40.270A</font></td>
+	<td align="center"><font face="courier" size="2">8376</font></td>
+	<td align="center"><font face="courier" size="2">1</font></td>
+	<td><font face="geneva" size="2">
+	 Header checksum errors.
+	</font>
+	</td>
+</tr>
+<tr align="left" valign="top">
+	<td><font face="courier" size="2">D.E.VOL</font></td>
+	<td align="center"><font face="courier" size="2">40.271A</font></td>
+	<td align="center"><font face="courier" size="2">8377</font></td>
+	<td align="center"><font face="courier" size="2">1</font></td>
+	<td><font face="geneva" size="2">
+	Wrong volume number errors.
+	</font>
+	</td>
+</tr><tr align="left" valign="top">
+	<td><font face="courier" size="2">D.E.TRK</font></td>
+	<td align="center"><font face="courier" size="2">40.272A</font></td>
+	<td align="center"><font face="courier" size="2">8378</font></td>
+	<td align="center"><font face="courier" size="2">1</font></td>
+	<td><font face="geneva" size="2">
+	Bad track seek errors.
+	</font>
+	</td>
+</tr>
+<tr align="left" valign="top">
+	<td><font face="courier" size="2">D.OPR</font></td>
+	<td align="center"><font face="courier" size="2">40.273A</font></td>
+	<td align="center"><font face="courier" size="2">8379</font></td>
+	<td align="center"><font face="courier" size="2">2</font></td>
+	<td><font face="geneva" size="2">
+	Total operation count - reads..
+	</font>
+	</td>
+</tr>
+<tr align="left" valign="top">
+	<td><font face="courier" size="2">D.OPW</font></td>
+	<td align="center"><font face="courier" size="2">40.275A</font></td>
+	<td align="center"><font face="courier" size="2">8381</font></td>
+	<td align="center"><font face="courier" size="2">2</font></td>
+	<td><font face="geneva" size="2">
+	Total operation count - writes.
+	</font>
+	</td>
+</tr>
+<tr align="left" valign="top">
+	<td><font face="courier" size="2">S.DATE</font></td>
+	<td align="center"><font face="courier" size="2">40.277A</font></td>
+	<td align="center"><font face="courier" size="2">8383</font></td>
+	<td align="center"><font face="courier" size="2">9</font></td>
+	<td><font face="geneva" size="2">
+	Current system date in printable ASCII.
+	</font>
+	</td>
+</tr>
+<tr align="left" valign="top">
+	<td><font face="courier" size="2">S.DATC</font></td>
+	<td align="center"><font face="courier" size="2">40.310A</font></td>
+	<td align="center"><font face="courier" size="2">8392</font></td>
+	<td align="center"><font face="courier" size="2">2</font></td>
+	<td><font face="geneva" size="2">
+	Current system date, encoded. (See note below.)
+	</font>
+	</td>
+</tr>
+<tr align="left" valign="top">
+	<td><font face="courier" size="2">S.HIMEM</font></td>
+	<td align="center"><font face="courier" size="2">40.316A</font></td>
+	<td align="center"><font face="courier" size="2">8398</font></td>
+	<td align="center"><font face="courier" size="2">2</font></td>
+	<td><font face="geneva" size="2">
+	System high memory address (377.377A in the emulator).
+	</font>
+	</td>
+</tr>
+<tr align="left" valign="top">
+	<td><font face="courier" size="2">S.SYSM</font></td>
+	<td align="center"><font face="courier" size="2">40.320A</font></td>
+	<td align="center"><font face="courier" size="2">8400</font></td>
+	<td align="center"><font face="courier" size="2">2</font></td>
+	<td><font face="geneva" size="2">
+	FWA (first word address) resident system.
+	</font>
+	</td>
+</tr>
+<tr align="left" valign="top">
+	<td><font face="courier" size="2">S.USRM</font></td>
+	<td align="center"><font face="courier" size="2">40.322A</font></td>
+	<td align="center"><font face="courier" size="2">8402</font></td>
+	<td align="center"><font face="courier" size="2">2</font></td>
+	<td><font face="geneva" size="2">
+	LWA (last word address) user memory (set by <a href="scalls.html#settop">.SETTOP</a> syscall).
+	</font>
+	</td>
+</tr>
+<tr align="left" valign="top">
+	<td><font face="courier" size="2">S.OMAX</font></td>
+	<td align="center"><font face="courier" size="2">40.324A</font></td>
+	<td align="center"><font face="courier" size="2">8404</font></td>
+	<td align="center"><font face="courier" size="2">2</font></td>
+	<td><font face="geneva" size="2">
+	Maximum overlay size for this system. This is set to a value just a little larger than HDOSOVL0. You can use this value to calculate a maximum user memory address to use with <a href="scalls.html#settop">.SETTOP</a>, that will leave room for the overlays to be loaded without the need to swap user memory to disk first.
+	</font>
+	</td>
+</tr>
+<tr align="left" valign="top">
+	<td><font face="courier" size="2">S.CSLMD</font></td>
+	<td align="center"><font face="courier" size="2">40.326A</font></td>
+	<td align="center"><font face="courier" size="2">8406</font></td>
+	<td align="center"><font face="courier" size="2">1</font></td>
+	<td><font face="geneva" size="2">
+	Console mode (ref: <a href="scalls.html#consl">.CONSL</a> scall)
+	</font>
+	</td>
+</tr>
+<tr align="left" valign="top">
+	<td><font face="courier" size="2">S.CONTY</font></td>
+	<td align="center"><font face="courier" size="2">40.327A</font></td>
+	<td align="center"><font face="courier" size="2">8407</font></td>
+	<td align="center"><font face="courier" size="2">1</font></td>
+	<td><font face="geneva" size="2">
+	Console type flags (ref: <a href="scalls.html#consl">.CONSL</a> scall)
+	</font>
+	</td>
+</tr>
+<tr align="left" valign="top">
+	<td><font face="courier" size="2">S.CUSOR</font></td>
+	<td align="center"><font face="courier" size="2">40.330A</font></td>
+	<td align="center"><font face="courier" size="2">8408</font></td>
+	<td align="center"><font face="courier" size="2">1</font></td>
+	<td><font face="geneva" size="2">
+	Current cursor position (ref: <a href="scalls.html#consl">.CONSL</a> scall)
+	</font>
+	</td>
+</tr>
+<tr align="left" valign="top">
+	<td><font face="courier" size="2">S.CONWI</font></td>
+	<td align="center"><font face="courier" size="2">40.331A</font></td>
+	<td align="center"><font face="courier" size="2">8409</font></td>
+	<td align="center"><font face="courier" size="2">1</font></td>
+	<td><font face="geneva" size="2">
+	Console width (ref: <a href="scalls.html#consl">.CONSL</a> scall)
+	</font>
+	</td>
+</tr>
+<tr align="left" valign="top">
+	<td><font face="courier" size="2">S.CONFL</font></td>
+	<td align="center"><font face="courier" size="2">40.332A</font></td>
+	<td align="center"><font face="courier" size="2">8410</font></td>
+	<td align="center"><font face="courier" size="2">1</font></td>
+	<td><font face="geneva" size="2">
+	Console flags (ref: <a href="scalls.html#consl">.CONSL</a> scall)
+	</font>
+	</td>
+</tr>
+<tr align="left" valign="top">
+	<td><font face="courier" size="2">S.CAADR</font></td>
+	<td align="center"><font face="courier" size="2">40.333A</font></td>
+	<td align="center"><font face="courier" size="2">8411</font></td>
+	<td align="center"><font face="courier" size="2">2</font></td>
+	<td><font face="geneva" size="2">
+	Abort processing address
+	</font>
+	</td>
+</tr>
+<tr align="left" valign="top">
+	<td><font face="courier" size="2">S.CCTAB</font></td>
+	<td align="center"><font face="courier" size="2">40.335A</font></td>
+	<td align="center"><font face="courier" size="2">8413</font></td>
+	<td align="center"><font face="courier" size="2">2</font></td>
+	<td><font face="geneva" size="2">
+	Addr. for Ctl-A, -B, -C processing
+	</font>
+	</td>
+</tr>
+<tr align="left" valign="top">
+	<td><font face="courier" size="2">S.DLINK</font></td>
+	<td align="center"><font face="courier" size="2">40.346A</font></td>
+	<td align="center"><font face="courier" size="2">8422</font></td>
+	<td align="center"><font face="courier" size="2">2</font></td>
+	<td><font face="geneva" size="2">
+	Addr. of HDOS system data in high memory. This is useful for finding the system unit number, which is at offset 21Q from this address. The system unit number is the <b>physical</b> device (0, 1 or 2) that is presently <b>logical</b> unit 0. See <a href="heathkit.html#boot">boot</a> for a complete description of how - and why - this works.
+	</font>
+	</td>
+</tr>
+<tr align="left" valign="top">
+	<td><font face="courier" size="2">S.CFWA</font></td>
+	<td align="center"><font face="courier" size="2">40.352A</font></td>
+	<td align="center"><font face="courier" size="2">8426</font></td>
+	<td align="center"><font face="courier" size="2">2</font></td>
+	<td><font face="geneva" size="2">
+	FWA of the channel table.
+	</font>
+	</td>
+</tr>
+<tr align="left" valign="top">
+	<td><font face="courier" size="2">S.DFWA</font></td>
+	<td align="center"><font face="courier" size="2">40.354A</font></td>
+	<td align="center"><font face="courier" size="2">8428</font></td>
+	<td align="center"><font face="courier" size="2">2</font></td>
+	<td><font face="geneva" size="2">
+	FWA of the device table (see note below this table).
+	</font>
+	</td>
+</tr>
+<tr align="left" valign="top">
+	<td><font face="courier" size="2">S.RFWA</font></td>
+	<td align="center"><font face="courier" size="2">40.356A</font></td>
+	<td align="center"><font face="courier" size="2">8430</font></td>
+	<td align="center"><font face="courier" size="2">2</font></td>
+	<td><font face="geneva" size="2">
+	FWA resident HDOS code.
+	</font>
+	</td>
+</tr>
+<tr align="left" valign="top">
+	<td><font face="courier" size="2">AIO.UNI</font></td>
+	<td align="center"><font face="courier" size="2">41.061A</font></td>
+	<td align="center"><font face="courier" size="2">8497</font></td>
+	<td align="center"><font face="courier" size="2">1</font></td>
+	<td><font face="geneva" size="2">
+	Active I/O area, current unit number. Set this to a unit number in binary (0, 1, 2) before calling the SY.DVD driver for low-level I/O.
+	</font>
+	</td>
+</tr>
+<tr align="left" valign="top">
+	<td><font face="courier" size="2">USERFWA,<br>STACK</font></td>
+	<td align="center"><font face="courier" size="2">42.200A</font></td>
+	<td align="center"><font face="courier" size="2">8832</font></td>
+	<td align="center"><font face="courier" size="2">n/a</font></td>
+	<td><font face="geneva" size="2">
+	This is not a byte or word value; it just seems like an convenient place to point out that free memory for user programs starts at 42.200A. The stack pointer is also initialized to 42.200A.
+	</font>
+	</td>
+</tr>
+</table>
+
+<font face="Geneva" size=2>
+<p><b>Note on S.DFWA</b></p>
+<p>This is a pointer to a table with the following structure:</p></font>
+
+<font size="2" face="courier">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ORG&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0<br>
+DEV.NAM&nbsp;DS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Device name ('TT', 'SY', 'LP', etc.)<br>
+DV.EL&nbsp;&nbsp;&nbsp;EQU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;00000000B&nbsp;End of list flag<br>
+DV.NU&nbsp;&nbsp;&nbsp;EQU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;00000001B&nbsp;Not used<br>
+DEV.RES&nbsp;DS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Driver residence code<br>
+DR.IM&nbsp;&nbsp;&nbsp;EQU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;00000001B&nbsp;Driver in memory<br>
+DR.PR&nbsp;&nbsp;&nbsp;EQU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;00000010B&nbsp;Driver perminantly resident<br>
+DEV.JMP&nbsp;DS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Jump instruction (303Q)<br>
+DEV.DDA&nbsp;DS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Driver entry point address<br>
+DEV.FLG&nbsp;DS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Flag byte<br>
+DT.DD&nbsp;&nbsp;&nbsp;EQU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;00000001B&nbsp;Directory device (e.g., disk)<br>
+DT.CR&nbsp;&nbsp;&nbsp;EQU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;00000010B&nbsp;Capable of read<br>
+DT.CW&nbsp;&nbsp;&nbsp;EQU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;00000100B&nbsp;Capable of write<br>
+DT.RN&nbsp;&nbsp;&nbsp;EQU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;00001000B&nbsp;Capable of random access (disk)<br>
+DT.CH&nbsp;&nbsp;&nbsp;EQU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;00010000B&nbsp;Capable of character mode<br>
+DEV.MUM&nbsp;DS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Mounted unit mask<br>
+DEV.MNU&nbsp;DS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Maximum number of units<br>
+DEV.UNT&nbsp;DS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Unit specific table<br>
+DEV.DVL&nbsp;DS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Driver byte length<br>
+DEV.DVG&nbsp;DS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Driver routine group address<br>
+</font>
+
+<font face="Geneva" size=2><p>There is one 14-byte entry for each driver in the system. The first entry should be for the TT: driver; the second will generally be for the SY: driver. You can find it by looking for 'SY' in the first two characters.</p>
+<p>The mounted unit mask is a bit field that will tell which drives have a disk mounted:</p></font>
+
+<font size="2" face="courier">
+00000001B - Drive sy0:<br>
+00000010B - Drive sy1:<br>
+00000100B - Drive sy2:<br>
+</font>
+
+<font face="Geneva" size=2>
+<p>DEV.UNT is a pointer to a unit-specific data table, containing three 8-character entries, one per drive. Each of these entries has the following format:</p></font>
+
+<font size="2" face="courier">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ORG&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0<br>
+UNT.FLG&nbsp;DS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Unit specific *DEV.FLG*<br>
+UNT.SPG&nbsp;DS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Sectors per group<br>
+UNT.GRT&nbsp;DS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Address of GRT in memory<br>
+UNT.GTS&nbsp;DS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;GRT sector number<br>
+UNT.DIS&nbsp;DS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Directory first sector number<br>
+</font>
+
+<font face="Geneva" size=2>
+<p>With this information, you can easily find the directory without having to read the disk label, you can make low-level driver calls to read the directory, and you can use the in-memory GRT to access file sectors and to chase the free chain to determine disk free space. Refer to the design notes on the project web site for more information on these subjects.</p>
+
+<p>Again, I caution: Please treat these fields as read only.</p></font>
+
+<font face="Geneva" size=2>
+<p><b>Note on S.CFWA</b></p>
+
+<p>This is a pointer to the beginning of the channel table. There are 7 table entries, corresponding with file channels -1 through 5; S.CFWA points to the entry for channel -1. Each entry starts with a link to the next entry in the list, so you can follow the chain to the entry of your choice. The link in channel five is zero.</p>
+<p>Each entry is 42 bytes long and has the following format. (Note that this information comes from experimentation and not the HDOS source listings, so it may not be 100% complete or accurate.)</p>
+</font>
+
+<font face="Courier" size=2>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ORG&nbsp;&nbsp;&nbsp;&nbsp;0<br>
+<br>
+CHN.LNK&nbsp;DS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Link to next entry<br>
+CHN.VEC&nbsp;DS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Address of jump to driver<br>
+CHN.FLG&nbsp;DS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Flag<br>
+<br>
+CHF.DIR&nbsp;EQU&nbsp;&nbsp;&nbsp;&nbsp;00000001B&nbsp;Directory device(?)<br>
+CHF.REA&nbsp;EQU&nbsp;&nbsp;&nbsp;&nbsp;00000010B&nbsp;Open for&nbsp;read<br>
+CHF.WRI&nbsp;EQU&nbsp;&nbsp;&nbsp;&nbsp;00000100B&nbsp;Open for write<br>
+CHF.UPD&nbsp;EQU&nbsp;&nbsp;&nbsp;&nbsp;00001000B&nbsp;Open for update<br>
+CHF.???&nbsp;EQU&nbsp;&nbsp;&nbsp;&nbsp;11110000B&nbsp;Used?<br>
+<br>
+CHN.GRT&nbsp;DS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Address of GRT<br>
+CHN.SPG&nbsp;DS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Sectors per group<br>
+CNH.CGN&nbsp;DS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Current group number<br>
+CHN.CSI&nbsp;DS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Current sector index<br>
+CHN.LGN&nbsp;DS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Last group number<br>
+CHN.LSI&nbsp;DS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Last sector index<br>
+CHN.DTA&nbsp;DS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Device table entry address<br>
+CHN.DES&nbsp;DS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Directory sector number<br>
+CHN.DEV&nbsp;DS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Device name<br>
+CHN.UNI&nbsp;DS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Unit (in binary)<br>
+CHN.DIR&nbsp;DS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;23&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Directory entry<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ERRNZ&nbsp;&nbsp;*-42&nbsp;&nbsp;Should be 42 bytes<br>
+</font>
+
+<font face="Geneva" size=2>
+<p>Flag tends to be additive, if the device supports it. So if you open a disk file for read you will get a flag of 003Q (directory device, read); if you open it for write you will get a flag of 007Q (directory, read and write); and if you open it for update you'll get a flag of 017Q (directory, read, write and update).</p>
+<p>If you open AT: or TT: for write, you'll get a code of 006Q (read and write). But you can only open LP: for write, and you'll get a code of 004Q (write only).</p>
+<p>Most of the fields in the record are for directory devices, obviously: fields such as current group number and last sector index have no meaning with a character device like TT:. Note that the table carries the full and complete directory entry for the open file, along with the logical sector number of the directory block that carries the entry.</p>
+
+<font face="Geneva" size=2>
+<p>
+<a name="dates"></a>
+<b>Note on S.DATC</b></p></font>
+
+<font face="Geneva" size=2>
+<p>HDOS stores dates in a packed, 16-bit format. Year is stored as the number of years since 1970. Month and day are stored as is. Consider the date 27-Jan-92. HDOS would store that date as follows (in binary):</p>
+
+<font size="2" face="courier">
+&nbsp;&nbsp;&nbsp;&nbsp;0010110000111011 = 27-Jan-92<br>
+</font>
+
+<p>Storage order is year, month, day. Year gets 7 bits, month gets 4, and day gets the remaining 5 bits:</p>
+
+<font size="2" face="courier">
+&nbsp;&nbsp;&nbsp;&nbsp;0010110 0001 11011 = 27-Jan-92<br>
+&nbsp;&nbsp;&nbsp;&nbsp;-------&nbsp;----&nbsp;-----<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;year&nbsp;&nbsp;&nbsp;mnth&nbsp;&nbsp;day<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;|<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;+--- 27d<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+--------&nbsp; 1d (Jan=1, Feb=2, etc.)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+--------------- 22d (70 + 22 = 92)<br>
+</font>
+
+<p>In split octal, this date is 054.073A. HDOS will store the date in the normal low-order-byte first order used to store all 16-bit numbers, so this date would appear in S.DATC as 073&nbsp;054.</p>
+
+<p>It should be readily apparent that the year must be between 70d and 99d to be valid. It should also be readily apparent that HDOS is not Y2K compliant!</p></font>
+
+
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</ul>
+
+<hr>
+<font face="Geneva,Arial" size=1>
+<center>
+<a href="program.html">Programming Table of Contents</a>
+<br><br>
+<a href="../h8_toc.html">Main Table of Contents</a>
+</center>
+<br><br>
+</font>
+</body>
+
+<!-- Mirrored from davidwallace2000.home.comcast.net/~davidwallace2000/h8/project8080_archive/pgs/memory.html by HTTrack Website Copier/3.x [XR&CO'2010], Mon, 10 Sep 2012 13:15:41 GMT -->
+</html>

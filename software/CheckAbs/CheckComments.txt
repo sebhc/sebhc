@@ -1,0 +1,13 @@
+March 4, 2013
+
+Hi All,
+
+Based on feedback from the first post, I decided to see if I could improve the operation of CHECK.ABS.  I was working to disassemble the file in case it required re-assembling to get the change done.  Once I had the disassembly getting into pretty good shape so that I could see how the program worked, I decided that I could write a fairly simple piece of code and append it to the original program to get the job done.
+
+I used RDT (Relocating Debugging Tool) found on Les’ site to merge some assembled code on to the end of the original CHECK.ABS, changed the entry point from FWA to my SVENV code, altered the exit points to jump into this new code to restore the environment and altered the Work Space pointer to point the one byte past the new end of program.
+
+Attached, for the curious, are the source for the add-in code, a transcript of the RDT session and the resulting program.
+
+Now MAPLE.ABS doesn’t complain after CHECK.ABS has been running around in the system.
+
+-- ken

@@ -1,0 +1,17 @@
+H8-BP MATERIAL LIST
+
+
+HEADERS w/.1" centers
+==================================
+1 x 25 header			32
+(2 per card slot - not all slots are needed)
+
+1 x 2				2
+(/PSON and STBY)
+
+
+CONNECTORS
+==================================
+24-PIN MINIFIT-JR		1 for ATX power supply
+(PCB MOUNT STRAIGHT)
+

@@ -1,0 +1,389 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+<!-- saved from url=(0038)http://sebhc.lesbird.com/software.html -->
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Heathkit H-19 Emulator</title>
+
+<meta content="Les Bird" name="author">
+<meta content="Documentation for using the H-19 emulator" name="description">
+</head>
+<body>
+<div style="text-align: center;"><span style="font-family: Courier New,Courier,monospace;"><span style="text-decoration: underline;"><span style="font-weight: bold;"><br>
+</span></span></span><big><big style="text-decoration: underline; font-weight: bold;"><big><span style="font-family: monospace;">Heathkit H-19 Emulator</span></big></big></big><span style="font-family: Courier New,Courier,monospace;"><span style="text-decoration: underline;"><span style="font-weight: bold;"><br>
+</span></span><br>
+Written&nbsp;by Les Bird in 2010<span style="text-decoration: underline;"><span style="font-weight: bold;"><br>
+<br>
+</span></span>The
+Heathkit H-19 Emulator is a program that emulates the functionality of
+the H-19 terminal. The H-19 was developed by the Heathkit company in
+the late 70's and early 80's and was one of their most successful
+computer add-on devices. The H-19 terminal&nbsp;is based on the Z80
+processor and a custom
+code ROM, keyboard ROM and font chip. The terminal supports the full
+ASCII character set
+with 33 additional graphic characters and direct cursor addressing. It
+supports ANSI and Heath ESC sequences and can be configured for either
+using&nbsp;<span style="font-weight: bold;">SW402</span>
+switch 5.<br>
+<br>
+My
+emulator uses Z80 emulation to execute the exact ROM that was in the
+terminal. By doing this, all of the special modes that the H-19
+supported, such as ANSI and Heath ESC sequences, are also supported in
+my emulator. It also uses the H-19 font ROM for the character set and
+graphics. The output is rendered to an XNA surface using sprites. The
+H-19 also had a keyboard ROM for decoding the keyboard encoder and
+converting the data to the appropriate ASCII symbol, however, my
+emulator does not use the keyboard ROM but instead intercepts the
+keyboard keystrokes and&nbsp;manually converts that information to
+what
+the H-19 code ROM expects.<br>
+<br>
+<span style="font-weight: bold; text-decoration: underline;">Function
+Key Mapping</span><br>
+<br>
+The PC function keys are mapped to the H-19 function keys as follows:<br>
+<br>
+<span style="font-weight: bold;">F1</span> through <span style="font-weight: bold;">F5</span> are the same as
+the H-19.<br>
+<span style="font-weight: bold;">F6</span> is mapped
+to the ERASE key on the H-19.<br>
+<span style="font-weight: bold;">F7</span> is mapped
+to the <span style="font-weight: bold;">BLUE</span>
+function key on the H-19.<br>
+<span style="font-weight: bold;">F8</span> is mapped
+to the <span style="font-weight: bold;">RED</span>
+function key on the H-19.<br>
+<span style="font-weight: bold;">F9</span> is mapped
+to the <span style="font-weight: bold;">GREY</span>
+function key on the H-19.<br>
+<span style="font-weight: bold;">F10</span> is
+mapped to the <span style="font-weight: bold;">RESET</span>
+button on the H-19.<br>
+<br>
+All
+ROMs are included as part of the download package so there's no need to
+track them down. In the future I hope to add more ROMs to the package
+such as the Super-19 ROM by ATG Systems. These ROM upgrades from 3rd
+party vendors added new functionality to the terminal such as, for
+example, a
+realtime clock.<br>
+<br>
+The basic process for using this emulator is as follows:<br>
+<br>
+1. Connect your PC to a vintage computer's terminal port using
+a&nbsp;COM port on your PC and a serial cable.<br>
+2. Flip the <span style="font-weight: bold;">SW401</span>
+and <span style="font-weight: bold;">SW402</span>
+switches for the settings you prefer (see table below).<br>
+3. Select the baud rate you want to use for communicating with your
+vintage computer.<br>
+4. Click the <span style="font-weight: bold;">CONNECT</span>
+button to go live.<br>
+<br>
+The installer will automatically download any prerequisites such as
+.NET 3.5 and XNA if they are not already on your system.<br>
+<br>
+The emulator has been tested on PCs running Windows XP and Windows 7.<br>
+<br>
+</span>
+<hr style="width: 100%; height: 2px;"><span style="font-family: Courier New,Courier,monospace;">&nbsp;<br>
+<span style="font-weight: bold; text-decoration: underline;">The
+H-19 Emulator Control Panel</span><br>
+<span style="text-decoration: underline;"><span style="font-weight: bold;"><br>
+</span></span>The
+H-19 Control Panel is used to configure the settings of the emulator,
+just as with the real H-19 terminal. The switches on the control panel
+are exactly matched to the switches on the H-19 terminal logic board.<br>
+<br>
+<img style="width: 657px; height: 410px;" alt="H-19 Emulator Control Panel" src="H19Emulator/H19Emu001.jpg"><br>
+<br>
+The switch settings are used as follows:<br>
+<br>
+SW401<br>
+</span>
+<table style="width: 360px; height: 172px; text-align: left; margin-left: auto; margin-right: auto;" border="1" cellpadding="2" cellspacing="2">
+<tbody>
+<tr>
+<td style="text-align: center; font-family: monospace;">0</td>
+<td style="text-align: left; font-family: monospace;">Baud
+rate selection (see table below)</td>
+</tr>
+<tr>
+<td style="text-align: center; font-family: monospace;">1</td>
+<td style="text-align: left; font-family: monospace;">Baud
+rate selection (see table below)</td>
+</tr>
+<tr>
+<td style="text-align: center; font-family: monospace;">2</td>
+<td style="font-family: monospace;">Baud rate
+selection (see table below)</td>
+</tr>
+<tr>
+<td style="text-align: center; font-family: monospace;">3</td>
+<td style="font-family: monospace;">Baud rate
+selection (see table below)</td>
+</tr>
+<tr>
+<td style="text-align: center; font-family: monospace;">4</td>
+<td style="font-family: monospace;">Parity enable</td>
+</tr>
+<tr>
+<td style="text-align: center; font-family: monospace;">5</td>
+<td style="font-family: monospace;">Odd/Even Parity
+(On = even parity)</td>
+</tr>
+<tr>
+<td style="text-align: center; font-family: monospace;">6</td>
+<td style="font-family: monospace;">Normal/Stick
+Parity (On = stick parity)</td>
+</tr>
+<tr>
+<td style="text-align: center; font-family: monospace;">7</td>
+<td style="font-family: monospace;">Half/Full duplex
+(On = Full duplex)</td>
+</tr>
+</tbody>
+</table>
+<span style="font-family: Courier New,Courier,monospace;"><br>
+Baud Rate Table<br>
+</span>
+<table style="width: 300px; height: 172px; text-align: left; margin-left: auto; margin-right: auto;" border="1" cellpadding="2" cellspacing="2">
+<tbody>
+<tr>
+<td style="text-align: center; font-family: monospace;"></td>
+<td style="text-align: center; font-family: monospace;">0</td>
+<td style="text-align: center; font-family: monospace;">1</td>
+<td style="text-align: center; font-family: monospace;">2</td>
+<td style="text-align: center; font-family: monospace;">3</td>
+</tr>
+<tr>
+<td style="text-align: center; font-family: monospace;">N/A</td>
+<td style="text-align: center; font-family: monospace;">0</td>
+<td style="text-align: center; font-family: monospace;">0</td>
+<td style="text-align: center; font-family: monospace;">0</td>
+<td style="text-align: center; font-family: monospace;">0</td>
+</tr>
+<tr>
+<td style="text-align: center; font-family: monospace;">110</td>
+<td style="text-align: center; font-family: monospace;">1</td>
+<td style="text-align: center; font-family: monospace;">0</td>
+<td style="text-align: center; font-family: monospace;">0</td>
+<td style="text-align: center; font-family: monospace;">0</td>
+</tr>
+<tr>
+<td style="text-align: center; font-family: monospace;">150</td>
+<td style="text-align: center; font-family: monospace;">0</td>
+<td style="text-align: center; font-family: monospace;">1</td>
+<td style="text-align: center; font-family: monospace;">0</td>
+<td style="text-align: center; font-family: monospace;">0</td>
+</tr>
+<tr>
+<td style="text-align: center; font-family: monospace;">300</td>
+<td style="text-align: center; font-family: monospace;">1</td>
+<td style="text-align: center; font-family: monospace;">1</td>
+<td style="text-align: center; font-family: monospace;">0</td>
+<td style="text-align: center; font-family: monospace;">0</td>
+</tr>
+<tr>
+<td style="text-align: center; font-family: monospace;">600</td>
+<td style="text-align: center; font-family: monospace;">0</td>
+<td style="text-align: center; font-family: monospace;">0</td>
+<td style="text-align: center; font-family: monospace;">1</td>
+<td style="text-align: center; font-family: monospace;">0</td>
+</tr>
+<tr>
+<td style="text-align: center; font-family: monospace;">1200</td>
+<td style="text-align: center; font-family: monospace;">1</td>
+<td style="text-align: center; font-family: monospace;">0</td>
+<td style="text-align: center; font-family: monospace;">1</td>
+<td style="text-align: center; font-family: monospace;">0</td>
+</tr>
+<tr>
+<td style="text-align: center; font-family: monospace;">1800</td>
+<td style="text-align: center; font-family: monospace;">0</td>
+<td style="text-align: center; font-family: monospace;">1</td>
+<td style="text-align: center; font-family: monospace;">1</td>
+<td style="text-align: center; font-family: monospace;">0</td>
+</tr>
+<tr>
+<td style="text-align: center; font-family: monospace;">2000</td>
+<td style="text-align: center; font-family: monospace;">1</td>
+<td style="text-align: center; font-family: monospace;">1</td>
+<td style="text-align: center; font-family: monospace;">1</td>
+<td style="text-align: center; font-family: monospace;">0</td>
+</tr>
+<tr>
+<td style="text-align: center; font-family: monospace;">2400</td>
+<td style="text-align: center; font-family: monospace;">0</td>
+<td style="text-align: center; font-family: monospace;">0</td>
+<td style="text-align: center; font-family: monospace;">0</td>
+<td style="text-align: center; font-family: monospace;">1</td>
+</tr>
+<tr>
+<td style="text-align: center; font-family: monospace;">3600</td>
+<td style="text-align: center; font-family: monospace;">1</td>
+<td style="text-align: center; font-family: monospace;">0</td>
+<td style="text-align: center; font-family: monospace;">0</td>
+<td style="text-align: center; font-family: monospace;">1</td>
+</tr>
+<tr>
+<td style="text-align: center; font-family: monospace;">4800</td>
+<td style="text-align: center; font-family: monospace;">0</td>
+<td style="text-align: center; font-family: monospace;">1</td>
+<td style="text-align: center; font-family: monospace;">0</td>
+<td style="text-align: center; font-family: monospace;">1</td>
+</tr>
+<tr>
+<td style="text-align: center; font-family: monospace;">7200</td>
+<td style="text-align: center; font-family: monospace;">1</td>
+<td style="text-align: center; font-family: monospace;">1</td>
+<td style="text-align: center; font-family: monospace;">0</td>
+<td style="text-align: center; font-family: monospace;">1</td>
+</tr>
+<tr>
+<td style="text-align: center; font-family: monospace;">9600</td>
+<td style="text-align: center; font-family: monospace;">0</td>
+<td style="text-align: center; font-family: monospace;">0</td>
+<td style="text-align: center; font-family: monospace;">1</td>
+<td style="text-align: center; font-family: monospace;">1</td>
+</tr>
+<tr>
+<td style="text-align: center; font-family: monospace;">19200</td>
+<td style="text-align: center; font-family: monospace;">1</td>
+<td style="text-align: center; font-family: monospace;">0</td>
+<td style="text-align: center; font-family: monospace;">1</td>
+<td style="text-align: center; font-family: monospace;">1</td>
+</tr>
+</tbody>
+</table>
+<br>
+<span style="font-family: Courier New,Courier,monospace;">SW402</span><span style="font-family: Courier New,Courier,monospace;"><br>
+</span>
+<table style="width: 360px; height: 172px; text-align: left; margin-left: auto; margin-right: auto;" border="1" cellpadding="2" cellspacing="2">
+<tbody>
+<tr>
+<td style="text-align: center; font-family: monospace;">0</td>
+<td style="text-align: left; font-family: monospace;">Underscore/Block
+cursor (On = block)</td>
+</tr>
+<tr>
+<td style="text-align: center; font-family: monospace;">1</td>
+<td style="text-align: left; font-family: monospace;">Key
+click disable</td>
+</tr>
+<tr>
+<td style="text-align: center; font-family: monospace;">2</td>
+<td style="font-family: monospace;">Wrap at end of
+line<br>
+</td>
+</tr>
+<tr>
+<td style="text-align: center; font-family: monospace;">3</td>
+<td style="font-family: monospace;">Auto LF on CR</td>
+</tr>
+<tr>
+<td style="text-align: center; font-family: monospace;">4</td>
+<td style="font-family: monospace;">Auto CR on LF</td>
+</tr>
+<tr>
+<td style="text-align: center; font-family: monospace;">5</td>
+<td style="font-family: monospace;">ANSI mode</td>
+</tr>
+<tr>
+<td style="text-align: center; font-family: monospace;">6</td>
+<td style="font-family: monospace;">Keypad shifted
+mode</td>
+</tr>
+<tr>
+<td style="text-align: center; font-family: monospace;">7</td>
+<td style="font-family: monospace;">50/60hz (On =
+50hz)</td>
+</tr>
+</tbody>
+</table>
+<br>
+<span style="font-family: monospace;"><big>In
+most cases, the default settings for the switches are acceptable. Some
+switch settings have no effect in the emulator, such as 50/60hz for
+example.<br>
+<br>
+When the settings are set, click on the <span style="font-weight: bold;">CONNECT</span>
+button to go live and connect to your computer. This will open a link
+on the selected COM port at whatever baud rate you choose. If the <span style="font-weight: bold;">OFFLINE</span> checkbox is
+checked, no data will be read or written from the COM port and all keys
+are echoed locally. Once you click <span style="font-weight: bold;">CONNECT</span>
+a new window will open up which is the output from the H-19 emulator.
+Any data over the COM port&nbsp;or echoed locally (if offline) will
+appear in this window.</big><br>
+<br>
+<img style="width: 916px; height: 550px;" alt="H-19 Emulator Output Screen" src="H19Emulator/H19Emu004.jpg">&nbsp;<br>
+<br>
+</span>
+<hr style="width: 100%; height: 2px;"><span style="font-family: monospace;"><br>
+<big style="font-weight: bold; text-decoration: underline;">H-19
+Screen Color</big><br>
+<br>
+<big>Click on the <span style="font-weight: bold;">COLOR</span>
+button to change the output color of the H-19 screen. The original H-19
+shipped with 3 different screen colors: Green, Amber and White. By
+clicking on the <span style="font-weight: bold;">COLOR</span>
+button a picker window pops up and allows you to pick from a variety of
+colors for rendering the output window<br>
+<br>
+<img style="width: 365px; height: 172px;" alt="H-19 Color Button" src="H19Emulator/H19Emu005.jpg"><br>
+<br>
+The button will change colors based on the selection you choose from
+the picker.<br>
+<br>
+<img style="width: 228px; height: 327px;" alt="H-19 Screen Color Picker" src="H19Emulator/H19Emu006.jpg"><br>
+<br>
+</big></span>
+<hr style="width: 100%; height: 2px;"><span style="font-family: monospace;"><big><br>
+<span style="font-weight: bold; text-decoration: underline;">The
+OFFLINE Checkbox</span><br>
+<br>
+<img style="width: 209px; height: 127px;" alt="H-19 Emulator Offline Checkbox" src="H19Emulator/H19Emu007.jpg"><br>
+<br>
+By
+clicking the <span style="font-weight: bold;">OFFLINE</span>
+checkbox you put the emulator in local mode. All
+keys typed will be echoed to the screen and not sent over the COM port.
+All data received from a connected computer will be ignored.<br>
+<br>
+</big></span>
+<hr style="width: 100%; height: 2px;"><br>
+<big style="font-weight: bold; text-decoration: underline;"><span style="font-family: monospace;">The Log and Debug Windows</span></big><br>
+<br>
+<img style="width: 235px; height: 410px;" alt="H-19 Emulator Log Window" src="H19Emulator/H19Emu008.jpg"><br>
+<br>
+<span style="font-family: monospace;"><big>Checking
+the <span style="font-weight: bold;">LOG</span>
+checkbox will turn on memory read/write logging and port I/O
+logging. This information is used to see what ports and memory
+addresses are being accessed by the code ROM. Logging data will slow
+down the operation of the emulator considerably so it is recommended
+that you leave the checkbox un-checked. The <span style="font-weight: bold;">DEBUG</span> button will
+open up a
+new window that will contain the Z80 disassembly of the H-19 terminal
+ROM. From this window you can <span style="font-weight: bold;">STEP</span>
+through the code one instruction at
+a time or set breakpoints.<br>
+<br>
+In most cases the Log and Debug&nbsp;sections can be ignored.</big><br>
+</span><br>
+<hr style="width: 100%; height: 2px;"><br>
+<big><span style="font-family: monospace;">This sums
+up the basic operation of the H-19 Emulator.</span><span class="Apple-style-span" style="border-collapse: separate; color: rgb(0, 0, 0); font-size: medium; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; font-family: monospace;"><span class="Apple-style-span" style="text-align: center;"></span></span><span class="Apple-style-span" style="border-collapse: separate; color: rgb(0, 0, 0); font-size: medium; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px;"><span class="Apple-style-span" style="text-align: center;"></span></span></big><span class="Apple-style-span" style="border-collapse: separate; color: rgb(0, 0, 0); font-family: 'Times New Roman'; font-size: medium; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px;"><span class="Apple-style-span" style="text-align: center;"><br>
+<br>
+</span></span>
+<hr style="width: 100%; height: 2px;"><span style="font-family: monospace;"><big><br>
+February 25, 2010<br>
+<br>
+<a href="mailto:sebhc@sebhc.org">e-mail</a></big><br>
+<br>
+</span><span style="font-family: monospace;"></span></div>
+<a title="Real Time Web Analytics" href="http://getclicky.com/66360494"><img alt="Real Time Web Analytics" src="http://static.getclicky.com/media/links/badge.gif" border="0"></a>
+<script src="http://static.getclicky.com/js" type="text/javascript"></script>
+<script type="text/javascript">try{ clicky.init(66360494); }catch(err){}</script>
+<noscript><p><img alt="Clicky" width="1" height="1" src="http://in.getclicky.com/66360494ns.gif" /></p></noscript>
+</body></html>

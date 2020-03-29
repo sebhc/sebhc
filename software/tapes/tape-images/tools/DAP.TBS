@@ -1,0 +1,705 @@
+         REM THIS PROGRAM IS USED TO DISPLAY, ALTER, OR PRINT A DISK FILE
+         REM PROGRAM NAME -      DAP
+         REM THIS IS THE VERSION ALTERED FOR USE WITH TURBO BASIC COMPILER
+         REM RESULT WILL BE DAP.EXE THAT WILL RUN UNDER MS/DOS
+         REM **************************************************************
+         REM *                                                            *
+         REM * This program is owned by Carroll E. Waddell                *
+         REM * This program is written to run on an MS/DOS system using   *
+         REM * TURBO BASIC COMPILER.                                      *
+         REM * This program may not be legally copied.                    *
+         REM *                                                            *
+         REM * This routine should be the first used in a Basic program.  *
+         REM * This routine can be used with TURBO BASIC or POWER BASIC.  *
+         REM **************************************************************
+
+         REM SET INITIAL VALUES
+
+	 DEFLNG I,D
+         DEFSNG S,E
+         DEFSTR A-C, F-H, J-L, M-R, T-Z
+         WIDTH "LPT1:",32000
+         WIDTH "LPT2:",32000
+         SCREEN 0
+         PRINT "THIS IS A TURBO BASIC PROGRAM"
+         CLS
+
+         REM MAKE ALL ARRAYS DYNAMIC
+         $DYNAMIC
+
+         REM DEFINE SOME SPECIAL SYMBOLS
+         AESC = CHR$(27)  :Q = CHR$(34)
+         CR = CHR$(13)  :BS = CHR$(8)  :FF = CHR$(12)
+
+         REM SET UP ERROR TRAPPING
+         ON ERROR GOTO ERRORTRAP
+
+
+         REM GO TO BEGINNING OF PROGRAM
+         GOTO BEGIN1
+
+
+ REM   These are video service include files for use with CGA adapters
+
+SAVCURS:
+  ICOX = POS(0)  :ILINX = CSRLIN
+  RETURN
+
+RESTCURS:   'RESTORE THE CURSOR TO THE PREVEIOUSLY SAVED POSITION
+   LOCATE ILINX,ICOX,1,7,7
+   RETURN
+
+GOCURS:   'SEND THE CURSOR TO THE VALUE SENT IN ILINE, ICOL
+   LOCATE ILINE,ICOL,1,7,7
+   RETURN
+
+
+
+
+MODCLS:
+       REM THIS IS A MODIFIED CLEAR SCREEN WITH INFOR ON LINE 25
+       CLS
+       LOCATE 25,1,1,7,7
+       PRINT " Enter a   ?    to display help screen";
+       LOCATE 1,1,1,7,7
+       RETURN
+
+
+CLS24:
+
+TBCLXS:
+       LOCATE 1,1,1,7,7
+        FOR IASDFG = 1 TO 24
+        PRINT SPACE$(80);
+        NEXT IASDFG
+        LOCATE 1,1,1,7,7
+        RETURN
+
+ERR24:
+      REM THIS IS A PRINTER OFF LINE ERROR
+      BEEP
+      DELAY 1
+      BEEP
+      DELAY 1
+      RESUME
+
+ERR27:
+     REM THIS IS A PRINTER OUT OF PAPER ERROR
+     BEEP
+     DELAY 1
+     BEEP
+     DELAY 1
+     BEEP
+     DELAY 1
+     BEEP
+     BEEP
+     RESUME
+
+         REM THIS IS NOW THE ERROR TRAPPING LOCATION
+ERRORTRAP:
+         IF ERR = 24 THEN GOTO ERR24
+         IF ERR = 57 THEN GOTO ERR24
+         IF ERR = 27 THEN GOTO ERR27
+     REM THIS IS THE ERROR HANDLING ROUTINE
+    IF ERR = 53 AND ERL = 101 THEN GOTO ERR1
+
+REM ***********
+REM ***ERROR ROUTINES MUST BE PUT AT THIS POINT, FOLLOWED BY
+REM ****ON ERROR GOTO 0
+
+       ON ERROR GOTO 0
+
+
+
+         REM THIS ERROR MEANS THE FILE WAS NOT FOUND
+ERR1:
+     PRINT "THE REQUESTED FILE COULD NOT BE FOUND"
+         PRINT "DO YOU WISH TO TRY AGAIN?   Y/N"
+         LINE INPUT GOON
+         IF LEFT$(GOON,1) = "N" THEN GOTO ERROUT
+         RESUME BEGIN2
+
+
+
+
+
+ERROUT:
+         RESUME C12
+
+
+         REM SET UP THE DISPLAY ARRAY
+BEGIN1:
+         CLS
+        REM LOAD THE FUNCTION KEY HELP SCREEN TO SCREEN 1
+2   OPEN "I", #1, "DAP.HLP"
+    CLS
+    SCREEN 0,1,1,0
+    CLS
+    LOCATE 1,1,0,7,7
+    FOR IX = 1 TO 24
+    LINE INPUT #1, ZIN
+    PRINT ZIN
+    NEXT IX
+    CLOSE #1
+    SCREEN 0,1,0,0
+
+         GOSUB MODCLS
+
+         REM DISPLAY FORMAT FLAG
+         REM 1=HEX, 2=OCTAL, 3=DECIMAL
+         IDFF = 1
+
+         REM OUTPUT DEVICE FLAG
+         REM 0=CRT, 1=PRINTER, 2=DISK FILE
+         IODF = 0
+
+
+         REM BYTE INDICATOR FLAG IS IBIF
+         REM 0 = BYTE NUMBER, 1 = COM FILE ADDRESS
+         IBIF = 0
+
+
+         DIM ZDAR(25)
+         REM NOW GO TO THE MAIN LINE PROGRAM
+         GOTO BEGIN2
+
+         REM START OF SUBROUTINES
+
+         REM GET A DISK RECORD
+         REM GET RECORD NUMBER IREC
+GETDISK:
+         IEOF = 0
+         DBC = ((IREC - 1) * 128)
+         IF IREC > DLASTRECORD THEN GOTO GERR
+         IF IREC = DLASTRECORD THEN IBC = DLASTBYTES ELSE IBC = 128
+         SEEK 1, DBC
+         GET$ #1, IBC, F1
+         IF LEN(F1) < 128 THEN F1 = F1 + STRING$(128-LEN(F1),CHR$(0))
+         RETURN
+
+
+GERR:
+         IEOF = 1
+         RETURN
+
+
+
+         REM WRITE A DISK RECORD
+PUTDISK:
+         SEEK 1, DBC
+         F1 = LEFT$(F1,IBC)
+         PUT$ #1, F1
+         RETURN
+
+
+         REM ACCESS ERROR ROUTINE
+ACCERR:
+         BEEP
+         RETURN
+
+
+
+         REM CONVERT A 4 CHARACTER HEX ADDRESS INTO A DOUBLE PRECISION NUMBER
+HEXAD4.1:
+         PRINT "***** NUMBER ENTERED INCORRECTLY *****"
+HEXAD4:
+         PRINT "ENTER THE 4 CHARACTER ADDRESS"
+         LINE INPUT HEXADR
+         IF LEN(HEXADR) <> 4 THEN GOTO HEXAD4.1
+         SMULT = 1  :DADDR = 0
+         FOR IC = 4 TO 1 STEP-1
+         ZC = MID$(HEXADR,IC,1)
+         IF ZC = "A" THEN ZC = "10"
+         IF ZC = "B" THEN ZC = "11"
+         IF ZC = "C" THEN ZC = "12"
+         IF ZC = "D" THEN ZC = "13"
+         IF ZC = "E" THEN ZC = "14"
+         IF ZC = "F" THEN ZC = "15"
+         IZC = VAL(ZC)
+         DADDR = DADDR + (IZC * SMULT)
+         SMULT = SMULT * 16
+         NEXT IC
+         RETURN
+
+
+         REM CALCULATE THE RECORD # THAT CONTAINS A COM FILE ADDRESS
+RECNUM:
+         IRNUM = INT((DADDR-128) / 128)
+         RETURN
+
+
+
+         REM THIS ROUTINE WILL PUT THE FIRST BYTE OF A LINE
+AIBIF:
+         IF IBIF = 1 THEN GOTO IBIF.1
+         REM SHOW BYTE NUMBER
+         ZOFF = STR$(IBYTE)
+         RETURN
+         REM SHOW COM FILE ADDRESS
+IBIF.1:
+         DBASE = (IREC * 128) + 128
+         DBYTE = DBASE + IBYTE - 1
+         ZOFF = HEX$(DBYTE)
+         ILEN = LEN(ZOFF)
+         IF ILEN > 4 THEN ZOFF = RIGHT$(ZOFF,4)
+         IF ILEN = 4 THEN RETURN
+         ZOFF = STRING$(4-ILEN,"0") + ZOFF
+         RETURN
+
+
+         REM CREATE THE ARRAY FOR THE HEX DISPLAY
+HEXDISP:
+         IOFFSET = 0
+         ZDAR(0) = "NM/AD   -----------------DATA BYTES-----------------             ASCII"
+         IBYTE = 1
+         FOR ILINES = 1 TO 8
+         GOSUB AIBIF
+         ILEN = LEN(ZOFF)
+         ZOFF = STRING$(5-ILEN," ") + ZOFF
+         ZCS = ZCS + ZOFF + "  "
+         FOR ICHAR = 1 TO 16
+         IPS = IOFFSET * 16 + ICHAR
+         ZC = MID$(F1,IPS,1)
+         IZC = ASC(ZC)
+         AIZC = HEX$(IZC)
+         IF IZC < 16 THEN AIZC = "0" + AIZC
+         ZCS = ZCS + AIZC + " "
+         IF IZC > 31 AND IZC < 126 THEN ZSTR = ZSTR + ZC ELSE ZSTR = ZSTR + "."
+         IBYTE = IBYTE + 1
+         NEXT ICHAR
+         REM NOW ADD CHARACTER STRING
+         ZCS = ZCS + "   " + ZSTR
+         REM NOW MOVE INTO ARRAY
+         ZDAR(ILINES) = ZCS
+         ZCS = "" :ZSTR = ""
+         IOFFSET = IOFFSET + 1
+         NEXT ILINES
+         RETURN
+
+
+         REM THIS IS THE OCTAL DISPLAY ROUTINE
+OCTDISP:
+         IOFFSET = 0
+         ZDAR(0) = "NM/AD  ----------DATA BYTES----------      ASCII"
+         IBYTE = 1
+         FOR ILINES = 1 TO 16
+         GOSUB AIBIF
+         ILEN = LEN(ZOFF)
+         ZOFF = STRING$(5-ILEN," ") + ZOFF
+         ZCS = ZCS + ZOFF + "  "
+         FOR ICHAR = 1 TO 8
+         IPS = IOFFSET * 8 + ICHAR
+         ZC = MID$(F1,IPS,1)
+         IZC = ASC(ZC)
+         AIZC = OCT$(IZC)
+         IF IZC < 8 THEN AIZC = "0" + AIZC
+         IF IZC < 64 THEN AIZC = "0" + AIZC
+         ZCS = ZCS + AIZC + " "
+         IF IZC > 31 AND IZC < 126 THEN ZSTR = ZSTR + ZC ELSE ZSTR = ZSTR + "."
+         IBYTE = IBYTE + 1
+         NEXT ICHAR
+         REM NOW ADD CHARACTER STRING
+         ZCS = ZCS + "   " + ZSTR
+         REM NOW MOVE INTO ARRAY
+         ZDAR(ILINES) = ZCS
+         ZCS = "" :ZSTR = ""
+         IOFFSET = IOFFSET + 1
+         NEXT ILINES
+         RETURN
+
+
+         REM THIS IS THE DECIMAL DISPLAY ROUTINE
+DECDISP:
+         IOFFSET = 0
+         ZDAR(0) = "NM/AD  ----------DATA BYTES----------      ASCII"
+         IBYTE = 1
+         FOR ILINES = 1 TO 16
+         GOSUB AIBIF
+         ILEN = LEN(ZOFF)
+         ZOFF = STRING$(5-ILEN," ") + ZOFF
+         ZCS = ZCS + ZOFF + "  "
+         FOR ICHAR = 1 TO 8
+         IPS = IOFFSET * 8 + ICHAR
+         ZC = MID$(F1,IPS,1)
+         IZC = ASC(ZC)
+         AIZC = STR$(IZC)
+         ILEN = LEN(AIZC)
+         AIZC = RIGHT$(AIZC,ILEN-1)
+         ILEN = LEN(AIZC)
+         AIZC = STRING$(3-ILEN,"0") + AIZC
+         ZCS = ZCS + AIZC + " "
+         IF IZC > 31 AND IZC < 126 THEN ZSTR = ZSTR + ZC ELSE ZSTR = ZSTR + "."
+         IBYTE = IBYTE + 1
+         NEXT ICHAR
+         REM ADD CHARACTER STRING
+         ZCS = ZCS + "   " + ZSTR
+         REM MOVE INTO ARRAY
+         ZDAR(ILINES) = ZCS
+         ZCS = "" :ZSTR = ""
+         IOFFSET = IOFFSET + 1
+         NEXT ILINES
+         RETURN
+
+         REM GET A COMMAND KEY FUNCTION AND DISPATCH
+         REM F=GO FORWARD 1 RECORD, B=GO BACKWARD ONE RECORD, R=GO TO RECORD #
+         REM P=PRINT RECORD ON SCREEN
+         REM D=DUMP ENTIRE FILE TO PRINTER
+         REM C=CHANGE BYTES, ENTRY MADE IN ASCII
+         REM X=CHANGE BYTES, ENTRY MADE IN HEX
+         REM O=CHANGE DISPLAY TO OCTAL FORMAT
+         REM H=CHANGE DISPLAY TO HEX FORMAT
+         REM A=ABORT FILE DUMP TO PRINTER
+         REM T=CHANGE DISPLAY TO DECIMAL FORMAT
+         REM Q=QUIT. END THE PROGRAM
+         REM W=WRITE THE RECORD TO DISK
+         REM G=GOTO A PARTICULAR COM FILE ADDRESS
+         REM S=CHANGE DISPLAY TO SHOW COM FILE ADDRESSES
+         REM N=CHANGE DISPLAY TO SHOW BYTE NUMBER ADDRESSES
+         REM M=CHANGE BYTES DIRECTLY IN A COM FILE
+ZDAPCOMMAND:
+         K = INPUT$(1)
+         K = UCASE$(K)
+         PRINT K
+         IF K = "F" THEN GOTO C1
+         IF K = "B" THEN GOTO C2
+         IF K = "R" THEN GOTO C3
+         IF K = "P" THEN GOTO C4
+         IF K = "D" THEN GOTO C5
+         IF K = "C" THEN GOTO C6
+         IF K = "X" THEN GOTO C7
+         IF K = "O" THEN GOTO C8
+         IF K = "H" THEN GOTO C9
+         IF K = "A" THEN GOTO C10
+         IF K = "T" THEN GOTO C11
+         IF K = "Q" THEN GOTO C12
+         IF K = "W" THEN GOTO C13
+         IF K = "G" THEN GOTO C14
+         IF K = "S" THEN GOTO C15
+         IF K = "N" THEN GOTO C16
+         IF K = "M" THEN GOTO C17
+         IF K = "?" THEN GOTO HELPSCREEN
+         REM THESE ARE THE ONLY VALID COMMANDS
+         GOTO ZDAPCOMMAND
+
+         REM OUTPUT THE DISPLAY BUFFER ARRAY
+ZDAPOUTPUT:
+         IF IDFF = 1 THEN IEND = 8 ELSE IEND = 16
+         IF IODF = 0 THEN GOSUB MODCLS
+         IF IODF = 1 THEN LPRINT ""
+OS1:
+         IF IODF = 2 THEN PRINT #3, ""
+         IF IODF = 0 THEN PRINT "RECORD # ";IREC
+         IF IODF = 1 THEN LPRINT "RECORD # ";IREC
+         IF IODF = 2 THEN PRINT #3, "RECORD # ";IREC
+         FOR I1 = 0 TO IEND
+         IF IODF = 0 THEN PRINT ZDAR(I1)
+         IF IODF = 1 THEN LPRINT ZDAR(I1)
+         IF IODF = 2 THEN PRINT #3, ZDAR(I1)
+         NEXT I1
+         RETURN
+
+BEGIN2:
+         GOSUB MODCLS
+         PRINT "This program is used to DISPLAY, ALTER, OR PRINT a disk"
+         PRINT "file in several formats."
+         PRINT "Enter the name of the file you wish to use in this session."
+         PRINT "Be sure to include the disk drive location letter, for example"
+         PRINT "  A:MBASIC.COM"
+         LINE INPUT ZFILE
+         REM CHECK TO SEE IF THE FILE EXISTS
+101      OPEN "I", #1, ZFILE
+         CLOSE #1
+         REM OK IF WE MADE IT THIS FAR
+BEGIN3:
+         OPEN ZFILE FOR BINARY AS #1
+         DFILELONG = LOF(1)
+         DNUMRECORDS = DFILELONG/128
+         SRECORDS = FIX(DNUMRECORDS)
+         DTRYBYTES = SRECORDS * 128
+         IF DTRYBYTES = DFILELONG THEN GOTO B3.2
+
+         REM NOT AN EVEN MULTIPLE OF 128 BYTES
+         DLASTBYTES = DFILELONG - DTRYBYTES
+         DLASTRECORD = SRECORDS + 1
+         GOTO B3.9
+
+         REM HAVE AN EVEN MULTIPLE OF 128 BYTES
+B3.2:
+         DLASTRECORD = SRECORDS
+         DLASTBYTES = 128
+
+B3.9:
+         GOSUB MODCLS
+
+ML0:
+        IREC = 1
+ML1:
+         GOSUB GETDISK
+         IF IEOF=1 THEN GOTO ZDAPEOF
+ML2:
+         IF IDFF = 1 THEN GOSUB HEXDISP
+         IF IDFF = 2 THEN GOSUB OCTDISP
+         IF IDFF = 3 THEN GOSUB DECDISP
+         REM HAVE BUILT THE DISPLAY ARRAY, NOW OUTPUT
+ML3:
+         GOSUB ZDAPOUTPUT
+         REM NOW GET A COMMAND
+ML4:
+         GOTO ZDAPCOMMAND
+
+
+         REM THIS ROUTINE IS USED TO MOVE FORWARD ONE RECORD
+C1:
+         IREC = IREC + 1
+         GOSUB GETDISK
+         IF IEOF=1 THEN GOSUB ACCERR
+         IF IEOF=1 THEN IREC = IREC - 1
+         GOTO ML1
+
+         REM THIS ROUTINE IS USED TO MOVE BACKWARD ONE RECORD
+C2:
+         IREC = IREC - 1
+         IF IREC = 0 THEN IREC = 1
+         GOSUB GETDISK
+         IF IEOF=1 THEN GOSUB ACCERR
+         IF IEOF=1 THEN IREC = IREC + 1
+         GOTO ML1
+
+         REM THIS ROUTINE IS USED TO MOVE TO A PARTICULAR RECORD
+C3:
+         PRINT "ENTER RECORD NUMBER"
+         INPUT INEW
+         IF INEW < 0 THEN GOTO C3ERR
+         IF INEW > DLASTRECORD THEN GOTO C3ERR
+         REM REQUESTED RECORD IS OK
+         IREC = INEW
+         GOTO ML1
+C3ERR:
+         GOSUB ACCERR
+         GOTO ML1
+
+         REM THIS ROUTINE WILL PRINT THE RECORD ON THE SCREEN TO THE PRINTER
+C4:
+         IODF = 1
+         GOSUB ZDAPOUTPUT
+         IODF = 0
+         GOTO ML4
+
+         REM THIS ROUTINE WILL DUMP THE ENTIRE FILE TO THE PRINTER
+C5:
+         IREC = 1
+         IODF = 1
+C5.00:
+         GOSUB MODCLS
+         PRINT "DO YOU WANT TO DUMP THE ENTIRE FILE TO A PRINTER OR TO A DISK"
+         PRINT "SPOOL FILE?     ENTER D OR P"
+         LINE INPUT ZK
+         IF ZK = "P" THEN GOTO C5.0
+         IF ZK = "D" THEN GOTO C5.01
+         GOTO C5.00
+C5.01:
+         PRINT "ENTER THE DISK SPOOL FILE NAME TO USE"
+         PRINT "ENTER THE DRIVE LOCATION LETTER, PATH NAME AND FILE AND EXTENSION IF NECESSARY"
+         LINE INPUT ZSPOOLFILE
+         OPEN "O", #3, ZSPOOLFILE
+         IODF = 2
+C5.0:
+         IODF = IODF
+C5.1:
+         GOSUB GETDISK
+         IF IEOF=1 THEN GOTO C5EOF
+         IF IDFF = 1 THEN GOSUB HEXDISP
+         IF IDFF = 2 THEN GOSUB OCTDISP
+         IF IDFF = 3 THEN GOSUB DECDISP
+         REM HAVE BUILT THE ARRAY, NOW OUTPUT TO PRINTER
+         GOSUB ZDAPOUTPUT
+         REM NOW CHECK FOR A KEYBOARD ABORT
+         K = INKEY$
+         IF K = "A" THEN GOTO C5EOF
+         IREC = IREC + 1
+         GOTO C5.1
+C5EOF:
+         IODF = 0
+         IF ZK = "D" THEN CLOSE #3
+         GOTO ML0
+
+
+
+         REM THIS ROUTINE IS USED TO CHANGE BYTES, ENTRIES WILL BE IN ASCII
+C6:
+         PRINT "ENTER BYTE NUMBER WHERE CHANGE IS TO BEGIN."
+         INPUT IKOFF
+         IF IKOFF < 1 OR IKOFF > 128 THEN GOTO C6
+         ICP = IKOFF
+         REM READY TO GET CHARACTERS
+         PRINT "ENTER CHANGES AS ASCII CHARACTERS. (DIRECT FROM KEYBOARD)"
+         PRINT "ENTER    CTRL-Z    TO EXIT"
+C6.1:
+         K = INPUT$(1)
+         IF K = CHR$(26) THEN GOTO ML2
+         PRINT K;
+         MID$(F1,ICP,1) = K
+         ICP = ICP + 1
+         IF ICP > 128 THEN GOTO ML2
+         GOTO C6.1
+
+
+         REM THIS ROUTINE IS USED TO CHANGE BYTES, ENTRIES WILL BE IN HEX
+C7:
+         PRINT "ENTER BYTE NUMBER WHERE CHANGE IS TO BEGIN."
+         INPUT IKOFF
+         IF IKOFF < 1 OR IKOFF > 128 THEN GOTO C7
+         ICP = IKOFF
+C7.1:
+         PRINT "ENTER CHANGE AS 2 HEX CHARACTERS"
+         PRINT "ENTER    ZZ   TO EXIT"
+         LINE INPUT ZCHNG
+         IF ZCHNG = "ZZ" THEN GOTO ML2
+         IF ZCHNG = "" THEN GOTO C7.2
+         IF LEN(ZCHNG) <> 2 THEN GOTO C7.1
+         REM CREATE THE BYTE, FIRST CHANGE TO AN INTEGER
+         ZTEN = LEFT$(ZCHNG,1)
+         ZUNIT = RIGHT$(ZCHNG,1)
+         ITEN = ASC(ZTEN)
+         IUNIT = ASC(ZUNIT)
+         ITEN = ITEN - 48
+         IUNIT = IUNIT - 48
+         IF ITEN > 9 THEN ITEN = ITEN - 7
+         IF IUNIT > 9 THEN IUNIT = IUNIT - 7
+         IF ITEN > 15 THEN GOTO C7.1
+         IF IUNIT > 15 THEN GOTO C7.1
+         IF ITEN < 0 THEN GOTO C7.1
+         IF IUNIT < 0 THEN GOTO C7.1
+         ICB = ITEN * 16 + IUNIT
+         ZGC = CHR$(ICB)
+         MID$(F1,ICP,1) = ZGC
+C7.2:
+         ICP = ICP + 1
+         IF ICP > 128 THEN GOTO ML2
+         GOTO C7.1
+
+
+
+
+         REM THIS ROUTINE CHANGES THE DISPLAY FORMAT TO OCTAL
+C8:
+         IDFF = 2
+         GOTO ML2
+
+         REM THIS ROUTINE CHANGES THE DISPLAY FORMAT TO HEX
+C9:
+         IDFF = 1
+         GOTO ML2
+
+         REM THIS ROUTINE CHANGES THE DISPLAY FORMAT TO DECIMAL
+C11:
+         IDFF = 3
+         GOTO ML2
+
+         REM THE ABORT PRINT COMMAND IS NOT REALLY VALID AT THIS TIME
+C10:
+         GOTO ML4
+
+         REM THIS IS THE END OF THE PROGRAM ROUTINE
+C12:
+         CLOSE #1
+         GOTO RETMENU
+
+         REM THIS ROUTINE WRITES THE RECORD TO DISK
+C13:
+         GOSUB PUTDISK
+         GOTO ML1
+
+
+         REM THIS ROUTINE WILL GOTO A PARTICULAR COME FILE ADDRESS
+C14:
+         GOSUB HEXAD4
+         GOSUB RECNUM
+         IREC = IRNUM
+         GOTO ML1
+
+
+         REM THIS ROUTINE CHANGES DISPLAY TO SHOW COM FILE ADDRESSES
+C15:
+         IBIF = 1
+         GOTO ML1
+
+
+         REM THIS ROUTINE CHANGES DISPLAY TO SHOW BYTE NUMBER
+C16:
+         IBIF = 0
+         GOTO ML1
+
+         REM M- CHANGE BYTES DIRECTLY IN COM FILE
+C17:
+         GOSUB MODCLS
+         PRINT "CHANGE BYTES DIRECTLY IN COM FILE"
+         GOSUB HEXAD4
+C17.1:
+         GOSUB RECNUM
+         IREC = IRNUM
+         GOSUB GETDISK
+         REM NOW CALCULATE BYTE NUMBER WITHIN RECORD
+         DADDR2 = DADDR
+         IF DADDR2 > 32767 THEN DADDR2 = DADDR2 - 32768
+         DBYTE = DADDR2 MOD 128 + 1
+         REM NOW DISPLAY BYTE CONTENTS
+         PRINT HEX$(DADDR);"   ";
+         ZC = MID$(F1,DBYTE,1)
+         IZC = ASC(ZC)
+         AIZC = HEX$(IZC)
+         IF IZC < 16 THEN AIZC = "0" + AIZC
+         PRINT AIZC;"   ";
+         LINE INPUT ZCHNG
+         IF ZCHNG = ".." THEN GOTO ML1
+         IF ZCHNG = "" THEN GOTO C17.2
+         REM CREATE THE BYTE
+         ZTEN = LEFT$(ZCHNG,1)
+         ZUNIT = RIGHT$(ZCHNG,1)
+         ITEN = ASC(ZTEN)
+         IUNIT = ASC(ZUNIT)
+         ITEN = ITEN - 48
+         IUNIT = IUNIT - 48
+         IF ITEN > 9 THEN ITEN = ITEN - 7
+         IF IUNIT > 9 THEN IUNIT = IUNIT - 7
+         IF ITEN > 15 OR ITEN < 0 THEN GOTO C17.2
+         IF IUNIT > 15 OR IUNIT < 0 THEN GOTO C17.2
+         ICB = (ITEN * 16) + IUNIT
+         ZGC = CHR$(ICB)
+         MID$(F1,DBYTE,1) = ZGC
+         GOSUB PUTDISK
+C17.2:
+         DADDR = DADDR + 1
+         GOTO C17.1
+
+
+RETMENU:
+         CLS
+         SYSTEM
+
+
+
+         REM END OF FILE
+ZDAPEOF:
+         GOSUB ACCERR
+         GOTO ML0
+
+'*********************************
+     REM HELP KEY ROUTINES
+HELPSCREEN:
+       REM SAVE CURSOR LOCATION
+       GOSUB SAVCURS
+       SCREEN 0,1,1,1
+       LOCATE 1,80,0,7,7
+HLP0:
+       K = INKEY$
+       IF K = "" THEN GOTO HLP0
+       IF K <> CHR$(27) THEN GOTO HLP0
+       SCREEN 0,1,0,0
+       GOSUB RESTCURS
+       GOSUB ZDAPOUTPUT
+       GOTO ZDAPCOMMAND
+
+'*************************
+
+

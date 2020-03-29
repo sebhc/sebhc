@@ -1,0 +1,157 @@
+<html>
+
+<!-- Mirrored from davidwallace2000.home.comcast.net/~davidwallace2000/h8/project8080_archive/pgs/boot.html by HTTrack Website Copier/3.x [XR&CO'2010], Mon, 10 Sep 2012 13:15:43 GMT -->
+<head>
+<title>H8 Emulation Help - Booting HDOS 2.0</title>
+<meta name="AppleTitle" content="H8 Emulation Help">
+<meta name="description" content="How To Boot HDOS 2.0">
+</head>
+
+<!-- updated 2/23/2003, das -->
+
+<body bgcolor="white">
+
+<p>
+<font size=3 face="Verdana,Arial" color="0000FF">
+<b>How To Boot HDOS 2.0</b>
+</font>
+
+<ul>
+<font face="Geneva,Arial" size=2 color="black">
+<p>
+Three simple steps:</p>
+
+<table>
+<tr>
+<td width=5 valign=top><font face="Verdana,Arial" size=2 color="#0000ff">1</font></td>
+<td><font face="Geneva,Arial" size=2 color=black>
+Mount a bootable volume on drive SY0: (ref: <a href="menus.html#window">Window Menu</a>)
+</font>
+</td>
+</tr>
+
+<tr>
+<td width=5 valign=top><font face="Verdana,Arial" size=2 color="#0000ff">2</font></td>
+<td><font face="Geneva,Arial" size=2 color=black>
+If you are using the original PAM/8 ROM (ref: <a href="menus.html#emupref">Emulator Preferences</a>), change (PC) to 030.000A (ref: <a href="pam8.html">PAM/8 Operation</a>)
+</font>
+</td>
+</tr>
+
+<tr>
+<td width=5 valign=top><font face="Verdana,Arial" size=2 color="#0000ff">3</font></td>
+<td><font face="Geneva,Arial" size=2 color=black>
+Press "Go"
+</font>
+</td>
+</tr>
+</table>
+
+<font size="2" face="Geneva,Arial">
+<p>
+If the diskette has been booted before, and if the terminal window has not been open since you started the emulator, the H-19 window will open automatically and you will be prompted to press return to boot.
+<p>
+If the diskette has never been booted before (or if it is the original, locked HDOS 2.0 distribution system disk), the H8 will beep and the front panel will display the word "SPACE" in the LEDs. This is your queue to "type spaces to set the console baud rate."
+<p>
+When you see this, display the H-19 Terminal window (ref: <a href="menus.html#window">Window Menu</a>), press a space, and then press return to boot. If the diskette is not write protected, this will be the only time you should have to press spaces to boot this disk.
+</font>
+</ul>
+
+<p>
+<font size=3 face="Verdana,Arial" color="0000FF">
+<b>H8 System Clock Rate</b>
+</font>
+
+<ul>
+<font face="Geneva,Arial" size=2 color=black>
+<p>If you are using the original HDOS 2.0 disk driver, you will need to make sure the emulator's clock rate is set to 2 mhz before booting (ref: <a href="menus.html#speed">Speed Menu</a>). A bug in the original driver causes an apparent "hang" during boot. Please see the caution in <a href="menus.html#speed">Speed Menu</a>.</p>
+<p>This bug is not present in HDOS 1.6, and has been fixed in the HUG replacement driver, which also supports double-sided and 80-track disks. The HUG replacement driver is available on the project web site.</p>
+</ul>
+
+<p>
+<font size=3 face="Verdana,Arial" color="0000FF">
+<b>HDOS and Y2K</b>
+</font>
+
+<ul>
+<font face="Geneva,Arial" size=2 color=black>
+<p>
+The message here is simple: HDOS is not Y2K compliant. When you are prompted for a date during the boot cycle, you must enter a year between 70 and 99. Nothing else will do.
+<p>
+You can use the "set hdos nodate" command and run without dates. But perhaps a more acceptable option is to use "92" (or "82" or "72") in place of 2002. When you look at the directories on the disks that come with the emulator, you will see that this is what the author does.
+<p>
+Except for the confusion this causes you in real life (writing checks with 1992, for example), this should be a very acceptable solution.
+</font>
+</ul>
+
+<p>
+<font size=3 face="Verdana,Arial" color="0000FF">
+<b>Working With a Write-Protected Boot Disk</b>
+<br>...and...<br>
+<b>Working With a Boot Disk With Too Few Available Free Sectors</b>
+</font>
+
+<ul>
+<font face="Geneva,Arial" size=2 color=black>
+<p>
+If you boot a write-protected disk, you should generally not try to run either Basic or Edit. Both will grab all available memory and then issue system calls that require the overlays to be loaded. HDOS will attempt to swap some user memory to make room for the overlay.
+<p>
+Swapping user memory involves writing to the system disk. So if that disk has fewer than 20 free sectors or so, or is write protected, you will very likely get a "Fatal system error" message and have to reboot the H8. <b>This is not an emulator problem</b>; you will have the same problem on a real H8.
+<p>
+If that happens to you, remove write protection and reboot, put HDOS in stand-alone mode, and/or move your programs to a disk with more free sectors.
+<p>
+To put HDOS in stand-alone mode, you first have to enter a <a href="heathkit.html#set">SET</a> command:</p>
+
+<ul>
+<p>
+<font face="Courier">
+set hdos stand-alone
+</font></p>
+</ul>
+
+<font face="Geneva,Arial" size=2>
+<p>
+This only has to be done once on each bootable disk.
+<p>
+If you will need to print or transfer files to/from the Mac during this session, you will want to load the drivers (do this every time you want to go into stand-alone mode):</p>
+</font>
+
+<ul>
+<p>
+<font face="Courier">
+load lp:<br>
+load at:
+</font></p>
+</ul>
+
+<font face="Geneva,Arial" size=2>
+<p>
+Now, dismount and then remount the system volume:</p>
+</font>
+
+<ul>
+<p>
+<font face="Courier">
+dismount sy0:<br>
+mount sy0:
+</font></p>
+</ul>
+
+<font face="Geneva,Arial" size=2>
+<p>
+(You can also "<font face="Courier">reset sy0:</font>", then display the H-17 Management window and click the Reset button for the SY0: drive.)
+<p>HDOS and the overlays are now locked in memory until the system is rebooted. Nothing will be swapped to disk. You can run Basic and Edit with no further problems.</p>
+</font>
+</ul>
+
+<hr>
+<font face="Geneva,Arial" size=1>
+<center>
+<a href="../h8_toc.html">Table of Contents</a>
+</center>
+<br><br>
+</font>
+</body>
+
+<!-- Mirrored from davidwallace2000.home.comcast.net/~davidwallace2000/h8/project8080_archive/pgs/boot.html by HTTrack Website Copier/3.x [XR&CO'2010], Mon, 10 Sep 2012 13:15:43 GMT -->
+</html>

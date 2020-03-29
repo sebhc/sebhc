@@ -1,0 +1,54 @@
+H8-17 MATERIAL LIST
+
+ICs
+==================================
+74LS14				4
+74LS00				3
+74LS240				2
+74LS10				1
+74121				1
+74LS155				1
+74LS42				2
+74LS132				2
+74LS30				1
+74LS38				2
+74LS273				1
+74LS367				1
+74LS161				2
+74LS74				1
+
+S2350P USRT			1
+
+
+CONNECTORS
+==================================
+MOLEX 25 PIN RECEPTACLE		2
+22-16-2251
+
+34-pin DIN male connector	1
+
+
+PASSIVE COMPONENTS
+==================================
+470ohm resistor			1
+470ohm 10-PIN rpack - isolated	1
+150ohm 9-PIN rpack - bussed	1
+68ohm 1/4W resistor		2
+220ohm 1/4W resistor		1
+47pF cap			2
+22pF cap			1
+.01uf ceramic cap		12
+.001 uf ceramic cap		1
+
+
+ILLUMINATION
+==================================
+5mm LED				7
+
+
+FOR H-8 POWER SUPPLY THE FOLLOWING
+ARE NEEDED (not required for ATX
+power supply)
+==================================
+2.2uf 35V tantalum cap		4
+LM7805 (+5V regulator)		2

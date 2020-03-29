@@ -1,0 +1,68 @@
+H8-FP MATERIAL LIST
+
+ICs
+==================================
+74LS74				2
+74LS175				4
+74LS123				1
+74LS00				1
+74LS03				1
+74LS148				2
+74LS540				2
+74LS02				1
+74LS30				1
+MC14028				1
+MC14040				1
+
+
+TRANSISTORS
+==================================
+MPSA13				9
+2N3904				1
+2N3906				8
+
+
+PASSIVE COMPONENTS
+==================================
+560 ohm 1/4W resistor		18
+1K 1/4W resistor		13
+15 ohm 1/4W resistor		8
+300 ohm 1/4W resistor		2
+200 ohm 1/4W resistor		1
+150 ohm 1/4W resistor		1
+27K 1/4W resistor		1
+40K 1/4W resistor		1
+1K 9-PIN rpack - bussed		3
+.15uf ceramic cap		1
+680pf ceramic cap		1
+.01uf ceramic cap		18
+100uf 25V electrolytic axial	1
+
+1N4149 diode			1
+
+
+HEADERS w/.1" centers
+==================================
+1 x 2 friction lock r/a header	1 speaker
+1 x 5 friction lock r/a header	1 to CPU
+1 x 24 or 1 x 25 r/a header	2 to buss
+
+
+ILLUMINATION
+==================================
+5mm red LED			4
+7 segment .56" LED display	9
+
+
+KEYSWITCHES
+==================================
+CHERRY MX1A-11NW		16
+KEYCAPS for CHERRY switches	16
+
+
+FOR H-8 POWER SUPPLY THE FOLLOWING
+ARE NEEDED (not required for ATX
+power supply)
+==================================
+2.2uf 35V tantalum cap		3
+LM7805 (+5V regulator)		2
