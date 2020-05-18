@@ -1,605 +1,1100 @@
 <html>
 
 <!-- Mirrored from davidwallace2000.home.comcast.net/~davidwallace2000/h8/project8080_archive/pgs/memory.html by HTTrack Website Copier/3.x [XR&CO'2010], Mon, 10 Sep 2012 13:15:41 GMT -->
+
 <head>
-<title>H8 Emulation Help - Memory Map</title>
-<meta name="AppleTitle" content="H8 Emulation Help">
-<meta name="description" content="Memory Map">
+    <title>H8 Emulation Help - Memory Map</title>
+    <meta name="AppleTitle" content="H8 Emulation Help">
+    <meta name="description" content="Memory Map">
 </head>
 
 <!-- updated 11/20/2002, das -->
 
 <body bgcolor="white">
-<a name="top"></a>
-<p>
-<font size=3 face="Verdana,Geneva" color="0000FF">
-<b>Memory Map</b>
-</font>
+    <a name="top"></a>
+    <p>
+        <font size=3 face="Verdana,Geneva" color="0000FF">
+            <b>Memory Map</b>
+        </font>
 
-<ul>
-<font size="2" face="Geneva,Arial">
-<p>This page will present overall address space utilization, the ROM entry points, and low-memory addresses of interest to programmers. Assembly language is required to take advantage of most of this information, but the memory addresses are presented in both split octal and decimal notation so that Basic programmers can use them (ref. <a href="basic.html#peek">PEEK</a>).</p>
-</font>
-</ul>
-<hr>
-<font face="Geneva,Arial" size=1>
-<center>
-<a href="program.html">Programming Table of Contents</a>
-<br><br>
-<a href="../h8_toc.html">Main Table of Contents</a>
-</center>
-<hr>
-<table border="0" cellspacing="2" cellpadding="2">
-<tr align="left" valign="top">
-	<td width="100"><font size=3 face="Verdana,Geneva" color="0000FF"><b>Page Index</b></font></td>
-	<td><font face="Geneva" size=2><a href="#addr">Address Space Utilization</a></font></td>
-</tr>
-<tr align="left" valign="top">
-	<td>&nbsp;</td>
-	<td><font face="Geneva" size=2><a href="#pamrom">PAM/8 ROM Entry Points</a></font></td>
-</tr>
-<tr align="left" valign="top">
-	<td>&nbsp;</td>
-	<td><font face="Geneva" size=2><a href="#pamram">PAM/8 RAM Locations</a></font></td>
-</tr>
-<tr align="left" valign="top">
-	<td>&nbsp;</td>
-	<td><font face="Geneva" size=2><a href="#hdosrom">HDOS ROM Entry Points</a></font></td>
-</tr>
-<tr align="left" valign="top">
-	<td>&nbsp;</td>
-	<td><font face="Geneva" size=2><a href="#hdosram">HDOS RAM Locations</a></font>
-</tr>
-<tr align="left" valign="top">
-	<td>&nbsp;</td>
-	<td><font face="Geneva" size=2><a href="#dates">Note on dates</a></font>
-</tr>
-</table>
+        <ul>
+            <font size="2" face="Geneva,Arial">
+                <p>This page will present overall address space utilization, the ROM entry points, and low-memory addresses of interest to programmers. Assembly language is required to take advantage of most of this information, but the memory addresses
+                    are presented in both split octal and decimal notation so that Basic programmers can use them (ref. <a href="basic.html#peek">PEEK</a>).</p>
+            </font>
+        </ul>
+        <hr>
+        <font face="Geneva,Arial" size=1>
+            <center>
+                <a href="program.html">Programming Table of Contents</a>
+                <br><br>
+                <a href="../h8_toc.html">Main Table of Contents</a>
+            </center>
+            <hr>
+            <table border="0" cellspacing="2" cellpadding="2">
+                <tr align="left" valign="top">
+                    <td width="100">
+                        <font size=3 face="Verdana,Geneva" color="0000FF"><b>Page Index</b></font>
+                    </td>
+                    <td>
+                        <font face="Geneva" size=2><a href="#addr">Address Space Utilization</a></font>
+                    </td>
+                </tr>
+                <tr align="left" valign="top">
+                    <td>&nbsp;</td>
+                    <td>
+                        <font face="Geneva" size=2><a href="#pamrom">PAM/8 ROM Entry Points</a></font>
+                    </td>
+                </tr>
+                <tr align="left" valign="top">
+                    <td>&nbsp;</td>
+                    <td>
+                        <font face="Geneva" size=2><a href="#pamram">PAM/8 RAM Locations</a></font>
+                    </td>
+                </tr>
+                <tr align="left" valign="top">
+                    <td>&nbsp;</td>
+                    <td>
+                        <font face="Geneva" size=2><a href="#hdosrom">HDOS ROM Entry Points</a></font>
+                    </td>
+                </tr>
+                <tr align="left" valign="top">
+                    <td>&nbsp;</td>
+                    <td>
+                        <font face="Geneva" size=2><a href="#hdosram">HDOS RAM Locations</a></font>
+                </tr>
+                <tr align="left" valign="top">
+                    <td>&nbsp;</td>
+                    <td>
+                        <font face="Geneva" size=2><a href="#dates">Note on dates</a></font>
+                </tr>
+            </table>
 
-<hr>
+            <hr>
 
-<a name="addr"></a>
-<font size=3 face="Verdana,Geneva" color="0000FF">
-<b>Address Space Utilization</b>
-</font>
-<ul>
-<font face="Geneva" size=2>
-<p>A real H8 would support from 8 to 56K of static RAM installed in a 64K address space. The H8 emulator supports a full 56K of RAM.</p>
-<p>Assuming that the original HDOS 2.0 H-17 disk driver is being used, the address space is used as follows:</p>
-</font>
-<ul>
-<table border="1" cellspacing="0" cellpadding="4">
-	<caption><font face="Geneva" size=2><b>Address Space</b></font></caption>
-<tr align="left" valign="top">
-	<th><font face="Geneva" size=2>Area</font></th>
-	<th><font face="Geneva" size=2>Size</font></th>
-	<th><font face="Geneva" size=2>From</font></th>
-	<th><font face="Geneva" size=2>To</font></th>
-</tr>
-<tr align="left" valign="top">
-	<td><font face="Geneva" size=2>PAM/8 ROM</font></td>
-	<td align="right" ><font face="Geneva" size=2>1.00K</font></td>
-	<td><font face="Geneva" size=2>000.000A</font></td>
-	<td><font face="Geneva" size=2>003.377A</font></td>
-</tr>
-<tr align="left" valign="top">
-	<td><font face="Geneva" size=2>unused</font></td>
-	<td align="right"><font face="Geneva" size=2>4.00K</font></td>
-	<td><font face="Geneva" size=2>004.000A</font></td>
-	<td><font face="Geneva" size=2>023.377A</font></td>
-</tr>
-<tr align="left" valign="top">
-	<td><font face="Geneva" size=2>H-17 RAM</font></td>
-	<td align="right"><font face="Geneva" size=2>1.00K</font></td>
-	<td><font face="Geneva" size=2>024.000A</font></td>
-	<td><font face="Geneva" size=2>027.377A</font></td>
-</tr>
-<tr align="left" valign="top">
-	<td><font face="Geneva" size=2>H-17 ROM</font></td>
-	<td align="right"><font face="Geneva" size=2>2.00K</font></td>
-	<td><font face="Geneva" size=2>030.000A</font></td>
-	<td><font face="Geneva" size=2>037.377A</font></td>
-</tr>
-<tr align="left" valign="top">
-	<td><font face="Geneva" size=2>PAM/8 RAM</font></td>
-	<td align="right"><font face="Geneva" size=2>64 bytes</font></td>
-	<td><font face="Geneva" size=2>040.000A</font></td>
-	<td><font face="Geneva" size=2>040.077A</font></td>
-</tr>
-<tr align="left" valign="top">
-	<td><font face="Geneva" size=2>HDOS RAM</font></td>
-	<td align="right"><font face="Geneva" size=2>576 bytes</font></td>
-	<td><font face="Geneva" size=2>040.100A</font></td>
-	<td><font face="Geneva" size=2>042.177A</font></td>
-</tr>
-<tr align="left" valign="top">
-	<td><font face="Geneva" size=2>User RAM</font></td>
-	<td align="right"><font face="Geneva" size=2>45.43K</font></td>
-	<td><font face="Geneva" size=2>042.200A</font></td>
-	<td><font face="Geneva" size=2>330.066A</font></td>
-</tr>
-<tr align="left" valign="top">
-	<td><font face="Geneva" size=2>"Shared"</font></td>
-	<td align="right"><font face="Geneva" size=2>5.37K</font></td>
-	<td><font face="Geneva" size=2>330.067A</font></td>
-	<td><font face="Geneva" size=2>355.257A</font></td>
-</tr>
-<tr align="left" valign="top">
-	<td><font face="Geneva" size=2>Resident HDOS</font></td>
-	<td align="right"><font face="Geneva" size=2>4.58K</font></td>
-	<td><font face="Geneva" size=2>355.260A</font></td>
-	<td><font face="Geneva" size=2>377.377A</font></td>
-</tr>
-</table>
-</ul>
-<font face="Geneva" size=2>
-<p>The H-17 driver is included in the resident HDOS area. The HUG replacement driver is 320 bytes larger than the original Heath version pushing everything else down by that amount, reducing by that amount the memory available to user programs.</p>
-<p>What I've called the "shared" space is used to load the HDOS overlays and loadable device drivers, such as the AT: and LP: drivers. These are loaded on demand and, in the case of the overlays, user RAM can be swapped to disk temporarily to make room for them. The sizes of these components, in the current version, are:</p>
-</font>
+            <a name="addr"></a>
+            <font size=3 face="Verdana,Geneva" color="0000FF">
+                <b>Address Space Utilization</b>
+            </font>
+            <ul>
+                <font face="Geneva" size=2>
+                    <p>A real H8 would support from 8 to 56K of static RAM installed in a 64K address space. The H8 emulator supports a full 56K of RAM.</p>
+                    <p>Assuming that the original HDOS 2.0 H-17 disk driver is being used, the address space is used as follows:</p>
+                </font>
+                <ul>
+                    <table border="1" cellspacing="0" cellpadding="4">
+                        <caption>
+                            <font face="Geneva" size=2><b>Address Space</b></font>
+                        </caption>
+                        <tr align="left" valign="top">
+                            <th>
+                                <font face="Geneva" size=2>Area</font>
+                            </th>
+                            <th>
+                                <font face="Geneva" size=2>Size</font>
+                            </th>
+                            <th>
+                                <font face="Geneva" size=2>From</font>
+                            </th>
+                            <th>
+                                <font face="Geneva" size=2>To</font>
+                            </th>
+                        </tr>
+                        <tr align="left" valign="top">
+                            <td>
+                                <font face="Geneva" size=2>PAM/8 ROM</font>
+                            </td>
+                            <td align="right">
+                                <font face="Geneva" size=2>1.00K</font>
+                            </td>
+                            <td>
+                                <font face="Geneva" size=2>000.000A</font>
+                            </td>
+                            <td>
+                                <font face="Geneva" size=2>003.377A</font>
+                            </td>
+                        </tr>
+                        <tr align="left" valign="top">
+                            <td>
+                                <font face="Geneva" size=2>unused</font>
+                            </td>
+                            <td align="right">
+                                <font face="Geneva" size=2>4.00K</font>
+                            </td>
+                            <td>
+                                <font face="Geneva" size=2>004.000A</font>
+                            </td>
+                            <td>
+                                <font face="Geneva" size=2>023.377A</font>
+                            </td>
+                        </tr>
+                        <tr align="left" valign="top">
+                            <td>
+                                <font face="Geneva" size=2>H-17 RAM</font>
+                            </td>
+                            <td align="right">
+                                <font face="Geneva" size=2>1.00K</font>
+                            </td>
+                            <td>
+                                <font face="Geneva" size=2>024.000A</font>
+                            </td>
+                            <td>
+                                <font face="Geneva" size=2>027.377A</font>
+                            </td>
+                        </tr>
+                        <tr align="left" valign="top">
+                            <td>
+                                <font face="Geneva" size=2>H-17 ROM</font>
+                            </td>
+                            <td align="right">
+                                <font face="Geneva" size=2>2.00K</font>
+                            </td>
+                            <td>
+                                <font face="Geneva" size=2>030.000A</font>
+                            </td>
+                            <td>
+                                <font face="Geneva" size=2>037.377A</font>
+                            </td>
+                        </tr>
+                        <tr align="left" valign="top">
+                            <td>
+                                <font face="Geneva" size=2>PAM/8 RAM</font>
+                            </td>
+                            <td align="right">
+                                <font face="Geneva" size=2>64 bytes</font>
+                            </td>
+                            <td>
+                                <font face="Geneva" size=2>040.000A</font>
+                            </td>
+                            <td>
+                                <font face="Geneva" size=2>040.077A</font>
+                            </td>
+                        </tr>
+                        <tr align="left" valign="top">
+                            <td>
+                                <font face="Geneva" size=2>HDOS RAM</font>
+                            </td>
+                            <td align="right">
+                                <font face="Geneva" size=2>576 bytes</font>
+                            </td>
+                            <td>
+                                <font face="Geneva" size=2>040.100A</font>
+                            </td>
+                            <td>
+                                <font face="Geneva" size=2>042.177A</font>
+                            </td>
+                        </tr>
+                        <tr align="left" valign="top">
+                            <td>
+                                <font face="Geneva" size=2>User RAM</font>
+                            </td>
+                            <td align="right">
+                                <font face="Geneva" size=2>45.43K</font>
+                            </td>
+                            <td>
+                                <font face="Geneva" size=2>042.200A</font>
+                            </td>
+                            <td>
+                                <font face="Geneva" size=2>330.066A</font>
+                            </td>
+                        </tr>
+                        <tr align="left" valign="top">
+                            <td>
+                                <font face="Geneva" size=2>"Shared"</font>
+                            </td>
+                            <td align="right">
+                                <font face="Geneva" size=2>5.37K</font>
+                            </td>
+                            <td>
+                                <font face="Geneva" size=2>330.067A</font>
+                            </td>
+                            <td>
+                                <font face="Geneva" size=2>355.257A</font>
+                            </td>
+                        </tr>
+                        <tr align="left" valign="top">
+                            <td>
+                                <font face="Geneva" size=2>Resident HDOS</font>
+                            </td>
+                            <td align="right">
+                                <font face="Geneva" size=2>4.58K</font>
+                            </td>
+                            <td>
+                                <font face="Geneva" size=2>355.260A</font>
+                            </td>
+                            <td>
+                                <font face="Geneva" size=2>377.377A</font>
+                            </td>
+                        </tr>
+                    </table>
+                </ul>
+                <font face="Geneva" size=2>
+                    <p>The H-17 driver is included in the resident HDOS area. The HUG replacement driver is 320 bytes larger than the original Heath version pushing everything else down by that amount, reducing by that amount the memory available to user
+                        programs.</p>
+                    <p>What I've called the "shared" space is used to load the HDOS overlays and loadable device drivers, such as the AT: and LP: drivers. These are loaded on demand and, in the case of the overlays, user RAM can be swapped to disk temporarily
+                        to make room for them. The sizes of these components, in the current version, are:</p>
+                </font>
 
-<ul>
-<table border="1" cellspacing="0" cellpadding="4">
+                <ul>
+                    <table border="1" cellspacing="0" cellpadding="4">
 
-<tr align="left" valign="top">
-	<th><font face="Geneva" size=2>&nbsp;</font></th>
-	<th colspan="3"><font face="Geneva" size=2>Component size expressed in...</font></th>
-</tr><tr align="left" valign="top">
-	<th><font face="Geneva" size=2>Component</font></th>
-	<th align="center" ><font face="Geneva" size=2>Split Octal</font></th>
-	<th align="right" ><font face="Geneva" size=2>Decimal</font></th>
-	<th align="center" ><font face="Geneva" size=2>K/bytes</font></th>
-</tr>
-<tr align="left" valign="top">
-	<td><font face="Geneva" size=2>HDOSOVL0</font></td>
-	<td align="center" ><font face="Geneva" size=2>013.307A</font></td>
-	<td align="right" ><font face="Geneva" size=2>3015</font></td>
-	<td align="center" ><font face="Geneva" size=2>2.9K</font></td>
-</tr>
-<tr align="left" valign="top">
-	<td><font face="Geneva" size=2>HDOSOVL1</font></td>
-	<td align="center" ><font face="Geneva" size=2>010.134A</font></td>
-	<td align="right" ><font face="Geneva" size=2>2140</font></td>
-	<td align="center" ><font face="Geneva" size=2>2.1K</font></td>
-</tr>
-<tr align="left" valign="top">
-	<td><font face="Geneva" size=2>LP:</font></td>
-	<td align="center" ><font face="Geneva" size=2>000.176A</font></td>
-	<td align="right" ><font face="Geneva" size=2>126</font></td>
-	<td align="center" ><font face="Geneva" size=2>0.1K</font></td>
-</tr>
-<tr align="left" valign="top">
-	<td><font face="Geneva" size=2>AT:</font></td>
-	<td align="center" ><font face="Geneva" size=2>000.330A</font></td>
-	<td align="right" ><font face="Geneva" size=2>216</font></td>
-	<td align="center" ><font face="Geneva" size=2>0.2K</font></td>
-</tr>
-<tr align="left" valign="top">
-	<td><font face="Geneva" size=2>Total</font></td>
-	<td align="center" ><font face="Geneva" size=2>025.171A</font></td>
-	<td align="right" ><font face="Geneva" size=2>5497</font></td>
-	<td align="center" ><font face="Geneva" size=2>5.4K</font></td>
-</tr>
-</table>
-</ul>
-<font face="Geneva" size=2>
-<p>(These are the module sizes after they are loaded into memory. The size on disk will differ.)</p>
-<p>The maximum memory available to a user program is 50.8K/bytes.  A program this size would have two constraints:</p>
-</font>
-<ol>
-<li><font face="Geneva" size=2><p>Whenever an overlay-resident <a href="scalls.html">syscall</a> is executed, user memory must be written to SY0: and the overlay read in, the syscall executed, and the user memory restored. This has a significant performance impact.</p></font></li>
-<li><font face="Geneva" size=2><p>The data being worked on by the overlay-resident syscall can't be present in the "shared" block of memory that's swapped out.</p></font></li>
-</ol>
-<font face="Geneva" size=2>
-<p>Generally, an application will perform better if it loads the overlays and drivers into memory before allocating all system memory to itself. Cautions:</p>
-</font>
-<ul type="disc">
-<li><font face="Geneva" size=2><p>Load both <a href="scalls.html#loado">overlays</a> and any <a href="scalls.html#loadd">drivers</a> you might need before dismounting the system disk. If you don't, the dismount will fail with an <a href="scalls.html#errtab">error code</a> of EC.NPM ("no provisions made for remounting more disks").</p></font></li>
-<li><font face="Geneva" size=2><p>Load the overlays and any drivers you might need before allocating all available system memory to your application (ref: <a href="scalls.html#settop">.settop</a> syscall). If you don't, the overlay load will fail with an error code of EC.NEM ("not enough RAM for this program").</p></font></li>
-</ul>
-<font face="Geneva" size=2>
-<p>Given that we're only talking about 5K/bytes in round numbers, it's worth it for overall flexibility and performance to run HDOS in stand-alone mode, preloading all the overlays and drivers. You will have to issue the command "set hdos stand-alone" once on the bootable disk, then you can use a PROLOGUE.SYS program to:</p>
-</font>
-<ol>
-<li><font face="Geneva" size=2>load the overlays (<a href="scalls.html#loado">.LOADO</a> syscalls)</font></li>
-<li><font face="Geneva" size=2>load the drivers (<a href="scalls.html#loadd">.LOADD</a> syscalls)</font></li>
-<li><font face="Geneva" size=2>dismount SY0: (<a href="scalls.html#dmoun">.DMOUN</a> or <a href="scalls.html#dmnms">.DMNMS</a> syscall)</font></li>
-<li><font face="Geneva" size=2>mount SY0: (<a href="scalls.html#mount">.MOUNT</a> or <a href="scalls.html#monms">.MONMS</a> syscall)</font></li>
-</ol>
-<font face="Geneva" size=2>
-<p>...at boot time. You can also load the drivers by hand using the LOAD <a href="heathkit.html#command">command</a> and RESET SY0: to cause the command handler to load the overlays.</p>
-<p>I wouldn't expect any changes in HDOS (!) but the drivers may change over time making them larger or smaller, so you should always use the <a href="scalls.html#settop">.settop</a> syscall to size available user memory and not rely on the addresses shown in the table above.</p>
-</font>
-<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
-</ul>
+                        <tr align="left" valign="top">
+                            <th>
+                                <font face="Geneva" size=2>&nbsp;</font>
+                            </th>
+                            <th colspan="3">
+                                <font face="Geneva" size=2>Component size expressed in...</font>
+                            </th>
+                        </tr>
+                        <tr align="left" valign="top">
+                            <th>
+                                <font face="Geneva" size=2>Component</font>
+                            </th>
+                            <th align="center">
+                                <font face="Geneva" size=2>Split Octal</font>
+                            </th>
+                            <th align="right">
+                                <font face="Geneva" size=2>Decimal</font>
+                            </th>
+                            <th align="center">
+                                <font face="Geneva" size=2>K/bytes</font>
+                            </th>
+                        </tr>
+                        <tr align="left" valign="top">
+                            <td>
+                                <font face="Geneva" size=2>HDOSOVL0</font>
+                            </td>
+                            <td align="center">
+                                <font face="Geneva" size=2>013.307A</font>
+                            </td>
+                            <td align="right">
+                                <font face="Geneva" size=2>3015</font>
+                            </td>
+                            <td align="center">
+                                <font face="Geneva" size=2>2.9K</font>
+                            </td>
+                        </tr>
+                        <tr align="left" valign="top">
+                            <td>
+                                <font face="Geneva" size=2>HDOSOVL1</font>
+                            </td>
+                            <td align="center">
+                                <font face="Geneva" size=2>010.134A</font>
+                            </td>
+                            <td align="right">
+                                <font face="Geneva" size=2>2140</font>
+                            </td>
+                            <td align="center">
+                                <font face="Geneva" size=2>2.1K</font>
+                            </td>
+                        </tr>
+                        <tr align="left" valign="top">
+                            <td>
+                                <font face="Geneva" size=2>LP:</font>
+                            </td>
+                            <td align="center">
+                                <font face="Geneva" size=2>000.176A</font>
+                            </td>
+                            <td align="right">
+                                <font face="Geneva" size=2>126</font>
+                            </td>
+                            <td align="center">
+                                <font face="Geneva" size=2>0.1K</font>
+                            </td>
+                        </tr>
+                        <tr align="left" valign="top">
+                            <td>
+                                <font face="Geneva" size=2>AT:</font>
+                            </td>
+                            <td align="center">
+                                <font face="Geneva" size=2>000.330A</font>
+                            </td>
+                            <td align="right">
+                                <font face="Geneva" size=2>216</font>
+                            </td>
+                            <td align="center">
+                                <font face="Geneva" size=2>0.2K</font>
+                            </td>
+                        </tr>
+                        <tr align="left" valign="top">
+                            <td>
+                                <font face="Geneva" size=2>Total</font>
+                            </td>
+                            <td align="center">
+                                <font face="Geneva" size=2>025.171A</font>
+                            </td>
+                            <td align="right">
+                                <font face="Geneva" size=2>5497</font>
+                            </td>
+                            <td align="center">
+                                <font face="Geneva" size=2>5.4K</font>
+                            </td>
+                        </tr>
+                    </table>
+                </ul>
+                <font face="Geneva" size=2>
+                    <p>(These are the module sizes after they are loaded into memory. The size on disk will differ.)</p>
+                    <p>The maximum memory available to a user program is 50.8K/bytes. A program this size would have two constraints:</p>
+                </font>
+                <ol>
+                    <li>
+                        <font face="Geneva" size=2>
+                            <p>Whenever an overlay-resident <a href="scalls.html">syscall</a> is executed, user memory must be written to SY0: and the overlay read in, the syscall executed, and the user memory restored. This has a significant performance
+                                impact.</p>
+                        </font>
+                    </li>
+                    <li>
+                        <font face="Geneva" size=2>
+                            <p>The data being worked on by the overlay-resident syscall can't be present in the "shared" block of memory that's swapped out.</p>
+                        </font>
+                    </li>
+                </ol>
+                <font face="Geneva" size=2>
+                    <p>Generally, an application will perform better if it loads the overlays and drivers into memory before allocating all system memory to itself. Cautions:</p>
+                </font>
+                <ul type="disc">
+                    <li>
+                        <font face="Geneva" size=2>
+                            <p>Load both <a href="scalls.html#loado">overlays</a> and any <a href="scalls.html#loadd">drivers</a> you might need before dismounting the system disk. If you don't, the dismount will fail with an <a href="scalls.html#errtab">error code</a>                                of EC.NPM ("no provisions made for remounting more disks").</p>
+                        </font>
+                    </li>
+                    <li>
+                        <font face="Geneva" size=2>
+                            <p>Load the overlays and any drivers you might need before allocating all available system memory to your application (ref: <a href="scalls.html#settop">.settop</a> syscall). If you don't, the overlay load will fail with an error
+                                code of EC.NEM ("not enough RAM for this program").</p>
+                        </font>
+                    </li>
+                </ul>
+                <font face="Geneva" size=2>
+                    <p>Given that we're only talking about 5K/bytes in round numbers, it's worth it for overall flexibility and performance to run HDOS in stand-alone mode, preloading all the overlays and drivers. You will have to issue the command "set
+                        hdos stand-alone" once on the bootable disk, then you can use a PROLOGUE.SYS program to:</p>
+                </font>
+                <ol>
+                    <li>
+                        <font face="Geneva" size=2>load the overlays (<a href="scalls.html#loado">.LOADO</a> syscalls)</font>
+                    </li>
+                    <li>
+                        <font face="Geneva" size=2>load the drivers (<a href="scalls.html#loadd">.LOADD</a> syscalls)</font>
+                    </li>
+                    <li>
+                        <font face="Geneva" size=2>dismount SY0: (<a href="scalls.html#dmoun">.DMOUN</a> or <a href="scalls.html#dmnms">.DMNMS</a> syscall)</font>
+                    </li>
+                    <li>
+                        <font face="Geneva" size=2>mount SY0: (<a href="scalls.html#mount">.MOUNT</a> or <a href="scalls.html#monms">.MONMS</a> syscall)</font>
+                    </li>
+                </ol>
+                <font face="Geneva" size=2>
+                    <p>...at boot time. You can also load the drivers by hand using the LOAD <a href="heathkit.html#command">command</a> and RESET SY0: to cause the command handler to load the overlays.</p>
+                    <p>I wouldn't expect any changes in HDOS (!) but the drivers may change over time making them larger or smaller, so you should always use the <a href="scalls.html#settop">.settop</a> syscall to size available user memory and not rely
+                        on the addresses shown in the table above.</p>
+                </font>
+                <font face="Geneva" size=2>
+                    <p><a href="#top">go to top</a></p>
+                </font>
+            </ul>
 
-<hr>
+            <hr>
 
-<a name="pamrom"></a>
-<font size=3 face="Verdana,Geneva" color="0000FF">
-<b>PAM/8 ROM Entry Points</b>
-</font>
-<ul>
-<font face="Geneva" size=2>
-<p>There are three ROM routines that may be of interest:</p></font>
+            <a name="pamrom"></a>
+            <font size=3 face="Verdana,Geneva" color="0000FF">
+                <b>PAM/8 ROM Entry Points</b>
+            </font>
+            <ul>
+                <font face="Geneva" size=2>
+                    <p>There are three ROM routines that may be of interest:</p>
+                </font>
 
-<dl>
-<dt><font size="2" face="courier">ALARM (002.136A)</font></dt>
-<dd><font face="Geneva" size=2>
-<p>Alarm will sound the front panel alarm for about 1/2 second. There are no entry or exit parameters.</p></font></dd>
+                <dl>
+                    <dt><font size="2" face="courier">ALARM (002.136A)</font></dt>
+                    <dd>
+                        <font face="Geneva" size=2>
+                            <p>Alarm will sound the front panel alarm for about 1/2 second. There are no entry or exit parameters.</p>
+                        </font>
+                    </dd>
 
-<dt><font size="2" face="courier">CRC (002.347A)</font></dt>
-<dd><font face="Geneva" size=2>
-<p>CRC calculates a 16-byte cyclic redundancy check sequence for you. This is the same calculation as used on PAM/8 tape files.</p>
-<p>You must initialize CRCSUM to zero (ref. <a href="#pamram">PAM/8 RAM Locations</a>). Pass each byte to CRC in register (A). The final CRC will be in CRCSUM.</p>
-<p>This CRC is calculated such that if you pass the calculated CRC bytes through CRC and the result in CRCSUM is zero, the data block is good. Otherwise, there is an error.</p></font></dd>
+                    <dt><font size="2" face="courier">CRC (002.347A)</font></dt>
+                    <dd>
+                        <font face="Geneva" size=2>
+                            <p>CRC calculates a 16-byte cyclic redundancy check sequence for you. This is the same calculation as used on PAM/8 tape files.</p>
+                            <p>You must initialize CRCSUM to zero (ref. <a href="#pamram">PAM/8 RAM Locations</a>). Pass each byte to CRC in register (A). The final CRC will be in CRCSUM.</p>
+                            <p>This CRC is calculated such that if you pass the calculated CRC bytes through CRC and the result in CRCSUM is zero, the data block is good. Otherwise, there is an error.</p>
+                        </font>
+                    </dd>
 
-<dt><font size="2" face="courier">RCK (003.260A)</font></dt>
-<dd><font face="Geneva" size=2>
-<p>Read the front panel key pad. You get full debounce and audio feedback (though the emulator will "swallow" the short click) and keycode translation to a simple numeric value. This is the routine that Basic calls when you use the PAD() function.</p>
-<p>Note that you will stay in RCK until a key is read. If you want to check for a key first, you can IN 360Q; if the value you read is 377Q, there is no key down. Otherwise, you can call RCK to get the key value. This is a better approach for most real-time uses of the keypad.</p>
-<p>The key value is returned in register (A) as per the following table. All values given are in decimal.</p></font></dd>
+                    <dt><font size="2" face="courier">RCK (003.260A)</font></dt>
+                    <dd>
+                        <font face="Geneva" size=2>
+                            <p>Read the front panel key pad. You get full debounce and audio feedback (though the emulator will "swallow" the short click) and keycode translation to a simple numeric value. This is the routine that Basic calls when you use
+                                the PAD() function.</p>
+                            <p>Note that you will stay in RCK until a key is read. If you want to check for a key first, you can IN 360Q; if the value you read is 377Q, there is no key down. Otherwise, you can call RCK to get the key value. This is a better
+                                approach for most real-time uses of the keypad.</p>
+                            <p>The key value is returned in register (A) as per the following table. All values given are in decimal.</p>
+                        </font>
+                    </dd>
 
-<ul>
-<table border="1" cellspacing="0" cellpadding="4">
-	<caption><font face="Geneva" size=2><b>RCK Key Values</b></font></caption>
-<tr align="center" valign="top">
-	<td><font face="Geneva" size=2><b>Key</b></font></td>
-	<td><font face="Geneva" size=2><b>Value</b></font></td>
-	<td><font face="Geneva" size=2><b>Key</b></font></td>
-	<td><font face="Geneva" size=2><b>Value</b></font></td>
-</tr>
-<tr align="center" valign="top">
-	<td><font face="Geneva" size=2>0</font></td>
-	<td><font face="Geneva" size=2>0</font></td>
-	<td><font face="Geneva" size=2>8</font></td>
-	<td><font face="Geneva" size=2>8</font></td>
-</tr>
-<tr align="center" valign="top">
-	<td><font face="Geneva" size=2>1</font></td>
-	<td><font face="Geneva" size=2>1</font></td>
-	<td><font face="Geneva" size=2>9</font></td>
-	<td><font face="Geneva" size=2>9</font></td>
-</tr>
-<tr align="center" valign="top">
-	<td><font face="Geneva" size=2>2</font></td>
-	<td><font face="Geneva" size=2>2</font></td>
-	<td><font face="Geneva" size=2>+</font></td>
-	<td><font face="Geneva" size=2>10</font></td>
-</tr>
-<tr align="center" valign="top">
-	<td><font face="Geneva" size=2>3</font></td>
-	<td><font face="Geneva" size=2>3</font></td>
-	<td><font face="Geneva" size=2>-</font></td>
-	<td><font face="Geneva" size=2>11</font></td>
-</tr>
-<tr align="center" valign="top">
-	<td><font face="Geneva" size=2>4</font></td>
-	<td><font face="Geneva" size=2>4</font></td>
-	<td><font face="Geneva" size=2>*</font></td>
-	<td><font face="Geneva" size=2>12</font></td>
-</tr>
-<tr align="center" valign="top">
-	<td><font face="Geneva" size=2>5</font></td>
-	<td><font face="Geneva" size=2>5</font></td>
-	<td><font face="Geneva" size=2>/</font></td>
-	<td><font face="Geneva" size=2>13</font></td>
-</tr>
-<tr align="center" valign="top">
-	<td><font face="Geneva" size=2>6</font></td>
-	<td><font face="Geneva" size=2>6</font></td>
-	<td><font face="Geneva" size=2>#</font></td>
-	<td><font face="Geneva" size=2>14</font></td>
-</tr>
-<tr align="center" valign="top">
-	<td><font face="Geneva" size=2>7</font></td>
-	<td><font face="Geneva" size=2>7</font></td>
-	<td><font face="Geneva" size=2>. (dot)</font></td>
-	<td><font face="Geneva" size=2>15</font></td>
-</tr>
-</table>
-</ul>
+                    <ul>
+                        <table border="1" cellspacing="0" cellpadding="4">
+                            <caption>
+                                <font face="Geneva" size=2><b>RCK Key Values</b></font>
+                            </caption>
+                            <tr align="center" valign="top">
+                                <td>
+                                    <font face="Geneva" size=2><b>Key</b></font>
+                                </td>
+                                <td>
+                                    <font face="Geneva" size=2><b>Value</b></font>
+                                </td>
+                                <td>
+                                    <font face="Geneva" size=2><b>Key</b></font>
+                                </td>
+                                <td>
+                                    <font face="Geneva" size=2><b>Value</b></font>
+                                </td>
+                            </tr>
+                            <tr align="center" valign="top">
+                                <td>
+                                    <font face="Geneva" size=2>0</font>
+                                </td>
+                                <td>
+                                    <font face="Geneva" size=2>0</font>
+                                </td>
+                                <td>
+                                    <font face="Geneva" size=2>8</font>
+                                </td>
+                                <td>
+                                    <font face="Geneva" size=2>8</font>
+                                </td>
+                            </tr>
+                            <tr align="center" valign="top">
+                                <td>
+                                    <font face="Geneva" size=2>1</font>
+                                </td>
+                                <td>
+                                    <font face="Geneva" size=2>1</font>
+                                </td>
+                                <td>
+                                    <font face="Geneva" size=2>9</font>
+                                </td>
+                                <td>
+                                    <font face="Geneva" size=2>9</font>
+                                </td>
+                            </tr>
+                            <tr align="center" valign="top">
+                                <td>
+                                    <font face="Geneva" size=2>2</font>
+                                </td>
+                                <td>
+                                    <font face="Geneva" size=2>2</font>
+                                </td>
+                                <td>
+                                    <font face="Geneva" size=2>+</font>
+                                </td>
+                                <td>
+                                    <font face="Geneva" size=2>10</font>
+                                </td>
+                            </tr>
+                            <tr align="center" valign="top">
+                                <td>
+                                    <font face="Geneva" size=2>3</font>
+                                </td>
+                                <td>
+                                    <font face="Geneva" size=2>3</font>
+                                </td>
+                                <td>
+                                    <font face="Geneva" size=2>-</font>
+                                </td>
+                                <td>
+                                    <font face="Geneva" size=2>11</font>
+                                </td>
+                            </tr>
+                            <tr align="center" valign="top">
+                                <td>
+                                    <font face="Geneva" size=2>4</font>
+                                </td>
+                                <td>
+                                    <font face="Geneva" size=2>4</font>
+                                </td>
+                                <td>
+                                    <font face="Geneva" size=2>*</font>
+                                </td>
+                                <td>
+                                    <font face="Geneva" size=2>12</font>
+                                </td>
+                            </tr>
+                            <tr align="center" valign="top">
+                                <td>
+                                    <font face="Geneva" size=2>5</font>
+                                </td>
+                                <td>
+                                    <font face="Geneva" size=2>5</font>
+                                </td>
+                                <td>
+                                    <font face="Geneva" size=2>/</font>
+                                </td>
+                                <td>
+                                    <font face="Geneva" size=2>13</font>
+                                </td>
+                            </tr>
+                            <tr align="center" valign="top">
+                                <td>
+                                    <font face="Geneva" size=2>6</font>
+                                </td>
+                                <td>
+                                    <font face="Geneva" size=2>6</font>
+                                </td>
+                                <td>
+                                    <font face="Geneva" size=2>#</font>
+                                </td>
+                                <td>
+                                    <font face="Geneva" size=2>14</font>
+                                </td>
+                            </tr>
+                            <tr align="center" valign="top">
+                                <td>
+                                    <font face="Geneva" size=2>7</font>
+                                </td>
+                                <td>
+                                    <font face="Geneva" size=2>7</font>
+                                </td>
+                                <td>
+                                    <font face="Geneva" size=2>. (dot)</font>
+                                </td>
+                                <td>
+                                    <font face="Geneva" size=2>15</font>
+                                </td>
+                            </tr>
+                        </table>
+                    </ul>
 
-<font face="Geneva" size=2>
-<p>Neither RCK nor the emulator support 2-key sequences.</p>
-<p>If you want to read the keypad yourself without the support of RCK, here are the key values. The no-key-down value is 377Q.</p></font>
+                    <font face="Geneva" size=2>
+                        <p>Neither RCK nor the emulator support 2-key sequences.</p>
+                        <p>If you want to read the keypad yourself without the support of RCK, here are the key values. The no-key-down value is 377Q.</p>
+                    </font>
 
-<ul>
-<table border="1" cellspacing="0" cellpadding="4">
-	<caption><font face="geneva" size="2"><b>Key code Values</b></caption>
+                    <ul>
+                        <table border="1" cellspacing="0" cellpadding="4">
+                            <caption>
+                                <font face="geneva" size="2"><b>Key code Values</b></caption>
 
-<tr align="center" valign="top">
-	<th><font face="geneva" size="2"><b>Key</b></th>
-	<th><font face="geneva" size="2"><b>Value</b></th>
-	<th><font face="geneva" size="2"><b>Key</b></th>
-	<th><font face="geneva" size="2"><b>Value</b></th>
-</tr>
-<tr align="center" valign="top">
-	<td><font face="courier" size="2">0</td>
-	<td><font face="courier" size="2">0xfe</td>
-	<td><font face="courier" size="2">8</td>
-	<td><font face="courier" size="2">0xef</td>
-</tr>
-<tr align="center" valign="top">
-	<td><font face="courier" size="2">1</td>
-	<td><font face="courier" size="2">0xfc</td>
-	<td><font face="courier" size="2">9</td>
-	<td><font face="courier" size="2">0xcf</td>
-</tr>
-<tr align="center" valign="top">
-	<td><font face="courier" size="2">2</td>
-	<td><font face="courier" size="2">0xfa</td>
-	<td><font face="courier" size="2">+</td>
-	<td><font face="courier" size="2">0xaf</td>
-</tr>
-<tr align="center" valign="top">
-	<td><font face="courier" size="2">3</td>
-	<td><font face="courier" size="2">0xf8</td>
-	<td><font face="courier" size="2">-</td>
-	<td><font face="courier" size="2">0x8f</td>
-</tr>
-<tr align="center" valign="top">
-	<td><font face="courier" size="2">4</td>
-	<td><font face="courier" size="2">0xf6</td>
-	<td><font face="courier" size="2">*</td>
-	<td><font face="courier" size="2">0x6f</td>
-</tr>
-<tr align="center" valign="top">
-	<td><font face="courier" size="2">5</td>
-	<td><font face="courier" size="2">0xf4</td>
-	<td><font face="courier" size="2">/</td>
-	<td><font face="courier" size="2">0x4f</td>
-</tr>
-<tr align="center" valign="top">
-	<td><font face="courier" size="2">6</td>
-	<td><font face="courier" size="2">0xf2</td>
-	<td><font face="courier" size="2">#</td>
-	<td><font face="courier" size="2">0x2f</td>
-</tr>
-<tr align="center" valign="top">
-	<td><font face="courier" size="2">7</td>
-	<td><font face="courier" size="2">0xf0</td>
-	<td><font face="courier" size="2">. (dot)</td>
-	<td><font face="courier" size="2">0x0f</td>
-</tr>
-</table>
-</ul>
+                            <tr align="center" valign="top">
+                                <th>
+                                    <font face="geneva" size="2"><b>Key</b></th>
+                                <th>
+                                    <font face="geneva" size="2"><b>Value</b></th>
+                                <th>
+                                    <font face="geneva" size="2"><b>Key</b></th>
+                                <th>
+                                    <font face="geneva" size="2"><b>Value</b></th>
+                            </tr>
+                            <tr align="center" valign="top">
+                                <td>
+                                    <font face="courier" size="2">0</td>
+                                <td>
+                                    <font face="courier" size="2">0xfe</td>
+                                <td>
+                                    <font face="courier" size="2">8</td>
+                                <td>
+                                    <font face="courier" size="2">0xef</td>
+                            </tr>
+                            <tr align="center" valign="top">
+                                <td>
+                                    <font face="courier" size="2">1</td>
+                                <td>
+                                    <font face="courier" size="2">0xfc</td>
+                                <td>
+                                    <font face="courier" size="2">9</td>
+                                <td>
+                                    <font face="courier" size="2">0xcf</td>
+                            </tr>
+                            <tr align="center" valign="top">
+                                <td>
+                                    <font face="courier" size="2">2</td>
+                                <td>
+                                    <font face="courier" size="2">0xfa</td>
+                                <td>
+                                    <font face="courier" size="2">+</td>
+                                <td>
+                                    <font face="courier" size="2">0xaf</td>
+                            </tr>
+                            <tr align="center" valign="top">
+                                <td>
+                                    <font face="courier" size="2">3</td>
+                                <td>
+                                    <font face="courier" size="2">0xf8</td>
+                                <td>
+                                    <font face="courier" size="2">-</td>
+                                <td>
+                                    <font face="courier" size="2">0x8f</td>
+                            </tr>
+                            <tr align="center" valign="top">
+                                <td>
+                                    <font face="courier" size="2">4</td>
+                                <td>
+                                    <font face="courier" size="2">0xf6</td>
+                                <td>
+                                    <font face="courier" size="2">*</td>
+                                <td>
+                                    <font face="courier" size="2">0x6f</td>
+                            </tr>
+                            <tr align="center" valign="top">
+                                <td>
+                                    <font face="courier" size="2">5</td>
+                                <td>
+                                    <font face="courier" size="2">0xf4</td>
+                                <td>
+                                    <font face="courier" size="2">/</td>
+                                <td>
+                                    <font face="courier" size="2">0x4f</td>
+                            </tr>
+                            <tr align="center" valign="top">
+                                <td>
+                                    <font face="courier" size="2">6</td>
+                                <td>
+                                    <font face="courier" size="2">0xf2</td>
+                                <td>
+                                    <font face="courier" size="2">#</td>
+                                <td>
+                                    <font face="courier" size="2">0x2f</td>
+                            </tr>
+                            <tr align="center" valign="top">
+                                <td>
+                                    <font face="courier" size="2">7</td>
+                                <td>
+                                    <font face="courier" size="2">0xf0</td>
+                                <td>
+                                    <font face="courier" size="2">. (dot)</td>
+                                <td>
+                                    <font face="courier" size="2">0x0f</td>
+                            </tr>
+                        </table>
+                    </ul>
 
-<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+                    <font face="Geneva" size=2>
+                        <p><a href="#top">go to top</a></p>
+                    </font>
 
-</dl>
-</ul>
-<hr>
+                </dl>
+            </ul>
+            <hr>
 
-<a name="pamram"></a>
-<font size=3 face="Verdana,Geneva" color="0000FF">
-<b>PAM/8 RAM Locations</b>
-</font>
+            <a name="pamram"></a>
+            <font size=3 face="Verdana,Geneva" color="0000FF">
+                <b>PAM/8 RAM Locations</b>
+            </font>
 
-<ul>
-<font face="Geneva" size=2>
-<p>PAM/8 uses the memory from 040.000A through 040.064A for local workspace and to store hardware control and interrupt vector access areas.</p>
+            <ul>
+                <font face="Geneva" size=2>
+                    <p>PAM/8 uses the memory from 040.000A through 040.064A for local workspace and to store hardware control and interrupt vector access areas.</p>
 
-<p>In general, you should stay away from modifying CTLFLG. The rest of it is fair game.</p></font>
-		
-<table border="1" cellspacing="0" cellpadding="2">
-<tr align="left" valign="top">
-	<td>&nbsp;</td>
-	<td align="center" colspan="2"><font face="geneva" size="2"><b>Address</b></font></td>
-	<td>&nbsp;</td>
-	<td>&nbsp;</td>
-<tr align="left" valign="top">
-	<td><font face="geneva" size="2"><b>Name</b></font></td>
-	<td align="center"><font face="geneva" size="2"><b>Octal</b></font></td>
-	<td align="center"><font face="geneva" size="2"><b>Dec.</b></font></td>
-	<td align="center"><font face="geneva" size="2"><b>Len.</b></font></td>
-	<td><font face="geneva" size="2"><b>Description</b></font></td>
-</tr>
-<tr align="left" valign="top">
-	<td><font face="courier" size="2">REGI</font></td>
-	<td align="center"><font face="courier" size="2">40.005A</font></td>
-	<td align="center"><font face="courier" size="2">8197</font></td>
-	<td align="center"><font face="courier" size="2">1</font></td>
-	<td><font face="geneva" size="2">
-	Register index tells PAM/8 which register pair is being displayed when we're in register display mode. Values (decimal):</font><br><br>
-	<font face="courier" size="2">
-	00 - SP&nbsp;&nbsp;&nbsp;&nbsp;06 - DE<br>
-	02 - AF&nbsp;&nbsp;&nbsp;&nbsp;08 - HL<br>
-	04 - BC&nbsp;&nbsp;&nbsp;&nbsp;10 - PC
-	</font>
-	</td>
-</tr>
-<tr align="left" valign="top">
-	<td><font face="courier" size="2">DSPMOD</font></td>
-	<td align="center"><font face="courier" size="2">40.007A</font></td>
-	<td align="center"><font face="courier" size="2">8199</font></td>
-	<td align="center"><font face="courier" size="2">1</font></td>
-	<td><font face="geneva" size="2">
-	<p>Display mode tells PAM/8 which mode the front panel LED display is in. Values (decimal):</p></font>
-	<font face="courier" size="2">
-	0 - memory read (decimals off) *<br>
-	1 - memory write (decimals rotating)<br>
-	2 - register read (decimals off) *<br>
-	3 - register write (decimals rotating)<br>
-	</font>
-	<font face="Geneva" size=2><p>* - these are the only values available to a user program; setting 1 and 3 will have no effect.</p></font>
-	</td>
-</tr>
-<tr align="left" valign="top">
-	<td><font face="courier" size="2">.MFLAG</font></td>
-	<td align="center"><font face="courier" size="2">40.010A</font></td>
-	<td align="center"><font face="courier" size="2">8200</font></td>
-	<td align="center"><font face="courier" size="2">1</font></td>
-	<td><font face="geneva" size="2">
-	<p>Mode flag provides controls over PAM/8's operation. This is a one-byte bit mask. Mask bits are:</p></font>
-	<font face="courier" size="2">
-	UO.HLT - 10000000B - Disable HALT proc.<br>
-	UO.NFR - 01000000B - No LED refresh<br>
-	UO.DDU - 00000010B - No LED update<br>
-	UO.CLK - 00000001B - User gets clock int.<br>
-	</font>
-	<font face="Geneva" size=2><p>UO.NFR disables front panel refresh; the LEDs will remain dark. UO.DDU leaves the LEDs lighted but they are not refreshed so you can put your own content on the front panel. These are equivalent to Basic's CNTRL 2,0 and CNTRL 2,1 commands.</p>
-	<p>HDOS sets UO.HLT and UO.CLK; please don't mess with them. If you need clock interrupts, save the HDOS vector at 40.038A and insert your own. After your clock processing, jump to HDOS's processing address.</p></font>
-	</td>
-</tr>
-<tr align="left" valign="top">
-	<td><font face="courier" size="2">CTLFLG</font></td>
-	<td align="center"><font face="courier" size="2">40.011A</font></td>
-	<td align="center"><font face="courier" size="2">8201</font></td>
-	<td align="center"><font face="courier" size="2">1</font></td>
-	<td><font face="geneva" size="2">
-	This is PAM/8's control byte, used to determine what mode she's in from entry to entry. Except for CB.CLI, it's best to not mess with it, as any changes can have unintended consequences. For example, turning on CB.MTL will light the monitor lamp, but it will also cause PAM/8 to take partial control of the machine. This is a one-byte bit mask. Values are:</font><br><br>
-	<font size="2" face="courier">
-	CB.SSI - 00000010B - Single step int. off<br>
-	CB.MTL - 00000100B - Monitor lamp on<br>
-	CB.CLI - 01000000B - Clock disabled<br>
-	CB.SPK - 10000000B - Speaker off
-	</font>
-	<font face="Geneva" size=2>
-	<p>You can set CB.CLI to disable the clock tick while leaving interrupts on. This will maximize performance, but .TICCNT will not advance and the disk system won't operate correctly. Take caution, here.</p></font>
-	</td>
-</tr>
-<tr align="left" valign="top">
-	<td><font face="courier" size="2">ALEDS</font></td>
-	<td align="center"><font face="courier" size="2">40.013A</font></td>
-	<td align="center"><font face="courier" size="2">8203</font></td>
-	<td align="center"><font face="courier" size="2">6</font></td>
-	<td><font face="geneva" size="2">
-	<p>These are the six address LEDs. If you set UO.DDU, you can put your own segment patterns in them. Bits are active off; e.g., a zero bit lights the corresponding segment. The segment pattern is:</p></font>
-	<font size="2" face="courier">
-	11111110B (376Q) - center segment on<br>
-	11111101B (375Q) - top segment on<br>
-	11111011B (373Q) - top-right segment on<br>
-	11110111B (367Q) - bottom-right segment on<br>
-	11101111B (357Q) - bottom segment on<br>
-	11011111B (337Q) - bottom-left segment on<br>
-	10111111B (277Q) - top-left segment on<br>
-	01111111B (177Q) - decimal point on<br>
-	</font>
-	<font face="Geneva" size=2>
-	<p>So, for example, the number '2' would be 11001000B (310Q). Try this in the debugger:</p></font>
-	
-	<font size="2" face="courier">
-	:B:40010=201/203<br>
-	:B:40013/9=xxx/376 xxx/375 xxx/373 xxx/367<br>
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xxx/357 xxx/337 xxx/277 xxx/177<br>
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xxx/310<br>
-		</font></td>
-</tr>
-<tr align="left" valign="top">
-	<td><font face="courier" size="2">DLEDS</font></td>
-	<td align="center"><font face="courier" size="2">40.021A</font></td>
-	<td align="center"><font face="courier" size="2">8209</font></td>
-	<td align="center"><font face="courier" size="2">3</font></td>
-	<td><font face="geneva" size="2">
-	<p>These are the three data LEDs. If you set UO.DDU, you can put your own segment patterns in them. See above for segment patterns.</p></font></td>
-</tr>
-<tr align="left" valign="top">
-	<td><font face="courier" size="2">ABUSS</font></td>
-	<td align="center"><font face="courier" size="2">40.024A</font></td>
-	<td align="center"><font face="courier" size="2">8212</font></td>
-	<td align="center"><font face="courier" size="2">2</font></td>
-	<td><font face="geneva" size="2">
-	<p>If PAM/8 is displaying or modifying memory, this is the address of the memory byte. You can change this in your program to control which memory location is being displayed.</p></font></td>
-</tr>
-<tr align="left" valign="top">
-	<td><font face="courier" size="2">CRCSUM</font></td>
-	<td align="center"><font face="courier" size="2">40.027A</font></td>
-	<td align="center"><font face="courier" size="2">8215</font></td>
-	<td align="center"><font face="courier" size="2">2</font></td>
-	<td><font face="geneva" size="2">
-	<p>The 16-bit CRC accumulated by calling CRC.</p></font></td>
-</tr>
-<tr align="left" valign="top">
-	<td><font face="courier" size="2">TICCNT</font></td>
-	<td align="center"><font face="courier" size="2">40.033A</font></td>
-	<td align="center"><font face="courier" size="2">8219</font></td>
-	<td align="center"><font face="courier" size="2">2</font></td>
-	<td><font face="geneva" size="2">
-	<p>The 16-bit 2ms tick counter. Use this as a stable source for timing information.</p></font></td>
-</tr>
-<tr align="left" valign="top">
-	<td><font face="courier" size="2">UIVEC</font></td>
-	<td align="center"><font face="courier" size="2">40.037A</font></td>
-	<td align="center"><font face="courier" size="2">8223</font></td>
-	<td align="center"><font face="courier" size="2">21</font></td>
-	<td><font face="geneva" size="2">
-	<p>Interrupt vector jump table. Install a jump instruction (303Q following by your routine address) before enabling an interrupt.</p></font></td>
-</tr>
-<tr align="left" valign="top">
-	<td><font face="courier" size="2">clock</font></td>
-	<td align="center"><font face="courier" size="2">40.037A</font></td>
-	<td align="center"><font face="courier" size="2">8223</font></td>
-	<td align="center"><font face="courier" size="2">3</font></td>
-	<td><font face="geneva" size="2">
-	<p>If HDOS is running, this vector will be loaded with HDOS's clock interrupt handler. If you absolutely have to have clock interrupts, replace HDOS's routine address with your own, and jump to HDOS's handler when you are through. Before exiting your program, replace HDOS's handler address.</p></font></td>
-</tr>
-<tr align="left" valign="top">
-	<td><font face="courier" size="2">sstep</font></td>
-	<td align="center"><font face="courier" size="2">40.042A</font></td>
-	<td align="center"><font face="courier" size="2">8226</font></td>
-	<td align="center"><font face="courier" size="2">3</font></td>
-	<td><font face="geneva" size="2">
-	<p>Jump to single-step handler. If PAM/8 didn't initiate a single step, she assumes that someone else did and jumps to this address.</p></font></td>
-</tr>
-<tr align="left" valign="top">
-	<td><font face="courier" size="2">console</font></td>
-	<td align="center"><font face="courier" size="2">40.045A</font></td>
-	<td align="center"><font face="courier" size="2">8229</font></td>
-	<td align="center"><font face="courier" size="2">3</font></td>
-	<td><font face="geneva" size="2">
-	<p>If HDOS is running, this will contain a jump to HDOS's console input handler. If you want to install your own, save HDOS's address and install yours and you will start getting receiver interrupts immediately. Reset the interrupt enable register to interrupt only on receiver full and replace HDOS's handler address before you exit.</p></font></td>
-</tr>
-<tr align="left" valign="top">
-	<td><font face="courier" size="2">vec4</font></td>
-	<td align="center"><font face="courier" size="2">40.050A</font></td>
-	<td align="center"><font face="courier" size="2">8232</font></td>
-	<td align="center"><font face="courier" size="2">3</font></td>
-	<td><font face="geneva" size="2">
-	<p>Jump for interrupt vector 4 - unused by the emulator.</p></font></td>
-</tr>
-<tr align="left" valign="top">
-	<td><font face="courier" size="2">vec5</font></td>
-	<td align="center"><font face="courier" size="2">40.053A</font></td>
-	<td align="center"><font face="courier" size="2">8235</font></td>
-	<td align="center"><font face="courier" size="2">3</font></td>
-	<td><font face="geneva" size="2">
-	<p>Jump for interrupt vector 5 - unused by the emulator.</p></font></td>
-</tr>
-<tr align="left" valign="top">
-	<td><font face="courier" size="2">modem</font></td>
-	<td align="center"><font face="courier" size="2">40.056A</font></td>
-	<td align="center"><font face="courier" size="2">8238</font></td>
-	<td align="center"><font face="courier" size="2">3</font></td>
-	<td><font face="geneva" size="2">
-	<p>Jump for the modem interrupt. Install a jump to your handler before enabling interrupts on the modem UART.</p></font></td>
-</tr>
-<tr align="left" valign="top">
-	<td><font face="courier" size="2">scall</font></td>
-	<td align="center"><font face="courier" size="2">40.061A</font></td>
-	<td align="center"><font face="courier" size="2">8241</font></td>
-	<td align="center"><font face="courier" size="2">3</font></td>
-	<td><font face="geneva" size="2">
-	<p>This vector contains a jump to HDOS's system call handler.</p></font></td>
-</tr>
-</table>
+                    <p>In general, you should stay away from modifying CTLFLG. The rest of it is fair game.</p>
+                </font>
+
+                <table border="1" cellspacing="0" cellpadding="2">
+                    <tr align="left" valign="top">
+                        <td>&nbsp;</td>
+                        <td align="center" colspan="2">
+                            <font face="geneva" size="2"><b>Address</b></font>
+                        </td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <tr align="left" valign="top">
+                            <td>
+                                <font face="geneva" size="2"><b>Name</b></font>
+                            </td>
+                            <td align="center">
+                                <font face="geneva" size="2"><b>Octal</b></font>
+                            </td>
+                            <td align="center">
+                                <font face="geneva" size="2"><b>Dec.</b></font>
+                            </td>
+                            <td align="center">
+                                <font face="geneva" size="2"><b>Len.</b></font>
+                            </td>
+                            <td>
+                                <font face="geneva" size="2"><b>Description</b></font>
+                            </td>
+                        </tr>
+                        <tr align="left" valign="top">
+                            <td>
+                                <font face="courier" size="2">REGI</font>
+                            </td>
+                            <td align="center">
+                                <font face="courier" size="2">40.005A</font>
+                            </td>
+                            <td align="center">
+                                <font face="courier" size="2">8197</font>
+                            </td>
+                            <td align="center">
+                                <font face="courier" size="2">1</font>
+                            </td>
+                            <td>
+                                <font face="geneva" size="2">
+                                    Register index tells PAM/8 which register pair is being displayed when we're in register display mode. Values (decimal):</font><br><br>
+                                <font face="courier" size="2">
+                                    00 - SP&nbsp;&nbsp;&nbsp;&nbsp;06 - DE<br> 02 - AF&nbsp;&nbsp;&nbsp;&nbsp;08 - HL<br> 04 - BC&nbsp;&nbsp;&nbsp;&nbsp;10 - PC
+                                </font>
+                            </td>
+                        </tr>
+                        <tr align="left" valign="top">
+                            <td>
+                                <font face="courier" size="2">DSPMOD</font>
+                            </td>
+                            <td align="center">
+                                <font face="courier" size="2">40.007A</font>
+                            </td>
+                            <td align="center">
+                                <font face="courier" size="2">8199</font>
+                            </td>
+                            <td align="center">
+                                <font face="courier" size="2">1</font>
+                            </td>
+                            <td>
+                                <font face="geneva" size="2">
+                                    <p>Display mode tells PAM/8 which mode the front panel LED display is in. Values (decimal):</p>
+                                </font>
+                                <font face="courier" size="2">
+                                    0 - memory read (decimals off) *<br> 1 - memory write (decimals rotating)<br> 2 - register read (decimals off) *<br> 3 - register write (decimals rotating)<br>
+                                </font>
+                                <font face="Geneva" size=2>
+                                    <p>* - these are the only values available to a user program; setting 1 and 3 will have no effect.</p>
+                                </font>
+                            </td>
+                        </tr>
+                        <tr align="left" valign="top">
+                            <td>
+                                <font face="courier" size="2">.MFLAG</font>
+                            </td>
+                            <td align="center">
+                                <font face="courier" size="2">40.010A</font>
+                            </td>
+                            <td align="center">
+                                <font face="courier" size="2">8200</font>
+                            </td>
+                            <td align="center">
+                                <font face="courier" size="2">1</font>
+                            </td>
+                            <td>
+                                <font face="geneva" size="2">
+                                    <p>Mode flag provides controls over PAM/8's operation. This is a one-byte bit mask. Mask bits are:</p>
+                                </font>
+                                <font face="courier" size="2">
+                                    UO.HLT - 10000000B - Disable HALT proc.<br> UO.NFR - 01000000B - No LED refresh<br> UO.DDU - 00000010B - No LED update<br> UO.CLK - 00000001B - User gets clock int.<br>
+                                </font>
+                                <font face="Geneva" size=2>
+                                    <p>UO.NFR disables front panel refresh; the LEDs will remain dark. UO.DDU leaves the LEDs lighted but they are not refreshed so you can put your own content on the front panel. These are equivalent to Basic's CNTRL 2,0
+                                        and CNTRL 2,1 commands.</p>
+                                    <p>HDOS sets UO.HLT and UO.CLK; please don't mess with them. If you need clock interrupts, save the HDOS vector at 40.038A and insert your own. After your clock processing, jump to HDOS's processing address.</p>
+                                </font>
+                            </td>
+                        </tr>
+                        <tr align="left" valign="top">
+                            <td>
+                                <font face="courier" size="2">CTLFLG</font>
+                            </td>
+                            <td align="center">
+                                <font face="courier" size="2">40.011A</font>
+                            </td>
+                            <td align="center">
+                                <font face="courier" size="2">8201</font>
+                            </td>
+                            <td align="center">
+                                <font face="courier" size="2">1</font>
+                            </td>
+                            <td>
+                                <font face="geneva" size="2">
+                                    This is PAM/8's control byte, used to determine what mode she's in from entry to entry. Except for CB.CLI, it's best to not mess with it, as any changes can have unintended consequences. For example, turning on CB.MTL will light the monitor lamp, but
+                                    it will also cause PAM/8 to take partial control of the machine. This is a one-byte bit mask. Values are:</font><br><br>
+                                <font size="2" face="courier">
+                                    CB.SSI - 00000010B - Single step int. off<br> CB.MTL - 00000100B - Monitor lamp on<br> CB.CLI - 01000000B - Clock disabled<br> CB.SPK - 10000000B - Speaker off
+                                </font>
+                                <font face="Geneva" size=2>
+                                    <p>You can set CB.CLI to disable the clock tick while leaving interrupts on. This will maximize performance, but .TICCNT will not advance and the disk system won't operate correctly. Take caution, here.</p>
+                                </font>
+                            </td>
+                        </tr>
+                        <tr align="left" valign="top">
+                            <td>
+                                <font face="courier" size="2">ALEDS</font>
+                            </td>
+                            <td align="center">
+                                <font face="courier" size="2">40.013A</font>
+                            </td>
+                            <td align="center">
+                                <font face="courier" size="2">8203</font>
+                            </td>
+                            <td align="center">
+                                <font face="courier" size="2">6</font>
+                            </td>
+                            <td>
+                                <font face="geneva" size="2">
+                                    <p>These are the six address LEDs. If you set UO.DDU, you can put your own segment patterns in them. Bits are active off; e.g., a zero bit lights the corresponding segment. The segment pattern is:</p>
+                                </font>
+                                <font size="2" face="courier">
+                                    11111110B (376Q) - center segment on<br> 11111101B (375Q) - top segment on<br> 11111011B (373Q) - top-right segment on<br> 11110111B (367Q) - bottom-right segment on<br> 11101111B (357Q) - bottom segment on<br> 11011111B
+                                    (337Q) - bottom-left segment on<br> 10111111B (277Q) - top-left segment on<br> 01111111B (177Q) - decimal point on<br>
+                                </font>
+                                <font face="Geneva" size=2>
+                                    <p>So, for example, the number '2' would be 11001000B (310Q). Try this in the debugger:</p>
+                                </font>
+
+                                <font size="2" face="courier">
+                                    :B:40010=201/203<br> :B:40013/9=xxx/376 xxx/375 xxx/373 xxx/367<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xxx/357 xxx/337 xxx/277 xxx/177<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xxx/310
+                                    <br>
+                                </font>
+                            </td>
+                        </tr>
+                        <tr align="left" valign="top">
+                            <td>
+                                <font face="courier" size="2">DLEDS</font>
+                            </td>
+                            <td align="center">
+                                <font face="courier" size="2">40.021A</font>
+                            </td>
+                            <td align="center">
+                                <font face="courier" size="2">8209</font>
+                            </td>
+                            <td align="center">
+                                <font face="courier" size="2">3</font>
+                            </td>
+                            <td>
+                                <font face="geneva" size="2">
+                                    <p>These are the three data LEDs. If you set UO.DDU, you can put your own segment patterns in them. See above for segment patterns.</p>
+                                </font>
+                            </td>
+                        </tr>
+                        <tr align="left" valign="top">
+                            <td>
+                                <font face="courier" size="2">ABUSS</font>
+                            </td>
+                            <td align="center">
+                                <font face="courier" size="2">40.024A</font>
+                            </td>
+                            <td align="center">
+                                <font face="courier" size="2">8212</font>
+                            </td>
+                            <td align="center">
+                                <font face="courier" size="2">2</font>
+                            </td>
+                            <td>
+                                <font face="geneva" size="2">
+                                    <p>If PAM/8 is displaying or modifying memory, this is the address of the memory byte. You can change this in your program to control which memory location is being displayed.</p>
+                                </font>
+                            </td>
+                        </tr>
+                        <tr align="left" valign="top">
+                            <td>
+                                <font face="courier" size="2">CRCSUM</font>
+                            </td>
+                            <td align="center">
+                                <font face="courier" size="2">40.027A</font>
+                            </td>
+                            <td align="center">
+                                <font face="courier" size="2">8215</font>
+                            </td>
+                            <td align="center">
+                                <font face="courier" size="2">2</font>
+                            </td>
+                            <td>
+                                <font face="geneva" size="2">
+                                    <p>The 16-bit CRC accumulated by calling CRC.</p>
+                                </font>
+                            </td>
+                        </tr>
+                        <tr align="left" valign="top">
+                            <td>
+                                <font face="courier" size="2">TICCNT</font>
+                            </td>
+                            <td align="center">
+                                <font face="courier" size="2">40.033A</font>
+                            </td>
+                            <td align="center">
+                                <font face="courier" size="2">8219</font>
+                            </td>
+                            <td align="center">
+                                <font face="courier" size="2">2</font>
+                            </td>
+                            <td>
+                                <font face="geneva" size="2">
+                                    <p>The 16-bit 2ms tick counter. Use this as a stable source for timing information.</p>
+                                </font>
+                            </td>
+                        </tr>
+                        <tr align="left" valign="top">
+                            <td>
+                                <font face="courier" size="2">UIVEC</font>
+                            </td>
+                            <td align="center">
+                                <font face="courier" size="2">40.037A</font>
+                            </td>
+                            <td align="center">
+                                <font face="courier" size="2">8223</font>
+                            </td>
+                            <td align="center">
+                                <font face="courier" size="2">21</font>
+                            </td>
+                            <td>
+                                <font face="geneva" size="2">
+                                    <p>Interrupt vector jump table. Install a jump instruction (303Q following by your routine address) before enabling an interrupt.</p>
+                                </font>
+                            </td>
+                        </tr>
+                        <tr align="left" valign="top">
+                            <td>
+                                <font face="courier" size="2">clock</font>
+                            </td>
+                            <td align="center">
+                                <font face="courier" size="2">40.037A</font>
+                            </td>
+                            <td align="center">
+                                <font face="courier" size="2">8223</font>
+                            </td>
+                            <td align="center">
+                                <font face="courier" size="2">3</font>
+                            </td>
+                            <td>
+                                <font face="geneva" size="2">
+                                    <p>If HDOS is running, this vector will be loaded with HDOS's clock interrupt handler. If you absolutely have to have clock interrupts, replace HDOS's routine address with your own, and jump to HDOS's handler when you
+                                        are through. Before exiting your program, replace HDOS's handler address.</p>
+                                </font>
+                            </td>
+                        </tr>
+                        <tr align="left" valign="top">
+                            <td>
+                                <font face="courier" size="2">sstep</font>
+                            </td>
+                            <td align="center">
+                                <font face="courier" size="2">40.042A</font>
+                            </td>
+                            <td align="center">
+                                <font face="courier" size="2">8226</font>
+                            </td>
+                            <td align="center">
+                                <font face="courier" size="2">3</font>
+                            </td>
+                            <td>
+                                <font face="geneva" size="2">
+                                    <p>Jump to single-step handler. If PAM/8 didn't initiate a single step, she assumes that someone else did and jumps to this address.</p>
+                                </font>
+                            </td>
+                        </tr>
+                        <tr align="left" valign="top">
+                            <td>
+                                <font face="courier" size="2">console</font>
+                            </td>
+                            <td align="center">
+                                <font face="courier" size="2">40.045A</font>
+                            </td>
+                            <td align="center">
+                                <font face="courier" size="2">8229</font>
+                            </td>
+                            <td align="center">
+                                <font face="courier" size="2">3</font>
+                            </td>
+                            <td>
+                                <font face="geneva" size="2">
+                                    <p>If HDOS is running, this will contain a jump to HDOS's console input handler. If you want to install your own, save HDOS's address and install yours and you will start getting receiver interrupts immediately. Reset
+                                        the interrupt enable register to interrupt only on receiver full and replace HDOS's handler address before you exit.</p>
+                                </font>
+                            </td>
+                        </tr>
+                        <tr align="left" valign="top">
+                            <td>
+                                <font face="courier" size="2">vec4</font>
+                            </td>
+                            <td align="center">
+                                <font face="courier" size="2">40.050A</font>
+                            </td>
+                            <td align="center">
+                                <font face="courier" size="2">8232</font>
+                            </td>
+                            <td align="center">
+                                <font face="courier" size="2">3</font>
+                            </td>
+                            <td>
+                                <font face="geneva" size="2">
+                                    <p>Jump for interrupt vector 4 - unused by the emulator.</p>
+                                </font>
+                            </td>
+                        </tr>
+                        <tr align="left" valign="top">
+                            <td>
+                                <font face="courier" size="2">vec5</font>
+                            </td>
+                            <td align="center">
+                                <font face="courier" size="2">40.053A</font>
+                            </td>
+                            <td align="center">
+                                <font face="courier" size="2">8235</font>
+                            </td>
+                            <td align="center">
+                                <font face="courier" size="2">3</font>
+                            </td>
+                            <td>
+                                <font face="geneva" size="2">
+                                    <p>Jump for interrupt vector 5 - unused by the emulator.</p>
+                                </font>
+                            </td>
+                        </tr>
+                        <tr align="left" valign="top">
+                            <td>
+                                <font face="courier" size="2">modem</font>
+                            </td>
+                            <td align="center">
+                                <font face="courier" size="2">40.056A</font>
+                            </td>
+                            <td align="center">
+                                <font face="courier" size="2">8238</font>
+                            </td>
+                            <td align="center">
+                                <font face="courier" size="2">3</font>
+                            </td>
+                            <td>
+                                <font face="geneva" size="2">
+                                    <p>Jump for the modem interrupt. Install a jump to your handler before enabling interrupts on the modem UART.</p>
+                                </font>
+                            </td>
+                        </tr>
+                        <tr align="left" valign="top">
+                            <td>
+                                <font face="courier" size="2">scall</font>
+                            </td>
+                            <td align="center">
+                                <font face="courier" size="2">40.061A</font>
+                            </td>
+                            <td align="center">
+                                <font face="courier" size="2">8241</font>
+                            </td>
+                            <td align="center">
+                                <font face="courier" size="2">3</font>
+                            </td>
+                            <td>
+                                <font face="geneva" size="2">
+                                    <p>This vector contains a jump to HDOS's system call handler.</p>
+                                </font>
+                            </td>
+                        </tr>
+                </table>
 
 
-<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
-</ul>
+                <font face="Geneva" size=2>
+                    <p><a href="#top">go to top</a></p>
+                </font>
+            </ul>
 
-<hr>
+            <hr>
 
-<a name="hdosrom"></a>
-<font size=3 face="Verdana,Geneva" color="0000FF">
-<b>HDOS ROM Entry Points</b>
-</font>
-<ul>
-<font face="Geneva" size=2>
-<p>These utility routines are in the so-called HDOS ROM that occupies address range 030.000A-037.377A.</p></font>
+            <a name="hdosrom"></a>
+            <font size=3 face="Verdana,Geneva" color="0000FF">
+                <b>HDOS ROM Entry Points</b>
+            </font>
+            <ul>
+                <font face="Geneva" size=2>
+                    <p>These utility routines are in the so-called HDOS ROM that occupies address range 030.000A-037.377A.</p>
+                </font>
 
-<dl>
+                <dl>
 
-<dt><font face="courier" size="2">$COMP (030.060A)</font>
+                    <dt><font face="courier" size="2">$COMP (030.060A)</font>
 <dd><font face="geneva,arial" size="2">
 <p>Compare the string at (HL) with the string at (DE) for a length of (C). Return 'Z' if the strings are equal, 'C' if ((DE)) &lt; ((HL)).</p></font>
 <font face="geneva,arial" size="2"><p>$COMP uses registers A,F,C,D,E,H,L.</p></font>

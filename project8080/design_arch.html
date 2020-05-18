@@ -1,5 +1,359 @@
 <html>
 <!-- Mirrored from davidwallace2000.home.comcast.net/~davidwallace2000/h8/project8080_archive/design_arch.html by HTTrack Website Copier/3.x [XR&CO'2010], Mon, 10 Sep 2012 13:15:38 GMT -->
-<head><title>Heath8080A - Product Design : System Architecture</title><!-- Headers -- common to all pages --><meta name="description" content="This site provides a free Heathkit H8 microcomputer emulator for the Macintosh"><meta name="author" content="David A. Shaw"><link rev="made" href="mailto:&#104;&#101;&#97;&#116;&#104;8080&#97;&#64;&#97;&#111;&#108;.&#99;&#111;&#109;"><meta name="generator" content="Optima PageSpinner for MacOS"><meta name="robots" content="all"><meta name="keywords" content="Heathkit,Heath,H8,H17,H-17,H19,H-19,8080A,Intel 8080A,computer emulation,H8 emulation,Mac,Macintosh,G3,Linux"><style type="text/css">body {background-color: #ffffff}.left   { background:      #ffffff; vertical-align: top; color: blue }.left p { font-family:     verdana        }.head   { background:     #ffffcc; vertical-align: top; color: blue }.head p { font-family:    geneva, arial        }.lhead   { background:     #ffffcc; vertical-align: top; color: blue }.lhead p { font-family:    verdana         }.body   { vertical-align: top;}.body p, ul, ol, dl         { font-family:    geneva, arial         }div.c1 { font-family: geneva, arial;  text-align: center }div.c2 { font-family: geneva, arial;  text-align: right  }a:visited {color: green }a:hover   {color: red; text-decoration: none }p.outside {font-family: geneva, arial;font-size: small;}pre { font-family: courier; font-size: 10px }h1, h2 {font-family: "times new roman" }</style></head><body><a name="top"></a><!-- Page Heading -- common to all pages --><table border="0" cellspacing="0" cellpadding="4" width="100%"><tr>	<td class="lhead">		<p><b>Heath8080A &#8212; Product Design : System Architecture</b></p>	</td>	<td class="head" align="right"><!-- this reads "site" on the index page and "page" on all others -->		<font size="-1"><p>Page last updated</p></font>	</td></tr><tr>	<td class="head">		<font size="-1"><p><a href="index.html" onMouseOver="self.status='Go to home page'; return true">home</a>		&nbsp;&nbsp;<a href="release.html" onMouseOver="self.status='Go to release page'; return true">release</a>		&nbsp;&nbsp;<a href="support.html" onMouseOver="self.status='Go to support page'; return true">support</a>		&nbsp;&nbsp;<a href="design.html" onMouseOver="self.status='Go to design page'; return true">design</a>		&nbsp;&nbsp;<a href="resources.html" onMouseOver="self.status='Go to resources page'; return true">resources</a>		&nbsp;&nbsp;<a href="legal.html" onMouseOver="self.status='Go to legal page'; return true">legal</a>		&nbsp;&nbsp;<a href="sitemap.html" onMouseOver="self.status='Go to site map'; return true">site map</a></p></font>	</td>	<td class="head" align="right">		<font size="-1"><p>26-October-2002</p></font>	</td></tr><tr><td>&nbsp;</td></tr></table><!-- Standard content ends. Page body starts here.  --><table border="0" cellspacing="0" cellpadding="4" width="100%"><tr><!-- page index --><td class="left" width="20%"><font size="-1"><p>On this page</p><p>&#149; <a href="#instructions" onMouseOver="self.status='Go to instruction flow'; return true">instructions</a><br>&#149; <a href="#time" onMouseOver="self.status='Go to time distribution'; return true">time</a><br>&#149; <a href="#events" onMouseOver="self.status='Go to event handler'; return true">events</a><br></p><p>Related links</p><p>&#149; <a href="design_time.html" onMouseOver="self.status='Go to time'; return true">time</a><br>&#149; <a href="design_perf.html" onMouseOver="self.status='Go to performance'; return true">performance</a><br>&#149; <a href="design_h8.html" onMouseOver="self.status='Go to h8 processing'; return true">h8 processing</a><br>&#149; <a href="design_8080a.html" onMouseOver="self.status='Go to 8080a'; return true">8080a emulation</a><br>&#149; <a href="design_io.html" onMouseOver="self.status='Go to i/o processing'; return true">i/o processing</a><br>&#149; <a href="design_pam8.html" onMouseOver="self.status='Go to pam/8 gui'; return true">pam/8 gui</a><br>&#149; <a href="design_h17.html" onMouseOver="self.status='Go to h-17 disk system'; return true">h-17</a><br>&#149; <a href="design_h19.html" onMouseOver="self.status='Go to h-19 terminal'; return true">h-19</a><br>&#149; <a href="design_serial.html" onMouseOver="self.status='Go to serial i/o'; return true">serial i/o</a><br>&#149; <a href="design_tape.html" onMouseOver="self.status='Go to tape i/o'; return true">tape i/o</a><br></p></font></td><td class="body"><font size="-1"><p><b>System Architecture</b></p><p>The figure below shows a high-level view of how the emulator is organized.</p><map name="blockmap"><area coords="2,2,79,88" href="design_8080a.html" alt="8080a" onMouseOver="self.status='Go to 8080a'; return true"><area coords="83,2,115,106" href="design_io.html" alt="i/o" onMouseOver="self.status='Go to i/o package'; return true"><area coords="2,92,79,106" href="design_h8.html" alt="h8" onMouseOver="self.status='Go to h8 processing'; return true"><area coords="2,110,187,133" href="design_time.html" alt="time" onMouseOver="self.status='Go to time'; return true"><area coords="119,2,187,16" href="design_tape.html" alt="tape" onMouseOver="self.status='Go to tape i/o'; return true"><area coords="119,20,187,52" href="design_serial.html" alt="serial" onMouseOver="self.status='Go to serial i/o'; return true"><area coords="119,56,187,70" href="design_h19.html" alt="h-19" onMouseOver="self.status='Go to h-19 terminal'; return true"><area coords="119,74,187,88" href="design_h17.html" alt="h-17" onMouseOver="self.status='Go to h-17 disk system'; return true"><area coords="119,92,187,106" href="design_pam8.html" alt="pam/8" onMouseOver="self.status='Go to pam/8 gui'; return true"></map><img src="gfx/sysblock.gif" usemap="#blockmap"  width="279" height="135" hspace="8" vspace="8" align="left" border="0" alt="System Block Diagram"><p>The emulator is actually a system of device emulators, tightly integrated into one package. It's emulating an 8080A microprocessor, the I/O hardware and interrupt handlers wrapped around that processor, a visual front panel, a full-featured editing terminal, a floppy disk system and printer.<p><p>You can click a link to the far left or a section of the figure to explore each of these topics in more detail. This page provides a higher-level orientation to the H8 emulation system.</p><p>There are actually three major control flows in operation within the emulator. Understanding these control flows will help you understand how the pieces fit together and why it works as it does.</p><p>All three flows originate at the scheduling loop in the event handler. They are:</p><ol><li><p><a href="#instructions">Instruction Flow</a> &#8212; When it's not doing anything else, the emulator is repeatedly running 8080A instructions.</p></li><li><p><a href="#time">Time Distribution</a> &#8212; The scheduling loop provides millisecond timing information to various components of the emulator. It provides higher-level timing to certain functions as well.</p></li><li><p><a href="#events">Macintosh Events</a> &#8212; The scheduling loop periodically checks for Macintosh events and dispatches their processing when necessary. Events are required for key clicks and mouse clicks on the PAM/8 keypad, as well as to access menus, switch to other applications, etc.</p></li></ol><p>Each of these flows is described in more detail below.</p><p><p><a href="#top" onMouseOver="self.status='go to the top of this page'; return true">go to top</a></p></p><hr><a name="instructions"></a><p><b>Instruction Flow</b></p><p>On each pass through the scheduling loop, the event handler calls H8 Processing to dispatch one instruction. H8 Processing checks for pending interrupts and develops an interrupt vector if one is found. It then calls 8080A Emulation to execute the next instruction (or first instruction of the interrupt service routine).</p><p>If the instruction is an IN or OUT, the I/O Package is called to classify the port address and dispatch processing to a device-specific handler:</p><ul><li>PAM/8 port handling is all done inside the I/O Package;</li><li>H-17 port handling is sent directly to the H-17 Disk System with no further processing in the I/O Package;</li><li>Tape I/O requests will cause a call to a read or write routine inside Tape I/O;</li><li>8250 port I/O is handled, for the most part, inside the I/O Package, though it will generally call a status function or an output function inside Serial I/O or H-19 Emulation to push the data out to the device.</li></ul><p>I/O, if called, returns to the 8080A emulator. The 8080A emulator returns the processor state &#8212; RUN and interrupt enabled status &#8212; to H8 Processing, which, if necessary, updates the front panel status lamps with calls to the PAM/8 GUI drawing package.</p><p>H8 Processing returns to the scheduling loop. The scheduling loop maintains an instruction "pacing" count which is updated with the number of machine cycles that would have been consumed by a real 8080A to execute the last instruction. This pacing mechanism helps to provide accurate emulation speed when set to a 2 mhz clock rate.</p><p>We stay in the scheduling loop until the "done" flag is set using the File -> Quit item or via a high-level message from the Finder.</p><p><a href="#top" onMouseOver="self.status='go to the top of this page'; return true">go to top</a></p><hr><a name="time"></a><p><b>Time Distribution</b></p><p>Before starting the scheduling loop, we schedule a 1ms system timer which provides a stable source of timing to the emulator. At the top of the scheduling loop, we check to see whether this timer has expired, or whether the pacing count has been exhausted (ref. <a href="#instructions">Instruction Flow</a> above). If not, we go on to call H8 Processing as described above.</p><p>If the timer or pacing count has expired, we do time-dependent processing. This part of the scheduling loop is described in detail in <a href="design_time.html" onMouseOver="self.status='Go to time'; return true">Time</a>. But in general:</p><ul><li>the loop determines whether it's time to call the Macintosh Event Handler, and calls it if so;</li><li>the loop determines whether it's time to update the front panel display and calls the panel drawing package if so;</li><li>the loop determines whether it's time to remove any key value placed on the PAM/8 input port by the keyboard, and removes it if so;</li><li>the loop then calls "clock" routines in the H-19, H-17, Serial I/O, I/O Package and H8 Processing, all of which require timing notification to the millisecond level.</li></ul><p>At the end of this portion of the loop, we wait until the timer has expired (if it has not already expired), then reset the timer and dispatch another instruction.</p><p>The amount of time spent in this part of the loop is highly variable. It's generally quite short &#8212; around 22 microseconds on average when running on the author's G3 &#8212; but can extend to near "infinity" (in microprocessor terms) depending on what the user might be up to the next time we poll the Mac event queue. For example, the emulator gets no time while the user is browsing the menu tree, or while a dialog box is open.</p><p>These variable moments of time when the 1ms timer is not running are not a part of the H8 time "universe." Everything freezes inside the H8 &#8212; time comes to a standstill, if you will. The disks don't spin, instructions don't process, and the whole thing sits in stasis until we complete all time-related processing. For this reason, the H8's clock may appear, from the viewpoint of an external observer, to run a little slow.</p><p><a href="#top" onMouseOver="self.status='go to the top of this page'; return true">go to top</a></p><hr><a name="events"></a><p><b>Macintosh Events</b></p><p>The Macintosh function WaitNextEvent is called once every 25ms when we are the foreground application and once every 10ms when we're in the background. On each call, we will accept one event, if present, and process it. We'll then return to the scheduling loop so it can complete time-based processing and get back to running the 8080A.</p><p>Amid the suspend and activate events, window dragging, mouse-down's in the menu system, etc., events will occur that will drive data through the emulator:</p><dl><dt>mouse-down on the GUI window</dt><dd><p>If the mouse-down hit a keypad key, a value will be placed on PAM/8's input port. At some point in the future, a clock interrupt will be scheduled during an instruction cycle, causing PAM/8 to be entered.</p><p>Some number of instruction cycles later, an IN will cause the I/O package to be called to read the value off the input port. Some time later, a mouse-up event will cause the no-key value to be placed on the input port.</p><p>As noted above, the PAM/8 ports are managed entirely in the <a href="design_io.html">I/O package</a>.</p></dd><dt>mouse-down on the H-17 Management window</dt><dd><p>If the mouse-down hits a control, that control will be tracked until the corresponding mouse-up event is received. The emulator will be frozen until this occurs.</p><p>If the control hit causes an open-file dialog, the emulator will be frozen until that dialog is dispatched by clicking Cancel or Ok.</p><p>Changes made in the H-17 Management window take effect immediately and will have various effects on the emulator. For example, clicking the Reset button or mounting a disk on a drive will suppress hole detection for 300ms. This shows up on the H-17's input status port.</p></dd><dt>key-down in the GUI window</dt><dd><p>If the keystroke is one of those mapped to a PAM/8 keypad key, a value will be placed on PAM/8's input port. A timer will be scheduled to remove the key value in a short period of time. Processing continues as above.</p></dd><dt>key-down or auto-key in the H-19 window</dt><dd><p>The key value is sent to H-19 Emulation for inbound translation. This will likely result in one or more characters being placed into the inbound data queue.</p><p>Inbound data from the H-19 is paced at a rate of 500cps. At some point in the near future, the 1ms timer will expire and the H-19's clock function will be called. On every other call, a byte is removed from the queue and sent to the I/O package to be placed on the 8250 data port.</p><p>This will cause an interrupt to be scheduled. The I/O Package will call H8 Processing to set a mask bit. On the next instruction cycle when interrupts are enabled, H8 Processing will develop interrupt vector 3 and will pass this to 8080A emulation, which will start the associated interrupt service routine. Eventually, HDOS will read the data port and process the keystroke.</p></dd></dl><p>In all cases, the event handler eventually returns to the time-distribution section of the scheduling loop, and instruction processing continues.</p><p><a href="#top" onMouseOver="self.status='go to the top of this page'; return true">go to top</a></p></font><br></td></tr></table><!-- Footer area -- common to all pages --><hr><div class="c1"><font size="-1"><a href="index.html" onMouseOver="self.status='Go to Heath8080A home page'; return true">home</a>&nbsp;<a href="release.html" onMouseOver="self.status='Go to release page'; return true">release</a>&nbsp;<a href="support.html" onMouseOver="self.status='Go to support page'; return true">support</a>&nbsp;<a href="design.html" onMouseOver="self.status='Go to design page'; return true">design</a>&nbsp;<a href="resources.html" onMouseOver="self.status='Go to resources page'; return true">resources</a>&nbsp;<a href="legal.html" onMouseOver="self.status='Go to legal page'; return true">legal</a>&nbsp;<a href="sitemap.html" onMouseOver="self.status='Go to site map'; return true">site map</a>&nbsp;</font></div><hr><br></body>
+
+<head>
+    <title>Heath8080A - Product Design : System Architecture</title>
+
+    <!-- Headers -- common to all pages -->
+
+    <meta name="description" content="This site provides a free Heathkit H8 microcomputer emulator for the Macintosh">
+    <meta name="author" content="David A. Shaw">
+    <link rev="made" href="mailto:&#104;&#101;&#97;&#116;&#104;8080&#97;&#64;&#97;&#111;&#108;.&#99;&#111;&#109;">
+    <meta name="generator" content="Optima PageSpinner for MacOS">
+    <meta name="robots" content="all">
+    <meta name="keywords" content="Heathkit,Heath,H8,H17,H-17,H19,H-19,8080A,Intel 8080A,computer emulation,H8 emulation,Mac,Macintosh,G3,Linux">
+
+    <style type="text/css">
+        body {
+            background-color: #ffffff
+        }
+        
+        .left {
+            background: #ffffff;
+            vertical-align: top;
+            color: blue
+        }
+        
+        .left p {
+            font-family: verdana
+        }
+        
+        .head {
+            background: #ffffcc;
+            vertical-align: top;
+            color: blue
+        }
+        
+        .head p {
+            font-family: geneva, arial
+        }
+        
+        .lhead {
+            background: #ffffcc;
+            vertical-align: top;
+            color: blue
+        }
+        
+        .lhead p {
+            font-family: verdana
+        }
+        
+        .body {
+            vertical-align: top;
+        }
+        
+        .body p,
+        ul,
+        ol,
+        dl {
+            font-family: geneva, arial
+        }
+        
+        div.c1 {
+            font-family: geneva, arial;
+            text-align: center
+        }
+        
+        div.c2 {
+            font-family: geneva, arial;
+            text-align: right
+        }
+        
+        a:visited {
+            color: green
+        }
+        
+        a:hover {
+            color: red;
+            text-decoration: none
+        }
+        
+        p.outside {
+            font-family: geneva, arial;
+            font-size: small;
+        }
+        
+        pre {
+            font-family: courier;
+            font-size: 10px
+        }
+        
+        h1,
+        h2 {
+            font-family: "times new roman"
+        }
+    </style>
+
+</head>
+
+<body>
+    <a name="top"></a>
+
+    <!-- Page Heading -- common to all pages -->
+
+    <table border="0" cellspacing="0" cellpadding="4" width="100%">
+
+        <tr>
+            <td class="lhead">
+                <p><b>Heath8080A &#8212; Product Design : System Architecture</b></p>
+            </td>
+            <td class="head" align="right">
+
+                <!-- this reads "site" on the index page and "page" on all others -->
+
+                <font size="-1">
+                    <p>Page last updated</p>
+                </font>
+            </td>
+        </tr>
+        <tr>
+            <td class="head">
+                <font size="-1">
+                    <p><a href="index.html" onMouseOver="self.status='Go to home page'; return true">home</a> &nbsp;&nbsp;
+                        <a href="release.html" onMouseOver="self.status='Go to release page'; return true">release</a> &nbsp;&nbsp;
+                        <a href="support.html" onMouseOver="self.status='Go to support page'; return true">support</a> &nbsp;&nbsp;
+                        <a href="design.html" onMouseOver="self.status='Go to design page'; return true">design</a> &nbsp;&nbsp;
+                        <a href="resources.html" onMouseOver="self.status='Go to resources page'; return true">resources</a> &nbsp;&nbsp;
+                        <a href="legal.html" onMouseOver="self.status='Go to legal page'; return true">legal</a> &nbsp;&nbsp;
+                        <a href="sitemap.html" onMouseOver="self.status='Go to site map'; return true">site map</a></p>
+                </font>
+            </td>
+            <td class="head" align="right">
+                <font size="-1">
+                    <p>26-October-2002</p>
+                </font>
+            </td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+        </tr>
+
+    </table>
+
+    <!-- Standard content ends. Page body starts here.  -->
+
+
+
+    <table border="0" cellspacing="0" cellpadding="4" width="100%">
+        <tr>
+
+            <!-- page index -->
+            <td class="left" width="20%">
+
+                <font size="-1">
+                    <p>On this page</p>
+                    <p>
+                        &#149; <a href="#instructions" onMouseOver="self.status='Go to instruction flow'; return true">instructions</a><br> &#149; <a href="#time" onMouseOver="self.status='Go to time distribution'; return true">time</a><br> &#149;
+                        <a href="#events" onMouseOver="self.status='Go to event handler'; return true">events</a><br>
+                    </p>
+
+                    <p>Related links</p>
+                    <p>
+                        &#149; <a href="design_time.html" onMouseOver="self.status='Go to time'; return true">time</a><br> &#149; <a href="design_perf.html" onMouseOver="self.status='Go to performance'; return true">performance</a><br> &#149; <a href="design_h8.html"
+                            onMouseOver="self.status='Go to h8 processing'; return true">h8 processing</a><br> &#149; <a href="design_8080a.html" onMouseOver="self.status='Go to 8080a'; return true">8080a emulation</a><br> &#149; <a href="design_io.html"
+                            onMouseOver="self.status='Go to i/o processing'; return true">i/o processing</a><br> &#149; <a href="design_pam8.html" onMouseOver="self.status='Go to pam/8 gui'; return true">pam/8 gui</a><br> &#149; <a href="design_h17.html"
+                            onMouseOver="self.status='Go to h-17 disk system'; return true">h-17</a><br> &#149; <a href="design_h19.html" onMouseOver="self.status='Go to h-19 terminal'; return true">h-19</a><br> &#149; <a href="design_serial.html" onMouseOver="self.status='Go to serial i/o'; return true">serial i/o</a><br>                        &#149; <a href="design_tape.html" onMouseOver="self.status='Go to tape i/o'; return true">tape i/o</a><br>
+
+                    </p>
+                </font>
+
+            </td>
+
+            <td class="body">
+
+                <font size="-1">
+                    <p><b>System Architecture</b></p>
+
+                    <p>The figure below shows a high-level view of how the emulator is organized.</p>
+
+                    <map name="blockmap">
+<area coords="2,2,79,88" href="design_8080a.html" alt="8080a" onMouseOver="self.status='Go to 8080a'; return true">
+<area coords="83,2,115,106" href="design_io.html" alt="i/o" onMouseOver="self.status='Go to i/o package'; return true">
+<area coords="2,92,79,106" href="design_h8.html" alt="h8" onMouseOver="self.status='Go to h8 processing'; return true">
+<area coords="2,110,187,133" href="design_time.html" alt="time" onMouseOver="self.status='Go to time'; return true">
+<area coords="119,2,187,16" href="design_tape.html" alt="tape" onMouseOver="self.status='Go to tape i/o'; return true">
+<area coords="119,20,187,52" href="design_serial.html" alt="serial" onMouseOver="self.status='Go to serial i/o'; return true">
+<area coords="119,56,187,70" href="design_h19.html" alt="h-19" onMouseOver="self.status='Go to h-19 terminal'; return true">
+<area coords="119,74,187,88" href="design_h17.html" alt="h-17" onMouseOver="self.status='Go to h-17 disk system'; return true">
+<area coords="119,92,187,106" href="design_pam8.html" alt="pam/8" onMouseOver="self.status='Go to pam/8 gui'; return true">
+</map>
+
+                    <img src="gfx/sysblock.gif" usemap="#blockmap" width="279" height="135" hspace="8" vspace="8" align="left" border="0" alt="System Block Diagram">
+
+                    <p>The emulator is actually a system of device emulators, tightly integrated into one package. It's emulating an 8080A microprocessor, the I/O hardware and interrupt handlers wrapped around that processor, a visual front panel, a full-featured
+                        editing terminal, a floppy disk system and printer.
+                        <p>
+
+                            <p>You can click a link to the far left or a section of the figure to explore each of these topics in more detail. This page provides a higher-level orientation to the H8 emulation system.</p>
+
+                            <p>There are actually three major control flows in operation within the emulator. Understanding these control flows will help you understand how the pieces fit together and why it works as it does.</p>
+
+                            <p>All three flows originate at the scheduling loop in the event handler. They are:</p>
+
+                            <ol>
+                                <li>
+                                    <p><a href="#instructions">Instruction Flow</a> &#8212; When it's not doing anything else, the emulator is repeatedly running 8080A instructions.</p>
+                                </li>
+
+                                <li>
+                                    <p><a href="#time">Time Distribution</a> &#8212; The scheduling loop provides millisecond timing information to various components of the emulator. It provides higher-level timing to certain functions as well.</p>
+                                </li>
+
+                                <li>
+                                    <p><a href="#events">Macintosh Events</a> &#8212; The scheduling loop periodically checks for Macintosh events and dispatches their processing when necessary. Events are required for key clicks and mouse clicks on the
+                                        PAM/8 keypad, as well as to access menus, switch to other applications, etc.</p>
+                                </li>
+                            </ol>
+
+                            <p>Each of these flows is described in more detail below.</p>
+
+                            <p>
+                                <p><a href="#top" onMouseOver="self.status='go to the top of this page'; return true">go to top</a></p>
+                            </p>
+
+                            <hr>
+                            <a name="instructions"></a>
+
+                            <p><b>Instruction Flow</b></p>
+
+                            <p>On each pass through the scheduling loop, the event handler calls H8 Processing to dispatch one instruction. H8 Processing checks for pending interrupts and develops an interrupt vector if one is found. It then calls 8080A
+                                Emulation to execute the next instruction (or first instruction of the interrupt service routine).</p>
+
+                            <p>If the instruction is an IN or OUT, the I/O Package is called to classify the port address and dispatch processing to a device-specific handler:</p>
+
+                            <ul>
+                                <li>PAM/8 port handling is all done inside the I/O Package;</li>
+                                <li>H-17 port handling is sent directly to the H-17 Disk System with no further processing in the I/O Package;</li>
+                                <li>Tape I/O requests will cause a call to a read or write routine inside Tape I/O;</li>
+                                <li>8250 port I/O is handled, for the most part, inside the I/O Package, though it will generally call a status function or an output function inside Serial I/O or H-19 Emulation to push the data out to the device.</li>
+                            </ul>
+
+                            <p>I/O, if called, returns to the 8080A emulator. The 8080A emulator returns the processor state &#8212; RUN and interrupt enabled status &#8212; to H8 Processing, which, if necessary, updates the front panel status lamps with
+                                calls to the PAM/8 GUI drawing package.</p>
+
+                            <p>H8 Processing returns to the scheduling loop. The scheduling loop maintains an instruction "pacing" count which is updated with the number of machine cycles that would have been consumed by a real 8080A to execute the last
+                                instruction. This pacing mechanism helps to provide accurate emulation speed when set to a 2 mhz clock rate.</p>
+
+                            <p>We stay in the scheduling loop until the "done" flag is set using the File -> Quit item or via a high-level message from the Finder.</p>
+
+                            <p><a href="#top" onMouseOver="self.status='go to the top of this page'; return true">go to top</a></p>
+
+                            <hr>
+                            <a name="time"></a>
+
+                            <p><b>Time Distribution</b></p>
+
+                            <p>Before starting the scheduling loop, we schedule a 1ms system timer which provides a stable source of timing to the emulator. At the top of the scheduling loop, we check to see whether this timer has expired, or whether the
+                                pacing count has been exhausted (ref. <a href="#instructions">Instruction Flow</a> above). If not, we go on to call H8 Processing as described above.</p>
+
+                            <p>If the timer or pacing count has expired, we do time-dependent processing. This part of the scheduling loop is described in detail in <a href="design_time.html" onMouseOver="self.status='Go to time'; return true">Time</a>.
+                                But in general:</p>
+
+                            <ul>
+                                <li>the loop determines whether it's time to call the Macintosh Event Handler, and calls it if so;</li>
+                                <li>the loop determines whether it's time to update the front panel display and calls the panel drawing package if so;</li>
+                                <li>the loop determines whether it's time to remove any key value placed on the PAM/8 input port by the keyboard, and removes it if so;</li>
+                                <li>the loop then calls "clock" routines in the H-19, H-17, Serial I/O, I/O Package and H8 Processing, all of which require timing notification to the millisecond level.</li>
+                            </ul>
+
+                            <p>At the end of this portion of the loop, we wait until the timer has expired (if it has not already expired), then reset the timer and dispatch another instruction.</p>
+
+                            <p>The amount of time spent in this part of the loop is highly variable. It's generally quite short &#8212; around 22 microseconds on average when running on the author's G3 &#8212; but can extend to near "infinity" (in microprocessor
+                                terms) depending on what the user might be up to the next time we poll the Mac event queue. For example, the emulator gets no time while the user is browsing the menu tree, or while a dialog box is open.</p>
+
+                            <p>These variable moments of time when the 1ms timer is not running are not a part of the H8 time "universe." Everything freezes inside the H8 &#8212; time comes to a standstill, if you will. The disks don't spin, instructions
+                                don't process, and the whole thing sits in stasis until we complete all time-related processing. For this reason, the H8's clock may appear, from the viewpoint of an external observer, to run a little slow.</p>
+
+                            <p><a href="#top" onMouseOver="self.status='go to the top of this page'; return true">go to top</a></p>
+
+                            <hr>
+                            <a name="events"></a>
+
+                            <p><b>Macintosh Events</b></p>
+
+                            <p>The Macintosh function WaitNextEvent is called once every 25ms when we are the foreground application and once every 10ms when we're in the background. On each call, we will accept one event, if present, and process it. We'll
+                                then return to the scheduling loop so it can complete time-based processing and get back to running the 8080A.</p>
+
+                            <p>Amid the suspend and activate events, window dragging, mouse-down's in the menu system, etc., events will occur that will drive data through the emulator:</p>
+
+                            <dl>
+                                <dt>mouse-down on the GUI window</dt>
+                                <dd>
+                                    <p>If the mouse-down hit a keypad key, a value will be placed on PAM/8's input port. At some point in the future, a clock interrupt will be scheduled during an instruction cycle, causing PAM/8 to be entered.</p>
+
+                                    <p>Some number of instruction cycles later, an IN will cause the I/O package to be called to read the value off the input port. Some time later, a mouse-up event will cause the no-key value to be placed on the input port.</p>
+                                    <p>As noted above, the PAM/8 ports are managed entirely in the <a href="design_io.html">I/O package</a>.</p>
+                                </dd>
+
+                                <dt>mouse-down on the H-17 Management window</dt>
+
+                                <dd>
+                                    <p>If the mouse-down hits a control, that control will be tracked until the corresponding mouse-up event is received. The emulator will be frozen until this occurs.</p>
+
+                                    <p>If the control hit causes an open-file dialog, the emulator will be frozen until that dialog is dispatched by clicking Cancel or Ok.</p>
+                                    <p>Changes made in the H-17 Management window take effect immediately and will have various effects on the emulator. For example, clicking the Reset button or mounting a disk on a drive will suppress hole detection for
+                                        300ms. This shows up on the H-17's input status port.</p>
+                                </dd>
+
+                                <dt>key-down in the GUI window</dt>
+                                <dd>
+                                    <p>If the keystroke is one of those mapped to a PAM/8 keypad key, a value will be placed on PAM/8's input port. A timer will be scheduled to remove the key value in a short period of time. Processing continues as above.</p>
+                                </dd>
+
+                                <dt>key-down or auto-key in the H-19 window</dt>
+                                <dd>
+                                    <p>The key value is sent to H-19 Emulation for inbound translation. This will likely result in one or more characters being placed into the inbound data queue.</p>
+
+                                    <p>Inbound data from the H-19 is paced at a rate of 500cps. At some point in the near future, the 1ms timer will expire and the H-19's clock function will be called. On every other call, a byte is removed from the queue
+                                        and sent to the I/O package to be placed on the 8250 data port.</p>
+
+                                    <p>This will cause an interrupt to be scheduled. The I/O Package will call H8 Processing to set a mask bit. On the next instruction cycle when interrupts are enabled, H8 Processing will develop interrupt vector 3 and will
+                                        pass this to 8080A emulation, which will start the associated interrupt service routine. Eventually, HDOS will read the data port and process the keystroke.</p>
+                                </dd>
+
+                            </dl>
+
+                            <p>In all cases, the event handler eventually returns to the time-distribution section of the scheduling loop, and instruction processing continues.</p>
+
+
+                            <p><a href="#top" onMouseOver="self.status='go to the top of this page'; return true">go to top</a></p>
+                </font>
+                <br>
+
+
+            </td>
+        </tr>
+    </table>
+
+    <!-- Footer area -- common to all pages -->
+
+    <hr>
+    <div class="c1">
+        <font size="-1">
+            <a href="index.html" onMouseOver="self.status='Go to Heath8080A home page'; return true">home</a> &nbsp;
+            <a href="release.html" onMouseOver="self.status='Go to release page'; return true">release</a> &nbsp;
+            <a href="support.html" onMouseOver="self.status='Go to support page'; return true">support</a> &nbsp;
+            <a href="design.html" onMouseOver="self.status='Go to design page'; return true">design</a> &nbsp;
+            <a href="resources.html" onMouseOver="self.status='Go to resources page'; return true">resources</a> &nbsp;
+            <a href="legal.html" onMouseOver="self.status='Go to legal page'; return true">legal</a> &nbsp;
+            <a href="sitemap.html" onMouseOver="self.status='Go to site map'; return true">site map</a> &nbsp;
+        </font>
+    </div>
+    <hr>
+    <br>
+
+</body>
+
 <!-- Mirrored from davidwallace2000.home.comcast.net/~davidwallace2000/h8/project8080_archive/design_arch.html by HTTrack Website Copier/3.x [XR&CO'2010], Mon, 10 Sep 2012 13:15:38 GMT -->
-</html>
+
+</html>

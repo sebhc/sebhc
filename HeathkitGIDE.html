@@ -1,416 +1,354 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html><head>
+<html>
 
-<meta content="text/html; charset=ISO-8859-1" http-equiv="content-type"><title>GIDE On A Heathkit H8 Computer</title>
-
-
-
+<head>
+    <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type" />
+    <title>GIDE On A Heathkit H8 Computer</title>
 </head>
 
 <body>
+    <div style="text-align: center; font-family: Courier New, Courier, monospace;">
+        <h1 style="text-decoration: underline;"><br /></h1>
+
+        <h1 style="text-decoration: underline;">
+            GIDE ON A HEATHKIT H8&nbsp;COMPUTER
+        </h1>
+
+        The
+        <a href="http://www.iee.et.tu-dresden.de/%7Ekc-club/gide/gide.html" target="_blank">GIDE</a
+      >
+      is a device that plugs into the socket of your Z80 CPU and adds easy
+      support for IDE hard drives. This web page details how to use one with
+      your Heathkit H8 computer with a Z80 CPU card.<br />
 
-<div style="text-align: center; font-family: Courier New,Courier,monospace;">
+      <br />
 
-<h1 style="text-decoration: underline;"><br>
+      9/2/2009 Note: The following section details using the GIDE with my Rev
+      1.8 Z80 CPU card for the Heathkit H8 computer. I've since redesigned my
+      Z80 CPU card and have GIDE support built-in. See my Rev 2.1 card in the
+      <a target="_blank" href="pcbs/pcbs.html">PCBs</a> section for details.<br />
 
-</h1>
+        <br /> The first step is to install the device in your system. For the Heathkit H8 computer you'll want to use the cable attachment option. This uses a short ribbon cable to plug the GIDE into the socket of your Z80-based H8 motherboard. This
+        is required to fit the GIDE within the chassis of the H8.
+        <br />
 
-<h1 style="text-decoration: underline;">GIDE ON A HEATHKIT
+        <br />
 
-H8&nbsp;COMPUTER</h1>
+        <img style="width: 640px; height: 480px;" alt="H8-Z80-64 with GIDE attached" src="gide/H8-Z80-64_GIDE_640.jpg" /><br />
 
-The <a href="http://www.iee.et.tu-dresden.de/%7Ekc-club/gide/gide.html" target="_blank">GIDE</a> is a device that plugs into
+        <br />
 
-the socket of your Z80 CPU and adds easy support for IDE hard drives.
+        <img style="width: 640px; height: 480px;" alt="GIDE installed in Heathkit H8 Computer" src="gide/H8_GIDE_640.jpg" /><br />
 
-This web page details how to use one with your Heathkit H8 computer
+        <br /> In this photo I've installed the GIDE onto one of my
+        <a href="pcbs/pcbs.html">H8-Z80-64</a> Z80 CPU cards. Since I attached the GIDE onto the front side of the CPU card I had to install the CPU card into the 2nd slot on the buss. A better approach would probably be to attach the GIDE to the backside
+        of the CPU card and run the ribbon cable over the top to the Z80 CPU socket. Doing this would allow you to move the CPU card to the first slot.<br />
 
-with a Z80 CPU card.<br>
+        <br /> Once the GIDE is in place you should be able to power up the computer and get the familiar beep along with the front panel LED display lighting up. It is now time to boot into the CP/M operating system and run the&nbsp;GIDETEST utility
+        to verify the operation of the attached drive.
+        <br />
 
-<br>
+        <br /> If everything checks out you can begin the process of installing the BIOS extension and formatting of the hard drive so that you can begin using it. Download the
+        <a href="gide/GIDEHeathkitSupport.zip">Heathkit GIDE support files</a> and transfer these to the Heathkit computer using either the supplied H8D disk image file and an
+        <a href="http://www.thesvd.com/SVD/" target="_blank">SVD</a> or by using my
+        <a href="software/Utilities/H8DUtility.html" target="_blank">H8D Utility</a
+      >
+      and Dwight Elvey's H89LDR to transfer the image over a serial port
+      connection to a hard sector disk in the H8 computer. The files you'll be
+      interested in are&nbsp;GBIOSWB.Z80, SLRASM.ZIP,
+      <a href="gide/gidefmt.zip">GIDEFMT.COM</a> and IDEGEN.COM. The GBIOSWB extension and IDEGEN utility were written by
+        <a href="http://mylinuxisp.com/%7Ejdbaker/oldsite/SmallSys/8bitIDE.html" target="_blank">John D. Baker</a
+      >
+      and have been slightly modified by me for the Heathkit computers.<br />
 
-9/2/2009
+      <br />
 
-Note: The following section details using the GIDE with my Rev 1.8 Z80
+      To boot your system directly off an SVD use the following boot images. It
+      is saved as a .SVD file (as opposed to a .H8D) and will boot you into CP/M
+      2.2.03 with the GIDE BIOS extension and the ZCPR CCP. These images are
+      setup for use with the GIDE at port 80h and the terminal at port 350Q and
+      INT 3. You should have 64K of RAM installed and the system should be
+      running at the standard 2MHz operating speed. There are two images in the
+      zip file. One is for warm booting from drive A and one is for warm booting
+      from drive E. You should first boot the image for drive A then GIDEFMT and
+      IDEGEN your hard drive. After your hard drive is IDEGEN'd you can use the
+      image for warm booting from drive E. You cannot warm boot from drive E
+      until it is IDEGEN'd which copies the system tracks to the hard drive.<br />
 
-CPU card for the Heathkit H8 computer. I've since redesigned my Z80 CPU
+      <br />
 
-card and have GIDE support built-in. See my Rev 2.1 card in the <a target="_blank" href="pcbs/pcbs.html">PCBs</a>
+      To IDEGEN your hard drive so that you can boot from it first type MOVZ80
+      62 which creates a 62K CP/M image in memory. Then run IDEGEN and press
+      ENTER for source drive (the image is in memory) and type 0 for the
+      destination which is hard drive E.<br />
 
-section for details.<br>
+      <br />
 
-<br>
+      <a href="gide/CPM_2_2_03_62K_ZCPR_SVDBootable.zip"
+        >CP/M 2.2.03 62K with GIDE and ZCPR</a
+      >
+      for SVD boot<br />
 
-The first step is to install the device in your system. For the
+      <br />
 
-Heathkit H8 computer you'll want to use the cable attachment option.
+      GBIOSWB.Z80 will have to be modified by you before using it. You need to
+      fill in the parameters for your hard disk (number of cylinders, number of
+      heads, sectors per track) and then assemble the source file with SLRASM
+      (Z80ASM). This should be done on the Heathkit computer after you transfer
+      the files. Another method you can try (and how I did it over here) is to
+      run a CP/M emulator like MYZ80 on your XP&nbsp;PC and build the .COM file
+      on your PC and transfer it over to the Heathkit using an SVD.<br />
 
-This uses a short ribbon cable to plug the GIDE into the socket of your
+      <br />
 
-Z80-based H8 motherboard. This is required to fit the GIDE within the
+      Now that you have the GBIOSWB.COM file built it's time to get it running
+      on your Heathkit CP/M system. Do this by first creating a 62K version of
+      CP/M as follows:<br />
 
-chassis of the H8.<br>
+      <br />
 
-<br>
+      <span style="font-weight: bold;">MOVCPM17 62</span><br />
 
-<img style="width: 640px; height: 480px;" alt="H8-Z80-64 with GIDE attached" src="gide/H8-Z80-64_GIDE_640.jpg"><br>
+      or<br />
 
-<br>
+      <span style="font-weight: bold;">MOVZ80 62</span> if you want to use ZCPR
+      (recommended)<br />
 
-<img style="width: 640px; height: 480px;" alt="GIDE installed in Heathkit H8 Computer" src="gide/H8_GIDE_640.jpg"><br>
+      (MOVZ80 is included as part of the CPM_2_2_03_62K_ZCPR.H8D disk image)<br />
 
-<br>
+      <br />
 
-In this photo I've installed the GIDE onto one of my <a href="pcbs/pcbs.html">H8-Z80-64</a> Z80 CPU cards.
+      Then SYSGEN a disk with this new CP/M image by immediately typing the
+      following:<br />
 
-Since I attached the GIDE onto the front side of the CPU card I had to
+      <br />
 
-install the CPU card into the 2nd slot on the buss. A better approach
+      <span style="font-weight: bold;">SYSGEN</span><br />
 
-would probably be to attach the GIDE to the backside of the CPU card
+      <br />
 
-and run the ribbon cable over the top to the Z80 CPU socket. Doing this
+      Just press ENTER when asked for source disk (the CP/M image is already in
+      memory) then type in the drive letter to write the 62K version of CP/M to.
+      Once a disk is sysgen'd you need to copy BIOS.SYS, GBIOSWB.COM,
+      GIDEFMT.COM, IDEGEN.COM and CONFIGUR.COM to it and then boot with the new
+      disk. When you reach the CP/M prompt you can type in GBIOSWB to load the
+      BIOS extension so that you can access your hard drive. This extension
+      installs itself into the upper 2K of RAM (above the 62K CP/M image) and
+      re-routes any requests for drives E: thru J: to the GIDE. Now is also a
+      good time to run CONFIGUR so you can setup GBIOSWB to run automatically
+      during a cold boot.<br />
 
-would allow you to move the CPU card to the first slot.<br>
+      <br />
 
-<br>
+      It's time to format the hard drive. At the CP/M prompt type the
+      following:<br />
 
-Once the GIDE is in place you should be able to power up the computer
+      <br />
 
-and get the familiar beep along with the front panel LED display
+      <a href="gide/gidefmt.zip"
+        ><span style="font-weight: bold;">GIDEFMT</span></a
+      ><br />
 
-lighting up. It is now time to boot into the CP/M operating system and
+      <br />
 
-run the&nbsp;GIDETEST utility to verify the operation of the
+      Then follow the onscreen prompts to fill in the sectors per track and
+      number of heads. Look at the label on the hard drive for this information.
+      GBIOS sets up one head (or platter) per disk so that the first platter is
+      disk E:, the second one is disk F:, etc. Just make sure you have at least
+      8MB per platter. If you have more then 8MB per platter, the additional
+      cylinders will just not get used so you don't have to format them.
+      GIDEFMT&nbsp;will automatically compute the number of cylinders for you
+      using the following formula:<br />
 
-attached drive.<br>
+      <br />
 
-<br>
+      8192000 / (sectors-per-track x 512) <br />
 
-If everything checks out you can begin the process of installing the
+      <br />
 
-BIOS extension and formatting of the hard drive so that you can begin
+      As an example, for my Conner CFS1275A with 63 sectors per track I needed
+      254 cylinders:<br />
 
-using it. Download the <a href="gide/GIDEHeathkitSupport.zip">Heathkit
+      <br />
 
-GIDE support files</a> and transfer these to the Heathkit
+      8192000 / (63 * 512) = 253.9 rounded up = 254<br />
 
-computer using either the supplied H8D disk image file and an <a href="http://www.thesvd.com/SVD/" target="_blank">SVD</a>
+      <br />
 
-or by using my <a href="software/Utilities/H8DUtility.html" target="_blank">H8D Utility</a> and Dwight Elvey's
+      <img
+        style="width: 640px; height: 480px;"
+        alt="GIDEFMT program"
+        src="gide/H8_GIDEFMT2.jpg"
+      /><br />
 
-H89LDR to transfer the image over a serial port connection to a hard
+      <br />
 
-sector disk in the H8 computer. The files you'll be interested in
+      Remember that GBIOS uses one head (or disk platter) per disk. My Conner
+      drive has 16 heads but I only use and format the first 6. By specifying
+      the cylinders and heads to format you can reduce the amount of time it
+      takes to format the drive since only the portion that gets used by CP/M
+      will need to be formatted.<br />
 
-are&nbsp;GBIOSWB.Z80, SLRASM.ZIP, <a href="gide/gidefmt.zip">GIDEFMT.COM</a>
+      <br />
 
-and IDEGEN.COM. The
+      When formatting is complete you'll be able to start using the hard drive.
+      Switch to each drive (E: thru J:) and then type
+      <span style="font-weight: bold;">STAT</span> to get&nbsp;the available
+      space of the hard drive partitions.<br />
 
-GBIOSWB extension and IDEGEN utility were written by <a href="http://mylinuxisp.com/%7Ejdbaker/oldsite/SmallSys/8bitIDE.html" target="_blank">John D. Baker</a> and have been
+      <br />
 
-slightly modified by me for the Heathkit computers.<br>
+      <br />
 
-<br>
+      <img
+        style="width: 640px; height: 480px;"
+        alt="GIDE on a Heathkit H8 Computer"
+        src="gide/H8_GIDE_STAT_640.jpg"
+      /><br />
 
-To
+      <br />
 
-boot your system directly off an SVD use the following boot images. It
+      <br />
 
-is saved as a .SVD file (as opposed to a .H8D) and will boot you into
+      I installed my hard drive inside the H8 chassis as shown in the following
+      photo. At this time I'm using an external PC power supply to power the
+      hard drive but eventually I will probably power it from within the
+      chassis.<br />
 
-CP/M 2.2.03 with the GIDE BIOS extension and the ZCPR CCP. These images
+      <br />
 
-are setup for use with the GIDE at port 80h and the terminal at port
+      <br />
 
-350Q and INT 3. You should have 64K of RAM installed and the system
+      <img
+        style="width: 640px; height: 480px;"
+        alt="GIDE on a Heathkit H8 Computer"
+        src="gide/H8_GIDE_INSIDE_640.jpg"
+      /><br />
 
-should be running at the standard 2MHz operating speed. There are two
+      <br />
 
-images in the zip file. One is for warm booting from drive A and one is
+      <br />
 
-for warm booting from drive E. You should first boot the image for
+      <br />
 
-drive A then GIDEFMT and IDEGEN your hard drive. After your hard drive
+      <span style="font-weight: bold; text-decoration: underline;"
+        >Rev 2.1 H8-Z80-64 CPU Board</span
+      ><br />
 
-is IDEGEN'd you can use the image for warm booting from drive E. You
+      <br />
 
-cannot warm boot from drive E until it is IDEGEN'd which copies the
+      As of 9/2/2009 I've redesigned my H8-Z80-64 CPU card which now has GIDE
+      support built-in. All you need to do is buy the GIDE chips from&nbsp;<a
+        href="mailto:tgcons@cfl.rr.com"
+        >Terry Gulczynski</a
+      >
+      and plug them into my CPU board. The steps for installing the software
+      above are exactly the same.<br />
 
-system tracks to the hard drive.<br>
+      <br />
 
-<br>
+      <br />
 
-To
+      <img
+        style="width: 800px; height: 600px;"
+        alt="H8-Z80-64 with GIDE integrated"
+        src="gide/H8-Z80-64_GIDE_Proto2.jpg"
+      /><br />
 
-IDEGEN your hard drive so that you can boot from it first type MOVZ80
+      <br />
 
-62 which creates a 62K CP/M image in memory. Then run IDEGEN and press
+      <img
+        style="width: 1200px; height: 849px;"
+        alt="H8-Z80-64 Rev 2 component layout"
+        src="gide/H8-Z80-64-25-SilkS_Cmp.jpg"
+      /><br />
 
-ENTER for source drive (the image is in memory) and type 0 for the
+      <br />
 
-destination which is hard drive E.<br>
+      This concludes the steps for getting the GIDE up and running on a Heathkit
+      H8&nbsp;computer running the CP/M operating system.<br />
 
-<br>
+      <br />
 
-<a href="gide/CPM_2_2_03_62K_ZCPR_SVDBootable.zip">CP/M
+      <hr style="width: 100%; height: 2px;" />
+      <br />
 
-2.2.03 62K with GIDE and ZCPR</a> for SVD boot<br>
+      Here are some informative links relating to the GIDE:<br />
 
-<br>
+      <br />
 
-GBIOSWB.Z80 will have to be modified by you before using it. You need
+      <a href="http://www.retrotechnology.com/herbs_stuff/gide.html"
+        >http://www.retrotechnology.com/herbs_stuff/gide.html</a
+      ><br />
 
-to fill in the parameters for your hard disk (number of cylinders,
+      <a href="http://www.gaby.de/gide/">http://www.gaby.de/gide/</a><br />
 
-number of heads, sectors per track) and then assemble the source file
+        <br /> GIDE's can be ordered from this link:<br />
 
-with SLRASM (Z80ASM). This should be done on the Heathkit computer
+        <br />
 
-after you transfer the files. Another method you can try (and how I did
+        <a href="http://www.iee.et.tu-dresden.de/%7Ekc-club/gide/gide.html">http://www.iee.et.tu-dresden.de/~kc-club/gide/gide.html</a
+      ><br />
 
-it over here) is to run a CP/M emulator like MYZ80 on your
+      <br />
 
-XP&nbsp;PC and build the .COM file on your PC and transfer it over
+      For U.S. residents GIDE chips can be ordered from&nbsp;<a
+        href="mailto:terrygski@cfl.rr.com"
+        >Terry Gulczynski</a
+      ><br />
 
-to the Heathkit using an SVD.<br>
+      <br />
 
-<br>
+      <br />
 
-Now that you have the GBIOSWB.COM file built it's time to get it
+      <hr style="width: 100%; height: 2px;" />
+      <br />
 
-running on your Heathkit CP/M system. Do this by first creating a 62K
+      <a href="index.html">SEBHC.ORG Home Page</a><br />
 
-version of CP/M as follows:<br>
+        <br />
 
-<br>
+        <a href="http://groups.google.com/group/sebhc">SEBHC Google Group Link</a
+      ><br />
 
-<span style="font-weight: bold;">MOVCPM17 62</span><br>
+      <br />
 
-or<br>
+      November 16, 2009<br />
 
-<span style="font-weight: bold;">MOVZ80 62</span> if
+      <br />
 
-you want to use ZCPR (recommended)<br>
+      <a href="mailto:lesbird65@gmail.com">e-mail</a>
+    </div>
+    <script>
+        (function(i, s, o, g, r, a, m) {
+            i["GoogleAnalyticsObject"] = r;
+            (i[r] =
+                i[r] ||
+                function() {
+                    (i[r].q = i[r].q || []).push(arguments);
+                }),
+            (i[r].l = 1 * new Date());
+            (a = s.createElement(o)), (m = s.getElementsByTagName(o)[0]);
+            a.async = 1;
+            a.src = g;
+            m.parentNode.insertBefore(a, m);
+        })(
+            window,
+            document,
+            "script",
+            "//www.google-analytics.com/analytics.js",
+            "ga"
+        );
 
-(MOVZ80 is included as part of the CPM_2_2_03_62K_ZCPR.H8D disk image)<br>
+        ga("create", "UA-57115219-1", "auto");
+        ga("send", "pageview");
+    </script>
+    <div style="
+        position: absolute;
+        filter: alpha(opacity=0);
+        opacity: 0.001;
+        z-index: 10;
+      "></div>
+</body>
 
-<br>
-
-Then SYSGEN a disk with this new CP/M image by immediately typing the
-
-following:<br>
-
-<br>
-
-<span style="font-weight: bold;">SYSGEN</span><br>
-
-<br>
-
-Just press ENTER when asked for source disk (the CP/M image is already
-
-in memory) then type in the drive letter to write the 62K version of
-
-CP/M to. Once a disk is sysgen'd you need to copy BIOS.SYS,
-
-GBIOSWB.COM, GIDEFMT.COM, IDEGEN.COM and CONFIGUR.COM to it and then
-
-boot with the new disk. When you reach the CP/M prompt you can type in
-
-GBIOSWB to load the BIOS extension so that you can access your hard
-
-drive. This extension installs itself into the upper 2K of RAM (above
-
-the 62K CP/M image) and re-routes any requests for drives E: thru J: to
-
-the GIDE. Now is also a good time to run CONFIGUR so you can setup
-
-GBIOSWB to run automatically during a cold boot.<br>
-
-<br>
-
-It's time to format the hard drive. At the CP/M prompt type the
-
-following:<br>
-
-<br>
-
-<a href="gide/gidefmt.zip"><span style="font-weight: bold;">GIDEFMT</span></a><br>
-
-<br>
-
-Then follow the onscreen prompts to fill in the sectors per
-
-track and number of heads. Look at the label on the hard drive for this
-
-information. GBIOS sets up one head (or platter) per disk so that the
-
-first platter is disk E:, the second one is disk F:, etc. Just make
-
-sure you have at least 8MB per platter. If you have more then 8MB per
-
-platter, the additional cylinders will just not get used so you don't
-
-have to format them. GIDEFMT&nbsp;will automatically compute the
-
-number of cylinders for you using the following formula:<br>
-
-<br>
-
-8192000 / (sectors-per-track x 512) <br>
-
-<br>
-
-As an example, for my Conner CFS1275A with 63 sectors per track I
-
-needed 254 cylinders:<br>
-
-<br>
-
-8192000 / (63 * 512) = 253.9 rounded up = 254<br>
-
-<br>
-
-<img style="width: 640px; height: 480px;" alt="GIDEFMT program" src="gide/H8_GIDEFMT2.jpg"><br>
-
-<br>
-
-Remember that GBIOS uses one head (or disk platter) per disk. My Conner
-
-drive has 16 heads but I only use and format the first 6. By specifying
-
-the cylinders and heads to format you can reduce the
-
-amount of time it takes to format the drive since only the portion that
-
-gets used by CP/M will need to be formatted.<br>
-
-<br>
-
-When formatting is complete you'll be able to start using the hard
-
-drive. Switch to each drive (E: thru J:) and then type <span style="font-weight: bold;">STAT</span> to
-
-get&nbsp;the available space of the hard drive partitions.<br>
-
-<br>
-
-<br>
-
-<img style="width: 640px; height: 480px;" alt="GIDE on a Heathkit H8 Computer" src="gide/H8_GIDE_STAT_640.jpg"><br>
-
-<br>
-
-<br>
-
-I installed my hard drive inside the H8 chassis as shown in the
-
-following photo. At this time I'm using an external PC power supply to
-
-power the hard drive but eventually I will probably power it from
-
-within the chassis.<br>
-
-<br>
-
-<br>
-
-<img style="width: 640px; height: 480px;" alt="GIDE on a Heathkit H8 Computer" src="gide/H8_GIDE_INSIDE_640.jpg"><br>
-
-<br>
-
-<br>
-
-<br>
-
-<span style="font-weight: bold; text-decoration: underline;">Rev
-
-2.1 H8-Z80-64 CPU Board</span><br>
-
-<br>
-
-As
-
-of 9/2/2009 I've redesigned my H8-Z80-64 CPU card which now has GIDE
-
-support built-in. All you need to do is buy the GIDE chips
-
-from&nbsp;<a href="mailto:tgcons@cfl.rr.com">Terry
-
-Gulczynski</a> and plug them into my CPU board. The steps for
-
-installing the software above are exactly the same.<br>
-
-<br>
-
-<br>
-
-<img style="width: 800px; height: 600px;" alt="H8-Z80-64 with GIDE integrated" src="gide/H8-Z80-64_GIDE_Proto2.jpg"><br>
-
-<br>
-
-<img style="width: 1200px; height: 849px;" alt="H8-Z80-64 Rev 2 component layout" src="gide/H8-Z80-64-25-SilkS_Cmp.jpg"><br>
-
-<br>
-
-This concludes the steps for getting the GIDE up and running on a
-
-Heathkit H8&nbsp;computer running the CP/M operating system.<br>
-
-<br>
-
-<hr style="width: 100%; height: 2px;"><br>
-
-Here are some informative links relating to the GIDE:<br>
-
-<br>
-
-<a href="http://www.retrotechnology.com/herbs_stuff/gide.html">http://www.retrotechnology.com/herbs_stuff/gide.html</a><br>
-
-<a href="http://www.gaby.de/gide/">http://www.gaby.de/gide/</a><br>
-
-<br>
-
-GIDE's can be ordered from this link:<br>
-
-<br>
-
-<a href="http://www.iee.et.tu-dresden.de/%7Ekc-club/gide/gide.html">http://www.iee.et.tu-dresden.de/~kc-club/gide/gide.html</a><br>
-
-<br>
-
-For U.S. residents GIDE chips can be ordered from&nbsp;<a href="mailto:terrygski@cfl.rr.com">Terry Gulczynski</a><br>
-
-<br>
-
-<br>
-
-<hr style="width: 100%; height: 2px;"><br>
-
-<a href="index.html">SEBHC.ORG Home Page</a><br>
-
-<br>
-
-<a href="http://groups.google.com/group/sebhc">SEBHC
-
-Google Group Link</a><br>
-
-<br>
-
-November 16, 2009<br>
-
-<br>
-
-<a href="mailto:lesbird65@gmail.com">e-mail</a></div>
-<script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-  ga('create', 'UA-57115219-1', 'auto');
-  ga('send', 'pageview');
-
-</script>
-<div style="position:absolute;filter:alpha(opacity=0);opacity:0.001;z-index:10;">      </div></body>
 </html>

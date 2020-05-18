@@ -1,166 +1,423 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html><head>
+<html>
 
+<head>
+    <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type" />
+    <title>Heathkit H17 Storage Options</title>
+    <meta content="Les Bird" name="author" />
+    <meta content="Optional storage devices for use with the H17 controller" name="description" />
+</head>
 
-
-
-
-
-<meta content="text/html; charset=ISO-8859-1" http-equiv="content-type"><title>Heathkit H17 Storage Options</title>
-
-<meta content="Les Bird" name="author">
-<meta content="Optional storage devices for use with the H17 controller" name="description"></head><body>
-<div style="text-align: center;"><span style="font-family: Courier New,Courier,monospace;"><br>
-</span>
-<h1><small><small><small><span style="font-family: Courier New,Courier,monospace;"><big style="text-decoration: underline;"><big><big><big><span style="font-weight: bold;">ALTERNATE DISK STORAGE</span></big></big></big></big></span></small></small></small></h1>
-<span style="font-family: Courier New,Courier,monospace;"></span><big><big><big><span class="Apple-style-span" style="border-collapse: separate; color: rgb(0, 0, 0); font-size: medium; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; font-family: Courier New,Courier,monospace;"><span class="Apple-style-span" style="color: rgb(68, 68, 68); font-size: 13px; line-height: 20px; text-align: left;">
-<div style="text-align: center;"><big>The Heathkit
-H-8 and H-89 computers use hard sector disks for storage. Hard sector
-disks can still be found but are fairly expensive. A couple alternate
-storage options that work with the Heathkit 8 bit computers are shown
-below.<br>
-</big><form target="paypal" action="https://www.paypal.com/cgi-bin/webscr" method="post"><big>&nbsp;<br>
-  <a href="#SEMI-VIRTUAL_DISK">SVD (Semi-Virtual Disk)</a><br>
-  <a href="#HARD_SECTOR_FLOPPY_EMULATOR">HSFE (Hard Sector Floppy Emulator)</a><br>
-  <a href="#FC5025_by_Device_Side_Data">FC-5025 by Device Side Data</a><br>
-<br>
-</big>
-<hr style="width: 100%; height: 2px;"><br>
-<big><big><span style="font-weight: bold; text-decoration: underline;"><a name="SEMI-VIRTUAL_DISK"></a>SEMI-VIRTUAL
-DISK</span></big></big><br>
-<br>
-<big>The <a href="http://www.thesvd.com" target="_blank">SVD</a>
-was invented by Eric Rothfus. It is one of the most used devices with
-my Heathkit computers.</big><big><br>
-<br>
-Basically the SVD is a gadget that allows you to
-upload <a href="../software.html" target="_blank">disk
-images</a> to the onboard RAM so that you can use these images
-with your computer. Disk images are simply copies of a disk stored in
-files on your modern day computer. The standard format for Heathkit
-disk images is the H8D format. You can create disk images on your PC
-computer by using 2 free utilities. See my <a href="../software/Utilities/H8DUtility.html" target="_blank">H8DUtility
-page</a> for details.<br>
-<br>
-&nbsp;To use the SVD with your Heathkit computer you plug one end
-of the SVD into your disk
-controller and the other end into a COM port on your PC. You use the
-PC-side <a href="http://www.thesvd.com/SVD/downloads.php" target="_blank">SVD control panel</a> to upload images
-to the SVD and the Heathkit computer thinks it's talking to a floppy
-disk
-drive.<br>
-<br>
-The following photo is a fully assembled SVD PCB.<br>
-<br>
-<img style="width: 800px; height: 600px;" alt="SVD Assembled" src="svd_assembled_800.jpg"><br>
-<br>
-I
-generally don't use a power adapter with my SVDs anymore. Instead, I
-modified the power input so that I can use a typical ATX style disk
-drive power plug as shown below:<br>
-<br>
-<img style="width: 800px; height: 600px;" alt="SVD Assembled with modified power input" src="svd_assembled_atx_power_800.jpg"><br>
-<br>
-The simple mod in the above photo allows me to put the SVD inside my
-H8-2000 case and power it with the MiniATX power supply.<br>
-<br>
-I have&nbsp;builds of the SVD
-firmware to allow it to run on different PIC micro controllers. See the
-links below for the complete collection. To build the firmware from the
-source code use Microchip's <a href="http://www.microchip.com/forums/tt.aspx?forumid=57" target="_blank">MPLAB IDE</a> V8.10 or later.<br>
-<br>
-<span style="font-weight: bold;">SVD Firmware Source Code</span><br>
-<br>
-<a href="svd_firmware23_74B.zip">V2.3 for 16C74B PICs</a><br>
-V2.3 for 16F877 PICs<br>
-<a href="svd_firmware23_884.zip">V2.3 for 16F884 PICs</a><br>
-<br>
-<a href="svd_firmware24_74B.zip">V2.4 for 16C74B PICs</a><br>
-<a href="svd_firmware24_877.zip">V2.4 for 16F877 PICs</a><br>
-<a href="svd_firmware24_884.zip">V2.4 for 16F884 PICs</a><br>
-<br>
-<span style="font-weight: bold;">SVD Firmware HEX files
-ready to burn to a PIC chip</span><br>
-<br>
-<a href="Svd23_16C74B.zip">V2.3 for 16C74B PICs</a><br>
-<a href="Svd23_16F877.zip">V2.3 for 16F877 PICs</a><br>
-<a href="Svd23_16F884.zip">V2.3 for 16F884 PICs</a><br>
-<br>
-<a href="Svd24_16C74B.zip">V2.4 for 16C74B PICs</a><br>
-<a href="Svd24_16F877.zip">V2.4 for 16F877 PICs</a><br>
-<a href="Svd24_16F884.zip">V2.4 for 16F884 PICs</a><br>
-<br>Heath CP/M bootable disk images<br><a href="../software/CPM/CPM_2-2-0X_SVD_Boot.zip">ZIP with 19 images 1MB</a><br><br>
-</big>
-<hr style="width: 100%; height: 2px;"><br>
-<big><big><span style="font-weight: bold; text-decoration: underline;"><a name="HARD_SECTOR_FLOPPY_EMULATOR"></a>HARD
-SECTOR FLOPPY EMULATOR</span></big></big><br>
-<br>
-<big><big><big><span class="Apple-style-span" style="border-collapse: separate; color: rgb(0, 0, 0); font-size: medium; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; font-family: Courier New,Courier,monospace;"><span class="Apple-style-span" style="color: rgb(68, 68, 68); font-size: 13px; line-height: 20px; text-align: center;"><big>The
-HSFE was invented by Chris Elmquist specifically for the Heathkit
-computers. It may also work with other vintage computers that used
-10-sector disks too but to my knowledge this has not been tested. The
-HSFE is a device that "emulates" the hard sector index pulses so that
-you can use commonly available 3.5" soft sector media and 3.5" floppy
-drives. The hard sector controller card in your Heathkit computer
-thinks it is reading and writing to a hard sector disk.<br>
-<br>
-Below is a photo of the HSFE<br>
-<br>
-<img style="width: 800px; height: 600px;" alt="HSFE Assembled" src="HSFE_Assembled.jpg"><br>
-<br>
-One end of the HSFE plugs into your hard sector controller card and the
-other end plugs into a pair of 3.5" floppy drives. You can then use the
-3.5" low-density (720K) media with your Heathkit computer. It works
-with high-density (1.44MB) media too if you cover up the density hole
-with black tape. See below for a typical HSFE configuration.<br>
-<br>
-<img style="width: 800px; height: 600px;" alt="HSFE configuration" src="HSFE_Dual_Notes.jpg"><br>
-<br>
-Download the HSFE manual in PDF format <a href="hsfe.pdf">here</a>.<br>
-  <br>
-HSFE firmware and utilities: <a href="HSFE.zip">HSFE.ZIP</a><br>
-  <br>
-</big></span></span></big></big></big>
-  <hr style="width: 100%; height: 2px;"><br>
-  <big style="font-weight: bold; text-decoration: underline;"><a name="FC5025_by_Device_Side_Data"></a>FC5025 by Device Side Data</big><br>
-  <br>
-Original web link here: <a href="http://www.deviceside.com/fc5025.html" target="_blank">FC5025</a><br>
-  <br>
-As of November 17, 2013 I have a working version of the software
-that will read disks using the FC5025 and write out image files. Currently Heathkit hard sector formats
-are not working yet but all other supported formats are functional. I
-added support for MS-DOS single side floppies.<br>
-  <br>
-Link below contains a zip of the contents of the included CDROM with developer docs and source code.<br>
-  <a href="../fc5025/FC5025-1309.zip">Driver Source and Application Software</a> (W32/MacOSX) v1309 (245MB zip)<br>
-  <br>
-My Mac OSX Xcode source code project for a <a href="FC5025CP.zip">FC5025 Control Panel App</a> (1.4MB zip)<br>
-The compiled and ready to run <a href="FC5025CP-MacOSX.zip">executable for Mac OSX</a> (1 MB zip)<br>
-A good starting point for any FC5025 project. It
-will read from the FC5025 and write out disk images.
-Currently the additional features I added are as follows:<br>
-  <ul>
-    <li>Support for reading single sided MS-DOS disks (180K)</li>
-    <li>Support for reading Heathkit soft-sector disks (Single/Double sided, 40/80 track)</li>
-    <li>Support for reading Heathkit hard-sector disks (currently experimental and NOT working)</li>
-    <li>Support for reading a custom disk image by specifying some parameters in the control panel app (wip)<br>
-    </li>
-  </ul>
-<br>
-  <big><big><big><span class="Apple-style-span" style="border-collapse: separate; color: rgb(0, 0, 0); font-size: medium; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; font-family: Courier New,Courier,monospace;"><span class="Apple-style-span" style="color: rgb(68, 68, 68); font-size: 13px; line-height: 20px; text-align: center;"><big>
-  </big></span></span></big></big></big></form>
-</div>
-</span></span></big></big></big><br>
-<a style="font-family: Courier New,Courier,monospace;" href="../index.html">SEBHC.ORG</a><br style="font-family: Courier New,Courier,monospace;">
-<br style="font-family: Courier New,Courier,monospace;">
-<span style="font-family: Courier New,Courier,monospace;">November 19, 2013<br style="font-family: Courier New,Courier,monospace;">
-</span>
-<br style="font-family: Courier New,Courier,monospace;">
-<a style="font-family: Courier New,Courier,monospace;" href="mailto:lesbird@lesbird.com">e-mail</a><br>
-<br>
-<span style="font-family: Courier New,Courier,monospace;"></span></div>
-<a title="Real Time Web Analytics" href="http://getclicky.com/66360494"><img alt="Real Time Web Analytics" src="http://static.getclicky.com/media/links/badge.gif" border="0"></a>
-<script src="http://static.getclicky.com/js" type="text/javascript"></script>
-<script type="text/javascript">try{ clicky.init(66360494); }catch(err){}</script>
-<noscript><p><img alt="Clicky" src="http://in.getclicky.com/66360494ns.gif" height="1" width="1"></p></noscript>
-</body></html>
+<body>
+    <div style="text-align: center;">
+        <span style="font-family: Courier New, Courier, monospace;"><br /> </span>
+        <h1>
+            <small><small
+            ><small
+              ><span style="font-family: Courier New, Courier, monospace;"
+                ><big style="text-decoration: underline;"
+                  ><big
+                    ><big
+                      ><big
+                        ><span style="font-weight: bold;"
+                          >ALTERNATE DISK STORAGE</span
+                        ></big
+                      ></big
+                    ></big
+                  ></big
+                ></span
+              ></small
+            ></small
+          ></small
+        >
+      </h1>
+      <span style="font-family: Courier New, Courier, monospace;"></span
+      ><big
+        ><big
+          ><big
+            ><span
+              class="Apple-style-span"
+              style="
+                border-collapse: separate;
+                color: rgb(0, 0, 0);
+                font-size: medium;
+                font-style: normal;
+                font-variant: normal;
+                font-weight: normal;
+                letter-spacing: normal;
+                line-height: normal;
+                orphans: 2;
+                text-indent: 0px;
+                text-transform: none;
+                white-space: normal;
+                widows: 2;
+                word-spacing: 0px;
+                font-family: Courier New, Courier, monospace;
+              "
+              ><span
+                class="Apple-style-span"
+                style="
+                  color: rgb(68, 68, 68);
+                  font-size: 13px;
+                  line-height: 20px;
+                  text-align: left;
+                "
+              >
+                <div style="text-align: center;">
+                  <big
+                    >The Heathkit H-8 and H-89 computers use hard sector disks
+                    for storage. Hard sector disks can still be found but are
+                    fairly expensive. A couple alternate storage options that
+                    work with the Heathkit 8 bit computers are shown below.<br />
+                  </big>
+                  <form
+                    target="paypal"
+                    action="https://www.paypal.com/cgi-bin/webscr"
+                    method="post"
+                  >
+                    <big
+                      >&nbsp;<br />
+                      <a href="#SEMI-VIRTUAL_DISK">SVD (Semi-Virtual Disk)</a
+                      ><br />
+                      <a href="#HARD_SECTOR_FLOPPY_EMULATOR"
+                        >HSFE (Hard Sector Floppy Emulator)</a
+                      ><br />
+                      <a href="#FC5025_by_Device_Side_Data"
+                        >FC-5025 by Device Side Data</a
+                      ><br />
+                      <br />
+                    </big>
+                    <hr style="width: 100%; height: 2px;" />
+                    <br />
+                    <big
+                      ><big
+                        ><span
+                          style="font-weight: bold; text-decoration: underline;"
+                          ><a name="SEMI-VIRTUAL_DISK"></a>SEMI-VIRTUAL
+                          DISK</span
+                        ></big
+                      ></big
+                    ><br />
+                    <br />
+                    <big
+                      >The
+                      <a href="http://www.thesvd.com" target="_blank">SVD</a>
+                      was invented by Eric Rothfus. It is one of the most used
+                      devices with my Heathkit computers.</big
+                    ><big
+                      ><br />
+                      <br />
+                      Basically the SVD is a gadget that allows you to upload
+                      <a href="../software.html" target="_blank">disk images</a>
+                      to the onboard RAM so that you can use these images with
+                      your computer. Disk images are simply copies of a disk
+                      stored in files on your modern day computer. The standard
+                      format for Heathkit disk images is the H8D format. You can
+                      create disk images on your PC computer by using 2 free
+                      utilities. See my
+                      <a
+                        href="../software/Utilities/H8DUtility.html"
+                        target="_blank"
+                        >H8DUtility page</a
+                      >
+                      for details.<br />
+                      <br />
+                      &nbsp;To use the SVD with your Heathkit computer you plug
+                      one end of the SVD into your disk controller and the other
+                      end into a COM port on your PC. You use the PC-side
+                      <a
+                        href="http://www.thesvd.com/SVD/downloads.php"
+                        target="_blank"
+                        >SVD control panel</a
+                      >
+                      to upload images to the SVD and the Heathkit computer
+                      thinks it's talking to a floppy disk drive.<br />
+                      <br />
+                      The following photo is a fully assembled SVD PCB.<br />
+                      <br />
+                      <img
+                        style="width: 800px; height: 600px;"
+                        alt="SVD Assembled"
+                        src="svd_assembled_800.jpg"
+                      /><br />
+                      <br />
+                      I generally don't use a power adapter with my SVDs
+                      anymore. Instead, I modified the power input so that I can
+                      use a typical ATX style disk drive power plug as shown
+                      below:<br />
+                      <br />
+                      <img
+                        style="width: 800px; height: 600px;"
+                        alt="SVD Assembled with modified power input"
+                        src="svd_assembled_atx_power_800.jpg"
+                      /><br />
+                      <br />
+                      The simple mod in the above photo allows me to put the SVD
+                      inside my H8-2000 case and power it with the MiniATX power
+                      supply.<br />
+                      <br />
+                      I have&nbsp;builds of the SVD firmware to allow it to run
+                      on different PIC micro controllers. See the links below
+                      for the complete collection. To build the firmware from
+                      the source code use Microchip's
+                      <a
+                        href="http://www.microchip.com/forums/tt.aspx?forumid=57"
+                        target="_blank"
+                        >MPLAB IDE</a
+                      >
+                      V8.10 or later.<br />
+                      <br />
+                      <span style="font-weight: bold;"
+                        >SVD Firmware Source Code</span
+                      ><br />
+                      <br />
+                      <a href="svd_firmware23_74B.zip">V2.3 for 16C74B PICs</a
+                      ><br />
+                      V2.3 for 16F877 PICs<br />
+                      <a href="svd_firmware23_884.zip">V2.3 for 16F884 PICs</a
+                      ><br />
+                      <br />
+                      <a href="svd_firmware24_74B.zip">V2.4 for 16C74B PICs</a
+                      ><br />
+                      <a href="svd_firmware24_877.zip">V2.4 for 16F877 PICs</a
+                      ><br />
+                      <a href="svd_firmware24_884.zip">V2.4 for 16F884 PICs</a
+                      ><br />
+                      <br />
+                      <span style="font-weight: bold;"
+                        >SVD Firmware HEX files ready to burn to a PIC
+                        chip</span
+                      ><br />
+                      <br />
+                      <a href="Svd23_16C74B.zip">V2.3 for 16C74B PICs</a><br />
+                      <a href="Svd23_16F877.zip">V2.3 for 16F877 PICs</a><br />
+                      <a href="Svd23_16F884.zip">V2.3 for 16F884 PICs</a><br />
+                      <br />
+                      <a href="Svd24_16C74B.zip">V2.4 for 16C74B PICs</a><br />
+                      <a href="Svd24_16F877.zip">V2.4 for 16F877 PICs</a><br />
+                      <a href="Svd24_16F884.zip">V2.4 for 16F884 PICs</a><br />
+                      <br />Heath CP/M bootable disk images<br /><a
+                        href="../software/CPM/CPM_2-2-0X_SVD_Boot.zip"
+                        >ZIP with 19 images 1MB</a
+                      ><br /><br />
+                    </big>
+                    <hr style="width: 100%; height: 2px;" />
+                    <br />
+                    <big
+                      ><big
+                        ><span
+                          style="font-weight: bold; text-decoration: underline;"
+                          ><a name="HARD_SECTOR_FLOPPY_EMULATOR"></a>HARD SECTOR
+                          FLOPPY EMULATOR</span
+                        ></big
+                      ></big
+                    ><br />
+                    <br />
+                    <big
+                      ><big
+                        ><big
+                          ><span
+                            class="Apple-style-span"
+                            style="
+                              border-collapse: separate;
+                              color: rgb(0, 0, 0);
+                              font-size: medium;
+                              font-style: normal;
+                              font-variant: normal;
+                              font-weight: normal;
+                              letter-spacing: normal;
+                              line-height: normal;
+                              orphans: 2;
+                              text-indent: 0px;
+                              text-transform: none;
+                              white-space: normal;
+                              widows: 2;
+                              word-spacing: 0px;
+                              font-family: Courier New, Courier, monospace;
+                            "
+                            ><span
+                              class="Apple-style-span"
+                              style="
+                                color: rgb(68, 68, 68);
+                                font-size: 13px;
+                                line-height: 20px;
+                                text-align: center;
+                              "
+                              ><big
+                                >The HSFE was invented by Chris Elmquist
+                                specifically for the Heathkit computers. It may
+                                also work with other vintage computers that used
+                                10-sector disks too but to my knowledge this has
+                                not been tested. The HSFE is a device that
+                                "emulates" the hard sector index pulses so that
+                                you can use commonly available 3.5" soft sector
+                                media and 3.5" floppy drives. The hard sector
+                                controller card in your Heathkit computer thinks
+                                it is reading and writing to a hard sector
+                                disk.<br />
+                                <br />
+                                Below is a photo of the HSFE<br />
+                                <br />
+                                <img
+                                  style="width: 800px; height: 600px;"
+                                  alt="HSFE Assembled"
+                                  src="HSFE_Assembled.jpg"
+                                /><br />
+                                <br />
+                                One end of the HSFE plugs into your hard sector
+                                controller card and the other end plugs into a
+                                pair of 3.5" floppy drives. You can then use the
+                                3.5" low-density (720K) media with your Heathkit
+                                computer. It works with high-density (1.44MB)
+                                media too if you cover up the density hole with
+                                black tape. See below for a typical HSFE
+                                configuration.<br />
+                                <br />
+                                <img
+                                  style="width: 800px; height: 600px;"
+                                  alt="HSFE configuration"
+                                  src="HSFE_Dual_Notes.jpg"
+                                /><br />
+                                <br />
+                                Download the HSFE manual in PDF format
+                                <a href="hsfe.pdf">here</a>.<br />
+                                <br />
+                                HSFE firmware and utilities:
+                                <a href="HSFE.zip">HSFE.ZIP</a><br />
+                                <br /> </big></span></span></big></big
+                    ></big>
+                    <hr style="width: 100%; height: 2px;" />
+                    <br />
+                    <big style="font-weight: bold; text-decoration: underline;"
+                      ><a name="FC5025_by_Device_Side_Data"></a>FC5025 by Device
+                      Side Data</big
+                    ><br />
+                    <br />
+                    Original web link here:
+                    <a
+                      href="http://www.deviceside.com/fc5025.html"
+                      target="_blank"
+                      >FC5025</a
+                    ><br />
+                    <br />
+                    As of November 17, 2013 I have a working version of the
+                    software that will read disks using the FC5025 and write out
+                    image files. Currently Heathkit hard sector formats are not
+                    working yet but all other supported formats are functional.
+                    I added support for MS-DOS single side floppies.<br />
+                    <br />
+                    Link below contains a zip of the contents of the included
+                    CDROM with developer docs and source code.<br />
+                    <a href="../fc5025/FC5025-1309.zip"
+                      >Driver Source and Application Software</a
+                    >
+                    (W32/MacOSX) v1309 (245MB zip)<br />
+                    <br />
+                    My Mac OSX Xcode source code project for a
+                    <a href="FC5025CP.zip">FC5025 Control Panel App</a> (1.4MB
+                    zip)<br />
+                    The compiled and ready to run
+                    <a href="FC5025CP-MacOSX.zip">executable for Mac OSX</a> (1
+                    MB zip)<br />
+                    A good starting point for any FC5025 project. It will read
+                    from the FC5025 and write out disk images. Currently the
+                    additional features I added are as follows:<br />
+                    <ul>
+                      <li>
+                        Support for reading single sided MS-DOS disks (180K)
+                      </li>
+                      <li>
+                        Support for reading Heathkit soft-sector disks
+                        (Single/Double sided, 40/80 track)
+                      </li>
+                      <li>
+                        Support for reading Heathkit hard-sector disks
+                        (currently experimental and NOT working)
+                      </li>
+                      <li>
+                        Support for reading a custom disk image by specifying
+                        some parameters in the control panel app (wip)<br />
+                      </li>
+                    </ul>
+                    <br />
+                    <big
+                      ><big
+                        ><big
+                          ><span
+                            class="Apple-style-span"
+                            style="
+                              border-collapse: separate;
+                              color: rgb(0, 0, 0);
+                              font-size: medium;
+                              font-style: normal;
+                              font-variant: normal;
+                              font-weight: normal;
+                              letter-spacing: normal;
+                              line-height: normal;
+                              orphans: 2;
+                              text-indent: 0px;
+                              text-transform: none;
+                              white-space: normal;
+                              widows: 2;
+                              word-spacing: 0px;
+                              font-family: Courier New, Courier, monospace;
+                            "
+                            ><span
+                              class="Apple-style-span"
+                              style="
+                                color: rgb(68, 68, 68);
+                                font-size: 13px;
+                                line-height: 20px;
+                                text-align: center;
+                              "
+                              ><big> </big></span></span></big></big
+                    ></big>
+                  </form>
+                </div> </span></span></big></big></big
+      ><br />
+      <a
+        style="font-family: Courier New, Courier, monospace;"
+        href="../index.html"
+        >SEBHC.ORG</a
+      ><br style="font-family: Courier New, Courier, monospace;" />
+      <br style="font-family: Courier New, Courier, monospace;" />
+      <span style="font-family: Courier New, Courier, monospace;"
+        >November 19, 2013<br
+          style="font-family: Courier New, Courier, monospace;"
+        />
+      </span>
+      <br style="font-family: Courier New, Courier, monospace;" />
+      <a
+        style="font-family: Courier New, Courier, monospace;"
+        href="mailto:lesbird@lesbird.com"
+        >e-mail</a
+      ><br />
+      <br />
+      <span style="font-family: Courier New, Courier, monospace;"></span>
+    </div>
+    <a title="Real Time Web Analytics" href="http://getclicky.com/66360494"
+      ><img
+        alt="Real Time Web Analytics"
+        src="http://static.getclicky.com/media/links/badge.gif"
+        border="0"
+    /></a>
+    <script
+      src="http://static.getclicky.com/js"
+      type="text/javascript"
+    ></script>
+    <script type="text/javascript">
+      try {
+        clicky.init(66360494);
+      } catch (err) {}
+    </script>
+    <noscript
+      ><p>
+        <img
+          alt="Clicky"
+          src="http://in.getclicky.com/66360494ns.gif"
+          height="1"
+          width="1"
+        /></p
+    ></noscript>
+  </body>
+</html>

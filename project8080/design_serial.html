@@ -1,5 +1,811 @@
 <html>
 <!-- Mirrored from davidwallace2000.home.comcast.net/~davidwallace2000/h8/project8080_archive/design_serial.html by HTTrack Website Copier/3.x [XR&CO'2010], Mon, 10 Sep 2012 13:15:37 GMT -->
-<head><title>Heath8080A - Product Design : Serial I/O</title><!-- Headers -- common to all pages --><meta name="description" content="This site provides a free Heathkit H8 microcomputer emulator for the Macintosh"><meta name="author" content="David A. Shaw"><link rev="made" href="mailto:&#104;&#101;&#97;&#116;&#104;8080&#97;&#64;&#97;&#111;&#108;.&#99;&#111;&#109;"><meta name="generator" content="Optima PageSpinner for MacOS"><meta name="robots" content="all"><meta name="keywords" content="Heathkit,Heath,H8,H17,H-17,H19,H-19,8080A,Intel 8080A,computer emulation,H8 emulation,Mac,Macintosh,G3,Linux"><style type="text/css">body {background-color: #ffffff}.left   { background:      #ffffff; vertical-align: top; color: blue }.left p { font-family:     verdana        }.head   { background:     #ffffcc; vertical-align: top; color: blue }.head p { font-family:    geneva, arial        }.lhead   { background:     #ffffcc; vertical-align: top; color: blue }.lhead p { font-family:    verdana         }.body   { vertical-align: top;}.body p, ul, ol, dl         { font-family:    geneva, arial         }div.c1 { font-family: geneva, arial;  text-align: center }div.c2 { font-family: geneva, arial;  text-align: right  }a:visited {color: green }a:hover   {color: red; text-decoration: none }p.outside {font-family: geneva, arial;font-size: small;}pre { font-family: monospace }h1, h2 {font-family: "times new roman" }</style></head><body><a name="top"></a><!-- Page Heading -- common to all pages --><table border="0" cellspacing="0" cellpadding="4" width="100%"><tr>	<td class="lhead">		<p><b>Heath8080A &#8212; Product Design : Serial I/O</b></p>	</td>	<td class="head" align="right"><!-- this reads "site" on the index page and "page" on all others -->		<font size="-1"><p>Page last updated</p></font>	</td></tr><tr>	<td class="head">		<font size="-1"><p><a href="index.html" onMouseOver="self.status='Go to home page'; return true">home</a>		&nbsp;&nbsp;<a href="release.html" onMouseOver="self.status='Go to release page'; return true">release</a>		&nbsp;&nbsp;<a href="support.html" onMouseOver="self.status='Go to support page'; return true">support</a>		&nbsp;&nbsp;<a href="design.html" onMouseOver="self.status='Go to design page'; return true">design</a>		&nbsp;&nbsp;<a href="resources.html" onMouseOver="self.status='Go to resources page'; return true">resources</a>		&nbsp;&nbsp;<a href="legal.html" onMouseOver="self.status='Go to legal page'; return true">legal</a>		&nbsp;&nbsp;<a href="sitemap.html" onMouseOver="self.status='Go to site map'; return true">site map</a></p></font>	</td>	<td class="head" align="right">		<font size="-1"><p>22-December-2002</p></font>	</td></tr><tr><td>&nbsp;</td></tr></table><!-- Standard content ends. Page body starts here.  --><table border="0" cellspacing="0" cellpadding="4" width="100%"><tr><!-- page index --><td class="left" width="20%"><font size="-1"><p>On this page</p><p>Print:</p><p>&#149; <a href="#prlayout" onMouseOver="self.status='Go to print page layout'; return true">page layout</a><br>&#149; <a href="#prdesign" onMouseOver="self.status='Go to print design'; return true">design</a><br></p><p>File Transfer:</p><p>&#149; <a href="#ftdesign" onMouseOver="self.status='Go to file transfer design'; return true">design</a><br></p><p>Modem:</p><p>&#149; <a href="#mddesign" onMouseOver="self.status='Go to modem design'; return true">design</a><br></p><p>Related links</p><p>&#149; <a href="design_arch.html" onMouseOver="self.status='Go to system architecture'; return true">system architecture</a><br>&#149; <a href="design_io.html" onMouseOver="self.status='Go to i/o package'; return true">i/o package</a><br>&#149; <a href="design_tape.html" onMouseOver="self.status='Go to tape i/o'; return true">tape i/o</a><br></p></font></td><td class="body"><font size="-1"><p><b>Serial I/O</b></p><p>The Serial I/O package is an arbitrary collection of processes that use the serial ports on the H8. The collection includes:<p><ul><li>print output &#8212; offering H8 access to the Macintosh printer via a special LP: driver;</li><li>ASCII file transfer &#8212; allowing the H8 and Macintosh to exchange ASCII text files via a special AT: driver;</li><li>modem access &#8212; allowing the H8 to use the Macintosh modem.</li></ul><p>By all rights, the Tape I/O functions should be in here as well. But they were already completed when this package was conceived and I decided to let sleeping dogs lie.</p><p>All H8 I/O must flow through the I/O package, which maintains 8250 UART emulation. These routines provide the "glue" between the I/O package and the Macintosh disk system and serial driver; this is all Macintosh code with nothing of the H8 system emulated here.</p><hr><a name="prlayout"></a><p><b>Print Page Layout</b></p><p>Print page specifications:</p><ul><li><p>The page defaults to a 1/2 inch margin, all the way around (this is configurable on the Emulator Preferences panel).</p></li><li><p>The emulator uses, by default, the Courier font at a size of 10-points. This should allow about 90 characters wide by 60 lines on 8 1/2 x 11 paper, portrait format, or around 120 characters wide by 45 lines on 8 1/2 x 11 paper, landscape format.</p><p>These figures were obtained using an Apple Personal LaserWriter/300 printer with QuickDraw printing; your mileage may vary. Experimentation is required to determine what you will get on your printer.</p></li><li><p>Both the Style and Job dialogs are used, so the user can select the page orientation, paper size, number of copies, from- and to-pages, etc.</p></li></ul><p>The emulator supports CR and LF. The emulator supports TAB, assuming a stop every 8 characters. The emulator supports a series of escape sequences, beginning with the ESC character, detailed in the following table.</p><p>The emulator supports Form Feed to move to the next page. In the absence of a form feed character, the emulator will skip to the next page on receipt of the first printable character for the print line following the last one that fits on the page. This will allow a full page of text followed by Form Feed without generating an extra blank page. Certain characters in the non-printable character set (0x00 through 0x1f) are used to signal between the LP: driver and the print package; these are described <a href="#prdesign">below</a>. All other non-printable characters are filtered.</p><p><b>Note on Numbers:</b> Several of the escape sequences take a numeric operand. These must be expressed in printable ASCII digits. The number can be expressed in either decimal or octal representation, and spaces are ignored, easing the use of calculated values when programming in Basic. The use of Octal is signaled by the presence of at least one leading zero; decimal numbers must not have a leading zero. Thus, "27" is a decimal representation and "033" is an octal representation of the number 27 (e.g., the ESCape character).</p><table border="1" cellspacing="0" cellpadding="4">	<caption><font face="geneva,arial" size="-1"><b>Supported Escape Sequences</b></font></caption><tr align="left" valign="top">	<th class="body"><font size="-1"><p>Sequence</p></font></th>	<th class="body"><font size="-1"><p>Mnemonic</p></font></th>	<th class="body"><font size="-1"><p>Description</p></font></th></tr><tr align="left" valign="top">	<td class="body"><font size="-1"><p>[esc] B</p></font></td>	<td class="body"><font size="-1"><p>PE.BOLD</p></font></td>	<td class="body"><font size="-1"><p>Enables <b>bold</b> text</p></font></td></tr><tr align="left" valign="top">	<td class="body"><font size="-1"><p>[esc] b</p></font></td>	<td class="body"><font size="-1"><p>PX.BOLD</p></font></td>	<td class="body"><font size="-1"><p>Disables bold text</p></font></td></tr><tr align="left" valign="top">	<td class="body"><font size="-1"><p>[esc] I</p></font></td>	<td class="body"><font size="-1"><p>PE.ITAL</p></font></td>	<td class="body"><font size="-1"><p>Enables <i>italic</i> text (character following [esc] is an upper-case "eye")</p></font></td></tr><tr align="left" valign="top">	<td class="body"><font size="-1"><p>[esc] i</p></font></td>	<td class="body"><font size="-1"><p>PX.ITAL</p></font></td>	<td class="body"><font size="-1"><p>Disables italic text</p></font></td></tr><tr align="left" valign="top">	<td class="body"><font size="-1"><p>[esc] U</p></font></td>	<td class="body"><font size="-1"><p>PE.UNDR</p></font></td>	<td class="body"><font size="-1"><p>Enables <u>underlined</u> text</p></font></td></tr><tr align="left" valign="top">	<td class="body"><font size="-1"><p>[esc] u</p></font></td>	<td class="body"><font size="-1"><p>PX.UNDR</p></font></td>	<td class="body"><font size="-1"><p>Disables underlined text</p></font></td></tr><tr align="left" valign="top">	<td class="body"><font size="-1"><p>[esc] F</p></font></td>	<td class="body"><font size="-1"><p>HEGM</p></font></td>	<td class="body"><font size="-1"><p>Enables graphics mode</p>							<p>The Heath font is loaded at the current font size. No font changes are allowed while in graphics mode. This is the same escape sequence as <a href="design_h19.html#output">used by the H-19</a>, and the <a href="design_h19.html#graphics">results are identical</a>.</p></font></td></tr><tr align="left" valign="top">	<td class="body"><font size="-1"><p>[esc] G</p></font></td>	<td class="body"><font size="-1"><p>HXGM</p></font></td>	<td class="body"><font size="-1"><p>Disables graphics mode</p>							<p>The font that was active when the HEGM sequence was envoked, is restored as the active font. This is the same escape sequence as used by the H-19.</p></font></td></tr><tr align="left" valign="top">	<td class="body"><font size="-1"><p>[esc] f</p></font></td>	<td class="body"><font size="-1"><p>P.FONT</p></font></td>	<td class="body"><font size="-1"><p>Change font</p>							<p>Format:<font face="courier">&nbsp;&nbsp;[esc]f&lt;font name>;</font><br>							Example:<font face="courier">&nbsp;[esc]fhelvetica;</font></p>							<p>The trailing semicolon is required. The font name is a maximum of 30 characters long. If the font selected doesn't exist on the host Macintosh system, the Mac OS "makes something up."</p></font></td></tr><tr align="left" valign="top">	<td class="body"><font size="-1"><p>[esc] s</p></font></td>	<td class="body"><font size="-1"><p>P.SIZE</p></font></td>	<td class="body"><font size="-1"><p>Change the font size</p>							<p>Format:<font face="courier">&nbsp;&nbsp;[esc]s&lt;size>;</font><br>							Example:<font face="courier">&nbsp;[esc]s 18 ;</font></p>							<p>See the note on the use of decimal and octal number representation in the paragraph preceding this table. Note that any spaces between the 's' and ';' are ignored.</p></font></td></tr><tr align="left" valign="top">	<td class="body"><font size="-1"><p>[esc] c</p></font></td>	<td class="body"><font size="-1"><p>P.COLOR</p></font></td>	<td class="body"><font size="-1"><p>Change the font color</p>							<p>Format:<font face="courier">&nbsp;&nbsp;[esc]c %red, %green, %blue;</font><br>							Example:<font face="courier">&nbsp;[esc]c100,0,0;&nbsp;</font> &#8212; start red text<br>							Example:<font face="courier">&nbsp;[esc]c 0, 0, 0;</font> &#8212; start black text<br>							Example:<font face="courier">&nbsp;[esc]c75,75,75;</font> &#8212; start gray text</p>							<p>See the note on the use of decimal and octal number representation in the paragraph preceding this table. Note that any spaces between the 'c' and ';' are ignored.</p></font></td></tr><tr align="left" valign="top">	<td class="body"><font size="-1"><p>[esc] r</p></font></td>	<td class="body"><font size="-1"><p>P.RESET</p></font></td>	<td class="body"><font size="-1"><p>Reset the printer</p>							<p>Returns to default values: Courier at 10 points, plain black text.</p></font></td></tr></table><p>Here's a page of scanned <a href="gfx/prdemo.jpg" target="_blank">demo</a> print produced on the author's laser printer.</p><p>The printer doesn't provide a word-wrap feature, nor does it provide text-run measurement services. Your program is responsible for making sure that the print line fits in the available page width.</p><p><a href="#top" onMouseOver="self.status='go to the top of this page'; return true">go to top</a></p><hr><a name="prdesign"></a><p><b>Print Handler Design</b></p><p>My original intent was to print from the emulated H8 directly into a Print Manager page. But attempting to keep a page open that long and run the emulator during the print process proved to be very unreliable.</p><p>Instead, we use a temporary, private "spool" file that receives all H8 print output. That is, the spool file contains ASCII text and formatting characters.</p><p>When the H8 printer closes, we go into a classic Print Manager loop. The emulator is suspended while we're in the loop, which goes as follows:</p><ol><li><p>Allocate a TPrint record. Open the printer and set default values in the TPrint record. Rewind the spool file.</p></li><li><p>Offer the user a style dialog ("Page Setup..."). If the user cancels, the loop ends and nothing prints.</p></li><li><p>Start a print job. Load fonts and determine the page bounds.</p></li><li><p>Offer the user a print job dialog. If the user cancels, the loop ends and nothing prints.</p></li><li><p>Print the entire document. The print manager takes care of clipping at the margins, and printing only the pages selected in the job dialog.</p></li><li><p>Close the print job and the printer. Release the TPrint record. Rewind the spool file.</p></li></ol><p>The temporary spool file is opened once when the emulator is started, and deleted when the emulator quits. It's reused for all H8 print jobs. The file is created in the temporary items folder with a creator of 'h8h8' and a type of 'TRSH', using the current time expressed as an eight-character hex string as the file name. (If the emulator crashes, you'll see these in the rescued items folder on the next Mac restart.)</p><p>A special LP: driver is required on the H8 to signal the start and end of a print job, as well as to transfer the print data to the emulator. The print driver sends the following characters to control the print process:</p><ul><table border="1" cellspacing="0" cellpadding="4"><tr valign="top">	<th class="body" align="center"><font size="-1"><p>Control<br>Character</p></font></th>	<th class="body" align="left"><font size="-1"><p><br>Function</p></font></th></tr><tr valign="top">	<td class="body" align="center"><font size="-1"><p>0x02</p></font></th>	<td class="body" align="left"><font size="-1">		<p>Open a print file &#8212; rewind the spool file, enable the "close print		job" menu item, and prepare to receive print output.</p>	</font></th></tr><tr valign="top">	<td class="body" align="center"><font size="-1"><p>0x03</p></font></th>	<td class="body" align="left"><font size="-1">		<p>Close an open print file &#8212; if the spooler had been open and has		collected data, print that data. Then close the spooler and disable the		"close print job" menu item.</p>	</font></th></tr></table></ul><p>The user will see the Style and Job dialogs after the LP: driver sends the close code.</p><p>Since it's possible for an HDOS application to .CLEAR the print file rather than use .CLOSE, and since the LP: driver does not see .CLEAR SCALLs, there will be a menu item that will allow a print job to be manually closed, initiating the print process. This item will be active only while a print job is active, as shown above. Using this menu starts the same process as when the driver sends the close code.</p><p>Formatting information is stored in a print segment table, and includes such things as font number and size, font color, "face" information (e.g., bold, etc.), and the height of the segment.</p><center><img src="gfx/prsegs.gif" width="360" height="189" border="0"></center><p>There can be up to 75 segments per 150-character print line; if they are used up, the last segment on the line will be printed with the last set of formatting information received by the printer emulator.</p><p><a href="#top" onMouseOver="self.status='go to the top of this page'; return true">go to top</a></p><hr><a name="ftdesign"></a><p><b>File Transfer Design</b></p><p>The emulator supports the bi-directional transfer of ASCII text files between the H8 and the Macintosh file system. A specially-written AT: device driver is supplied with the emulator which can communicate open, close, and EOF conditions, allowing files to be moved with a minimum of user interaction.</p><p>The AT: driver uses a series of codes to signal the emulator:</p><ul><table border="1" cellspacing="0" cellpadding="4"><tr valign="top">	<th class="body" align="center"><font size="-1"><p>Control<br>Character</p></font></th>	<th class="body" align="left"><font size="-1"><p><br>Direction</p></font></th>	<th class="body" align="left"><font size="-1"><p><br>Function</p></font></th></tr><tr valign="top">	<td class="body" align="center"><font size="-1"><p>0x02</p></font></td>	<td class="body" align="left"><font size="-1"><p>outbound</p></font></td>	<td class="body" align="left"><font size="-1">		<p>Open an input file. The StandardGetFile dialog is displayed. If the user cancels, a Cancel code (0x07) is returned. Otherwise, the file is opened and ready for input.</p>	</font></td></tr><tr valign="top">	<td class="body" align="center"><font size="-1"><p>0x03</p></font></td>	<td class="body" align="left"><font size="-1"><p>outbound</p></font></td>	<td class="body" align="left"><font size="-1">		<p>Close the input file.</p>	</font></td></tr><tr valign="top">	<td class="body" align="center"><font size="-1"><p>0x04</p></font></td>	<td class="body" align="left"><font size="-1"><p>inbound</p></font></td>	<td class="body" align="left"><font size="-1">		<p>End of file. This is send by the emulator following the last character of the file.</p>	</font></td></tr><tr valign="top">	<td class="body" align="center"><font size="-1"><p>0x05</p></font></td>	<td class="body" align="left"><font size="-1"><p>outbound</p></font></td>	<td class="body" align="left"><font size="-1">		<p>Open an output file. The StandardPutFile dialog is displayed. If the user cancels, a Cancel code (0x07) is returned. Otherwise, the file is opened and ready for output.</p>	</font></td></tr><tr valign="top">	<td class="body" align="center"><font size="-1"><p>0x06</p></font></td>	<td class="body" align="left"><font size="-1"><p>outbound</p></font></td>	<td class="body" align="left"><font size="-1">		<p>Close the output file. This is sent by the AT: driver when the output file is closed.</p>	</font></td></tr><tr valign="top">	<td class="body" align="center"><font size="-1"><p>0x07</p></font></td>	<td class="body" align="left"><font size="-1"><p>inbound</p></font></td>	<td class="body" align="left"><font size="-1">		<p>Cancel. Sent by the emulator to signal that the user clicked Cancel on the StandardGetFile or StandardPutFile dialog, or some other error prevented the file from opening. The driver returns EC.RF or EC.WF to PIP, which prints a "Read (Write) Failure on the Device" message on the console.</p>	</font></td></tr></table></ul><p>(In the table, a direction of "outbound" refers to the H8-to-emulator direction, and "inbound" refers to the emulator-to-H8 direction.)</p><p>Because the opening and closing of Mac files is controlled by the AT: driver, the user need not fiddle with emulator menus or do anything else out of the ordinary to transfer a file; the act of copying the file to/from the AT: driver causes the dialog box to appear and after it is dispatched the rest of the process is automatic.</p><p>To maintain flow control in the emulator-to-H8 direction, characters are not presented to the H8 until the AT: driver reads the 8250 status port. The process goes as follows:</p><ol><li><p>The AT: driver reads the status port. The I/O Process decodes the IN and calls the file transfer status routine, atStatus (ref: <a href="design_io.html" onMouseOver="self.status='Go to i/o package'; return true">I/O package</a>).</p></li><li><p>If there is an output file open, atStatus sets the txTempty bit in a status byte. If there is an input file open, atStatus sets the rxDataAvailable bit in the same status byte, and then puts the next input byte onto the serial port with a call to ioPutSerialData.</p></li><li><p>The AT: driver sees the rxDataAvailable bit and INs the data port.</p></li><li><p>The I/O process decodes the IN, resets the state of the 8250 UART based on the fact of the read, and returns the data byte to the AT: driver.</p></li></ol><p>This process ensures that the data flows at the maximum rate supported by the AT: driver, with minimum overhead since it is driven completely by AT: driver events. The process does not allow for the use of receiver interrupts on this port, but since this port is dedicated to this file transfer function and HDOS does not support the user of interrupts by character drivers, this should not be a problem.</p><p>End-of-line character conversion is done at the file I/O routines:</p><ul><li>output carriage return characters are dropped;</li><li>output line feed characters are converted to carriage return;</li><li>input carriage return characters are converted to newline (line feed).</li></ul><p>If for some reason a Macintosh text file does not end in a carriage return character, the emulator ensures that a newline character is sent to the H8 before the end-of-file signal.</p><p><a href="#top" onMouseOver="self.status='go to the top of this page'; return true">go to top</a></p><hr><a name="mddesign"></a><p><b>Modem Design</b></pr><p>Since there's only one modem port on the Macintosh, this is a single-use resource that we can't just grab and use. A menu item is used to open or close the modem; the modem must be opened before being used, and should be closed after use so that other Macintosh applications can use it.</p><p>When opened, the modem is initialized for 9600 bps, 8 data bits, no parity, 1 stop bit.</p><p>200-character buffers are available at both incoming interfaces. The emulator issues Xoff when they pass the 160-character point, and Xon when they shrink below 40 characters.</p><p>Xon/Xoff are supported in all four directions.</p><p>If break is set on the 8250 UART, the emulator holds a break condition on the modem for 300ms. The UART's break condition does not need to be held for any length of time.</p><p>The routine mdProcessing moves characters from the output buffer to the modem and from the modem to the input buffer. This is called by the scheduling loop every 10ms, but doesn't do anything unless the modem has been allocated for use. As many characters as possible are moved on each call.</p><p>Characters are sent from the input buffer to the H8 at a rate of 500 cps. This is managed by the mdClock routine, which gets control from the scheduling loop every millisecond. Output from the H8 is simply placed into the output buffer, if the modem has been allocated. If not, it's trashed.</p><p><i>The configuration of the modem is quite lame. It occurred to me during development that nobody is really ever going to use this feature, given all the great Mac-native communications software out there. No to mention that there's no way you'll ever get a web browser on an H8! So I went with a fixed configuration. If there's any interest in actually using this feature, I'll consider making the feature configurable.</i></p><p><a href="#top" onMouseOver="self.status='go to the top of this page'; return true">go to top</a></p></font><br></td></tr></table><!-- Footer area -- common to all pages --><hr><div class="c1"><font size="-1"><a href="index.html" onMouseOver="self.status='Go to Heath8080A home page'; return true">home</a>&nbsp;<a href="release.html" onMouseOver="self.status='Go to release page'; return true">release</a>&nbsp;<a href="support.html" onMouseOver="self.status='Go to support page'; return true">support</a>&nbsp;<a href="design.html" onMouseOver="self.status='Go to design page'; return true">design</a>&nbsp;<a href="resources.html" onMouseOver="self.status='Go to resources page'; return true">resources</a>&nbsp;<a href="legal.html" onMouseOver="self.status='Go to legal page'; return true">legal</a>&nbsp;<a href="sitemap.html" onMouseOver="self.status='Go to site map'; return true">site map</a>&nbsp;</font></div><hr><br></body>
+
+<head>
+    <title>Heath8080A - Product Design : Serial I/O</title>
+
+    <!-- Headers -- common to all pages -->
+
+    <meta name="description" content="This site provides a free Heathkit H8 microcomputer emulator for the Macintosh">
+    <meta name="author" content="David A. Shaw">
+    <link rev="made" href="mailto:&#104;&#101;&#97;&#116;&#104;8080&#97;&#64;&#97;&#111;&#108;.&#99;&#111;&#109;">
+    <meta name="generator" content="Optima PageSpinner for MacOS">
+    <meta name="robots" content="all">
+    <meta name="keywords" content="Heathkit,Heath,H8,H17,H-17,H19,H-19,8080A,Intel 8080A,computer emulation,H8 emulation,Mac,Macintosh,G3,Linux">
+
+    <style type="text/css">
+        body {
+            background-color: #ffffff
+        }
+        
+        .left {
+            background: #ffffff;
+            vertical-align: top;
+            color: blue
+        }
+        
+        .left p {
+            font-family: verdana
+        }
+        
+        .head {
+            background: #ffffcc;
+            vertical-align: top;
+            color: blue
+        }
+        
+        .head p {
+            font-family: geneva, arial
+        }
+        
+        .lhead {
+            background: #ffffcc;
+            vertical-align: top;
+            color: blue
+        }
+        
+        .lhead p {
+            font-family: verdana
+        }
+        
+        .body {
+            vertical-align: top;
+        }
+        
+        .body p,
+        ul,
+        ol,
+        dl {
+            font-family: geneva, arial
+        }
+        
+        div.c1 {
+            font-family: geneva, arial;
+            text-align: center
+        }
+        
+        div.c2 {
+            font-family: geneva, arial;
+            text-align: right
+        }
+        
+        a:visited {
+            color: green
+        }
+        
+        a:hover {
+            color: red;
+            text-decoration: none
+        }
+        
+        p.outside {
+            font-family: geneva, arial;
+            font-size: small;
+        }
+        
+        pre {
+            font-family: monospace
+        }
+        
+        h1,
+        h2 {
+            font-family: "times new roman"
+        }
+    </style>
+
+</head>
+
+<body>
+    <a name="top"></a>
+
+    <!-- Page Heading -- common to all pages -->
+
+    <table border="0" cellspacing="0" cellpadding="4" width="100%">
+
+        <tr>
+            <td class="lhead">
+                <p><b>Heath8080A &#8212; Product Design : Serial I/O</b></p>
+            </td>
+            <td class="head" align="right">
+
+                <!-- this reads "site" on the index page and "page" on all others -->
+
+                <font size="-1">
+                    <p>Page last updated</p>
+                </font>
+            </td>
+        </tr>
+        <tr>
+            <td class="head">
+                <font size="-1">
+                    <p><a href="index.html" onMouseOver="self.status='Go to home page'; return true">home</a> &nbsp;&nbsp;
+                        <a href="release.html" onMouseOver="self.status='Go to release page'; return true">release</a> &nbsp;&nbsp;
+                        <a href="support.html" onMouseOver="self.status='Go to support page'; return true">support</a> &nbsp;&nbsp;
+                        <a href="design.html" onMouseOver="self.status='Go to design page'; return true">design</a> &nbsp;&nbsp;
+                        <a href="resources.html" onMouseOver="self.status='Go to resources page'; return true">resources</a> &nbsp;&nbsp;
+                        <a href="legal.html" onMouseOver="self.status='Go to legal page'; return true">legal</a> &nbsp;&nbsp;
+                        <a href="sitemap.html" onMouseOver="self.status='Go to site map'; return true">site map</a></p>
+                </font>
+            </td>
+            <td class="head" align="right">
+                <font size="-1">
+                    <p>22-December-2002</p>
+                </font>
+            </td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+        </tr>
+
+    </table>
+
+    <!-- Standard content ends. Page body starts here.  -->
+
+    <table border="0" cellspacing="0" cellpadding="4" width="100%">
+        <tr>
+
+            <!-- page index -->
+            <td class="left" width="20%">
+
+                <font size="-1">
+                    <p>On this page</p>
+                    <p>Print:</p>
+                    <p>
+                        &#149; <a href="#prlayout" onMouseOver="self.status='Go to print page layout'; return true">page layout</a><br> &#149; <a href="#prdesign" onMouseOver="self.status='Go to print design'; return true">design</a><br>
+                    </p>
+                    <p>File Transfer:</p>
+                    <p>
+                        &#149; <a href="#ftdesign" onMouseOver="self.status='Go to file transfer design'; return true">design</a><br>
+                    </p>
+                    <p>Modem:</p>
+                    <p>
+                        &#149; <a href="#mddesign" onMouseOver="self.status='Go to modem design'; return true">design</a><br>
+                    </p>
+
+                    <p>Related links</p>
+                    <p>
+                        &#149; <a href="design_arch.html" onMouseOver="self.status='Go to system architecture'; return true">system architecture</a><br> &#149; <a href="design_io.html" onMouseOver="self.status='Go to i/o package'; return true">i/o package</a><br>                        &#149; <a href="design_tape.html" onMouseOver="self.status='Go to tape i/o'; return true">tape i/o</a><br>
+                    </p>
+
+                </font>
+            </td>
+
+            <td class="body">
+
+                <font size="-1">
+                    <p><b>Serial I/O</b></p>
+
+                    <p>The Serial I/O package is an arbitrary collection of processes that use the serial ports on the H8. The collection includes:
+                        <p>
+
+                            <ul>
+                                <li>print output &#8212; offering H8 access to the Macintosh printer via a special LP: driver;</li>
+                                <li>ASCII file transfer &#8212; allowing the H8 and Macintosh to exchange ASCII text files via a special AT: driver;</li>
+                                <li>modem access &#8212; allowing the H8 to use the Macintosh modem.</li>
+                            </ul>
+
+                            <p>By all rights, the Tape I/O functions should be in here as well. But they were already completed when this package was conceived and I decided to let sleeping dogs lie.</p>
+
+                            <p>All H8 I/O must flow through the I/O package, which maintains 8250 UART emulation. These routines provide the "glue" between the I/O package and the Macintosh disk system and serial driver; this is all Macintosh code with nothing
+                                of the H8 system emulated here.</p>
+
+
+
+                            <hr>
+                            <a name="prlayout"></a>
+
+                            <p><b>Print Page Layout</b></p>
+
+                            <p>Print page specifications:</p>
+
+                            <ul>
+                                <li>
+                                    <p>The page defaults to a 1/2 inch margin, all the way around (this is configurable on the Emulator Preferences panel).</p>
+                                </li>
+
+                                <li>
+                                    <p>The emulator uses, by default, the Courier font at a size of 10-points. This should allow about 90 characters wide by 60 lines on 8 1/2 x 11 paper, portrait format, or around 120 characters wide by 45 lines on 8 1/2
+                                        x 11 paper, landscape format.</p>
+                                    <p>These figures were obtained using an Apple Personal LaserWriter/300 printer with QuickDraw printing; your mileage may vary. Experimentation is required to determine what you will get on your printer.</p>
+                                </li>
+
+                                <li>
+                                    <p>Both the Style and Job dialogs are used, so the user can select the page orientation, paper size, number of copies, from- and to-pages, etc.</p>
+                                </li>
+                            </ul>
+
+                            <p>The emulator supports CR and LF. The emulator supports TAB, assuming a stop every 8 characters. The emulator supports a series of escape sequences, beginning with the ESC character, detailed in the following table.</p>
+                            <p>The emulator supports Form Feed to move to the next page. In the absence of a form feed character, the emulator will skip to the next page on receipt of the first printable character for the print line following the last one
+                                that fits on the page. This will allow a full page of text followed by Form Feed without generating an extra blank page. Certain characters in the non-printable character set (0x00 through 0x1f) are used to signal between
+                                the LP: driver and the print package; these are described <a href="#prdesign">below</a>. All other non-printable characters are filtered.</p>
+
+                            <p><b>Note on Numbers:</b> Several of the escape sequences take a numeric operand. These must be expressed in printable ASCII digits. The number can be expressed in either decimal or octal representation, and spaces are ignored,
+                                easing the use of calculated values when programming in Basic. The use of Octal is signaled by the presence of at least one leading zero; decimal numbers must not have a leading zero. Thus, "27" is a decimal representation
+                                and "033" is an octal representation of the number 27 (e.g., the ESCape character).</p>
+
+                            <table border="1" cellspacing="0" cellpadding="4">
+                                <caption>
+                                    <font face="geneva,arial" size="-1"><b>Supported Escape Sequences</b></font>
+                                </caption>
+
+                                <tr align="left" valign="top">
+                                    <th class="body">
+                                        <font size="-1">
+                                            <p>Sequence</p>
+                                        </font>
+                                    </th>
+                                    <th class="body">
+                                        <font size="-1">
+                                            <p>Mnemonic</p>
+                                        </font>
+                                    </th>
+                                    <th class="body">
+                                        <font size="-1">
+                                            <p>Description</p>
+                                        </font>
+                                    </th>
+                                </tr>
+                                <tr align="left" valign="top">
+                                    <td class="body">
+                                        <font size="-1">
+                                            <p>[esc] B</p>
+                                        </font>
+                                    </td>
+                                    <td class="body">
+                                        <font size="-1">
+                                            <p>PE.BOLD</p>
+                                        </font>
+                                    </td>
+                                    <td class="body">
+                                        <font size="-1">
+                                            <p>Enables <b>bold</b> text</p>
+                                        </font>
+                                    </td>
+                                </tr>
+                                <tr align="left" valign="top">
+                                    <td class="body">
+                                        <font size="-1">
+                                            <p>[esc] b</p>
+                                        </font>
+                                    </td>
+                                    <td class="body">
+                                        <font size="-1">
+                                            <p>PX.BOLD</p>
+                                        </font>
+                                    </td>
+                                    <td class="body">
+                                        <font size="-1">
+                                            <p>Disables bold text</p>
+                                        </font>
+                                    </td>
+                                </tr>
+                                <tr align="left" valign="top">
+                                    <td class="body">
+                                        <font size="-1">
+                                            <p>[esc] I</p>
+                                        </font>
+                                    </td>
+                                    <td class="body">
+                                        <font size="-1">
+                                            <p>PE.ITAL</p>
+                                        </font>
+                                    </td>
+                                    <td class="body">
+                                        <font size="-1">
+                                            <p>Enables <i>italic</i> text (character following [esc] is an upper-case "eye")</p>
+                                        </font>
+                                    </td>
+                                </tr>
+                                <tr align="left" valign="top">
+                                    <td class="body">
+                                        <font size="-1">
+                                            <p>[esc] i</p>
+                                        </font>
+                                    </td>
+                                    <td class="body">
+                                        <font size="-1">
+                                            <p>PX.ITAL</p>
+                                        </font>
+                                    </td>
+                                    <td class="body">
+                                        <font size="-1">
+                                            <p>Disables italic text</p>
+                                        </font>
+                                    </td>
+                                </tr>
+                                <tr align="left" valign="top">
+                                    <td class="body">
+                                        <font size="-1">
+                                            <p>[esc] U</p>
+                                        </font>
+                                    </td>
+                                    <td class="body">
+                                        <font size="-1">
+                                            <p>PE.UNDR</p>
+                                        </font>
+                                    </td>
+                                    <td class="body">
+                                        <font size="-1">
+                                            <p>Enables <u>underlined</u> text</p>
+                                        </font>
+                                    </td>
+                                </tr>
+                                <tr align="left" valign="top">
+                                    <td class="body">
+                                        <font size="-1">
+                                            <p>[esc] u</p>
+                                        </font>
+                                    </td>
+                                    <td class="body">
+                                        <font size="-1">
+                                            <p>PX.UNDR</p>
+                                        </font>
+                                    </td>
+                                    <td class="body">
+                                        <font size="-1">
+                                            <p>Disables underlined text</p>
+                                        </font>
+                                    </td>
+                                </tr>
+                                <tr align="left" valign="top">
+                                    <td class="body">
+                                        <font size="-1">
+                                            <p>[esc] F</p>
+                                        </font>
+                                    </td>
+                                    <td class="body">
+                                        <font size="-1">
+                                            <p>HEGM</p>
+                                        </font>
+                                    </td>
+                                    <td class="body">
+                                        <font size="-1">
+                                            <p>Enables graphics mode</p>
+                                            <p>The Heath font is loaded at the current font size. No font changes are allowed while in graphics mode. This is the same escape sequence as <a href="design_h19.html#output">used by the H-19</a>, and the <a href="design_h19.html#graphics">results are identical</a>.</p>
+                                        </font>
+                                    </td>
+                                </tr>
+                                <tr align="left" valign="top">
+                                    <td class="body">
+                                        <font size="-1">
+                                            <p>[esc] G</p>
+                                        </font>
+                                    </td>
+                                    <td class="body">
+                                        <font size="-1">
+                                            <p>HXGM</p>
+                                        </font>
+                                    </td>
+                                    <td class="body">
+                                        <font size="-1">
+                                            <p>Disables graphics mode</p>
+                                            <p>The font that was active when the HEGM sequence was envoked, is restored as the active font. This is the same escape sequence as used by the H-19.</p>
+                                        </font>
+                                    </td>
+                                </tr>
+                                <tr align="left" valign="top">
+                                    <td class="body">
+                                        <font size="-1">
+                                            <p>[esc] f</p>
+                                        </font>
+                                    </td>
+                                    <td class="body">
+                                        <font size="-1">
+                                            <p>P.FONT</p>
+                                        </font>
+                                    </td>
+                                    <td class="body">
+                                        <font size="-1">
+                                            <p>Change font</p>
+                                            <p>Format:
+                                                <font face="courier">&nbsp;&nbsp;[esc]f&lt;font name>;</font><br> Example:
+                                                <font face="courier">&nbsp;[esc]fhelvetica;</font>
+                                            </p>
+                                            <p>The trailing semicolon is required. The font name is a maximum of 30 characters long. If the font selected doesn't exist on the host Macintosh system, the Mac OS "makes something up."</p>
+                                        </font>
+                                    </td>
+                                </tr>
+                                <tr align="left" valign="top">
+                                    <td class="body">
+                                        <font size="-1">
+                                            <p>[esc] s</p>
+                                        </font>
+                                    </td>
+                                    <td class="body">
+                                        <font size="-1">
+                                            <p>P.SIZE</p>
+                                        </font>
+                                    </td>
+                                    <td class="body">
+                                        <font size="-1">
+                                            <p>Change the font size</p>
+                                            <p>Format:
+                                                <font face="courier">&nbsp;&nbsp;[esc]s&lt;size>;</font><br> Example:
+                                                <font face="courier">&nbsp;[esc]s 18 ;</font>
+                                            </p>
+                                            <p>See the note on the use of decimal and octal number representation in the paragraph preceding this table. Note that any spaces between the 's' and ';' are ignored.</p>
+                                        </font>
+                                    </td>
+                                </tr>
+                                <tr align="left" valign="top">
+                                    <td class="body">
+                                        <font size="-1">
+                                            <p>[esc] c</p>
+                                        </font>
+                                    </td>
+                                    <td class="body">
+                                        <font size="-1">
+                                            <p>P.COLOR</p>
+                                        </font>
+                                    </td>
+                                    <td class="body">
+                                        <font size="-1">
+                                            <p>Change the font color</p>
+                                            <p>Format:
+                                                <font face="courier">&nbsp;&nbsp;[esc]c %red, %green, %blue;</font><br> Example:
+                                                <font face="courier">&nbsp;[esc]c100,0,0;&nbsp;</font> &#8212; start red text<br> Example:
+                                                <font face="courier">&nbsp;[esc]c 0, 0, 0;</font> &#8212; start black text<br> Example:
+                                                <font face="courier">&nbsp;[esc]c75,75,75;</font> &#8212; start gray text</p>
+                                            <p>See the note on the use of decimal and octal number representation in the paragraph preceding this table. Note that any spaces between the 'c' and ';' are ignored.</p>
+                                        </font>
+                                    </td>
+                                </tr>
+                                <tr align="left" valign="top">
+                                    <td class="body">
+                                        <font size="-1">
+                                            <p>[esc] r</p>
+                                        </font>
+                                    </td>
+                                    <td class="body">
+                                        <font size="-1">
+                                            <p>P.RESET</p>
+                                        </font>
+                                    </td>
+                                    <td class="body">
+                                        <font size="-1">
+                                            <p>Reset the printer</p>
+                                            <p>Returns to default values: Courier at 10 points, plain black text.</p>
+                                        </font>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <p>Here's a page of scanned <a href="gfx/prdemo.jpg" target="_blank">demo</a> print produced on the author's laser printer.</p>
+                            <p>The printer doesn't provide a word-wrap feature, nor does it provide text-run measurement services. Your program is responsible for making sure that the print line fits in the available page width.</p>
+
+                            <p>
+                                <a href="#top" onMouseOver="self.status='go to the top of this page'; return true">go to top</a></p>
+
+
+                            <hr>
+                            <a name="prdesign"></a>
+
+                            <p><b>Print Handler Design</b></p>
+
+                            <p>My original intent was to print from the emulated H8 directly into a Print Manager page. But attempting to keep a page open that long and run the emulator during the print process proved to be very unreliable.</p>
+
+                            <p>Instead, we use a temporary, private "spool" file that receives all H8 print output. That is, the spool file contains ASCII text and formatting characters.</p>
+
+                            <p>When the H8 printer closes, we go into a classic Print Manager loop. The emulator is suspended while we're in the loop, which goes as follows:</p>
+
+                            <ol>
+                                <li>
+                                    <p>Allocate a TPrint record. Open the printer and set default values in the TPrint record. Rewind the spool file.</p>
+                                </li>
+
+                                <li>
+                                    <p>Offer the user a style dialog ("Page Setup..."). If the user cancels, the loop ends and nothing prints.</p>
+                                </li>
+
+                                <li>
+                                    <p>Start a print job. Load fonts and determine the page bounds.</p>
+                                </li>
+
+                                <li>
+                                    <p>Offer the user a print job dialog. If the user cancels, the loop ends and nothing prints.</p>
+                                </li>
+
+                                <li>
+                                    <p>Print the entire document. The print manager takes care of clipping at the margins, and printing only the pages selected in the job dialog.</p>
+                                </li>
+
+                                <li>
+                                    <p>Close the print job and the printer. Release the TPrint record. Rewind the spool file.</p>
+                                </li>
+                            </ol>
+
+                            <p>The temporary spool file is opened once when the emulator is started, and deleted when the emulator quits. It's reused for all H8 print jobs. The file is created in the temporary items folder with a creator of 'h8h8' and a
+                                type of 'TRSH', using the current time expressed as an eight-character hex string as the file name. (If the emulator crashes, you'll see these in the rescued items folder on the next Mac restart.)</p>
+
+                            <p>A special LP: driver is required on the H8 to signal the start and end of a print job, as well as to transfer the print data to the emulator. The print driver sends the following characters to control the print process:</p>
+
+                            <ul>
+                                <table border="1" cellspacing="0" cellpadding="4">
+                                    <tr valign="top">
+                                        <th class="body" align="center">
+                                            <font size="-1">
+                                                <p>Control<br>Character</p>
+                                            </font>
+                                        </th>
+                                        <th class="body" align="left">
+                                            <font size="-1">
+                                                <p><br>Function</p>
+                                            </font>
+                                        </th>
+                                    </tr>
+                                    <tr valign="top">
+                                        <td class="body" align="center">
+                                            <font size="-1">
+                                                <p>0x02</p>
+                                            </font>
+                                            </th>
+                                            <td class="body" align="left">
+                                                <font size="-1">
+                                                    <p>Open a print file &#8212; rewind the spool file, enable the "close print job" menu item, and prepare to receive print output.</p>
+                                                </font>
+                                                </th>
+                                    </tr>
+                                    <tr valign="top">
+                                        <td class="body" align="center">
+                                            <font size="-1">
+                                                <p>0x03</p>
+                                            </font>
+                                            </th>
+                                            <td class="body" align="left">
+                                                <font size="-1">
+                                                    <p>Close an open print file &#8212; if the spooler had been open and has collected data, print that data. Then close the spooler and disable the "close print job" menu item.</p>
+                                                </font>
+                                                </th>
+                                    </tr>
+                                </table>
+                            </ul>
+
+                            <p>The user will see the Style and Job dialogs after the LP: driver sends the close code.</p>
+
+                            <p>Since it's possible for an HDOS application to .CLEAR the print file rather than use .CLOSE, and since the LP: driver does not see .CLEAR SCALLs, there will be a menu item that will allow a print job to be manually closed,
+                                initiating the print process. This item will be active only while a print job is active, as shown above. Using this menu starts the same process as when the driver sends the close code.</p>
+
+                            <p>Formatting information is stored in a print segment table, and includes such things as font number and size, font color, "face" information (e.g., bold, etc.), and the height of the segment.</p>
+                            <center>
+                                <img src="gfx/prsegs.gif" width="360" height="189" border="0">
+                            </center>
+                            <p>There can be up to 75 segments per 150-character print line; if they are used up, the last segment on the line will be printed with the last set of formatting information received by the printer emulator.</p>
+
+                            <p>
+                                <a href="#top" onMouseOver="self.status='go to the top of this page'; return true">go to top</a></p>
+
+
+
+                            <hr>
+                            <a name="ftdesign"></a>
+
+                            <p><b>File Transfer Design</b></p>
+
+                            <p>The emulator supports the bi-directional transfer of ASCII text files between the H8 and the Macintosh file system. A specially-written AT: device driver is supplied with the emulator which can communicate open, close, and
+                                EOF conditions, allowing files to be moved with a minimum of user interaction.</p>
+
+                            <p>The AT: driver uses a series of codes to signal the emulator:</p>
+
+                            <ul>
+                                <table border="1" cellspacing="0" cellpadding="4">
+                                    <tr valign="top">
+                                        <th class="body" align="center">
+                                            <font size="-1">
+                                                <p>Control<br>Character</p>
+                                            </font>
+                                        </th>
+                                        <th class="body" align="left">
+                                            <font size="-1">
+                                                <p><br>Direction</p>
+                                            </font>
+                                        </th>
+                                        <th class="body" align="left">
+                                            <font size="-1">
+                                                <p><br>Function</p>
+                                            </font>
+                                        </th>
+                                    </tr>
+                                    <tr valign="top">
+                                        <td class="body" align="center">
+                                            <font size="-1">
+                                                <p>0x02</p>
+                                            </font>
+                                        </td>
+                                        <td class="body" align="left">
+                                            <font size="-1">
+                                                <p>outbound</p>
+                                            </font>
+                                        </td>
+                                        <td class="body" align="left">
+                                            <font size="-1">
+                                                <p>Open an input file. The StandardGetFile dialog is displayed. If the user cancels, a Cancel code (0x07) is returned. Otherwise, the file is opened and ready for input.</p>
+                                            </font>
+                                        </td>
+                                    </tr>
+                                    <tr valign="top">
+                                        <td class="body" align="center">
+                                            <font size="-1">
+                                                <p>0x03</p>
+                                            </font>
+                                        </td>
+                                        <td class="body" align="left">
+                                            <font size="-1">
+                                                <p>outbound</p>
+                                            </font>
+                                        </td>
+                                        <td class="body" align="left">
+                                            <font size="-1">
+                                                <p>Close the input file.</p>
+                                            </font>
+                                        </td>
+                                    </tr>
+                                    <tr valign="top">
+                                        <td class="body" align="center">
+                                            <font size="-1">
+                                                <p>0x04</p>
+                                            </font>
+                                        </td>
+                                        <td class="body" align="left">
+                                            <font size="-1">
+                                                <p>inbound</p>
+                                            </font>
+                                        </td>
+                                        <td class="body" align="left">
+                                            <font size="-1">
+                                                <p>End of file. This is send by the emulator following the last character of the file.</p>
+                                            </font>
+                                        </td>
+                                    </tr>
+                                    <tr valign="top">
+                                        <td class="body" align="center">
+                                            <font size="-1">
+                                                <p>0x05</p>
+                                            </font>
+                                        </td>
+                                        <td class="body" align="left">
+                                            <font size="-1">
+                                                <p>outbound</p>
+                                            </font>
+                                        </td>
+                                        <td class="body" align="left">
+                                            <font size="-1">
+                                                <p>Open an output file. The StandardPutFile dialog is displayed. If the user cancels, a Cancel code (0x07) is returned. Otherwise, the file is opened and ready for output.</p>
+                                            </font>
+                                        </td>
+                                    </tr>
+                                    <tr valign="top">
+                                        <td class="body" align="center">
+                                            <font size="-1">
+                                                <p>0x06</p>
+                                            </font>
+                                        </td>
+                                        <td class="body" align="left">
+                                            <font size="-1">
+                                                <p>outbound</p>
+                                            </font>
+                                        </td>
+                                        <td class="body" align="left">
+                                            <font size="-1">
+                                                <p>Close the output file. This is sent by the AT: driver when the output file is closed.</p>
+                                            </font>
+                                        </td>
+                                    </tr>
+                                    <tr valign="top">
+                                        <td class="body" align="center">
+                                            <font size="-1">
+                                                <p>0x07</p>
+                                            </font>
+                                        </td>
+                                        <td class="body" align="left">
+                                            <font size="-1">
+                                                <p>inbound</p>
+                                            </font>
+                                        </td>
+                                        <td class="body" align="left">
+                                            <font size="-1">
+                                                <p>Cancel. Sent by the emulator to signal that the user clicked Cancel on the StandardGetFile or StandardPutFile dialog, or some other error prevented the file from opening. The driver returns EC.RF or EC.WF
+                                                    to PIP, which prints a "Read (Write) Failure on the Device" message on the console.</p>
+                                            </font>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </ul>
+
+                            <p>(In the table, a direction of "outbound" refers to the H8-to-emulator direction, and "inbound" refers to the emulator-to-H8 direction.)</p>
+
+                            <p>Because the opening and closing of Mac files is controlled by the AT: driver, the user need not fiddle with emulator menus or do anything else out of the ordinary to transfer a file; the act of copying the file to/from the
+                                AT: driver causes the dialog box to appear and after it is dispatched the rest of the process is automatic.</p>
+
+                            <p>To maintain flow control in the emulator-to-H8 direction, characters are not presented to the H8 until the AT: driver reads the 8250 status port. The process goes as follows:</p>
+
+                            <ol>
+                                <li>
+                                    <p>The AT: driver reads the status port. The I/O Process decodes the IN and calls the file transfer status routine, atStatus (ref: <a href="design_io.html" onMouseOver="self.status='Go to i/o package'; return true">I/O package</a>).</p>
+                                </li>
+
+                                <li>
+                                    <p>If there is an output file open, atStatus sets the txTempty bit in a status byte. If there is an input file open, atStatus sets the rxDataAvailable bit in the same status byte, and then puts the next input byte onto
+                                        the serial port with a call to ioPutSerialData.</p>
+                                </li>
+
+                                <li>
+                                    <p>The AT: driver sees the rxDataAvailable bit and INs the data port.</p>
+                                </li>
+
+                                <li>
+                                    <p>The I/O process decodes the IN, resets the state of the 8250 UART based on the fact of the read, and returns the data byte to the AT: driver.</p>
+                                </li>
+                            </ol>
+
+                            <p>This process ensures that the data flows at the maximum rate supported by the AT: driver, with minimum overhead since it is driven completely by AT: driver events. The process does not allow for the use of receiver interrupts
+                                on this port, but since this port is dedicated to this file transfer function and HDOS does not support the user of interrupts by character drivers, this should not be a problem.</p>
+
+                            <p>End-of-line character conversion is done at the file I/O routines:</p>
+
+                            <ul>
+                                <li>output carriage return characters are dropped;</li>
+                                <li>output line feed characters are converted to carriage return;</li>
+                                <li>input carriage return characters are converted to newline (line feed).</li>
+                            </ul>
+
+                            <p>If for some reason a Macintosh text file does not end in a carriage return character, the emulator ensures that a newline character is sent to the H8 before the end-of-file signal.</p>
+
+                            <p>
+                                <a href="#top" onMouseOver="self.status='go to the top of this page'; return true">go to top</a></p>
+
+
+                            <hr>
+                            <a name="mddesign"></a>
+                            <p><b>Modem Design</b></pr>
+
+                                <p>Since there's only one modem port on the Macintosh, this is a single-use resource that we can't just grab and use. A menu item is used to open or close the modem; the modem must be opened before being used, and should be
+                                    closed after use so that other Macintosh applications can use it.</p>
+
+                                <p>When opened, the modem is initialized for 9600 bps, 8 data bits, no parity, 1 stop bit.</p>
+
+                                <p>200-character buffers are available at both incoming interfaces. The emulator issues Xoff when they pass the 160-character point, and Xon when they shrink below 40 characters.</p>
+
+                                <p>Xon/Xoff are supported in all four directions.</p>
+
+                                <p>If break is set on the 8250 UART, the emulator holds a break condition on the modem for 300ms. The UART's break condition does not need to be held for any length of time.</p>
+
+                                <p>The routine mdProcessing moves characters from the output buffer to the modem and from the modem to the input buffer. This is called by the scheduling loop every 10ms, but doesn't do anything unless the modem has been allocated
+                                    for use. As many characters as possible are moved on each call.</p>
+
+                                <p>Characters are sent from the input buffer to the H8 at a rate of 500 cps. This is managed by the mdClock routine, which gets control from the scheduling loop every millisecond. Output from the H8 is simply placed into the
+                                    output buffer, if the modem has been allocated. If not, it's trashed.</p>
+
+                                <p><i>The configuration of the modem is quite lame. It occurred to me during development that nobody is really ever going to use this feature, given all the great Mac-native communications software out there. No to mention that there's no way you'll ever get a web browser on an H8! So I went with a fixed configuration. If there's any interest in actually using this feature, I'll consider making the feature configurable.</i></p>
+
+
+                                <p><a href="#top" onMouseOver="self.status='go to the top of this page'; return true">go to top</a></p>
+                </font>
+                <br>
+
+
+                </td>
+        </tr>
+    </table>
+
+    <!-- Footer area -- common to all pages -->
+
+    <hr>
+    <div class="c1">
+        <font size="-1">
+            <a href="index.html" onMouseOver="self.status='Go to Heath8080A home page'; return true">home</a> &nbsp;
+            <a href="release.html" onMouseOver="self.status='Go to release page'; return true">release</a> &nbsp;
+            <a href="support.html" onMouseOver="self.status='Go to support page'; return true">support</a> &nbsp;
+            <a href="design.html" onMouseOver="self.status='Go to design page'; return true">design</a> &nbsp;
+            <a href="resources.html" onMouseOver="self.status='Go to resources page'; return true">resources</a> &nbsp;
+            <a href="legal.html" onMouseOver="self.status='Go to legal page'; return true">legal</a> &nbsp;
+            <a href="sitemap.html" onMouseOver="self.status='Go to site map'; return true">site map</a> &nbsp;
+        </font>
+    </div>
+    <hr>
+    <br>
+
+</body>
+
 <!-- Mirrored from davidwallace2000.home.comcast.net/~davidwallace2000/h8/project8080_archive/design_serial.html by HTTrack Website Copier/3.x [XR&CO'2010], Mon, 10 Sep 2012 13:15:38 GMT -->
-</html>
+
+</html>

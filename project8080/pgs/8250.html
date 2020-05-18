@@ -1,5 +1,776 @@
-<html>
+<html>
+
 <!-- Mirrored from davidwallace2000.home.comcast.net/~davidwallace2000/h8/project8080_archive/pgs/8250.html by HTTrack Website Copier/3.x [XR&CO'2010], Mon, 10 Sep 2012 13:15:46 GMT -->
-<head><title>H8 Emulation Help - 8250 UART Programming</title><meta name="AppleTitle" content="H8 Emulation Help"><meta name="description" content="8250 UART Programming"></head><! updated 11/20/2002, das ><body bgcolor="white"><a name="top"></a><p><font size=3 face="Verdana,Geneva" color="0000FF"><b>8250 UART Programming</b></font><ul><font face="geneva" size=2><p>The HA-8-4 four-port serial card uses 8250 UART chips to provide asynchronous serial communications. This was a very popular chip, and is the same one used in early IBM PC's and compatibles.</p><p>This section will describe the 8250 chip and register addressing, the functions of each register, and will provide a short but detailed example of the use of the 8250 UART.</p><p>Be sure to read the <a href="#emu">Emulator-Specific Notes</a> section, as we took a few shortcuts in the implementation of serial communication internal to the emulator.</p></font></ul><hr><font face="Geneva,Arial" size=1><center><a href="program.html">Programming Table of Contents</a><br><br><a href="../h8_toc.html">Main Table of Contents</a></center><hr><table border="0" cellspacing="0" cellpadding="2"><tr align="left" valign="top">	<td width="125"><font size=3 face="Verdana,Geneva" color="0000FF"><b>Page Index</b></font></td><td><font face="Geneva" size=2>	<a href="#addr">8250 UART Addressing</a><br>	<a href="#registers">8250 Registers</a><br>	<a href="#baud">Baud Rate Generation</a><br>	<a href="#example">Example</a><br>	<a href="#emu">Emulator-Specific Notes</a><br></font></td></tr></table><hr><font face="Verdana,Geneva" size=3 color="#0000FF"><p><a name="addr"></a><b>8250 UART Addressing</b></p></font><ul><font face="Geneva,Arial" size=2><p>The one-byte address of the 8250 must be evenly divisible by 8. Therefore the left-most five bits of the address selects a particular 8250 UART. The right-most three bits of the port address are passed directly to the 8250 chip and are used to select the specific 8250 register that is to be read or written. Because of multiple uses of registers, there are more than eight available, but all are numbered from zero through eight.</p><p>The register numbers given in the <a href="#registers">table</a> below, map to the least-significant three bits of the I/O address.</p><p>Assuming these equates:</p></font><font face="courier" size=2>TTYPORT&nbsp;EQU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;350Q&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;H-19 console<br>AT.PORT&nbsp;EQU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;340Q&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AT: port<br><br><a href="#rbr">UR.RBR</a>&nbsp;&nbsp;EQU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Receiver<br><a href="#thr">UR.THR</a>&nbsp;&nbsp;EQU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Transmitter<br><a href="#dll">UR.DLL</a>&nbsp;&nbsp;EQU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Divisor latch lsb<br><a href="#dlm">UR.DLM</a>&nbsp;&nbsp;EQU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Divisor latch msb<br><a href="#ier">UR.IER</a>&nbsp;&nbsp;EQU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Interrupt enable reg<br><a href="#iir">UR.IIR</a>&nbsp;&nbsp;EQU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Interupt ID reg<br><a href="#lcr">UR.LCR</a>&nbsp;&nbsp;EQU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Line control reg<br><a href="#mcr">UR.MCR</a>&nbsp;&nbsp;EQU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Modem control reg<br><a href="#lsr">UR.LSR</a>&nbsp;&nbsp;EQU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Line status reg<br><a href="#msr">UR.MSR</a>&nbsp;&nbsp;EQU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Modem status reg<br><a href="#scr">UR.SCR</a>&nbsp;&nbsp;EQU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;7&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Scratch reg<br></font><font face="Geneva,Arial" size=2><p>...you would access these ports as follows:</p></font><font face="courier" size=2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IN&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TTYPORT+UR.LSR&nbsp;&nbsp;Read line status register<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OUT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AT.PORT+UR.LCR&nbsp;&nbsp;Write line control register<br></font><font face="Geneva,Arial" size=2><p><a href="#top">go to top</a></p></font></ul><hr><font face="Verdana,Geneva" size=3 color="#0000FF"><p><a name="registers"></a><b>8250 Registers</b></p></font><ul><font face="Geneva,Arial" size=2><p>The 8250 UART program interface consists of 8 registers that can be read or written, two of which are multiple-purpose registers.</p></font><table border="1" cellspacing="0" cellpadding="4"><caption><font face="Geneva,Arial" size=2><b>8250 Registers</b></font></caption><tr>	<th align="left" valign="bottom"><font face="Geneva,Arial" size=2>Mnemonic</font></th>	<th align="center" valign="bottom"><font face="Geneva,Arial" size=2>Register<br>Number</font></th>	<th align="left" valign="bottom"><font face="Geneva,Arial" size=2>Description</font></th></tr><tr>	<td align="left"><font face="Geneva,Arial" size=2><a href="#rbr">UR.RBR</a></font></td>	<td align="center"><font face="Geneva,Arial" size=2>0</font></td>	<td align="left"><font face="Geneva,Arial" size=2>Receiver buffer register - read only</font></td></tr><tr>	<td align="left"><font face="Geneva,Arial" size=2><a href="#thr">UR.THR</a></font></td>	<td align="center"><font face="Geneva,Arial" size=2>0</font></td>	<td align="left"><font face="Geneva,Arial" size=2>Transmitter holding register - write only</font></td></tr><tr>	<td align="left"><font face="Geneva,Arial" size=2><a href="#dll">UR.DLL</a></font></td>	<td align="center"><font face="Geneva,Arial" size=2>0</font></td>	<td align="left"><font face="Geneva,Arial" size=2>Divisor latch lsb</font></td></tr><tr>	<td align="left"><font face="Geneva,Arial" size=2><a href="#dlm">UR.DLM</a></font></td>	<td align="center"><font face="Geneva,Arial" size=2>1</font></td>	<td align="left"><font face="Geneva,Arial" size=2>Divisor latch msb</font></td></tr><tr>	<td align="left"><font face="Geneva,Arial" size=2><a href="#ier">UR.IER</a></font></td>	<td align="center"><font face="Geneva,Arial" size=2>1</font></td>	<td align="left"><font face="Geneva,Arial" size=2>Interrupt enable register</font></td></tr><tr>	<td align="left"><font face="Geneva,Arial" size=2><a href="#iir">UR.IIR</a></font></td>	<td align="center"><font face="Geneva,Arial" size=2>2</font></td>	<td align="left"><font face="Geneva,Arial" size=2>Interrupt identification register</font></td></tr><tr>	<td align="left"><font face="Geneva,Arial" size=2><a href="#lcr">UR.LCR</a></font></td>	<td align="center"><font face="Geneva,Arial" size=2>3</font></td>	<td align="left"><font face="Geneva,Arial" size=2>Line control register</font></td></tr><tr>	<td align="left"><font face="Geneva,Arial" size=2><a href="#mcr">UR.MCR</a></font></td>	<td align="center"><font face="Geneva,Arial" size=2>4</font></td>	<td align="left"><font face="Geneva,Arial" size=2>Modem control register</font></td></tr><tr>	<td align="left"><font face="Geneva,Arial" size=2><a href="#lsr">UR.LSR</a></font></td>	<td align="center"><font face="Geneva,Arial" size=2>5</font></td>	<td align="left"><font face="Geneva,Arial" size=2>Line status register</font></td></tr><tr>	<td align="left"><font face="Geneva,Arial" size=2><a href="#msr">UR.MSR</a></font></td>	<td align="center"><font face="Geneva,Arial" size=2>6</font></td>	<td align="left"><font face="Geneva,Arial" size=2>Modem status register</font></td></tr><tr>	<td align="left"><font face="Geneva,Arial" size=2><a href="#scr">UR.SCR</a></font></td>	<td align="center"><font face="Geneva,Arial" size=2>7</font></td>	<td align="left"><font face="Geneva,Arial" size=2>Scratch register</font></td></tr></table><font face="Geneva,Arial" size=2><p><a href="#top">go to top</a></p></font><font face="Geneva,Arial" size=2><p>Detailed descriptions follow.</p></font><dl><dt><font face="Geneva,Arial" size=2><a name="rbr"></a>UR.RBR - Receiver buffer register (read only)</font></dt><dd><font face="Geneva,Arial" size=2><p>Register 0 is a multiple-purpose register. When the <a href="#lcr">divisor latch</a> is off and the register is read, it returns the most recent byte received on the serial interface.</p><p>A value will <b>always</b> be returned when you read this register; you should check the <a href="#lsr">line status register</a> to see if a new byte has been received prior to reading UR.RBR.</p><p><a href="#registers">back to table</a>&nbsp;|&nbsp;<a href="#top">go to top</a></p></font></dd><dt><font face="Geneva,Arial" size=2><a name="thr"></a>UR.THR - Transmitter holding register (write only)</font></dt><dd><font face="Geneva,Arial" size=2><p>Register 0 is a multiple-purpose register. When the <a href="#lcr">divisor latch</a> is off, a byte written to the register is treated as output data.</p><p>What actually happens depends on the state of the <a href="#lsr">transmitter holding register</a> and <a href="#lsr">transmitter shift register</a>:</p></font><table border="1" cellspacing="0" cellpadding="4"><tr>	<th align="center" colspan="2"><font face="Geneva,Arial" size=2><a href="#lsr">UR.LSR</a> Values</font></th>	<th align="center"><font face="Geneva,Arial" size=2>&nbsp;</font></th></tr><tr>	<th align="center"><font face="Geneva,Arial" size=2>UC.THE</font></th>	<th align="center"><font face="Geneva,Arial" size=2>UC.TSE</font></th>	<th align="left"><font face="Geneva,Arial" size=2>Action</font></th></tr><tr>	<td align="center"><font face="Geneva,Arial" size=2>1</font></td>	<td align="center"><font face="Geneva,Arial" size=2>1</font></td>	<td align="left"><font face="Geneva,Arial" size=2>UC.THE is set to 0. The byte is immediately transferred to the shift register, and UC.THE transitions to 1. If <a href="#ier">transmitter interrupts</a> are enabled, there will be an immediate interrupt.</font></td></tr><tr>	<td align="center"><font face="Geneva,Arial" size=2>1</font></td>	<td align="center"><font face="Geneva,Arial" size=2>0</font></td>	<td align="left"><font face="Geneva,Arial" size=2>The byte will sit in the transmitter holding register until the previous byte is completely written to the serial interface. If another byte is written while the transmitter holding register is full, the new byte will overwrite the old one with no error indication. Always check UC.THE before writing.</font></td></tr><tr>	<td align="center"><font face="Geneva,Arial" size=2>0</font></td>	<td align="center"><font face="Geneva,Arial" size=2>0</font></td>	<td align="left"><font face="Geneva,Arial" size=2>There was a byte being shifted onto the serial interface and one waiting. The new byte will overwrite the old one waiting in the transmitter holding register. Always check UC.THE in the <a href="#lsr">line status register</a> before writing.</font></td></tr></table><font face="Geneva,Arial" size=2><p><a href="#registers">back to table</a>&nbsp;|&nbsp;<a href="#top">go to top</a></p></font></font></dd><dt><font face="Geneva,Arial" size=2><a name="dll"></a>UR.DLL - Divisor latch (lsb)</font></dt><dd><font face="Geneva,Arial" size=2><p>Register 0 is a multiple-purpose register. When the <a href="#lcr">divisor latch</a> is on and the register is written, the least significant byte of the <a href="#baud">baud rate</a> divisor latch is set. This register may be read to determine the lsb of the baud rate divisor.</p><p><a href="#registers">back to table</a>&nbsp;|&nbsp;<a href="#top">go to top</a></p></font></dd><dt><font face="Geneva,Arial" size=2><a name="dlm"></a>UR.DLM - Divisor latch (msb)</font></dt><dd><font face="Geneva,Arial" size=2><p>Register 1 is a multiple-purpose register. When the <a href="#lcr">divisor latch</a> is on and the register is written, the most significant byte of the <a href="#baud">baud rate</a> divisor latch is set. This register may be read to determine the msb of the baud rate divisor.</p><p><a href="#registers">back to table</a>&nbsp;|&nbsp;<a href="#top">go to top</a></p></font></dd><dt><font face="Geneva,Arial" size=2><a name="ier"></a>UR.IER - Interrupt enable register</font></dt><dd><font face="Geneva,Arial" size=2><p>Register 1 is a multiple-purpose register. When the <a href="#lcr">divisor latch</a> is off and the register is written, the output byte changes the conditions under which the 8250 will generate interrupts. The register may also be read to determine what conditions are currently set.</p><p>Values:</p></font><table border="1" cellspacing="0" cellpadding="4"><tr>	<th align="left"><font face="Geneva,Arial" size=2>Mnemonic</font></th>	<th align="left"><font face="Geneva,Arial" size=2>Value</font></th>	<th align="left"><font face="Geneva,Arial" size=2>Description</font></th></tr><tr>	<td align="left"><font face="Geneva,Arial" size=2>UC.EDA</font></td>	<td align="left"><font face="Geneva,Arial" size=2>00000001B</font></td>	<td align="left"><font face="Geneva,Arial" size=2>Enable received data available interrupt - when <a href="#lsr">UC.DR</a> transitions from 0 to 1, this interrupt is generated.</font></td></tr><tr>	<td align="left"><font face="Geneva,Arial" size=2>UC.TRE</font></td>	<td align="left"><font face="Geneva,Arial" size=2>00000010B</font></td>	<td align="left"><font face="Geneva,Arial" size=2>Enable transmitter hold register empty interrupt - when <a href="#lsr">UC.THE</a> transitions from 0 to 1, this interrupt is generated.</font></td></tr><tr>	<td align="left"><font face="Geneva,Arial" size=2>UC.RSI</font></td>	<td align="left"><font face="Geneva,Arial" size=2>00000100B</font></td>	<td align="left"><font face="Geneva,Arial" size=2>Enable receiver status interrupt - when <a href="#lsr">UC.OR</a>, <a href="#lsr">UC.PE</a>, <a href="#lsr">UC.FE</a>, or <a href="#lsr">UC.BI</a> transitions from 0 to 1, this interrupt is generated.</font></td></tr><tr>	<td align="left"><font face="Geneva,Arial" size=2>UC.MSI</font></td>	<td align="left"><font face="Geneva,Arial" size=2>00001000B</font></td>	<td align="left"><font face="Geneva,Arial" size=2>Enable modem status interrupt - when <a href="#msr">UC.DCS</a>, <a href="#msr">UC.DDR</a>, <a href="#msr">UC.TER</a>, or <a href="#msr">UC.DRL</a> transitions from 0 to 1, this interrupt is generated.</font></td></tr></table><font face="Geneva,Arial" size=2><p><a href="#registers">back to table</a>&nbsp;|&nbsp;<a href="#top">go to top</a></p></font></dd><dt><font face="Geneva,Arial" size=2><a name="iir"></a>UR.IIR - Interrupt identification register</font></dt><dd><font face="Geneva,Arial" size=2><p>When the 8250 UART signals an interrupt, this register provides the interrupt ID, or the cause of the interrupt condition.</p></font><table border="1" cellspacing="0" cellpadding="4"><tr>	<th align="left"><font face="Geneva,Arial" size=2>Mnemonic</font></th>	<th align="left"><font face="Geneva,Arial" size=2>Value</font></th>	<th align="left"><font face="Geneva,Arial" size=2>Description</font></th></tr><tr>	<td align="left"><font face="Geneva,Arial" size=2>UC.IIP</font></td>	<td align="left"><font face="Geneva,Arial" size=2>00000001B</font></td>	<td align="left"><font face="Geneva,Arial" size=2>Interrupt pending (inverted - 0 means pending)</font></td></tr><tr>	<td align="left"><font face="Geneva,Arial" size=2>UC.IID</font></td>	<td align="left"><font face="Geneva,Arial" size=2>00000110B</font></td>	<td align="left"><font face="Geneva,Arial" size=2>Interrupt ID field</font></td></tr><tr>	<td align="center" rowspan="4"><font face="Geneva,Arial" size=2>ID value</font></td>	<td align="left"><font face="Geneva,Arial" size=2>00000110B</font></td>	<td align="left"><font face="Geneva,Arial" size=2>Line status</font></td></tr><tr>	<td align="left"><font face="Geneva,Arial" size=2>00000100B</font></td>	<td align="left"><font face="Geneva,Arial" size=2>Received data available</font></td></tr><tr>	<td align="left"><font face="Geneva,Arial" size=2>00000010B</font></td>	<td align="left"><font face="Geneva,Arial" size=2>Transmitter holding register empty</font></td></tr><tr>	<td align="left"><font face="Geneva,Arial" size=2>00000000B</font></td>	<td align="left"><font face="Geneva,Arial" size=2>Modem status</font></td></tr></table><font face="Geneva,Arial" size=2><p>The ID's are listed in priority order, from highest priority to lowest.</p><p>Interrupt conditions will remain on until cleared; they are cleared as follows:</p></font><dl><dt><font face="Geneva,Arial" size=2>Line status interrupt</font></dt><dd><font face="Geneva,Arial" size=2><p>Reading the <a href="#lsr">UR.LSR</a> port will clear the interrupt condition.</p></font></dd><dt><font face="Geneva,Arial" size=2>Received data available interrupt</font></dt><dd><font face="Geneva,Arial" size=2><p>Read <a href="#rbr">UR.RBR</a> to clear the interrupt condition.</p></font></dd><dt><font face="Geneva,Arial" size=2>Transmitter holding register empty interrupt</font></dt><dd><font face="Geneva,Arial" size=2><p>Simply reading the UR.IIR register is sufficient to clear this interrupt condition; you do not have to write data to the transmitter buffer.</p> </font></dd><dt><font face="Geneva,Arial" size=2>Modem status interrupt</font></dt><dd><font face="Geneva,Arial" size=2><p>Read <a href="#msr">UR.MSR</a> to clear the interrupt condition. The delta bits will all be zeroed upon reading UR.MSR.</p></font></dd></dl><font face="Geneva,Arial" size=2><p><a href="#registers">back to table</a>&nbsp;|&nbsp;<a href="#top">go to top</a></p></font></dd><dt><font face="Geneva,Arial" size=2><a name="lcr"></a>UR.LCR - Line control register</font></dt><dd><font face="Geneva,Arial" size=2><p>Description</p></font><table border="1" cellspacing="0" cellpadding="4"><tr>	<th align="left"><font face="Geneva,Arial" size=2>Mnemonic</font></th>	<th align="left"><font face="Geneva,Arial" size=2>Value</font></th>	<th align="left"><font face="Geneva,Arial" size=2>Description</font></th></tr><tr>	<td align="left"><font face="Geneva,Arial" size=2>UC.5BW</font></td>	<td align="left"><font face="Geneva,Arial" size=2>00000000B</font></td>	<td align="left"><font face="Geneva,Arial" size=2>Use 5 data bits (effectively obsolete)</font></td></tr><tr>	<td align="left"><font face="Geneva,Arial" size=2>UC.6BW</font></td>	<td align="left"><font face="Geneva,Arial" size=2>00000001B</font></td>	<td align="left"><font face="Geneva,Arial" size=2>Use 6 data bits (effectively obsolete)</font></td></tr><tr>	<td align="left"><font face="Geneva,Arial" size=2>UC.7BW</font></td>	<td align="left"><font face="Geneva,Arial" size=2>00000010B</font></td>	<td align="left"><font face="Geneva,Arial" size=2>Use 7 data bits</font></td></tr><tr>	<td align="left"><font face="Geneva,Arial" size=2>UC.8BW</font></td>	<td align="left"><font face="Geneva,Arial" size=2>00000011B</font></td>	<td align="left"><font face="Geneva,Arial" size=2>Use 8 data bits</font></td></tr><tr>	<td align="left"><font face="Geneva,Arial" size=2>UC.2SB</font></td>	<td align="left"><font face="Geneva,Arial" size=2>00000100B</font></td>	<td align="left"><font face="Geneva,Arial" size=2>Use two stop bits</font></td></tr><tr>	<td align="left"><font face="Geneva,Arial" size=2>UC.PEN</font></td>	<td align="left"><font face="Geneva,Arial" size=2>00001000B</font></td>	<td align="left"><font face="Geneva,Arial" size=2>Enable automatic parity calculation</font></td></tr><tr>	<td align="left"><font face="Geneva,Arial" size=2>UC.EPS</font></td>	<td align="left"><font face="Geneva,Arial" size=2>00010000B</font></td>	<td align="left"><font face="Geneva,Arial" size=2>Calculate even parity (off = odd parity)</font></td></tr><tr>	<td align="left"><font face="Geneva,Arial" size=2>UC.SKP</font></td>	<td align="left"><font face="Geneva,Arial" size=2>00100000B</font></td>	<td align="left"><font face="Geneva,Arial" size=2>Force parity to '1'</font></td></tr><tr>	<td align="left"><font face="Geneva,Arial" size=2>UC.SB</font></td>	<td align="left"><font face="Geneva,Arial" size=2>01000000B</font></td>	<td align="left"><font face="Geneva,Arial" size=2>Send break - hold the output at a spacing condition (break) until this bit is reset</font></td></tr><tr>	<td align="left"><font face="Geneva,Arial" size=2>UC.DLA</font></td>	<td align="left"><font face="Geneva,Arial" size=2>10000000B</font></td>	<td align="left"><font face="Geneva,Arial" size=2>Divisor latch access - ref <a href="#dll">UR.DLL</a>, <a href="#dlm">UR.DLM</a></font></td></tr></table><font face="Geneva,Arial" size=2><p>The most common data bit / parity combinations are:</p></font><ul type="disc"><li><font face="Geneva,Arial" size=2>7 data bits, even parity</font></li><li><font face="Geneva,Arial" size=2>7 data bits, odd parity</font></li><li><font face="Geneva,Arial" size=2>8 data bits, no parity</font></li></ul><font face="Geneva,Arial" size=2><p>When you send a break, you should ensure that the spacing condition remains on the interface for a minimum of 300ms. This timing is up to your program, not to the 8250 UART.</p><p><a href="#registers">back to table</a>&nbsp;|&nbsp;<a href="#top">go to top</a></p></font></dd><dt><font face="Geneva,Arial" size=2><a name="mcr"></a>UR.MCR - Modem control register</font></dt><dd><font face="Geneva,Arial" size=2><p>Description</p></font><table border="1" cellspacing="0" cellpadding="4"><tr>	<th align="left"><font face="Geneva,Arial" size=2>Mnemonic</font></th>	<th align="left"><font face="Geneva,Arial" size=2>Value</font></th>	<th align="left"><font face="Geneva,Arial" size=2>Description</font></th></tr><tr>	<td align="left"><font face="Geneva,Arial" size=2>UC.DTR</font></td>	<td align="left"><font face="Geneva,Arial" size=2>00000001B</font></td>	<td align="left"><font face="Geneva,Arial" size=2>DTE port: raise DTR<br>										      DCE port: raise DSR</font></td></tr><tr>	<td align="left"><font face="Geneva,Arial" size=2>UC.RTS</font></td>	<td align="left"><font face="Geneva,Arial" size=2>00000010B</font></td>	<td align="left"><font face="Geneva,Arial" size=2>DTE port: raise RTS<br>										      DCE port: raise CTS</font></td></tr><tr>	<td align="left"><font face="Geneva,Arial" size=2>UC.OU1</font></td>	<td align="left"><font face="Geneva,Arial" size=2>00000100B</font></td>	<td align="left"><font face="Geneva,Arial" size=2>Raise the OU1 signal - looped back to RI (pin 21) on the DTE interface for port test)</font></td></tr><tr>	<td align="left"><font face="Geneva,Arial" size=2>UC.OU2</font></td>	<td align="left"><font face="Geneva,Arial" size=2>00001000B</font></td>	<td align="left"><font face="Geneva,Arial" size=2>Raise the OU2 signal - tied to carrier (pin 8) on a DCE port so the H8 could source carrier detection</font></td></tr><tr>	<td align="left"><font face="Geneva,Arial" size=2>UC.LOO</font></td>	<td align="left"><font face="Geneva,Arial" size=2>00010000B</font></td>	<td align="left"><font face="Geneva,Arial" size=2>Enable diagnostic loopback - bytes written to <a href="#thr">UR.THR</a> will be transmitted into <a href="#rbr">UR.RBR</a></font></td></tr></table><font face="Geneva,Arial" size=2><p><a href="#registers">back to table</a>&nbsp;|&nbsp;<a href="#top">go to top</a></p></font></dd><dt><font face="Geneva,Arial" size=2><a name="lsr"></a>UR.LSR - Line status register</font></dt><dd><font face="Geneva,Arial" size=2><p>Description</p></font><table border="1" cellspacing="0" cellpadding="4"><tr>	<th align="left"><font face="Geneva,Arial" size=2>Mnemonic</font></th>	<th align="left"><font face="Geneva,Arial" size=2>Value</font></th>	<th align="left"><font face="Geneva,Arial" size=2>Description</font></th></tr><tr>	<td align="left"><font face="Geneva,Arial" size=2>UC.DR</font></td>	<td align="left"><font face="Geneva,Arial" size=2>00000001B</font></td>	<td align="left"><font face="Geneva,Arial" size=2>Data ready - read <a href="#rbr">UR. RBR</a></font></td></tr><tr>	<td align="left"><font face="Geneva,Arial" size=2>UC.OR</font></td>	<td align="left"><font face="Geneva,Arial" size=2>00000010B</font></td>	<td align="left"><font face="Geneva,Arial" size=2>Overrun error - data was not read in time and incoming data overwrote previous data</font></td></tr><tr>	<td align="left"><font face="Geneva,Arial" size=2>UC.PE</font></td>	<td align="left"><font face="Geneva,Arial" size=2>00000100B</font></td>	<td align="left"><font face="Geneva,Arial" size=2>Parity error - the parity generator noted a parity error</font></td></tr><tr>	<td align="left"><font face="Geneva,Arial" size=2>UC.FE</font></td>	<td align="left"><font face="Geneva,Arial" size=2>00001000B</font></td>	<td align="left"><font face="Geneva,Arial" size=2>Framing error - the character wasn't framed by a proper stop bit (may be due to break)</font></td></tr><tr>	<td align="left"><font face="Geneva,Arial" size=2>UC.BI</font></td>	<td align="left"><font face="Geneva,Arial" size=2>00010000B</font></td>	<td align="left"><font face="Geneva,Arial" size=2>Break indication - there is a break condition (constant space) on the received data line</font></td></tr><tr>	<td align="left"><font face="Geneva,Arial" size=2>UC.THE</font></td>	<td align="left"><font face="Geneva,Arial" size=2>00100000B</font></td>	<td align="left"><font face="Geneva,Arial" size=2>Transmitter holding register empty - ok to send another character now</font></td></tr><tr>	<td align="left"><font face="Geneva,Arial" size=2>UC.TSE</font></td>	<td align="left"><font face="Geneva,Arial" size=2>01000000B</font></td>	<td align="left"><font face="Geneva,Arial" size=2>Transmitter shift register empty - 8250 transmitter is now idle</font></td></tr></table><font face="Geneva,Arial" size=2><p>Note that an incoming break signal will normally manifest itself as a framing error with a null (000Q) in the receiver buffer; after sufficient time has elapsed the UC.BI bit should be set.</p><p><a href="#registers">back to table</a>&nbsp;|&nbsp;<a href="#top">go to top</a></p></font></dd><dt><font face="Geneva,Arial" size=2><a name="msr"></a>UR.MSR - Modem status register</font></dt><dd><font face="Geneva,Arial" size=2><p>Description</p></font><table border="1" cellspacing="0" cellpadding="4"><tr>	<th align="left"><font face="Geneva,Arial" size=2>Mnemonic</font></th>	<th align="left"><font face="Geneva,Arial" size=2>Value</font></th>	<th align="left"><font face="Geneva,Arial" size=2>Description</font></th></tr><tr>	<td align="left"><font face="Geneva,Arial" size=2>UC.DCS</font></td>	<td align="left"><font face="Geneva,Arial" size=2>00000001B</font></td>	<td align="left"><font face="Geneva,Arial" size=2>Delta clear to send - there was a transition (0-1 or 1-0) in the clear to send lead (RS-232 pin 5)</font></td></tr><tr>	<td align="left"><font face="Geneva,Arial" size=2>UC.DDR</font></td>	<td align="left"><font face="Geneva,Arial" size=2>00000010B</font></td>	<td align="left"><font face="Geneva,Arial" size=2>Delta data set ready - there was a transition (0-1 or 1-0) in the data set ready lead (RS-232 pin 6)</font></td></tr><tr>	<td align="left"><font face="Geneva,Arial" size=2>UC.TER</font></td>	<td align="left"><font face="Geneva,Arial" size=2>00000100B</font></td>	<td align="left"><font face="Geneva,Arial" size=2>Trailing edge of ring indication - the ring indicator lead (RS-232 pin 21) transitioned from 1-0</font></td></tr><tr>	<td align="left"><font face="Geneva,Arial" size=2>UC.DRL</font></td>	<td align="left"><font face="Geneva,Arial" size=2>00001000B</font></td>	<td align="left"><font face="Geneva,Arial" size=2>Delta receive line signal detect - the carrier signal lead (RS-232 pin 8) transitioned from 0-1 or 1-0.</font></td></tr><tr>	<td align="left"><font face="Geneva,Arial" size=2>UC.CTS</font></td>	<td align="left"><font face="Geneva,Arial" size=2>00010000B</font></td>	<td align="left"><font face="Geneva,Arial" size=2>Clear to send signal up = 1<br>										      Clear to send signal down = 0</font></td></tr><tr>	<td align="left"><font face="Geneva,Arial" size=2>UC.DSR</font></td>	<td align="left"><font face="Geneva,Arial" size=2>00100000B</font></td>	<td align="left"><font face="Geneva,Arial" size=2>Data set ready signal up = 1<br>										      Data set ready signal down = 0</font></td></tr></table><font face="Geneva,Arial" size=2><p><a href="#registers">back to table</a>&nbsp;|&nbsp;<a href="#top">go to top</a></p></font></dd><dt><font face="Geneva,Arial" size=2><a name="scr"></a>UR.SCR - Scratch register</font></dt><dd><font face="Geneva,Arial" size=2><p>The scratch register is a one-byte storage location. You may write a byte to it and read it back. (This may have some value in certain low- or no-memory embedded controller applications, but it certainly has no application here.)</p><p><a href="#registers">back to table</a>&nbsp;|&nbsp;<a href="#top">go to top</a></p></font></dd></dl></ul><hr><font face="Verdana,Geneva" size=3 color="#0000FF"><p><a name="baud"></a><b>Baud Rate Generation</b></p></font><ul><font face="Geneva,Arial" size=2><p>The 8250 UART uses a 1.8432 mhz clock to generate serial baud rates. This clock is divided by a 16-bit divisor stored in the <a href="#dll">UR.DLL</a> and <a href="#dlm">UR.DLM</a> registers. The result of that division is a clock signal that is 16 times the desired baud rate. Example:</p><p>&nbsp;&nbsp;&nbsp;&nbsp;1,843,200 / 12 = 153,600&nbsp;&nbsp;(12d = 014Q; see table below)<br>&nbsp;&nbsp;&nbsp;&nbsp;153,600 / 16 = 9600 baud</p><p>The 8250 will take 16-samples during one bit time when looking for a start bit, and will sample every 16 clock cycles thereafter to determine each bit value.</p><p>Divisors follow to generate common baud rates.</p></font><ul><table border="1" cellpadding="4" cellspacing="0"><caption><font face="Geneva,Arial" size=2><b>Baud Rate Divisor Table</b></font></caption><tr>	<th align="right"><font face="Geneva,Arial" size=2>&nbsp;</font></th>	<th align="center" colspan=3><font face="Geneva,Arial" size=2>Divisor</font></th></tr><tr>	<th align="right"><font face="Geneva,Arial" size=2>Baud Rate</font></th>	<th align="center"><font face="Geneva,Arial" size=2>LSB</font></th>	<th align="center"><font face="Geneva,Arial" size=2>MSB</font></th>	<th align="center"><font face="Geneva,Arial" size=2>EQU Value</font></th></tr><tr>	<td align="right"><font face="Geneva,Arial" size=2>75</font></td>	<td align="center"><font face="Geneva,Arial" size=2>000</font></td>	<td align="center"><font face="Geneva,Arial" size=2>006</font></td>	<td align="center"><font face="Geneva,Arial" size=2>6000A</font></td></tr><tr>	<td align="right"><font face="Geneva,Arial" size=2>150</font></td>	<td align="center"><font face="Geneva,Arial" size=2>000</font></td>	<td align="center"><font face="Geneva,Arial" size=2>003</font></td>	<td align="center"><font face="Geneva,Arial" size=2>3000A</font></td></tr><tr>	<td align="right"><font face="Geneva,Arial" size=2>300</font></td>	<td align="center"><font face="Geneva,Arial" size=2>200</font></td>	<td align="center"><font face="Geneva,Arial" size=2>001</font></td>	<td align="center"><font face="Geneva,Arial" size=2>1200A</font></td></tr><tr>	<td align="right"><font face="Geneva,Arial" size=2>600</font></td>	<td align="center"><font face="Geneva,Arial" size=2>300</font></td>	<td align="center"><font face="Geneva,Arial" size=2>000</font></td>	<td align="center"><font face="Geneva,Arial" size=2>0300A</font></td></tr><tr>	<td align="right"><font face="Geneva,Arial" size=2>1200</font></td>	<td align="center"><font face="Geneva,Arial" size=2>140</font></td>	<td align="center"><font face="Geneva,Arial" size=2>000</font></td>	<td align="center"><font face="Geneva,Arial" size=2>0140A</font></td></tr><tr>	<td align="right"><font face="Geneva,Arial" size=2>2400</font></td>	<td align="center"><font face="Geneva,Arial" size=2>060</font></td>	<td align="center"><font face="Geneva,Arial" size=2>000</font></td>	<td align="center"><font face="Geneva,Arial" size=2>0060A</font></td></tr><tr>	<td align="right"><font face="Geneva,Arial" size=2>4800</font></td>	<td align="center"><font face="Geneva,Arial" size=2>030</font></td>	<td align="center"><font face="Geneva,Arial" size=2>000</font></td>	<td align="center"><font face="Geneva,Arial" size=2>0030A</font></td></tr><tr>	<td align="right"><font face="Geneva,Arial" size=2>9600</font></td>	<td align="center"><font face="Geneva,Arial" size=2>014</font></td>	<td align="center"><font face="Geneva,Arial" size=2>000</font></td>	<td align="center"><font face="Geneva,Arial" size=2>0014A</font></td></tr><tr>	<td align="right"><font face="Geneva,Arial" size=2>19200</font></td>	<td align="center"><font face="Geneva,Arial" size=2>006</font></td>	<td align="center"><font face="Geneva,Arial" size=2>000</font></td>	<td align="center"><font face="Geneva,Arial" size=2>0006A</font></td></tr><tr>	<td align="right"><font face="Geneva,Arial" size=2>38400</font></td>	<td align="center"><font face="Geneva,Arial" size=2>003</font></td>	<td align="center"><font face="Geneva,Arial" size=2>000</font></td>	<td align="center"><font face="Geneva,Arial" size=2>0003A</font></td></tr></table></ul><font face="Geneva,Arial" size=2><p><a href="#top">go to top</a></p></font></ul><hr><font face="Verdana,Geneva" size=3 color="#0000FF"><p><a name="example"></a><b>Example</b></p></font><ul><font face="Geneva,Arial" size=2><p>Following are three sample subroutines: one to intialize the 8250 UART, one to read data from the chip, and one to write data to the chip.</p></font><font face="Courier" size="2">PORT&nbsp;&nbsp;&nbsp;&nbsp;EQU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;340Q&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Port base<br>UB9600&nbsp;&nbsp;EQU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0014A&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Baud rate divisor<br><br>*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Initialize the 8250<br><br>INIT&nbsp;&nbsp;&nbsp;&nbsp;EQU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MVI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A,UC.DLA<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OUT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PORT+UR.LCR&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Set divisor latch<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MVI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A,#UB9600&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LSB of 9600 baud divisor<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OUT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PORT+UR.DLL<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MVI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A,UB9600/256&nbsp;&nbsp;&nbsp;&nbsp;MSB of 9600 baud divisor<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OUT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PORT+UR.DLM<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MVI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A,UC.7BW+UC.PEN+UC.EPS<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OUT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PORT+UR.LCR&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;7 bits, even parity<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MVI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A,UC.DTR+UC.RTS<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OUT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PORT+UR.MCR&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DTR and RTS signals up<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IN&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PORT+UR.LSR&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Read and clear status registers<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IN&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PORT+UR.MSR<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RET<br><br>*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Read data<br><br>READ&nbsp;&nbsp;&nbsp;&nbsp;EQU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IN&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PORT+UR.LSR<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ANI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;UC.DR&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Data ready?<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;JZ&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;READ&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Nothing to read - wait<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IN&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PORT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(A) = read data<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RET<br><br>*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Write&nbsp;data<br><br>WRITE&nbsp;&nbsp;&nbsp;EQU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PUSH&nbsp;&nbsp;&nbsp;&nbsp;PSW&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Save byte to write<br>WRITE1&nbsp;&nbsp;EQU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IN&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PORT+UR.LSR<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ANI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;UC.THE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Transmitter ready for write?<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;JZ&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WRITE1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;No - wait for it<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;POP&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PSW<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OUT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PORT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Write byte<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RET<br></font><font face="Geneva,Arial" size=2><p><a href="#top">go to top</a></p></font></ul><hr><font face="Verdana,Geneva" size=3 color="#0000FF"><p><a name="emu"></a><b>Emulator-Specific Notes</b></p></font><ul><font face="Geneva,Arial" size=2><p>The emulator provides a very complete implementation of the 8250 UART, and all most functions documented above either work as documented or, where they provide no function, can be used with no harm.</p><p>The emulator has no need for baud rates and dataset signals, so programs written strictly to be run on the emulator do not need to bother with them.</p><p>The emulator ignores the selected number of data bits and parity; effectively, you get 8-bits, no parity, no matter what you select.</p><p>All interrupts are supported. However, understand the issues raised in <a href="feat.html">features</a> before using any interrupt on any port, other than receiver interrupts on the console port.</p><p>Incoming break from the console port (user pressed the <a href="h19kb.html#main">F12</a> key) will be signaled by setting UC.BI and UC.FE, and a null (000Q) will be loaded into the receiver buffer, so you can detect break using either the break indicator or the framing error/null method.</p><p> If you send break on the modem port, the emulator will see to it that the break condition is held on the line for 300ms; you need only set/reset UC.SB.</p><p>You will never see a transition in the transmitter shift register. Serial transmission inside the emulator is immediate and takes no time, so the transmitter holding register is generally always empty. However, in some cases it's used as an internal flow-control mechanism - for example, the H-19 process controls UC.THE to hold output to a maximum of 2,000 cps. So do make sure to check UC.THE before writing, as in the example.</p></font><font face="Geneva,Arial" size=2><p><a href="#top">go to top</a></p></font></ul><hr><font face="Geneva,Arial" size=1><center><a href="program.html">Programming Table of Contents</a><br><br><a href="../h8_toc.html">Main Table of Contents</a></center></font></body>
+<head>
+<title>H8 Emulation Help - 8250 UART Programming</title>
+<meta name="AppleTitle" content="H8 Emulation Help">
+<meta name="description" content="8250 UART Programming">
+</head>
+
+<! updated 11/20/2002, das >
+
+<body bgcolor="white">
+<a name="top"></a>
+<p>
+<font size=3 face="Verdana,Geneva" color="0000FF">
+<b>8250 UART Programming</b>
+</font>
+<ul>
+<font face="geneva" size=2>
+<p>The HA-8-4 four-port serial card uses 8250 UART chips to provide asynchronous serial communications. This was a very popular chip, and is the same one used in early IBM PC's and compatibles.</p>
+<p>This section will describe the 8250 chip and register addressing, the functions of each register, and will provide a short but detailed example of the use of the 8250 UART.</p>
+<p>Be sure to read the <a href="#emu">Emulator-Specific Notes</a> section, as we took a few shortcuts in the implementation of serial communication internal to the emulator.</p>
+</font>
+</ul>
+
+<hr>
+<font face="Geneva,Arial" size=1>
+<center>
+<a href="program.html">Programming Table of Contents</a>
+<br><br>
+<a href="../h8_toc.html">Main Table of Contents</a>
+</center>
+<hr>
+
+<table border="0" cellspacing="0" cellpadding="2">
+<tr align="left" valign="top">
+	<td width="125"><font size=3 face="Verdana,Geneva" color="0000FF"><b>Page Index</b></font></td>
+<td><font face="Geneva" size=2>
+	<a href="#addr">8250 UART Addressing</a><br>
+	<a href="#registers">8250 Registers</a><br>
+	<a href="#baud">Baud Rate Generation</a><br>
+	<a href="#example">Example</a><br>
+	<a href="#emu">Emulator-Specific Notes</a><br>
+</font></td>
+</tr>
+</table>
+
+<hr>
+<font face="Verdana,Geneva" size=3 color="#0000FF">
+<p>
+<a name="addr"></a>
+<b>8250 UART Addressing</b>
+</p>
+</font>
+
+<ul>
+<font face="Geneva,Arial" size=2>
+<p>The one-byte address of the 8250 must be evenly divisible by 8. Therefore the left-most five bits of the address selects a particular 8250 UART. The right-most three bits of the port address are passed directly to the 8250 chip and are used to select the specific 8250 register that is to be read or written. Because of multiple uses of registers, there are more than eight available, but all are numbered from zero through eight.</p>
+<p>The register numbers given in the <a href="#registers">table</a> below, map to the least-significant three bits of the I/O address.</p>
+<p>Assuming these equates:</p>
+</font>
+
+<font face="courier" size=2>
+TTYPORT&nbsp;EQU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;350Q&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;H-19 console<br>
+AT.PORT&nbsp;EQU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;340Q&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AT: port<br>
+<br>
+<a href="#rbr">UR.RBR</a>&nbsp;&nbsp;EQU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Receiver<br>
+<a href="#thr">UR.THR</a>&nbsp;&nbsp;EQU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Transmitter<br>
+<a href="#dll">UR.DLL</a>&nbsp;&nbsp;EQU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Divisor latch lsb<br>
+<a href="#dlm">UR.DLM</a>&nbsp;&nbsp;EQU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Divisor latch msb<br>
+<a href="#ier">UR.IER</a>&nbsp;&nbsp;EQU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Interrupt enable reg<br>
+<a href="#iir">UR.IIR</a>&nbsp;&nbsp;EQU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Interupt ID reg<br>
+<a href="#lcr">UR.LCR</a>&nbsp;&nbsp;EQU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Line control reg<br>
+<a href="#mcr">UR.MCR</a>&nbsp;&nbsp;EQU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Modem control reg<br>
+<a href="#lsr">UR.LSR</a>&nbsp;&nbsp;EQU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Line status reg<br>
+<a href="#msr">UR.MSR</a>&nbsp;&nbsp;EQU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Modem status reg<br>
+<a href="#scr">UR.SCR</a>&nbsp;&nbsp;EQU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;7&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Scratch reg<br>
+</font>
+
+<font face="Geneva,Arial" size=2>
+<p>...you would access these ports as follows:</p>
+</font>
+
+<font face="courier" size=2>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IN&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TTYPORT+UR.LSR&nbsp;&nbsp;Read line status register<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OUT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AT.PORT+UR.LCR&nbsp;&nbsp;Write line control register<br>
+</font>
+
+<font face="Geneva,Arial" size=2>
+<p><a href="#top">go to top</a></p>
+</font>
+</ul>
+
+<hr>
+<font face="Verdana,Geneva" size=3 color="#0000FF">
+<p>
+<a name="registers"></a>
+<b>8250 Registers</b>
+</p>
+</font>
+<ul>
+<font face="Geneva,Arial" size=2>
+<p>The 8250 UART program interface consists of 8 registers that can be read or written, two of which are multiple-purpose registers.</p>
+</font>
+
+<table border="1" cellspacing="0" cellpadding="4">
+<caption><font face="Geneva,Arial" size=2><b>8250 Registers</b></font></caption>
+<tr>
+	<th align="left" valign="bottom"><font face="Geneva,Arial" size=2>Mnemonic</font></th>
+	<th align="center" valign="bottom"><font face="Geneva,Arial" size=2>Register<br>Number</font></th>
+	<th align="left" valign="bottom"><font face="Geneva,Arial" size=2>Description</font></th>
+</tr>
+<tr>
+	<td align="left"><font face="Geneva,Arial" size=2><a href="#rbr">UR.RBR</a></font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>0</font></td>
+	<td align="left"><font face="Geneva,Arial" size=2>Receiver buffer register - read only</font></td>
+</tr>
+<tr>
+	<td align="left"><font face="Geneva,Arial" size=2><a href="#thr">UR.THR</a></font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>0</font></td>
+	<td align="left"><font face="Geneva,Arial" size=2>Transmitter holding register - write only</font></td>
+</tr>
+<tr>
+	<td align="left"><font face="Geneva,Arial" size=2><a href="#dll">UR.DLL</a></font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>0</font></td>
+	<td align="left"><font face="Geneva,Arial" size=2>Divisor latch lsb</font></td>
+</tr>
+<tr>
+	<td align="left"><font face="Geneva,Arial" size=2><a href="#dlm">UR.DLM</a></font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>1</font></td>
+	<td align="left"><font face="Geneva,Arial" size=2>Divisor latch msb</font></td>
+</tr>
+<tr>
+	<td align="left"><font face="Geneva,Arial" size=2><a href="#ier">UR.IER</a></font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>1</font></td>
+	<td align="left"><font face="Geneva,Arial" size=2>Interrupt enable register</font></td>
+</tr>
+<tr>
+	<td align="left"><font face="Geneva,Arial" size=2><a href="#iir">UR.IIR</a></font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>2</font></td>
+	<td align="left"><font face="Geneva,Arial" size=2>Interrupt identification register</font></td>
+</tr>
+<tr>
+	<td align="left"><font face="Geneva,Arial" size=2><a href="#lcr">UR.LCR</a></font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>3</font></td>
+	<td align="left"><font face="Geneva,Arial" size=2>Line control register</font></td>
+</tr>
+<tr>
+	<td align="left"><font face="Geneva,Arial" size=2><a href="#mcr">UR.MCR</a></font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>4</font></td>
+	<td align="left"><font face="Geneva,Arial" size=2>Modem control register</font></td>
+</tr>
+<tr>
+	<td align="left"><font face="Geneva,Arial" size=2><a href="#lsr">UR.LSR</a></font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>5</font></td>
+	<td align="left"><font face="Geneva,Arial" size=2>Line status register</font></td>
+</tr>
+<tr>
+	<td align="left"><font face="Geneva,Arial" size=2><a href="#msr">UR.MSR</a></font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>6</font></td>
+	<td align="left"><font face="Geneva,Arial" size=2>Modem status register</font></td>
+</tr>
+<tr>
+	<td align="left"><font face="Geneva,Arial" size=2><a href="#scr">UR.SCR</a></font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>7</font></td>
+	<td align="left"><font face="Geneva,Arial" size=2>Scratch register</font></td>
+</tr>
+</table>
+
+<font face="Geneva,Arial" size=2>
+<p><a href="#top">go to top</a></p>
+</font>
+
+<font face="Geneva,Arial" size=2>
+<p>Detailed descriptions follow.</p>
+</font>
+
+<dl>
+<dt><font face="Geneva,Arial" size=2><a name="rbr"></a>
+UR.RBR - Receiver buffer register (read only)
+</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>Register 0 is a multiple-purpose register. When the <a href="#lcr">divisor latch</a> is off and the register is read, it returns the most recent byte received on the serial interface.</p>
+<p>A value will <b>always</b> be returned when you read this register; you should check the <a href="#lsr">line status register</a> to see if a new byte has been received prior to reading UR.RBR.</p>
+<p><a href="#registers">back to table</a>&nbsp;|&nbsp;<a href="#top">go to top</a></p>
+</font></dd>
+
+<dt><font face="Geneva,Arial" size=2><a name="thr"></a>
+UR.THR - Transmitter holding register (write only)
+</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>Register 0 is a multiple-purpose register. When the <a href="#lcr">divisor latch</a> is off, a byte written to the register is treated as output data.</p>
+<p>What actually happens depends on the state of the <a href="#lsr">transmitter holding register</a> and <a href="#lsr">transmitter shift register</a>:</p>
+</font>
+<table border="1" cellspacing="0" cellpadding="4">
+<tr>
+	<th align="center" colspan="2"><font face="Geneva,Arial" size=2><a href="#lsr">UR.LSR</a> Values</font></th>
+	<th align="center"><font face="Geneva,Arial" size=2>&nbsp;</font></th>
+</tr>
+<tr>
+	<th align="center"><font face="Geneva,Arial" size=2>UC.THE</font></th>
+	<th align="center"><font face="Geneva,Arial" size=2>UC.TSE</font></th>
+	<th align="left"><font face="Geneva,Arial" size=2>Action</font></th>
+</tr>
+<tr>
+	<td align="center"><font face="Geneva,Arial" size=2>1</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>1</font></td>
+	<td align="left"><font face="Geneva,Arial" size=2>UC.THE is set to 0. The byte is immediately transferred to the shift register, and UC.THE transitions to 1. If <a href="#ier">transmitter interrupts</a> are enabled, there will be an immediate interrupt.</font></td>
+</tr>
+<tr>
+	<td align="center"><font face="Geneva,Arial" size=2>1</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>0</font></td>
+	<td align="left"><font face="Geneva,Arial" size=2>The byte will sit in the transmitter holding register until the previous byte is completely written to the serial interface. If another byte is written while the transmitter holding register is full, the new byte will overwrite the old one with no error indication. Always check UC.THE before writing.</font></td>
+</tr>
+<tr>
+	<td align="center"><font face="Geneva,Arial" size=2>0</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>0</font></td>
+	<td align="left"><font face="Geneva,Arial" size=2>There was a byte being shifted onto the serial interface and one waiting. The new byte will overwrite the old one waiting in the transmitter holding register. Always check UC.THE in the <a href="#lsr">line status register</a> before writing.</font></td>
+</tr>
+</table>
+<font face="Geneva,Arial" size=2>
+<p><a href="#registers">back to table</a>&nbsp;|&nbsp;<a href="#top">go to top</a></p>
+</font>
+</font></dd>
+
+<dt><font face="Geneva,Arial" size=2><a name="dll"></a>
+UR.DLL - Divisor latch (lsb)
+</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>Register 0 is a multiple-purpose register. When the <a href="#lcr">divisor latch</a> is on and the register is written, the least significant byte of the <a href="#baud">baud rate</a> divisor latch is set. This register may be read to determine the lsb of the baud rate divisor.</p>
+<p><a href="#registers">back to table</a>&nbsp;|&nbsp;<a href="#top">go to top</a></p>
+</font></dd>
+
+<dt><font face="Geneva,Arial" size=2><a name="dlm"></a>
+UR.DLM - Divisor latch (msb)
+</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>Register 1 is a multiple-purpose register. When the <a href="#lcr">divisor latch</a> is on and the register is written, the most significant byte of the <a href="#baud">baud rate</a> divisor latch is set. This register may be read to determine the msb of the baud rate divisor.</p>
+<p><a href="#registers">back to table</a>&nbsp;|&nbsp;<a href="#top">go to top</a></p>
+</font></dd>
+
+<dt><font face="Geneva,Arial" size=2><a name="ier"></a>
+UR.IER - Interrupt enable register
+</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>Register 1 is a multiple-purpose register. When the <a href="#lcr">divisor latch</a> is off and the register is written, the output byte changes the conditions under which the 8250 will generate interrupts. The register may also be read to determine what conditions are currently set.</p>
+<p>Values:</p>
+</font>
+<table border="1" cellspacing="0" cellpadding="4">
+<tr>
+	<th align="left"><font face="Geneva,Arial" size=2>Mnemonic</font></th>
+	<th align="left"><font face="Geneva,Arial" size=2>Value</font></th>
+	<th align="left"><font face="Geneva,Arial" size=2>Description</font></th>
+</tr>
+<tr>
+	<td align="left"><font face="Geneva,Arial" size=2>UC.EDA</font></td>
+	<td align="left"><font face="Geneva,Arial" size=2>00000001B</font></td>
+	<td align="left"><font face="Geneva,Arial" size=2>Enable received data available interrupt - when <a href="#lsr">UC.DR</a> transitions from 0 to 1, this interrupt is generated.</font></td>
+</tr>
+<tr>
+	<td align="left"><font face="Geneva,Arial" size=2>UC.TRE</font></td>
+	<td align="left"><font face="Geneva,Arial" size=2>00000010B</font></td>
+	<td align="left"><font face="Geneva,Arial" size=2>Enable transmitter hold register empty interrupt - when <a href="#lsr">UC.THE</a> transitions from 0 to 1, this interrupt is generated.</font></td>
+</tr>
+<tr>
+	<td align="left"><font face="Geneva,Arial" size=2>UC.RSI</font></td>
+	<td align="left"><font face="Geneva,Arial" size=2>00000100B</font></td>
+	<td align="left"><font face="Geneva,Arial" size=2>Enable receiver status interrupt - when <a href="#lsr">UC.OR</a>, <a href="#lsr">UC.PE</a>, <a href="#lsr">UC.FE</a>, or <a href="#lsr">UC.BI</a> transitions from 0 to 1, this interrupt is generated.</font></td>
+</tr>
+<tr>
+	<td align="left"><font face="Geneva,Arial" size=2>UC.MSI</font></td>
+	<td align="left"><font face="Geneva,Arial" size=2>00001000B</font></td>
+	<td align="left"><font face="Geneva,Arial" size=2>Enable modem status interrupt - when <a href="#msr">UC.DCS</a>, <a href="#msr">UC.DDR</a>, <a href="#msr">UC.TER</a>, or <a href="#msr">UC.DRL</a> transitions from 0 to 1, this interrupt is generated.</font></td>
+</tr>
+</table>
+<font face="Geneva,Arial" size=2>
+<p><a href="#registers">back to table</a>&nbsp;|&nbsp;<a href="#top">go to top</a></p>
+</font>
+</dd>
+
+<dt><font face="Geneva,Arial" size=2><a name="iir"></a>
+UR.IIR - Interrupt identification register
+</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>When the 8250 UART signals an interrupt, this register provides the interrupt ID, or the cause of the interrupt condition.</p>
+</font>
+<table border="1" cellspacing="0" cellpadding="4">
+<tr>
+	<th align="left"><font face="Geneva,Arial" size=2>Mnemonic</font></th>
+	<th align="left"><font face="Geneva,Arial" size=2>Value</font></th>
+	<th align="left"><font face="Geneva,Arial" size=2>Description</font></th>
+</tr>
+<tr>
+	<td align="left"><font face="Geneva,Arial" size=2>UC.IIP</font></td>
+	<td align="left"><font face="Geneva,Arial" size=2>00000001B</font></td>
+	<td align="left"><font face="Geneva,Arial" size=2>Interrupt pending (inverted - 0 means pending)</font></td>
+</tr>
+<tr>
+	<td align="left"><font face="Geneva,Arial" size=2>UC.IID</font></td>
+	<td align="left"><font face="Geneva,Arial" size=2>00000110B</font></td>
+	<td align="left"><font face="Geneva,Arial" size=2>Interrupt ID field</font></td>
+</tr>
+<tr>
+	<td align="center" rowspan="4"><font face="Geneva,Arial" size=2>ID value</font></td>
+	<td align="left"><font face="Geneva,Arial" size=2>00000110B</font></td>
+	<td align="left"><font face="Geneva,Arial" size=2>Line status</font></td>
+</tr>
+<tr>
+	<td align="left"><font face="Geneva,Arial" size=2>00000100B</font></td>
+	<td align="left"><font face="Geneva,Arial" size=2>Received data available</font></td>
+</tr>
+<tr>
+	<td align="left"><font face="Geneva,Arial" size=2>00000010B</font></td>
+	<td align="left"><font face="Geneva,Arial" size=2>Transmitter holding register empty</font></td>
+</tr>
+<tr>
+	<td align="left"><font face="Geneva,Arial" size=2>00000000B</font></td>
+	<td align="left"><font face="Geneva,Arial" size=2>Modem status</font></td>
+</tr>
+</table>
+<font face="Geneva,Arial" size=2>
+<p>The ID's are listed in priority order, from highest priority to lowest.</p>
+<p>Interrupt conditions will remain on until cleared; they are cleared as follows:</p>
+</font>
+
+<dl>
+<dt><font face="Geneva,Arial" size=2>Line status interrupt</font></dt>
+<dd><font face="Geneva,Arial" size=2><p>Reading the <a href="#lsr">UR.LSR</a> port will clear the interrupt condition.</p></font></dd>
+
+<dt><font face="Geneva,Arial" size=2>Received data available interrupt</font></dt>
+<dd><font face="Geneva,Arial" size=2><p>Read <a href="#rbr">UR.RBR</a> to clear the interrupt condition.</p></font></dd>
+
+<dt><font face="Geneva,Arial" size=2>Transmitter holding register empty interrupt</font></dt>
+<dd><font face="Geneva,Arial" size=2><p>Simply reading the UR.IIR register is sufficient to clear this interrupt condition; you do not have to write data to the transmitter buffer.</p> </font></dd>
+
+<dt><font face="Geneva,Arial" size=2>Modem status interrupt</font></dt>
+<dd><font face="Geneva,Arial" size=2><p>Read <a href="#msr">UR.MSR</a> to clear the interrupt condition. The delta bits will all be zeroed upon reading UR.MSR.</p></font></dd>
+</dl>
+
+<font face="Geneva,Arial" size=2>
+<p><a href="#registers">back to table</a>&nbsp;|&nbsp;<a href="#top">go to top</a></p>
+</font>
+</dd>
+
+<dt><font face="Geneva,Arial" size=2><a name="lcr"></a>
+UR.LCR - Line control register
+</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>Description</p>
+</font>
+<table border="1" cellspacing="0" cellpadding="4">
+<tr>
+	<th align="left"><font face="Geneva,Arial" size=2>Mnemonic</font></th>
+	<th align="left"><font face="Geneva,Arial" size=2>Value</font></th>
+	<th align="left"><font face="Geneva,Arial" size=2>Description</font></th>
+</tr>
+<tr>
+	<td align="left"><font face="Geneva,Arial" size=2>UC.5BW</font></td>
+	<td align="left"><font face="Geneva,Arial" size=2>00000000B</font></td>
+	<td align="left"><font face="Geneva,Arial" size=2>Use 5 data bits (effectively obsolete)</font></td>
+</tr>
+<tr>
+	<td align="left"><font face="Geneva,Arial" size=2>UC.6BW</font></td>
+	<td align="left"><font face="Geneva,Arial" size=2>00000001B</font></td>
+	<td align="left"><font face="Geneva,Arial" size=2>Use 6 data bits (effectively obsolete)</font></td>
+</tr>
+<tr>
+	<td align="left"><font face="Geneva,Arial" size=2>UC.7BW</font></td>
+	<td align="left"><font face="Geneva,Arial" size=2>00000010B</font></td>
+	<td align="left"><font face="Geneva,Arial" size=2>Use 7 data bits</font></td>
+</tr>
+<tr>
+	<td align="left"><font face="Geneva,Arial" size=2>UC.8BW</font></td>
+	<td align="left"><font face="Geneva,Arial" size=2>00000011B</font></td>
+	<td align="left"><font face="Geneva,Arial" size=2>Use 8 data bits</font></td>
+</tr>
+<tr>
+	<td align="left"><font face="Geneva,Arial" size=2>UC.2SB</font></td>
+	<td align="left"><font face="Geneva,Arial" size=2>00000100B</font></td>
+	<td align="left"><font face="Geneva,Arial" size=2>Use two stop bits</font></td>
+</tr>
+<tr>
+	<td align="left"><font face="Geneva,Arial" size=2>UC.PEN</font></td>
+	<td align="left"><font face="Geneva,Arial" size=2>00001000B</font></td>
+	<td align="left"><font face="Geneva,Arial" size=2>Enable automatic parity calculation</font></td>
+</tr>
+<tr>
+	<td align="left"><font face="Geneva,Arial" size=2>UC.EPS</font></td>
+	<td align="left"><font face="Geneva,Arial" size=2>00010000B</font></td>
+	<td align="left"><font face="Geneva,Arial" size=2>Calculate even parity (off = odd parity)</font></td>
+</tr>
+<tr>
+	<td align="left"><font face="Geneva,Arial" size=2>UC.SKP</font></td>
+	<td align="left"><font face="Geneva,Arial" size=2>00100000B</font></td>
+	<td align="left"><font face="Geneva,Arial" size=2>Force parity to '1'</font></td>
+</tr>
+<tr>
+	<td align="left"><font face="Geneva,Arial" size=2>UC.SB</font></td>
+	<td align="left"><font face="Geneva,Arial" size=2>01000000B</font></td>
+	<td align="left"><font face="Geneva,Arial" size=2>Send break - hold the output at a spacing condition (break) until this bit is reset</font></td>
+</tr>
+<tr>
+	<td align="left"><font face="Geneva,Arial" size=2>UC.DLA</font></td>
+	<td align="left"><font face="Geneva,Arial" size=2>10000000B</font></td>
+	<td align="left"><font face="Geneva,Arial" size=2>Divisor latch access - ref <a href="#dll">UR.DLL</a>, <a href="#dlm">UR.DLM</a></font></td>
+</tr>
+</table>
+<font face="Geneva,Arial" size=2>
+<p>The most common data bit / parity combinations are:</p>
+</font>
+<ul type="disc">
+<li><font face="Geneva,Arial" size=2>7 data bits, even parity</font></li>
+<li><font face="Geneva,Arial" size=2>7 data bits, odd parity</font></li>
+<li><font face="Geneva,Arial" size=2>8 data bits, no parity</font></li>
+</ul>
+<font face="Geneva,Arial" size=2>
+<p>When you send a break, you should ensure that the spacing condition remains on the interface for a minimum of 300ms. This timing is up to your program, not to the 8250 UART.</p>
+<p><a href="#registers">back to table</a>&nbsp;|&nbsp;<a href="#top">go to top</a></p>
+</font>
+</dd>
+
+<dt><font face="Geneva,Arial" size=2><a name="mcr"></a>
+UR.MCR - Modem control register
+</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>Description</p>
+</font>
+<table border="1" cellspacing="0" cellpadding="4">
+<tr>
+	<th align="left"><font face="Geneva,Arial" size=2>Mnemonic</font></th>
+	<th align="left"><font face="Geneva,Arial" size=2>Value</font></th>
+	<th align="left"><font face="Geneva,Arial" size=2>Description</font></th>
+</tr>
+<tr>
+	<td align="left"><font face="Geneva,Arial" size=2>UC.DTR</font></td>
+	<td align="left"><font face="Geneva,Arial" size=2>00000001B</font></td>
+	<td align="left"><font face="Geneva,Arial" size=2>DTE port: raise DTR<br>
+										      DCE port: raise DSR</font></td>
+</tr>
+<tr>
+	<td align="left"><font face="Geneva,Arial" size=2>UC.RTS</font></td>
+	<td align="left"><font face="Geneva,Arial" size=2>00000010B</font></td>
+	<td align="left"><font face="Geneva,Arial" size=2>DTE port: raise RTS<br>
+										      DCE port: raise CTS</font></td>
+</tr>
+<tr>
+	<td align="left"><font face="Geneva,Arial" size=2>UC.OU1</font></td>
+	<td align="left"><font face="Geneva,Arial" size=2>00000100B</font></td>
+	<td align="left"><font face="Geneva,Arial" size=2>Raise the OU1 signal - looped back to RI (pin 21) on the DTE interface for port test)</font></td>
+</tr>
+<tr>
+	<td align="left"><font face="Geneva,Arial" size=2>UC.OU2</font></td>
+	<td align="left"><font face="Geneva,Arial" size=2>00001000B</font></td>
+	<td align="left"><font face="Geneva,Arial" size=2>Raise the OU2 signal - tied to carrier (pin 8) on a DCE port so the H8 could source carrier detection</font></td>
+</tr>
+<tr>
+	<td align="left"><font face="Geneva,Arial" size=2>UC.LOO</font></td>
+	<td align="left"><font face="Geneva,Arial" size=2>00010000B</font></td>
+	<td align="left"><font face="Geneva,Arial" size=2>Enable diagnostic loopback - bytes written to <a href="#thr">UR.THR</a> will be transmitted into <a href="#rbr">UR.RBR</a></font></td>
+</tr>
+</table>
+<font face="Geneva,Arial" size=2>
+<p><a href="#registers">back to table</a>&nbsp;|&nbsp;<a href="#top">go to top</a></p>
+</font>
+</dd>
+
+<dt><font face="Geneva,Arial" size=2><a name="lsr"></a>
+UR.LSR - Line status register
+</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>Description</p>
+</font>
+<table border="1" cellspacing="0" cellpadding="4">
+<tr>
+	<th align="left"><font face="Geneva,Arial" size=2>Mnemonic</font></th>
+	<th align="left"><font face="Geneva,Arial" size=2>Value</font></th>
+	<th align="left"><font face="Geneva,Arial" size=2>Description</font></th>
+</tr>
+<tr>
+	<td align="left"><font face="Geneva,Arial" size=2>UC.DR</font></td>
+	<td align="left"><font face="Geneva,Arial" size=2>00000001B</font></td>
+	<td align="left"><font face="Geneva,Arial" size=2>Data ready - read <a href="#rbr">UR. RBR</a></font></td>
+</tr>
+<tr>
+	<td align="left"><font face="Geneva,Arial" size=2>UC.OR</font></td>
+	<td align="left"><font face="Geneva,Arial" size=2>00000010B</font></td>
+	<td align="left"><font face="Geneva,Arial" size=2>Overrun error - data was not read in time and incoming data overwrote previous data</font></td>
+</tr>
+<tr>
+	<td align="left"><font face="Geneva,Arial" size=2>UC.PE</font></td>
+	<td align="left"><font face="Geneva,Arial" size=2>00000100B</font></td>
+	<td align="left"><font face="Geneva,Arial" size=2>Parity error - the parity generator noted a parity error</font></td>
+</tr>
+<tr>
+	<td align="left"><font face="Geneva,Arial" size=2>UC.FE</font></td>
+	<td align="left"><font face="Geneva,Arial" size=2>00001000B</font></td>
+	<td align="left"><font face="Geneva,Arial" size=2>Framing error - the character wasn't framed by a proper stop bit (may be due to break)</font></td>
+</tr>
+<tr>
+	<td align="left"><font face="Geneva,Arial" size=2>UC.BI</font></td>
+	<td align="left"><font face="Geneva,Arial" size=2>00010000B</font></td>
+	<td align="left"><font face="Geneva,Arial" size=2>Break indication - there is a break condition (constant space) on the received data line</font></td>
+</tr>
+<tr>
+	<td align="left"><font face="Geneva,Arial" size=2>UC.THE</font></td>
+	<td align="left"><font face="Geneva,Arial" size=2>00100000B</font></td>
+	<td align="left"><font face="Geneva,Arial" size=2>Transmitter holding register empty - ok to send another character now</font></td>
+</tr>
+<tr>
+	<td align="left"><font face="Geneva,Arial" size=2>UC.TSE</font></td>
+	<td align="left"><font face="Geneva,Arial" size=2>01000000B</font></td>
+	<td align="left"><font face="Geneva,Arial" size=2>Transmitter shift register empty - 8250 transmitter is now idle</font></td>
+</tr>
+</table>
+<font face="Geneva,Arial" size=2>
+<p>Note that an incoming break signal will normally manifest itself as a framing error with a null (000Q) in the receiver buffer; after sufficient time has elapsed the UC.BI bit should be set.</p>
+<p><a href="#registers">back to table</a>&nbsp;|&nbsp;<a href="#top">go to top</a></p>
+</font>
+</dd>
+
+<dt><font face="Geneva,Arial" size=2><a name="msr"></a>
+UR.MSR - Modem status register
+</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>Description</p>
+</font>
+<table border="1" cellspacing="0" cellpadding="4">
+<tr>
+	<th align="left"><font face="Geneva,Arial" size=2>Mnemonic</font></th>
+	<th align="left"><font face="Geneva,Arial" size=2>Value</font></th>
+	<th align="left"><font face="Geneva,Arial" size=2>Description</font></th>
+</tr>
+<tr>
+	<td align="left"><font face="Geneva,Arial" size=2>UC.DCS</font></td>
+	<td align="left"><font face="Geneva,Arial" size=2>00000001B</font></td>
+	<td align="left"><font face="Geneva,Arial" size=2>Delta clear to send - there was a transition (0-1 or 1-0) in the clear to send lead (RS-232 pin 5)</font></td>
+</tr>
+<tr>
+	<td align="left"><font face="Geneva,Arial" size=2>UC.DDR</font></td>
+	<td align="left"><font face="Geneva,Arial" size=2>00000010B</font></td>
+	<td align="left"><font face="Geneva,Arial" size=2>Delta data set ready - there was a transition (0-1 or 1-0) in the data set ready lead (RS-232 pin 6)</font></td>
+</tr>
+<tr>
+	<td align="left"><font face="Geneva,Arial" size=2>UC.TER</font></td>
+	<td align="left"><font face="Geneva,Arial" size=2>00000100B</font></td>
+	<td align="left"><font face="Geneva,Arial" size=2>Trailing edge of ring indication - the ring indicator lead (RS-232 pin 21) transitioned from 1-0</font></td>
+</tr>
+<tr>
+	<td align="left"><font face="Geneva,Arial" size=2>UC.DRL</font></td>
+	<td align="left"><font face="Geneva,Arial" size=2>00001000B</font></td>
+	<td align="left"><font face="Geneva,Arial" size=2>Delta receive line signal detect - the carrier signal lead (RS-232 pin 8) transitioned from 0-1 or 1-0.</font></td>
+</tr>
+<tr>
+	<td align="left"><font face="Geneva,Arial" size=2>UC.CTS</font></td>
+	<td align="left"><font face="Geneva,Arial" size=2>00010000B</font></td>
+	<td align="left"><font face="Geneva,Arial" size=2>Clear to send signal up = 1<br>
+										      Clear to send signal down = 0</font></td>
+</tr>
+<tr>
+	<td align="left"><font face="Geneva,Arial" size=2>UC.DSR</font></td>
+	<td align="left"><font face="Geneva,Arial" size=2>00100000B</font></td>
+	<td align="left"><font face="Geneva,Arial" size=2>Data set ready signal up = 1<br>
+										      Data set ready signal down = 0</font></td>
+</tr>
+</table>
+<font face="Geneva,Arial" size=2>
+<p><a href="#registers">back to table</a>&nbsp;|&nbsp;<a href="#top">go to top</a></p>
+</font>
+</dd>
+
+<dt><font face="Geneva,Arial" size=2><a name="scr"></a>
+UR.SCR - Scratch register
+</font></dt>
+<dd><font face="Geneva,Arial" size=2>
+<p>The scratch register is a one-byte storage location. You may write a byte to it and read it back. (This may have some value in certain low- or no-memory embedded controller applications, but it certainly has no application here.)</p>
+<p><a href="#registers">back to table</a>&nbsp;|&nbsp;<a href="#top">go to top</a></p>
+</font></dd>
+</dl>
+
+</ul>
+
+<hr>
+<font face="Verdana,Geneva" size=3 color="#0000FF">
+<p>
+<a name="baud"></a>
+<b>Baud Rate Generation</b>
+</p>
+</font>
+<ul>
+<font face="Geneva,Arial" size=2>
+<p>The 8250 UART uses a 1.8432 mhz clock to generate serial baud rates. This clock is divided by a 16-bit divisor stored in the <a href="#dll">UR.DLL</a> and <a href="#dlm">UR.DLM</a> registers. The result of that division is a clock signal that is 16 times the desired baud rate. Example:</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;1,843,200 / 12 = 153,600&nbsp;&nbsp;(12d = 014Q; see table below)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;153,600 / 16 = 9600 baud</p>
+<p>The 8250 will take 16-samples during one bit time when looking for a start bit, and will sample every 16 clock cycles thereafter to determine each bit value.</p>
+<p>Divisors follow to generate common baud rates.</p>
+</font>
+<ul>
+<table border="1" cellpadding="4" cellspacing="0">
+<caption><font face="Geneva,Arial" size=2><b>Baud Rate Divisor Table</b></font></caption>
+<tr>
+	<th align="right"><font face="Geneva,Arial" size=2>&nbsp;</font></th>
+	<th align="center" colspan=3><font face="Geneva,Arial" size=2>Divisor</font></th>
+</tr>
+<tr>
+	<th align="right"><font face="Geneva,Arial" size=2>Baud Rate</font></th>
+	<th align="center"><font face="Geneva,Arial" size=2>LSB</font></th>
+	<th align="center"><font face="Geneva,Arial" size=2>MSB</font></th>
+	<th align="center"><font face="Geneva,Arial" size=2>EQU Value</font></th>
+</tr>
+<tr>
+	<td align="right"><font face="Geneva,Arial" size=2>75</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>000</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>006</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>6000A</font></td>
+</tr>
+<tr>
+	<td align="right"><font face="Geneva,Arial" size=2>150</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>000</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>003</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>3000A</font></td>
+</tr>
+<tr>
+	<td align="right"><font face="Geneva,Arial" size=2>300</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>200</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>001</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>1200A</font></td>
+</tr>
+<tr>
+	<td align="right"><font face="Geneva,Arial" size=2>600</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>300</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>000</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>0300A</font></td>
+</tr>
+<tr>
+	<td align="right"><font face="Geneva,Arial" size=2>1200</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>140</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>000</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>0140A</font></td>
+</tr>
+<tr>
+	<td align="right"><font face="Geneva,Arial" size=2>2400</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>060</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>000</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>0060A</font></td>
+</tr>
+<tr>
+	<td align="right"><font face="Geneva,Arial" size=2>4800</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>030</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>000</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>0030A</font></td>
+</tr>
+<tr>
+	<td align="right"><font face="Geneva,Arial" size=2>9600</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>014</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>000</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>0014A</font></td>
+</tr>
+<tr>
+	<td align="right"><font face="Geneva,Arial" size=2>19200</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>006</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>000</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>0006A</font></td>
+</tr>
+<tr>
+	<td align="right"><font face="Geneva,Arial" size=2>38400</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>003</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>000</font></td>
+	<td align="center"><font face="Geneva,Arial" size=2>0003A</font></td>
+</tr>
+</table>
+</ul>
+
+<font face="Geneva,Arial" size=2>
+<p><a href="#top">go to top</a></p>
+</font>
+</ul>
+
+<hr>
+
+<font face="Verdana,Geneva" size=3 color="#0000FF">
+<p>
+<a name="example"></a>
+<b>Example</b>
+</p>
+</font>
+<ul>
+<font face="Geneva,Arial" size=2>
+<p>Following are three sample subroutines: one to intialize the 8250 UART, one to read data from the chip, and one to write data to the chip.</p>
+</font>
+<font face="Courier" size="2">
+PORT&nbsp;&nbsp;&nbsp;&nbsp;EQU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;340Q&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Port base<br>
+UB9600&nbsp;&nbsp;EQU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0014A&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Baud rate divisor<br>
+<br>
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Initialize the 8250<br>
+<br>
+INIT&nbsp;&nbsp;&nbsp;&nbsp;EQU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MVI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A,UC.DLA<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OUT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PORT+UR.LCR&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Set divisor latch<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MVI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A,#UB9600&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LSB of 9600 baud divisor<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OUT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PORT+UR.DLL<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MVI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A,UB9600/256&nbsp;&nbsp;&nbsp;&nbsp;MSB of 9600 baud divisor<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OUT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PORT+UR.DLM<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MVI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A,UC.7BW+UC.PEN+UC.EPS<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OUT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PORT+UR.LCR&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;7 bits, even parity<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MVI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A,UC.DTR+UC.RTS<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OUT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PORT+UR.MCR&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DTR and RTS signals up<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IN&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PORT+UR.LSR&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Read and clear status registers<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IN&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PORT+UR.MSR<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RET<br>
+<br>
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Read data<br>
+<br>
+READ&nbsp;&nbsp;&nbsp;&nbsp;EQU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IN&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PORT+UR.LSR<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ANI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;UC.DR&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Data ready?<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;JZ&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;READ&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Nothing to read - wait<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IN&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PORT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(A) = read data<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RET<br>
+<br>
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Write&nbsp;data<br>
+<br>
+WRITE&nbsp;&nbsp;&nbsp;EQU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PUSH&nbsp;&nbsp;&nbsp;&nbsp;PSW&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Save byte to write<br>
+WRITE1&nbsp;&nbsp;EQU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IN&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PORT+UR.LSR<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ANI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;UC.THE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Transmitter ready for write?<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;JZ&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WRITE1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;No - wait for it<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;POP&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PSW<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OUT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PORT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Write byte<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RET<br>
+</font>
+<font face="Geneva,Arial" size=2>
+<p><a href="#top">go to top</a></p>
+</font>
+</ul>
+
+<hr>
+
+<font face="Verdana,Geneva" size=3 color="#0000FF">
+<p>
+<a name="emu"></a>
+<b>Emulator-Specific Notes</b>
+</p>
+</font>
+<ul>
+<font face="Geneva,Arial" size=2>
+<p>The emulator provides a very complete implementation of the 8250 UART, and all most functions documented above either work as documented or, where they provide no function, can be used with no harm.</p>
+<p>The emulator has no need for baud rates and dataset signals, so programs written strictly to be run on the emulator do not need to bother with them.</p>
+<p>The emulator ignores the selected number of data bits and parity; effectively, you get 8-bits, no parity, no matter what you select.</p>
+<p>All interrupts are supported. However, understand the issues raised in <a href="feat.html">features</a> before using any interrupt on any port, other than receiver interrupts on the console port.</p>
+<p>Incoming break from the console port (user pressed the <a href="h19kb.html#main">F12</a> key) will be signaled by setting UC.BI and UC.FE, and a null (000Q) will be loaded into the receiver buffer, so you can detect break using either the break indicator or the framing error/null method.</p>
+<p> If you send break on the modem port, the emulator will see to it that the break condition is held on the line for 300ms; you need only set/reset UC.SB.</p>
+<p>You will never see a transition in the transmitter shift register. Serial transmission inside the emulator is immediate and takes no time, so the transmitter holding register is generally always empty. However, in some cases it's used as an internal flow-control mechanism - for example, the H-19 process controls UC.THE to hold output to a maximum of 2,000 cps. So do make sure to check UC.THE before writing, as in the example.</p>
+</font>
+
+<font face="Geneva,Arial" size=2>
+<p><a href="#top">go to top</a></p>
+</font>
+</ul>
+
+<hr>
+<font face="Geneva,Arial" size=1>
+<center>
+<a href="program.html">Programming Table of Contents</a>
+<br><br>
+<a href="../h8_toc.html">Main Table of Contents</a>
+</center>
+
+</font>
+</body>
+
 <!-- Mirrored from davidwallace2000.home.comcast.net/~davidwallace2000/h8/project8080_archive/pgs/8250.html by HTTrack Website Copier/3.x [XR&CO'2010], Mon, 10 Sep 2012 13:15:46 GMT -->
-</html>
+</html>
+
+

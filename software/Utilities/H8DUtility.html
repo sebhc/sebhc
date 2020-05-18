@@ -1,448 +1,664 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html><head>
-<meta content="text/html; charset=ISO-8859-1" http-equiv="content-type"><title>H8D Utility</title>
+<html>
 
+<head>
+    <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type" />
+    <title>H8D Utility</title>
 </head>
+
 <body>
-<div style="text-align: center;"><big><big style="font-weight: bold; text-decoration: underline;"><big><span style="font-family: Courier New,Courier,monospace;">H8D
-UTILITY</span></big></big></big><br>
-<span style="font-family: Courier New,Courier,monospace;">Written
-by Les Bird in 2009<br>
-<br>
-The
-H8D Utility is a program with the purpose of managing disk images in
-the H8D format. This is the format used for the Heathkit 8-bit
-computers such as the H8 and H89. On this web site are several <a href="../../software.html">hundred disk images</a> for
-the Heathkit 8-bit computers.<br>
-<br>
-The utility includes the following functionality:<br>
-</span><br>
-<span style="font-family: Courier New,Courier,monospace;">-&nbsp;Catalogs
-disk images outputting to text or HTML files</span><br>
-<span style="font-family: Courier New,Courier,monospace;">-&nbsp;Create
-disk images by reading disks from a real Heathkit computer and
-downloading the image over a serial port connection</span><br>
-<span style="font-family: Courier New,Courier,monospace;">-&nbsp;Send
-disk images to a real Heathkit computer over a serial port connection
-and write them to a floppy disk</span><br>
-<span style="font-family: Courier New,Courier,monospace;">-&nbsp;Send
-disk images to and from a Semi-Virtual Disk drive (SVD) using the
-integrated SVD control panel</span><br>
-<span style="font-family: Courier New,Courier,monospace;">-&nbsp;Try
-the disk images in the integrated H-89 emulator</span><br>
-<span style="font-family: Courier New,Courier,monospace;"><br>
-This web page explains&nbsp;how to use the H8D Utility.<br>
-<br>
-</span>
-<hr style="width: 100%; height: 2px;"><span style="font-family: Courier New,Courier,monospace;"><br>
-<big style="text-decoration: underline; font-weight: bold;">CATALOGING</big><br>
-<br>
-To use the utility for generating a catalog of the contents of all your
-disk images, follow these steps:<br>
-<br>
-Click the <span style="font-weight: bold;">FOLDER</span>
-button and select a folder where your disk images reside. A list of
-disk images will be shown on the left side panel.<br>
-<br>
-<img src="H8DUtility/Image1_2.jpg" style="width: 900px; height: 679px;" alt=""><br>
-<br>
-<br>
-<br>
-Now select one or more disk images on the left side window and click
-the <span style="font-weight: bold;">CATALOG</span>
-button.<br>
-<br>
-<img src="H8DUtility/Image5.jpg" style="width: 900px; height: 679px;" alt=""><br>
-<br>
-<br>
-To generate a list of files from all of your disk images just leave
-them all unselected when you click the <span style="font-weight: bold;">CATALOG</span> button.<br>
-<br>
-<img src="H8DUtility/Image6.jpg" style="width: 900px; height: 679px;" alt=""><br>
-<br>
-</span>
-<hr style="width: 100%; height: 2px;"><span style="font-family: Courier New,Courier,monospace;"><br>
-<big style="font-weight: bold; text-decoration: underline;">VIEW
-AND EXTRACT<br>
-</big><br>
-With
-the disk contents listed on the right side you can scroll through the
-list, view any of the text files and extract any of the files to your
-PC hard disk. Just select the file on the right side and click the <span style="font-weight: bold;">VIEW</span> or <span style="font-weight: bold;">EXTRACT</span>
-button. When you extract a file it is stored in a folder with the name
-of the disk image file and "_Files" appended to it. To extract all the
-files from all the disk images just leave the files on the right side
-unselected when you press the <span style="font-weight: bold;">EXTRACT</span>
-button.<br>
-<br>
-<img src="H8DUtility/Image7.jpg" style="width: 900px; height: 679px;" alt=""><br>
-<br>
-<br>
-To save a text or HTML file with the disk catalog just press one of the
-<span style="font-weight: bold;">SAVE TO TEXT</span>
-or <span style="font-weight: bold;">SAVE TO HTML</span>
-buttons. A file will be generated with the contents of the right side
-panel and saved to your hard disk. The file will be in the disk image
-folder you selected on the left side (where the images are) with the
-name <span style="text-decoration: underline;">H8DCATALOG.TXT</span>
-or <span style="text-decoration: underline;">H8DCATALOG.HTML</span>.<br>
-<br>
-</span>
-<hr style="width: 100%; height: 2px;"><br>
-<big style="font-weight: bold; text-decoration: underline; font-family: Courier New,Courier,monospace;">READ
-AND WRITE DISK IMAGES</big><br>
-<span style="font-family: Courier New,Courier,monospace;"><br>
-The
-H8D Utility also allows you to create H8D disk images. This is done
-using Dwight Elvey's fantastic H89LDR program. The H8D Utility has many
-of the H89LDR control program features built in. To use this feature
-follow these steps.<br>
-<br>
-First, load the H8D Utility and press the CREATE button.<br>
-<br>
-<img src="H8DUtility/Image1_8.jpg" style="width: 900px; height: 679px;" alt=""><br>
-<br>
-The H89LDR program works by connecting your PC computer to your H8 or
-H89 via a serial cable link. When you press the <span style="font-weight: bold;">CREATE</span>
-button you will be presented with this screen where you can configure
-the COM port to use for communicating with the Heathkit computer.<br>
-<br>
-The next step is to press the <span style="font-weight: bold;">Client
-Status</span> button.<br>
-<br>
-<img src="H8DUtility/Image1_9.jpg" style="width: 900px; height: 679px;" alt=""><br>
-<br>
-At
-first you will see the above screen. No communications has been
-established yet between your PC and the Heathkit computer. Now you
-should follow Dwight's <a href="H8DUtility/README.TXT" target="_blank">README</a> file and key in one of the
-following bootstrap programs:<br>
-<br>
-<a href="H8DUtility/BOOTSTRP.TXT" target="_blank">H8
-with H8-4 or H89</a><br>
-<br>
-<a href="H8DUtility/BOTSTRP8.TXT" target="_blank">H8
-with H8-5 Cassette I/O board</a><br>
-<br>
-Once the bootstrap program is entered and it is running on the Heathkit
-computer you can press the <span style="font-weight: bold;">SAVE</span>
-button to transmit the H89LDR client software. At this point the client
-software is running on the Heathkit computer and if everything went
-well you should see a "Client is ready" message in the log window. The
-H8D Utility will then ask if you wish to save the H89LDR program on the
-Heathkit computer to a disk so that you can boot directly to the loader
-client. Make sure you have a formatted disk in the Heathkit computer
-SY0 disk drive and select <span style="font-weight: bold;">YES</span>
-to create the boot disk or <span style="font-weight: bold;">NO</span>
-to skip this step.<br>
-<br>
-Once communications has been established between the Heathkit computer
-and your PC you can then click <span style="font-weight: bold;">RECEIVE</span>
-to copy a disk from your Heathkit computer to your PC or <span style="font-weight: bold;">SEND</span> to copy a disk
-from your PC to your Heathkit computer. Keep in mind that if you click <span style="font-weight: bold;">SEND</span>, once you
-select an image file and answer <span style="font-weight: bold;">YES</span>
-to start the process it will overwrite whatever disk is in your
-Heathkit computer so make sure you have a blank or unimportant disk in
-the SY0 drive.<br>
-<br>
-</span>
-<hr style="width: 100%; height: 2px;"><big style="font-weight: bold; text-decoration: underline; font-family: Courier New,Courier,monospace;"><br>
-THE SVD CONTROL PROGRAM</big><span style="font-family: Courier New,Courier,monospace;"><br>
-<br>
-As of&nbsp;version 1.45 of the H8D Utility you can&nbsp;send
-and receive disk images to and from the <a href="http://www.thesvd.com" target="_blank">SVD</a>
-(Semi-Virtual Disk). To use the built-in SVD Control Program click on
-the <span style="font-weight: bold;">SVD</span>
-button on the main screen.<br>
-<br>
-<img src="H8DUtility/Image10.jpg" style="width: 901px; height: 695px;" alt="H8D Utility SVD Control Program"><br>
-<br>
-</span><span style="font-family: Courier New,Courier,monospace;">A pop-up
-window will appear with SVD controls where you can select the
-COM port to use and whether or not to use 115200 baud. Without the
-115200 box checked the default baud rate of 57600 is used. With my
-particular PC the reliability is greatly increased by using the default
-baud rate. When I check 115200 on my system I get errors when receiving
-disk images but most of the time I can send images to the SVD just fine.<br>
-<br>
-Once you select the COM port and baud rate click on the <span style="font-weight: bold;">CHECK</span> button to
-connect to the SVD.<br>
-<br>
-<img src="H8DUtility/Image12.jpg" style="width: 569px; height: 562px;" alt="H8D Utility SVD Control Program"><br>
-<br>
-A connection message will appear along with the version of the SVD
-firmware.<br>
-</span><span style="font-family: Courier New,Courier,monospace;"><br>
-<span style="text-decoration: underline;">SEND A DISK
-IMAGE TO THE SVD</span><br>
-<br>
-To send a disk image to the SVD click on the <span style="font-weight: bold;">LOAD</span>
-button for the virtual drive you want to load the image to. A window
-will appear where you can choose a disk image to use. Navigate to the
-folder where the disk images are and select one of the files to send
-then click the <span style="font-weight: bold;">OPEN</span>
-button. You can also double-click the file.<br>
-<br>
-<img src="H8DUtility/Image11.jpg" style="width: 563px; height: 419px;" alt="H8D Utility SVD Control Program"><br>
-<br>
-</span><span style="font-family: Courier New,Courier,monospace;">Once a
-file
-is selected it will be immediately transmitted to the SVD and the SVD
-will be started. Do this for each drive you want to populate.<br>
-<br>
-</span><span style="font-family: Courier New,Courier,monospace;"><img src="H8DUtility/Image13.jpg" style="width: 569px; height: 562px;" alt="H8D Utility SVD Control Program"><br>
-<br>
-When
-the transfer is completed the SVD will be started. You can then begin
-using the images from your Heathkit computer. If you want to populate
-another virtual drive go ahead and click the <span style="font-weight: bold;">LOAD</span> button for that
-drive and send the file. If you wish to re-send the current disk image
-file to the SVD just click on the <span style="font-weight: bold;">RELOAD</span>
-button.<br>
-<br>
-<img src="H8DUtility/Image14.jpg" style="width: 569px; height: 562px;" alt="H8D Utility SVD Control Program"><br>
-<br>
-<span style="text-decoration: underline;">RECEIVE A DISK
-IMAGE FROM THE SVD</span><br>
-<br>
-To receive a disk image from the SVD click on the <span style="font-weight: bold;">SAVE</span>
-button for the virtual&nbsp;drive that you want to copy the image
-from.
-A window will appear so that you can choose where to save the file and
-what to name it.<br>
-<br>
-<img src="H8DUtility/Image15.jpg" style="width: 563px; height: 419px;" alt="H8D Utility SVD Control Program"><br>
-<br>
-&nbsp;The image that is currently in that drive slot on the SVD
-will be transmitted and saved to the PC.<br>
-<br>
-<img src="H8DUtility/Image16.jpg" style="width: 569px; height: 562px;" alt="H8D Utility SVD Control Program"><br>
-<br>
-<span style="font-weight: bold; text-decoration: underline;">IMPORTANT
-NOTE ON FILE EXTENSIONS</span><br>
-<br>
-The default format for disk images when sent and received is the <span style="text-decoration: underline;">SVD</span> format.
-All files will be saved with the ".SVD" extension. To save the file in
-the <span style="text-decoration: underline;">H8D</span>
-format just change the&nbsp;extension to be ".H8D" when you name
-the file. It will then be converted from the&nbsp;<span style="text-decoration: underline;">SVD</span> format
-to <span style="text-decoration: underline;">H8D</span>
-and then saved to the hard drive of your PC. You can also choose to
-save it in the <span style="text-decoration: underline;">H17</span>
-text format by changing the extension to ".H17". The only supported
-formats right now are <span style="text-decoration: underline;">SVD</span>,
-<span style="text-decoration: underline;">H8D</span>
-and <span style="text-decoration: underline;">H17</span>.<br>
-<br>
-</span>
-<hr style="width: 100%; height: 2px;"><big style="font-weight: bold; text-decoration: underline; font-family: Courier New,Courier,monospace;"><br>
-THE H-89 EMULATOR<br>
-</big><span style="font-family: Courier New,Courier,monospace;"><br>
-The
-H8D Utility has a built-in H-89 emulator so that you can try any of the
-H8D disk images. The following operating
-systems are supported with the current version of the emulator:<br>
-<br>
-HDOS 1.6<br>
-HDOS 2.0<br>
-HDOS 3.0<br>
-CP/M 2.2.02<br>
-CP/M 2.2.03<br>
-CP/M 2.2.04<br>
-<br>
-&nbsp;To launch the emulator click on the <span style="font-weight: bold;">EMULATOR</span> button.<br>
-<br>
-<img src="H8DUtility/Emulator1.jpg" style="width: 800px; height: 621px;" alt="Heathkit H-89 emulator"><br>
-<br>
-The
-H-89 emulator control panel will pop up.<br>
-<br>
-<img style="width: 585px; height: 718px;" alt="Heathkit H89 Emulator" src="H8DUtility/Emulator8.jpg"><br>
-<br>
-From the control panel you can
-load H8D disk images into any of the drive slots by clicking the drive
-slot button (<span style="font-weight: bold;">SY0</span>
-thru <span style="font-weight: bold;">SY2</span>).
-You
-can also select a system ROM and output terminal to emulate. Note that
-the output terminal is simulated, not emulated. By that I mean that it
-does not actually use the terminal ROM (although it does use the
-terminal FONT). It&nbsp;simply translates the ESC sequences for any
-special cursor functions or graphic characters and displays them
-accordingly. Most of
-the time you'll use the defaults which are the <span style="text-decoration: underline;">444-62 (MTR-89)</span>
-system ROM and <span style="text-decoration: underline;">H-19</span>
-terminal. Once you have loaded disk images you can click on the <span style="font-weight: bold;">RUN</span>
-button and the output window will appear with the H-89 system prompt
-"H:". From the system prompt you can execute several system ROM
-commands but the primary use will be to boot to a disk operating system
-such as HDOS or CP/M. To do this press the "B" key and press ENTER.
-This will boot from the disk image that is loaded into the primary
-device which is SY0.<br>
-<br>
-<img src="H8DUtility/Emulator2.jpg" style="width: 800px; height: 481px;" alt="Heathkit H-89 emulator"><br>
-<br>
-<span style="font-weight: bold; text-decoration: underline;">IMPORTANT
-NOTE:</span> If
-you are booting from a distribution image of HDOS it may appear that
-the system has hung but in fact it is waiting for you&nbsp;to press
-the&nbsp;<span style="text-decoration: underline;">SPACEBAR</span>
-so that the operating system can auto-detect your terminal baud rate.
-After you press the&nbsp;<span style="text-decoration: underline;">SPACEBAR</span>
-the boot process will begin.<br>
-<br>
-<img src="H8DUtility/Emulator3.jpg" style="width: 800px; height: 481px;" alt="Heathkit H-89 emulator"><br>
-<br>
-To learn more about the HDOS operating system download one of the <a href="../../documentation.html" target="_blank">operating
-manuals</a> from this web site. At the HDOS prompt&nbsp;you
-can type <span style="text-decoration: underline;">CAT</span>
-to get a catalog of files, type in the name of any of the <span style="text-decoration: underline;">.ABS</span> files
-to execute them and <span style="text-decoration: underline;">MOUNT</span>
-and <span style="text-decoration: underline;">DISMOUNT</span>
-disks. The boot drive is always assigned SY0 and the other two drives
-are SY1 and SY2.<br>
-<br>
-<img src="H8DUtility/Emulator4.jpg" style="width: 800px; height: 481px;" alt="Heathkit H-89 emulator"><br>
-<br>
-<span style="text-decoration: underline;">THE 2MHz CHECKBOX</span><br>
-<br>
-<img style="width: 563px; height: 163px;" alt="Heathkit H89 emulator" src="H8DUtility/Emulator9.jpg"><br>
-<br>
-Switch
-back over to the control panel at anytime to change disk images or turn
-on other features of the emulator. When playing games you will want to
-make sure you turn on the <span style="font-weight: bold;">2MHz</span>
-checkbox so that the system runs close to the speed of the real system.
-By default the button is not checked and the emulator runs at full
-speed.<br>
-<br>
-<span style="text-decoration: underline;">THE RESET BUTTON</span><br>
-<br>
-<img style="width: 585px; height: 129px;" alt="Heathkit H89 emulator" src="H8DUtility/EmulatorA.jpg"><br>
-<br>
-&nbsp;Click
-the RESET button on the control panel to reset the emulation. This will
-reset all the internal flags and reload the system ROM. This is the
-same as pressing SHIFT-RESET on the real computer to issue a system
-reset which will take you back to the system ROM prompt "H:".<br>
-<br>
-<span style="text-decoration: underline;">THE DOOR BUTTON</span><br>
-<br>
-<img style="width: 584px; height: 204px;" alt="Heathkit H89 emulator" src="H8DUtility/EmulatorB.jpg"><br>
-<br>
-There is a <span style="font-weight: bold;">DOOR</span>
-button next to the drive slots (SY0 thru SY2). This simulates opening
-the drive door on a real system. Some of the HDOS utilities would
-auto-detect when you inserted a new disk by waiting for the drive door
-to open. When you close the door it'll read the sector headers and
-determine if a different disk has been inserted. If you run an HDOS
-utility that says something like "Insert destination:" and waits there,
-it is usually waiting for a new image to be inserted. You can then
-click the <span style="font-weight: bold;">DOOR</span>
-button (it now reads CLOSE), load a new disk image, and click the <span style="font-weight: bold;">CLOSE</span> button.<br>
-<br>
-<span style="text-decoration: underline;">YELLOW DRIVE
-BUTTONS</span><br>
-<br>
-<img style="width: 584px; height: 204px;" alt="Heathkit H89 emulator" src="H8DUtility/EmulatorC.jpg"><br>
-<br>
-When
-a drive slot button (SY0 thru SY2) turns yellow, that means the image
-in memory is now dirty (it was written to). Click the yellow drive
-button to save the "in-memory" image to the hard drive. Usually when
-you change some HDOS parameters you'll want to save out a new disk
-image so that the parameters will load the next time you boot.<br>
-<br>
-<span style="text-decoration: underline;">DRIVE DENSITY
-SELECTION BOX</span><br>
-<br>
-<img style="width: 584px; height: 204px;" alt="Heathkit H89 emulator" src="H8DUtility/EmulatorD.jpg"><br>
-<br>
-The
-drive density drop down box will determine the capacity of the disk for
-that drive slot. You can choose from 1S/40T (one sided, 40 track 100KB)
-all the way up to 2S/80T (two sided, 80 track 400KB). This option is
-only useful when using a version of HDOS or CP/M that supports higher
-capacity drives. In the <a href="H8DBootables.zip">H8D
-Bootables</a> zip file are bootable versions of HDOS and CP/M
-that support this feature. <span style="text-decoration: underline;"><span style="font-weight: bold;">IMPORTANT NOTE:</span></span><span style="font-weight: bold;"></span>
-My emulator cannot auto-detect how the drives are configured from the
-booted operating system so you need to know this information and setup
-the drive capacities appropriately.<br>
-<br>
-<span style="text-decoration: underline;">HIGH CAPACITY
-DRIVES USING HDOS</span><br>
-<br>
-For HDOS, boot with either the <span style="text-decoration: underline;">HDOS_2-0_System_Hsy.h8d</span>&nbsp;or
-the <span style="text-decoration: underline;">HDOS_3-02_System.h8d</span>
-disk images. HDOS 2.0 supports higher capacity drives using the HUG SY
-(HSY) device driver which is available on HUG disk part #885-1095. For
-your convenience I already installed the HSY device driver in the
-HDOS_2-0_System_Hsy disk image. Drives SY1 and SY2 are configured as
-2S/80T drives for this disk image. HDOS 3.0 supports high capacity
-drives natively so no special device drivers are required.<br>
-<br>
-<span style="text-decoration: underline;">HIGH CAPACITY
-DRIVES USING CP/M</span><br>
-<br>
-Heath
-CP/M requires the BIOS-80 extension to support high capacity drives.
-The installation of BIOS-80 is rather complicated so I setup a version
-of CP/M 2.2.03 with the extension already installed and saved it as <span style="text-decoration: underline;">CPM_2-2-03_Bios80_Zcpr.h8d</span>.
-It is pre-configured with drive SY0 as a 1S/40T drive and drives SY1
-and SY2 as 2S/80T drives. When you boot with the BIOS-80 disk image
-make sure you change the drive capacity for SY1 and SY2 to be 2S/80T.<br>
-<br>
-<span style="text-decoration: underline;">FORMATTING HIGH
-CAPACITY DISK IMAGES</span><br>
-<br>
-In HDOS you run the <span style="text-decoration: underline;">INIT</span>
-program from the HSY system disk to format high capacity disk images.
-Drives SY1 and SY2 are setup as 2S/80T drives and the <span style="text-decoration: underline;">INIT</span>
-program will ask if you want to format a double sided disk. If you
-answer YES it will begin the format process for a 400KB disk image. If
-you answer NO it will begin the format process for a 200KB (1S/80T)
-disk image. When using the HSY system disk you can only write to 80
-track disk images (one or two sided) but you can read both 40 and 80
-track images.<br>
-<br>
-In CP/M the FORMAT program does not work in my
-emulator. To create an empty disk image all you have to do is select
-the capacity for the drive you want to "format" (2S/80T for SY1 and
-SY2) and type "ERA B:*.*" (for SY1) or "ERA C:*.*" (for SY2) and answer
-"Y" to the "ALL" prompt. This will create a 400KB image and write out a
-new directory structure to create an empty disk image. That's all you
-need to do to setup a blank disk image in CP/M. In the H8D Bootables
-zip file you'll find an empty disk image that has already been
-formatted for use with BIOS-80 CP/M. It is called <span style="text-decoration: underline;">CPM_2-2-03_2S80T.H8D</span>.<br>
-<br>
-</span>
-<hr style="width: 100%; height: 2px;"><span style="font-family: Courier New,Courier,monospace;"><br>
-This concludes the basic operations of the H-89 emulator.<br>
-<br>
-</span>
-<hr style="width: 100%; height: 2px;"><span style="font-family: Courier New,Courier,monospace;"><br>
-Some screen shots from the H-89 emulator follow:<br>
-<br>
-<img style="width: 800px; height: 488px;" alt="Heathkit H-89 emulator" src="H8DUtility/Emulator5.jpg"><br>
-<br>
-<img style="width: 800px; height: 481px;" alt="Heathkit H-89 emulator" src="H8DUtility/Emulator6.jpg"><br>
-<br>
-<img style="width: 800px; height: 481px;" alt="Heathkit H-89 emulator" src="H8DUtility/Emulator7.jpg"><br>
-<br>
-</span><span style="font-family: Courier New,Courier,monospace;"></span>
-<hr style="width: 100%; height: 2px;"><br>
-<a href="../../software.html"><span style="font-family: Courier New,Courier,monospace;">BACK to
-the software page</span></a><br style="font-family: Courier New,Courier,monospace;">
-<br style="font-family: Courier New,Courier,monospace;">
-<span style="font-family: Courier New,Courier,monospace;">February
-10, 2010</span><br style="font-family: Courier New,Courier,monospace;">
-<br style="font-family: Courier New,Courier,monospace;">
-<a href="mailto:lesbird@lesbird.com"><span style="font-family: Courier New,Courier,monospace;">e-mail</span></a><br style="font-family: Courier New,Courier,monospace;">
-<span style="font-family: Courier New,Courier,monospace;"><br>
-</span></div>
-<a title="Real Time Web Analytics" href="http://getclicky.com/66360494"><img alt="Real Time Web Analytics" src="http://static.getclicky.com/media/links/badge.gif" border="0"></a>
-<script src="http://static.getclicky.com/js" type="text/javascript"></script>
-<script type="text/javascript">try{ clicky.init(66360494); }catch(err){}</script>
-<noscript><p><img alt="Clicky" width="1" height="1" src="http://in.getclicky.com/66360494ns.gif" /></p></noscript>
-</body></html>
+    <div style="text-align: center;">
+        <big><big style="font-weight: bold; text-decoration: underline;"
+          ><big
+            ><span style="font-family: Courier New, Courier, monospace;"
+              >H8D UTILITY</span
+            ></big
+          ></big
+        ></big
+      ><br />
+      <span style="font-family: Courier New, Courier, monospace;"
+        >Written by Les Bird in 2009<br />
+        <br />
+        The H8D Utility is a program with the purpose of managing disk images in
+        the H8D format. This is the format used for the Heathkit 8-bit computers
+        such as the H8 and H89. On this web site are several
+        <a href="../../software.html">hundred disk images</a> for the Heathkit
+        8-bit computers.<br />
+        <br />
+        The utility includes the following functionality:<br /> </span
+      ><br />
+      <span style="font-family: Courier New, Courier, monospace;"
+        >-&nbsp;Catalogs disk images outputting to text or HTML files</span
+      ><br />
+      <span style="font-family: Courier New, Courier, monospace;"
+        >-&nbsp;Create disk images by reading disks from a real Heathkit
+        computer and downloading the image over a serial port connection</span
+      ><br />
+      <span style="font-family: Courier New, Courier, monospace;"
+        >-&nbsp;Send disk images to a real Heathkit computer over a serial port
+        connection and write them to a floppy disk</span
+      ><br />
+      <span style="font-family: Courier New, Courier, monospace;"
+        >-&nbsp;Send disk images to and from a Semi-Virtual Disk drive (SVD)
+        using the integrated SVD control panel</span
+      ><br />
+      <span style="font-family: Courier New, Courier, monospace;"
+        >-&nbsp;Try the disk images in the integrated H-89 emulator</span
+      ><br />
+      <span style="font-family: Courier New, Courier, monospace;"
+        ><br />
+        This web page explains&nbsp;how to use the H8D Utility.<br />
+        <br />
+      </span>
+      <hr style="width: 100%; height: 2px;" />
+      <span style="font-family: Courier New, Courier, monospace;"
+        ><br />
+        <big style="text-decoration: underline; font-weight: bold;"
+          >CATALOGING</big
+        ><br />
+        <br />
+        To use the utility for generating a catalog of the contents of all your
+        disk images, follow these steps:<br />
+        <br />
+        Click the <span style="font-weight: bold;">FOLDER</span> button and
+        select a folder where your disk images reside. A list of disk images
+        will be shown on the left side panel.<br />
+        <br />
+        <img
+          src="H8DUtility/Image1_2.jpg"
+          style="width: 900px; height: 679px;"
+          alt=""
+        /><br />
+        <br />
+        <br />
+        <br />
+        Now select one or more disk images on the left side window and click the
+        <span style="font-weight: bold;">CATALOG</span> button.<br />
+        <br />
+        <img
+          src="H8DUtility/Image5.jpg"
+          style="width: 900px; height: 679px;"
+          alt=""
+        /><br />
+        <br />
+        <br />
+        To generate a list of files from all of your disk images just leave them
+        all unselected when you click the
+        <span style="font-weight: bold;">CATALOG</span> button.<br />
+        <br />
+        <img
+          src="H8DUtility/Image6.jpg"
+          style="width: 900px; height: 679px;"
+          alt=""
+        /><br />
+        <br />
+      </span>
+      <hr style="width: 100%; height: 2px;" />
+      <span style="font-family: Courier New, Courier, monospace;"
+        ><br />
+        <big style="font-weight: bold; text-decoration: underline;"
+          >VIEW AND EXTRACT<br /> </big
+        ><br />
+        With the disk contents listed on the right side you can scroll through
+        the list, view any of the text files and extract any of the files to
+        your PC hard disk. Just select the file on the right side and click the
+        <span style="font-weight: bold;">VIEW</span> or
+        <span style="font-weight: bold;">EXTRACT</span> button. When you extract
+        a file it is stored in a folder with the name of the disk image file and
+        "_Files" appended to it. To extract all the files from all the disk
+        images just leave the files on the right side unselected when you press
+        the <span style="font-weight: bold;">EXTRACT</span> button.<br />
+        <br />
+        <img
+          src="H8DUtility/Image7.jpg"
+          style="width: 900px; height: 679px;"
+          alt=""
+        /><br />
+        <br />
+        <br />
+        To save a text or HTML file with the disk catalog just press one of the
+        <span style="font-weight: bold;">SAVE TO TEXT</span>
+        or <span style="font-weight: bold;">SAVE TO HTML</span> buttons. A file
+        will be generated with the contents of the right side panel and saved to
+        your hard disk. The file will be in the disk image folder you selected
+        on the left side (where the images are) with the name
+        <span style="text-decoration: underline;">H8DCATALOG.TXT</span> or
+        <span style="text-decoration: underline;">H8DCATALOG.HTML</span>.<br />
+        <br />
+      </span>
+      <hr style="width: 100%; height: 2px;" />
+      <br />
+      <big
+        style="
+          font-weight: bold;
+          text-decoration: underline;
+          font-family: Courier New, Courier, monospace;
+        "
+        >READ AND WRITE DISK IMAGES</big
+      ><br />
+      <span style="font-family: Courier New, Courier, monospace;"
+        ><br />
+        The H8D Utility also allows you to create H8D disk images. This is done
+        using Dwight Elvey's fantastic H89LDR program. The H8D Utility has many
+        of the H89LDR control program features built in. To use this feature
+        follow these steps.<br />
+        <br />
+        First, load the H8D Utility and press the CREATE button.<br />
+        <br />
+        <img
+          src="H8DUtility/Image1_8.jpg"
+          style="width: 900px; height: 679px;"
+          alt=""
+        /><br />
+        <br />
+        The H89LDR program works by connecting your PC computer to your H8 or
+        H89 via a serial cable link. When you press the
+        <span style="font-weight: bold;">CREATE</span> button you will be
+        presented with this screen where you can configure the COM port to use
+        for communicating with the Heathkit computer.<br />
+        <br />
+        The next step is to press the
+        <span style="font-weight: bold;">Client Status</span> button.<br />
+        <br />
+        <img
+          src="H8DUtility/Image1_9.jpg"
+          style="width: 900px; height: 679px;"
+          alt=""
+        /><br />
+        <br />
+        At first you will see the above screen. No communications has been
+        established yet between your PC and the Heathkit computer. Now you
+        should follow Dwight's
+        <a href="H8DUtility/README.TXT" target="_blank">README</a> file and key
+        in one of the following bootstrap programs:<br />
+        <br />
+        <a href="H8DUtility/BOOTSTRP.TXT" target="_blank">H8 with H8-4 or H89</a
+        ><br />
+        <br />
+        <a href="H8DUtility/BOTSTRP8.TXT" target="_blank"
+          >H8 with H8-5 Cassette I/O board</a
+        ><br />
+        <br />
+        Once the bootstrap program is entered and it is running on the Heathkit
+        computer you can press the
+        <span style="font-weight: bold;">SAVE</span> button to transmit the
+        H89LDR client software. At this point the client software is running on
+        the Heathkit computer and if everything went well you should see a
+        "Client is ready" message in the log window. The H8D Utility will then
+        ask if you wish to save the H89LDR program on the Heathkit computer to a
+        disk so that you can boot directly to the loader client. Make sure you
+        have a formatted disk in the Heathkit computer SY0 disk drive and select
+        <span style="font-weight: bold;">YES</span> to create the boot disk or
+        <span style="font-weight: bold;">NO</span> to skip this step.<br />
+        <br />
+        Once communications has been established between the Heathkit computer
+        and your PC you can then click
+        <span style="font-weight: bold;">RECEIVE</span> to copy a disk from your
+        Heathkit computer to your PC or
+        <span style="font-weight: bold;">SEND</span> to copy a disk from your PC
+        to your Heathkit computer. Keep in mind that if you click
+        <span style="font-weight: bold;">SEND</span>, once you select an image
+        file and answer <span style="font-weight: bold;">YES</span> to start the
+        process it will overwrite whatever disk is in your Heathkit computer so
+        make sure you have a blank or unimportant disk in the SY0 drive.<br />
+        <br />
+      </span>
+      <hr style="width: 100%; height: 2px;" />
+      <big
+        style="
+          font-weight: bold;
+          text-decoration: underline;
+          font-family: Courier New, Courier, monospace;
+        "
+        ><br />
+        THE SVD CONTROL PROGRAM</big
+      ><span style="font-family: Courier New, Courier, monospace;"
+        ><br />
+        <br />
+        As of&nbsp;version 1.45 of the H8D Utility you can&nbsp;send and receive
+        disk images to and from the
+        <a href="http://www.thesvd.com" target="_blank">SVD</a> (Semi-Virtual
+        Disk). To use the built-in SVD Control Program click on the
+        <span style="font-weight: bold;">SVD</span> button on the main
+        screen.<br />
+        <br />
+        <img
+          src="H8DUtility/Image10.jpg"
+          style="width: 901px; height: 695px;"
+          alt="H8D Utility SVD Control Program"
+        /><br />
+        <br /> </span
+      ><span style="font-family: Courier New, Courier, monospace;"
+        >A pop-up window will appear with SVD controls where you can select the
+        COM port to use and whether or not to use 115200 baud. Without the
+        115200 box checked the default baud rate of 57600 is used. With my
+        particular PC the reliability is greatly increased by using the default
+        baud rate. When I check 115200 on my system I get errors when receiving
+        disk images but most of the time I can send images to the SVD just
+        fine.<br />
+        <br />
+        Once you select the COM port and baud rate click on the
+        <span style="font-weight: bold;">CHECK</span> button to connect to the
+        SVD.<br />
+        <br />
+        <img
+          src="H8DUtility/Image12.jpg"
+          style="width: 569px; height: 562px;"
+          alt="H8D Utility SVD Control Program"
+        /><br />
+        <br />
+        A connection message will appear along with the version of the SVD
+        firmware.<br /> </span
+      ><span style="font-family: Courier New, Courier, monospace;"
+        ><br />
+        <span style="text-decoration: underline;"
+          >SEND A DISK IMAGE TO THE SVD</span
+        ><br />
+        <br />
+        To send a disk image to the SVD click on the
+        <span style="font-weight: bold;">LOAD</span> button for the virtual
+        drive you want to load the image to. A window will appear where you can
+        choose a disk image to use. Navigate to the folder where the disk images
+        are and select one of the files to send then click the
+        <span style="font-weight: bold;">OPEN</span> button. You can also
+        double-click the file.<br />
+        <br />
+        <img
+          src="H8DUtility/Image11.jpg"
+          style="width: 563px; height: 419px;"
+          alt="H8D Utility SVD Control Program"
+        /><br />
+        <br /> </span
+      ><span style="font-family: Courier New, Courier, monospace;"
+        >Once a file is selected it will be immediately transmitted to the SVD
+        and the SVD will be started. Do this for each drive you want to
+        populate.<br />
+        <br /> </span
+      ><span style="font-family: Courier New, Courier, monospace;"
+        ><img
+          src="H8DUtility/Image13.jpg"
+          style="width: 569px; height: 562px;"
+          alt="H8D Utility SVD Control Program"
+        /><br />
+        <br />
+        When the transfer is completed the SVD will be started. You can then
+        begin using the images from your Heathkit computer. If you want to
+        populate another virtual drive go ahead and click the
+        <span style="font-weight: bold;">LOAD</span> button for that drive and
+        send the file. If you wish to re-send the current disk image file to the
+        SVD just click on the
+        <span style="font-weight: bold;">RELOAD</span> button.<br />
+        <br />
+        <img
+          src="H8DUtility/Image14.jpg"
+          style="width: 569px; height: 562px;"
+          alt="H8D Utility SVD Control Program"
+        /><br />
+        <br />
+        <span style="text-decoration: underline;"
+          >RECEIVE A DISK IMAGE FROM THE SVD</span
+        ><br />
+        <br />
+        To receive a disk image from the SVD click on the
+        <span style="font-weight: bold;">SAVE</span> button for the
+        virtual&nbsp;drive that you want to copy the image from. A window will
+        appear so that you can choose where to save the file and what to name
+        it.<br />
+        <br />
+        <img
+          src="H8DUtility/Image15.jpg"
+          style="width: 563px; height: 419px;"
+          alt="H8D Utility SVD Control Program"
+        /><br />
+        <br />
+        &nbsp;The image that is currently in that drive slot on the SVD will be
+        transmitted and saved to the PC.<br />
+        <br />
+        <img
+          src="H8DUtility/Image16.jpg"
+          style="width: 569px; height: 562px;"
+          alt="H8D Utility SVD Control Program"
+        /><br />
+        <br />
+        <span style="font-weight: bold; text-decoration: underline;"
+          >IMPORTANT NOTE ON FILE EXTENSIONS</span
+        ><br />
+        <br />
+        The default format for disk images when sent and received is the
+        <span style="text-decoration: underline;">SVD</span> format. All files
+        will be saved with the ".SVD" extension. To save the file in the
+        <span style="text-decoration: underline;">H8D</span> format just change
+        the&nbsp;extension to be ".H8D" when you name the file. It will then be
+        converted from the&nbsp;<span style="text-decoration: underline;"
+          >SVD</span
+        >
+        format to <span style="text-decoration: underline;">H8D</span> and then
+        saved to the hard drive of your PC. You can also choose to save it in
+        the <span style="text-decoration: underline;">H17</span> text format by
+        changing the extension to ".H17". The only supported formats right now
+        are <span style="text-decoration: underline;">SVD</span>,
+        <span style="text-decoration: underline;">H8D</span>
+        and <span style="text-decoration: underline;">H17</span>.<br />
+        <br />
+      </span>
+      <hr style="width: 100%; height: 2px;" />
+      <big
+        style="
+          font-weight: bold;
+          text-decoration: underline;
+          font-family: Courier New, Courier, monospace;
+        "
+        ><br />
+        THE H-89 EMULATOR<br /> </big
+      ><span style="font-family: Courier New, Courier, monospace;"
+        ><br />
+        The H8D Utility has a built-in H-89 emulator so that you can try any of
+        the H8D disk images. The following operating systems are supported with
+        the current version of the emulator:<br />
+        <br />
+        HDOS 1.6<br />
+        HDOS 2.0<br />
+        HDOS 3.0<br />
+        CP/M 2.2.02<br />
+        CP/M 2.2.03<br />
+        CP/M 2.2.04<br />
+        <br />
+        &nbsp;To launch the emulator click on the
+        <span style="font-weight: bold;">EMULATOR</span> button.<br />
+        <br />
+        <img
+          src="H8DUtility/Emulator1.jpg"
+          style="width: 800px; height: 621px;"
+          alt="Heathkit H-89 emulator"
+        /><br />
+        <br />
+        The H-89 emulator control panel will pop up.<br />
+        <br />
+        <img
+          style="width: 585px; height: 718px;"
+          alt="Heathkit H89 Emulator"
+          src="H8DUtility/Emulator8.jpg"
+        /><br />
+        <br />
+        From the control panel you can load H8D disk images into any of the
+        drive slots by clicking the drive slot button (<span
+          style="font-weight: bold;"
+          >SY0</span
+        >
+        thru <span style="font-weight: bold;">SY2</span>). You can also select a
+        system ROM and output terminal to emulate. Note that the output terminal
+        is simulated, not emulated. By that I mean that it does not actually use
+        the terminal ROM (although it does use the terminal FONT).
+        It&nbsp;simply translates the ESC sequences for any special cursor
+        functions or graphic characters and displays them accordingly. Most of
+        the time you'll use the defaults which are the
+        <span style="text-decoration: underline;">444-62 (MTR-89)</span> system
+        ROM and <span style="text-decoration: underline;">H-19</span> terminal.
+        Once you have loaded disk images you can click on the
+        <span style="font-weight: bold;">RUN</span> button and the output window
+        will appear with the H-89 system prompt "H:". From the system prompt you
+        can execute several system ROM commands but the primary use will be to
+        boot to a disk operating system such as HDOS or CP/M. To do this press
+        the "B" key and press ENTER. This will boot from the disk image that is
+        loaded into the primary device which is SY0.<br />
+        <br />
+        <img
+          src="H8DUtility/Emulator2.jpg"
+          style="width: 800px; height: 481px;"
+          alt="Heathkit H-89 emulator"
+        /><br />
+        <br />
+        <span style="font-weight: bold; text-decoration: underline;"
+          >IMPORTANT NOTE:</span
+        >
+        If you are booting from a distribution image of HDOS it may appear that
+        the system has hung but in fact it is waiting for you&nbsp;to press
+        the&nbsp;<span style="text-decoration: underline;">SPACEBAR</span> so
+        that the operating system can auto-detect your terminal baud rate. After
+        you press the&nbsp;<span style="text-decoration: underline;"
+          >SPACEBAR</span
+        >
+        the boot process will begin.<br />
+        <br />
+        <img
+          src="H8DUtility/Emulator3.jpg"
+          style="width: 800px; height: 481px;"
+          alt="Heathkit H-89 emulator"
+        /><br />
+        <br />
+        To learn more about the HDOS operating system download one of the
+        <a href="../../documentation.html" target="_blank">operating manuals</a>
+        from this web site. At the HDOS prompt&nbsp;you can type
+        <span style="text-decoration: underline;">CAT</span> to get a catalog of
+        files, type in the name of any of the
+        <span style="text-decoration: underline;">.ABS</span> files to execute
+        them and <span style="text-decoration: underline;">MOUNT</span> and
+        <span style="text-decoration: underline;">DISMOUNT</span> disks. The
+        boot drive is always assigned SY0 and the other two drives are SY1 and
+        SY2.<br />
+        <br />
+        <img
+          src="H8DUtility/Emulator4.jpg"
+          style="width: 800px; height: 481px;"
+          alt="Heathkit H-89 emulator"
+        /><br />
+        <br />
+        <span style="text-decoration: underline;">THE 2MHz CHECKBOX</span><br />
+        <br />
+        <img
+          style="width: 563px; height: 163px;"
+          alt="Heathkit H89 emulator"
+          src="H8DUtility/Emulator9.jpg"
+        /><br />
+        <br />
+        Switch back over to the control panel at anytime to change disk images
+        or turn on other features of the emulator. When playing games you will
+        want to make sure you turn on the
+        <span style="font-weight: bold;">2MHz</span> checkbox so that the system
+        runs close to the speed of the real system. By default the button is not
+        checked and the emulator runs at full speed.<br />
+        <br />
+        <span style="text-decoration: underline;">THE RESET BUTTON</span><br />
+        <br />
+        <img
+          style="width: 585px; height: 129px;"
+          alt="Heathkit H89 emulator"
+          src="H8DUtility/EmulatorA.jpg"
+        /><br />
+        <br />
+        &nbsp;Click the RESET button on the control panel to reset the
+        emulation. This will reset all the internal flags and reload the system
+        ROM. This is the same as pressing SHIFT-RESET on the real computer to
+        issue a system reset which will take you back to the system ROM prompt
+        "H:".<br />
+        <br />
+        <span style="text-decoration: underline;">THE DOOR BUTTON</span><br />
+        <br />
+        <img
+          style="width: 584px; height: 204px;"
+          alt="Heathkit H89 emulator"
+          src="H8DUtility/EmulatorB.jpg"
+        /><br />
+        <br />
+        There is a <span style="font-weight: bold;">DOOR</span> button next to
+        the drive slots (SY0 thru SY2). This simulates opening the drive door on
+        a real system. Some of the HDOS utilities would auto-detect when you
+        inserted a new disk by waiting for the drive door to open. When you
+        close the door it'll read the sector headers and determine if a
+        different disk has been inserted. If you run an HDOS utility that says
+        something like "Insert destination:" and waits there, it is usually
+        waiting for a new image to be inserted. You can then click the
+        <span style="font-weight: bold;">DOOR</span> button (it now reads
+        CLOSE), load a new disk image, and click the
+        <span style="font-weight: bold;">CLOSE</span> button.<br />
+        <br />
+        <span style="text-decoration: underline;">YELLOW DRIVE BUTTONS</span
+        ><br />
+        <br />
+        <img
+          style="width: 584px; height: 204px;"
+          alt="Heathkit H89 emulator"
+          src="H8DUtility/EmulatorC.jpg"
+        /><br />
+        <br />
+        When a drive slot button (SY0 thru SY2) turns yellow, that means the
+        image in memory is now dirty (it was written to). Click the yellow drive
+        button to save the "in-memory" image to the hard drive. Usually when you
+        change some HDOS parameters you'll want to save out a new disk image so
+        that the parameters will load the next time you boot.<br />
+        <br />
+        <span style="text-decoration: underline;"
+          >DRIVE DENSITY SELECTION BOX</span
+        ><br />
+        <br />
+        <img
+          style="width: 584px; height: 204px;"
+          alt="Heathkit H89 emulator"
+          src="H8DUtility/EmulatorD.jpg"
+        /><br />
+        <br />
+        The drive density drop down box will determine the capacity of the disk
+        for that drive slot. You can choose from 1S/40T (one sided, 40 track
+        100KB) all the way up to 2S/80T (two sided, 80 track 400KB). This option
+        is only useful when using a version of HDOS or CP/M that supports higher
+        capacity drives. In the <a href="H8DBootables.zip">H8D Bootables</a> zip
+        file are bootable versions of HDOS and CP/M that support this feature.
+        <span style="text-decoration: underline;"
+          ><span style="font-weight: bold;">IMPORTANT NOTE:</span></span
+        ><span style="font-weight: bold;"></span> My emulator cannot auto-detect
+        how the drives are configured from the booted operating system so you
+        need to know this information and setup the drive capacities
+        appropriately.<br />
+        <br />
+        <span style="text-decoration: underline;"
+          >HIGH CAPACITY DRIVES USING HDOS</span
+        ><br />
+        <br />
+        For HDOS, boot with either the
+        <span style="text-decoration: underline;">HDOS_2-0_System_Hsy.h8d</span
+        >&nbsp;or the
+        <span style="text-decoration: underline;">HDOS_3-02_System.h8d</span>
+        disk images. HDOS 2.0 supports higher capacity drives using the HUG SY
+        (HSY) device driver which is available on HUG disk part #885-1095. For
+        your convenience I already installed the HSY device driver in the
+        HDOS_2-0_System_Hsy disk image. Drives SY1 and SY2 are configured as
+        2S/80T drives for this disk image. HDOS 3.0 supports high capacity
+        drives natively so no special device drivers are required.<br />
+        <br />
+        <span style="text-decoration: underline;"
+          >HIGH CAPACITY DRIVES USING CP/M</span
+        ><br />
+        <br />
+        Heath CP/M requires the BIOS-80 extension to support high capacity
+        drives. The installation of BIOS-80 is rather complicated so I setup a
+        version of CP/M 2.2.03 with the extension already installed and saved it
+        as
+        <span style="text-decoration: underline;"
+          >CPM_2-2-03_Bios80_Zcpr.h8d</span
+        >. It is pre-configured with drive SY0 as a 1S/40T drive and drives SY1
+        and SY2 as 2S/80T drives. When you boot with the BIOS-80 disk image make
+        sure you change the drive capacity for SY1 and SY2 to be 2S/80T.<br />
+        <br />
+        <span style="text-decoration: underline;"
+          >FORMATTING HIGH CAPACITY DISK IMAGES</span
+        ><br />
+        <br />
+        In HDOS you run the
+        <span style="text-decoration: underline;">INIT</span> program from the
+        HSY system disk to format high capacity disk images. Drives SY1 and SY2
+        are setup as 2S/80T drives and the
+        <span style="text-decoration: underline;">INIT</span> program will ask
+        if you want to format a double sided disk. If you answer YES it will
+        begin the format process for a 400KB disk image. If you answer NO it
+        will begin the format process for a 200KB (1S/80T) disk image. When
+        using the HSY system disk you can only write to 80 track disk images
+        (one or two sided) but you can read both 40 and 80 track images.<br />
+        <br />
+        In CP/M the FORMAT program does not work in my emulator. To create an
+        empty disk image all you have to do is select the capacity for the drive
+        you want to "format" (2S/80T for SY1 and SY2) and type "ERA B:*.*" (for
+        SY1) or "ERA C:*.*" (for SY2) and answer "Y" to the "ALL" prompt. This
+        will create a 400KB image and write out a new directory structure to
+        create an empty disk image. That's all you need to do to setup a blank
+        disk image in CP/M. In the H8D Bootables zip file you'll find an empty
+        disk image that has already been formatted for use with BIOS-80 CP/M. It
+        is called
+        <span style="text-decoration: underline;">CPM_2-2-03_2S80T.H8D</span
+        >.<br />
+        <br />
+      </span>
+      <hr style="width: 100%; height: 2px;" />
+      <span style="font-family: Courier New, Courier, monospace;"
+        ><br />
+        This concludes the basic operations of the H-89 emulator.<br />
+        <br />
+      </span>
+      <hr style="width: 100%; height: 2px;" />
+      <span style="font-family: Courier New, Courier, monospace;"
+        ><br />
+        Some screen shots from the H-89 emulator follow:<br />
+        <br />
+        <img
+          style="width: 800px; height: 488px;"
+          alt="Heathkit H-89 emulator"
+          src="H8DUtility/Emulator5.jpg"
+        /><br />
+        <br />
+        <img
+          style="width: 800px; height: 481px;"
+          alt="Heathkit H-89 emulator"
+          src="H8DUtility/Emulator6.jpg"
+        /><br />
+        <br />
+        <img
+          style="width: 800px; height: 481px;"
+          alt="Heathkit H-89 emulator"
+          src="H8DUtility/Emulator7.jpg"
+        /><br />
+        <br /> </span
+      ><span style="font-family: Courier New, Courier, monospace;"></span>
+      <hr style="width: 100%; height: 2px;" />
+      <br />
+      <a href="../../software.html"
+        ><span style="font-family: Courier New, Courier, monospace;"
+          >BACK to the software page</span
+        ></a
+      ><br style="font-family: Courier New, Courier, monospace;" />
+      <br style="font-family: Courier New, Courier, monospace;" />
+      <span style="font-family: Courier New, Courier, monospace;"
+        >February 10, 2010</span
+      ><br style="font-family: Courier New, Courier, monospace;" />
+      <br style="font-family: Courier New, Courier, monospace;" />
+      <a href="mailto:lesbird@lesbird.com"
+        ><span style="font-family: Courier New, Courier, monospace;"
+          >e-mail</span
+        ></a
+      ><br style="font-family: Courier New, Courier, monospace;" />
+      <span style="font-family: Courier New, Courier, monospace;"><br /> </span>
+    </div>
+    <a title="Real Time Web Analytics" href="http://getclicky.com/66360494"
+      ><img
+        alt="Real Time Web Analytics"
+        src="http://static.getclicky.com/media/links/badge.gif"
+        border="0"
+    /></a>
+    <script
+      src="http://static.getclicky.com/js"
+      type="text/javascript"
+    ></script>
+    <script type="text/javascript">
+      try {
+        clicky.init(66360494);
+      } catch (err) {}
+    </script>
+    <noscript
+      ><p>
+        <img
+          alt="Clicky"
+          width="1"
+          height="1"
+          src="http://in.getclicky.com/66360494ns.gif"
+        /></p
+    ></noscript>
+  </body>
+</html>

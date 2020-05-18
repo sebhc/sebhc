@@ -1,5 +1,1566 @@
-<html>
+<html>
+
 <!-- Mirrored from davidwallace2000.home.comcast.net/~davidwallace2000/h8/project8080_archive/pgs/scalls.html by HTTrack Website Copier/3.x [XR&CO'2010], Mon, 10 Sep 2012 13:15:41 GMT -->
-<head><title>H8 Emulation Help - HDOS System Calls</title><meta name="AppleTitle" content="H8 Emulation Help"><meta name="description" content="HDOS System Calls"></head><!-- altered 10/28/2002, das --><body bgcolor="white"><a name="top"></a><p><font size=3 face="Verdana,Geneva" color="0000FF"><b>HDOS System Calls</b></font><ul><font size="2" face="Geneva,Arial"><p>This page will document the set of system calls that make up the HDOS assembly language Application Program Interface (API). The calls will be documented as they were in the HDOS System Programmer's Guide, grouped by resident calls, HDOSOVL0 calls, and HDOSOVL1 calls. A table of scall values and a table of error code values will follow.</p></font></ul><hr><font face="Geneva,Arial" size=1><center><a href="program.html">Programming Table of Contents</a><br><br><a href="../h8_toc.html">Main Table of Contents</a></center><hr><table border="0" cellspacing="0" cellpadding="2"><tr align="left" valign="top">	<td width="50"><font size=3 face="Verdana,Geneva" color="0000FF"><b>Page Index</b></font></td>	<td width="130"><font face="Geneva" size=2><a href="#scall">SCALL Pseudo Opcode</a></font></td>	<td>&nbsp;</td>	<td>&nbsp;</td></tr>	<tr align="left" valign="top">	<td>&nbsp;</td>	<td width="130"><font face="Geneva" size=2><a href="#resident">Resident Scalls</a></font></td>	<td width="35">	<a href="#exit">.EXIT</a><br>	<a href="#scin">.SCIN</a><br>	<a href="#scout">.SCOUT</a><br>	<a href="#print">.PRINT</a><br>	<a href="#read">.READ</a>	</td>	<td width="35">	<a href="#write">.WRITE</a><br>	<a href="#consl">.CONSL</a><br>	<a href="#clrco">.CLRCO</a><br>	<a href="#loado">.LOADO</a><br>	<a href="#vers">.VERS</a></td></tr><tr align="left" valign="top">	<td>&nbsp;</td>	<td width="130"><font face="Geneva" size=2><a href="#hdosovl0">HDOSOVL0 Scalls</a></font></td>	<td width="35">	<a href="#link">.LINK</a><br>	<a href="#ctlc">.CTLC</a><br>	<a href="#openr">.OPENR</a><br>	<a href="#openw">.OPENW</a><br>	<a href="#openu">.OPENU</a><br>	<a href="#close">.CLOSE</a><br>	<a href="#posit">.POSIT</a><br>	<a href="#delete">.DELETE</a>	</td>	<td width="35">	<a href="#rename">.RENAME</a><br>	<a href="#settop">.SETTOP</a><br>	<a href="#decode">.DECODE</a><br>	<a href="#name">.NAME</a><br>	<a href="#clear">.CLEAR</a><br>	<a href="#error">.ERROR</a><br>	<a href="#chflg">.CHFLG</a><br>	<a href="#loadd">.LOADD</a>	</td></tr><tr align="left" valign="top">	<td>&nbsp;</td>	<td width="130"><font face="Geneva" size=2><a href="#hdosovl1">HDOSOVL1 Scalls</a></font></td>	<td width="35">	<a href="#mount">.MOUNT</a><br>	<a href="#dmoun">.DMOUN</a><br>	<a href="#monms">.MONMS</a>	</td>	<td width="35">	<a href="#dmnms">.DMNMS</a><br>	<a href="#reset">.RESET</a>	</td></tr><tr align="left" valign="top">	<td>&nbsp;</td>	<td width="130"><font face="Geneva" size=2><a href="#tables">SCALL Value Tables</a></font></td>	<td>&nbsp;</td>	<td>&nbsp;</td></tr><tr align="left" valign="top">	<td>&nbsp;</td>	<td width="130"><font face="Geneva" size=2><a href="#errtab">Error Code Value Table</a></font></td>	<td>&nbsp;</td>	<td>&nbsp;</td></tr></table>	<hr><a name="scall"></a><font size=2 face="Geneva,Arial" color="0000FF"><p><b>SCALL Pseudo Opcode</b></p></font><ul><font face="Geneva" size=2><p>A system call (scall) consists of an RST 7 instruction followed by a one-byte code. The assembler has a special pseudo opcode for scalls:</p><font size="2" face="courier">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SCALL&nbsp;&nbsp;&nbsp;code<br></font><p>...where 'code' is the number of the scall request (ref. <a href="#tables">SCALL Value Tables</a>). This statement is equivalent to:</p><font size="2" face="courier">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DB&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;377Q,code<br></font><p>...or...</p><font size="2" face="courier">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RST&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;7<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DB&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;code<br></font><p>You should build a .ACM file with the scall codes in it, or use the version included on the Extra's disk, and include that file in any assembly language program that uses HDOS system calls.</p></font><font face="Geneva" size=2><p><a href="#top">go to top</a></p></font></ul><hr><a name="resident"></a><font size=2 face="Geneva,Arial" color="0000FF"><p><b>Resident Scalls</b></p></font><ul><font face="Geneva" size=2><p>These scalls are part of the resident HDOS system; they do not require that either overlay be present in memory.</p></font><dl><dt><a name="exit"></a><font size="2" face="courier">.EXIT (exit to HDOS)</font></dt><dd><font face="Geneva" size=2><p>End program and return to HDOS (to COMMAND.SYS, actually).</p></font><font size="2" face="courier">Entry:<br>&nbsp;&nbsp;(A) = flag (0=normal, 1=abort)<br>Exit:<br>&nbsp;&nbsp;to COMMAND.SYS if system mounted; boot if not<br><p>Abort exit is not recommended.</p></font><font face="Geneva" size=2><p><a href="#top">go to top</a></p></font></dd><dt><a name="scin"></a><font size="2" face="courier">.SCIN (system console in)</font></dt><dd><font face="Geneva" size=2><p>Read one byte from the console. If the console options have not been changed, the console will be in "line mode" and your program will wait until the user presses return or enter before it starts receiving characters. You can change to character mode with the <a href="#consl">.CONSL</a> scall and subsequently get characters as they are typed. However, you will need to handle backspace and other editing that is provided by HDOS in line mode.</p></font><font size="2" face="courier">Entry:<br>&nbsp;&nbsp;none<br>Exit:<br>&nbsp;&nbsp;'C' set if nothing to read<br>&nbsp;&nbsp;'C' clear:<br>&nbsp;&nbsp;&nbsp;&nbsp;(A) = character<br>Uses:<br>&nbsp;&nbsp;A, F<br><br>Example:<br><br>RDCHAR&nbsp;&nbsp;SCALL&nbsp;&nbsp;&nbsp;.SCIN<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;JC&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RDCHAR<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RET&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(A) has character<br></font><font face="Geneva" size=2><p><a href="#top">go to top</a></p></font></dd><dt><a name="scout"></a><font size="2" face="courier">.SCOUT (system console out)</font></dt><dd><font face="Geneva" size=2><p>Write one character to the system console.</p></font><font size="2" face="courier">Entry:<br>&nbsp;&nbsp;(A) = character to write<br>Exit:<br>&nbsp;&nbsp;none<br>Uses:<br>&nbsp;&nbsp;none<br><br>Example:<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LXI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;H,MESSAGE<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MVI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;B,MSG.LEN<br>PUT.MSG&nbsp;EQU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOV&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A,M<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SCALL&nbsp;&nbsp;&nbsp;.SCOUT<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;INX&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;H<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DCR&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;B&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Length in (B)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;JNZ&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PUT.MSG<br>. . .<br>MESSAGE&nbsp;DB&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'Message for the console'<br>MSG.LEN&nbsp;EQU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*-MESSAGE<br></font><font face="Geneva" size=2><p><a href="#top">go to top</a></p></font></dd><dt><a name="print"></a><font size="2" face="courier">.PRINT (print to console)</font></dt><dd><font face="Geneva" size=2><p>Print a line of text on the console. The last character must have the 200Q bit set to mark the end of the string.</p></font><font size="2" face="courier">Entry:<br>&nbsp;&nbsp;(HL) = address of line of text<br>Exit:<br>&nbsp;&nbsp;(HL) = LWA of text +1<br>Uses:<br>&nbsp;&nbsp;A, F, H, L<br><br>Example:<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LXI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;H,MESSAGE<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SCALL&nbsp;&nbsp;&nbsp;.PRINT<br>. . .<br>MESSAGE DB&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'Message for the console',212Q<br></font><font face="Geneva" size=2><p><a href="#top">go to top</a></p></font></dd><dt><a name="read"></a><font size="2" face="courier">.READ (read a file channel)</font></dt><dd><font face="Geneva" size=2><p>Read data from an open file channel. The channel can be open on a disk file or a character device (TT: or AT:).</p><p>All I/O done with .READ and <a href="#write">.WRITE</a> is in "block mode" with the block size being a multiple of 256 bytes. For text files, the last sector should be padded out with nulls (00H bytes).</p></font><font size="2" face="courier">Entry:<br>&nbsp;&nbsp;(A)&nbsp; = channel number<br>&nbsp;&nbsp;(BC) = byte count (in multiples of 256)<br>&nbsp;&nbsp;(DE) = buffer address<br>Exit:<br>&nbsp;&nbsp;'C' clear if data read correctly<br>&nbsp;&nbsp;'C' set if error:<br>&nbsp;&nbsp;&nbsp;&nbsp;(A) &nbsp;= error code<br>&nbsp;&nbsp;&nbsp;&nbsp;(BC) = unread transfer count<br>&nbsp;&nbsp;&nbsp;&nbsp;(DE) = next address to read into<br>Uses:<br>&nbsp;&nbsp;all<br><br>Example:<br><br>READ&nbsp;&nbsp;&nbsp;&nbsp;MVI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A,1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Previously-opened channel<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LXI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;B,256<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LXI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;D,BUFFER<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SCALL&nbsp;&nbsp;&nbsp;.READ<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;JNC&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;READ.OK<br>*<br>*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'C' set - error on read<br>*<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CPI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;EC.EOF&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Just end of file?<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;JNZ&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;BAD.ERR&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Something bad<br>. . .<br>BUFFER&nbsp;&nbsp;DS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;256<br></font><font face="Geneva" size=2><p><a href="#top">go to top</a></p></font></dd><dt><a name="write"></a><font size="2" face="courier">.WRITE (write a file channel)</font></dt><dd><font face="Geneva" size=2><p>Write data to an open file channel. The channel can be open on a disk file or a character device (TT: or AT:).</p><p>All I/O done with <a href="#read">.READ</a> and .WRITE is in "block mode" with the block size being a multiple of 256 bytes. For text files, the last sector should be padded out with nulls (00H bytes).</p></font><font size="2" face="courier">Entry:<br>&nbsp;&nbsp;(A)&nbsp; = channel number<br>&nbsp;&nbsp;(BC) = data count<br>&nbsp;&nbsp;(DE) = data address<br>Exit:<br>&nbsp;&nbsp;'C' clear if write succeeded<br>&nbsp;&nbsp;'C' set if error:<br>&nbsp;&nbsp;&nbsp;&nbsp;(A)&nbsp; = error code<br>&nbsp;&nbsp;&nbsp;&nbsp;(BC) = unused data count<br>&nbsp;&nbsp;&nbsp;&nbsp;(DE) = next address to write<br>Uses:<br>&nbsp;&nbsp;all<br><br>Example:<br><br>WRITE&nbsp;&nbsp;&nbsp;MVI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A,1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Open channel<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LXI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;B,512<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LXI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;D,BUFFER<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SCALL&nbsp;&nbsp;&nbsp;.WRITE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Write it<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;JC&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ERROR<br>. . .<br>BUFFER&nbsp;&nbsp;DS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;512<br></font><font face="Geneva" size=2><p><a href="#top">go to top</a></p></font></dd><dt><a name="consl"></a><font size="2" face="courier">.CONSL (change console options)</font></dt><dd><font face="Geneva" size=2><p>Set and clear console control bits and bytes. These bytes are available in well-known locations in memory, but use of the .CONSL call is recommended.</p><p>You supply HDOS with three values: the index of the byte to be changed, a bit mask of the bits to be changed, and a "new values" pattern. The use of a mask and a new-value pattern allows you to set or clear just one bit without having to know how the other bits are set.</p><p>There are a number of definitions that you should have in a common deck:</p></font><font size="2" face="courier">I.CSLMD EQU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Console mode byte<br>CSL.ECH EQU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;10000000B&nbsp;&nbsp;&nbsp;&nbsp;Suppress echo<br>CSL.WRP EQU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;00000010B&nbsp;&nbsp;&nbsp;&nbsp;Wrap lines at width<br>CSL.CHR EQU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;00000001B&nbsp;&nbsp;&nbsp;&nbsp;Operate in character mode<br><br>I.CONTY EQU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Console characteristics<br>CTP.BKS EQU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;10000000B&nbsp;&nbsp;&nbsp;&nbsp;Terminal processes backspace<br>CTP.MLI EQU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;00100000B&nbsp;&nbsp;&nbsp;&nbsp;Map lower case to upper on input<br>CTP.MLO EQU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;00010000B&nbsp;&nbsp;&nbsp;&nbsp;Map lower case to upper on output<br>CTP.2SB EQU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;00001000B&nbsp;&nbsp;&nbsp;&nbsp;Terminal needs 2 stop bits<br>CTP.BKM EQU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;00000010B&nbsp;&nbsp;&nbsp;&nbsp;Map backspace to rubout<br>CTP.TAB EQU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;00000001B&nbsp;&nbsp;&nbsp;&nbsp;Terminal supports tab<br><br>I.CUSOR EQU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Current cursor position<br><br>I.CONWI EQU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Console width<br><br>I.CONFL EQU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Console flags<br>CO.FLG&nbsp;&nbsp;EQU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;00000001B&nbsp;&nbsp;&nbsp;&nbsp;Ctl-O was used (toss output)<br>CS.FLG&nbsp;&nbsp;EQU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;10000000B&nbsp;&nbsp;&nbsp;&nbsp;Ctl-S was used (hold output)<br><br>Entry:<br>&nbsp;&nbsp;(A) = index<br>&nbsp;&nbsp;(B) = new values<br>&nbsp;&nbsp;(C) = mask ('1' bit for every bit to change)<br>Exit:<br>&nbsp;&nbsp;'C' clear if no error:<br>&nbsp;&nbsp;&nbsp;&nbsp;(A) = new value of byte<br>&nbsp;&nbsp;'C' set if error:<br>&nbsp;&nbsp;&nbsp;&nbsp;(A) = error code<br>Uses:<br>&nbsp;&nbsp;all<br><br>Example:<br><br>*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Set character mode, echo ON<br>*<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MVI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A,I.CSLMD<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MVI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;B,CSL.CHR&nbsp;&nbsp;&nbsp;Only setting this bit<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MVI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;C,CSL.ECH+CSL.CHR&nbsp;&nbsp;&nbsp;Mask needs both<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SCALL&nbsp;&nbsp;&nbsp;.CONSL<br>*<br>*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Set console width to 80<br>*<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MVI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A,I.CONWI<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MVI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;B,80<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MVI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;C,377Q&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Changing all bits<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SCALL&nbsp;&nbsp;&nbsp;.CONSL<br>*<br>*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Read cursor position (column)<br>*<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MVI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A,I.CUSOR<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MVI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;B,0<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOV&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;C,B&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;We're changing nothing<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SCALL&nbsp;&nbsp;&nbsp;.CONSL&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(A) = cursor position<br></font><font face="Geneva" size=2><p><a href="#top">go to top</a></p></font></dd><dt><a name="clrco"></a><font size="2" face="courier">.CLRCO (clear console type ahead)</font></dt><dd><font face="Geneva" size=2><p>Clear console type-ahead buffer. This can be used if the user enters Ctl-C, for example, and you want to flush any type-ahead and reprint a fresh prompt for input.</p></font><font size="2" face="courier">Entry:<br>&nbsp;&nbsp;none<br>Exit:<br>&nbsp;&nbsp;none<br>Uses:<br>&nbsp;&nbsp;all<br></font><font face="Geneva" size=2><p><a href="#top">go to top</a></p></font></dd><dt><a name="loado"></a><font size="2" face="courier">.LOADO (load an overlay)</font></dt><dd><font face="Geneva" size=2><p>Load an overlay.</p><p>You must load both overlays before dismounting the system disk. Make sure that you do this before allocating all system memory for your application.</p><p>You do <b>not</b> need to load the overlays before using an overlay-resident scall, however: HDOS does this for you.</p></font><font size="2" face="courier">Entry:<br>&nbsp;&nbsp;(A) = Overlay index<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OVL0&nbsp;EQU&nbsp;0&nbsp;&nbsp;HDOSOVL0<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OVL1&nbsp;EQU&nbsp;1&nbsp;&nbsp;HDOSOVL1<br>Exit:<br>&nbsp;&nbsp;'C' clear if overlay loaded<br>&nbsp;&nbsp;'C' set if error:<br>&nbsp;&nbsp;&nbsp;&nbsp;(A) = Error code<br>Uses:<br>&nbsp;&nbsp;all<br><br>Example:<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MVI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A,OVL0<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SCALL&nbsp;&nbsp;&nbsp;.LOADO<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;JC&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FATAL<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MVI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A,OVL1<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SCALL&nbsp;&nbsp;&nbsp;.LOADO<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;JC&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FATAL<br></font><font face="Geneva" size=2><p><a href="#top">go to top</a></p></font></dd><dt><a name="vers"></a><font size="2" face="courier">.VERS (get HDOS version number</font></dt><dd><font face="Geneva" size=2><p>Returns the HDOS version number as a one-byte BCD number. HDOS 2.0 will return the value 020H.</p><p>HDOS versions prior to 1.5 did not respond to this scall and would return 'C'. That's not going to happen with 2.0.</p></font><font size="2" face="courier">Entry:<br>&nbsp;&nbsp;none<br>Exit:<br>&nbsp;&nbsp;'C' clear:<br>&nbsp;&nbsp;&nbsp;&nbsp;(A) = Version number<br>&nbsp;&nbsp;'C' set if error:<br>&nbsp;&nbsp;&nbsp;&nbsp;(A) = error code (EC.ILC)<br>Uses:<br>&nbsp;&nbsp;A, F<br></font><font face="Geneva" size=2><p><a href="#top">go to top</a></p></font></dd></dl></ul><hr><a name="hdosovl0"></a><font size=2 face="Geneva,Arial" color="0000FF"><p><b>HDOSOVL0 Scalls</b></p></font><ul><font face="Geneva" size=2><p>These scalls require that HDOSOVL0 be in memory. If it is not already in memory, it will need to be swapped in by HDOS with a resulting performance penalty.</p><p>If you have allocated all available RAM for your program, the top end of your memory space may have to be swapped out to load the overlay. Make sure that neither the scall nor the data areas being worked on as part of the scall are in this memory area.</p><p>Many of these calls require a file name. File names generally follow the form:</p><font size="2" face="courier"><p>&nbsp;&nbsp;[device and unit:]name[.ext]</p></font><p>Names in memory must be delimited somehow so that HDOS knows where the end is. There exists no exhaustive list of valid delimeters that the author is aware of. The list does include null (0H), comma, blank, equal sign, and slash. There may well be others.</p><p>Your program can provide defaults for device and unit and for extension. This is done via a "default block." Here are two examples:</p><font size="2" face="courier">&nbsp;&nbsp;DFLTBLK DB&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'SY0ASM'<br>&nbsp;&nbsp;DFLT.2&nbsp;&nbsp;DB&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'SY1',0,0,0</font><p>The first example gives a default drive of sy0: and a default extension of .ASM. The second gives a default drive of sy1: and no default extension; files which specify a name and no extension will be assumed to have a null extension.</p><p>See further examples in the scall descriptions below.</p></font><dl><dt><a name="link"></a><font size="2" face="courier">.LINK (load and run a program)</font></dt><dd><font face="Geneva" size=2><p>Load and execute another program.</p><p>All open files, system tables, and the stack are completely undisturbed. The value in register (A) is passed undisturbed.</p><p>If the .LINK scall is successful, the .LINK scall will be the last statement executed in the old program; the new program will begin execution at its entry point. If the .LINK scall is not successful, execution proceeds with the statement following the .LINK scall. You should include some kind of error trap in case this happens.</p><p>In the example, we're going to use the <a href="#name">.NAME</a> scall to get the device that we were run from, and then .LINK to a program called CLEANUP.ABS that should be found on the same device.</p></font><font size="2" face="courier">Entry:<br>&nbsp;&nbsp;(HL) = address of program file descriptor (fully specified)<br>Exit:<br>&nbsp;&nbsp;'C' clear:<br>&nbsp;&nbsp;&nbsp;&nbsp;To linked program<br>&nbsp;&nbsp;&nbsp;&nbsp;(A) = remains unchanged<br>&nbsp;&nbsp;'C' set if error:<br>&nbsp;&nbsp;&nbsp;&nbsp;(A) = error code<br>Uses:<br>&nbsp;&nbsp;all<br><br>Example:<br><br>DFLTBLK DS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This program dev and ext<br>MYNAME&nbsp;&nbsp;DS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;9&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This program name<br>CLEANUP DB&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'SYn:CLEANUP.ABS',0<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LXI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;D,DFLTBLK<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LXI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;H,MYNAME<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MVI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A,-1<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SCALL&nbsp;&nbsp;&nbsp;.NAME&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Get my name<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;JC&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ERROR<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LDA&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DFLTBLK+2&nbsp;&nbsp;&nbsp;Get device<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;STA&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CLEANUP+2&nbsp;&nbsp;&nbsp;Set in next prog string<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LXI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;H,CLEANUP<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MVI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A,1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pass a code byte to cleanup<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SCALL&nbsp;&nbsp;&nbsp;.LINK&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Run new program<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;JMP&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ERROR&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Whups!<br></font><font face="Geneva" size=2><p><a href="#top">go to top</a></p></font></dd><dt><a name="ctlc"></a><font size="2" face="courier">.CTLC (set a control character trap)</font></dt><dd><font face="Geneva" size=2><p>Set a trap to handle Ctl-A, Ctl-B and/or Ctl-C at interrupt time.</p><p>After the trap is set up, when the user types the control character, your routine is entered after HDOS handles the interrupt. Interrupts are enabled when your routine receives control.</p><p>On entry to your processing routine, registers B, C, D, E, H, and L have whatever they had in them at the time of the interrupt. The stack contains:</p><p>((SP)+0) = return address into HDOS<br>((SP)+2) = PSW from interrupted program<br>((SP)+4) = (PC) from interrupted program</p><p>There no restrictions on what you can do from here. You may do some processing and then return to HDOS, which will clean up and return to your program at the point where it was interrupted, with all registers intact. You may pop the first two words off the stack and return to your program yourself. Or you may clean up the stack and JMP to some other routine.</p><p>The example will show a trap setup for Ctl-C. It will not show a trap processing routine.</p></font><font size="2" face="courier">Entry:<br>&nbsp;&nbsp;(A)&nbsp; = trap control character (Ctl-A, Ctl-B or Ctl-C)<br>&nbsp;&nbsp;(HL) = trap processing address; 0 to clear the trap<br>Exit:<br>&nbsp;&nbsp;'C' clear if ok<br>&nbsp;&nbsp;'C' set if error:<br>&nbsp;&nbsp;&nbsp;&nbsp;(A) = error code<br>Uses:<br>&nbsp;&nbsp;A, F, H, L<br><br>Example:<br><br>CTLC&nbsp;&nbsp;&nbsp;&nbsp;EQU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MVI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A,CTLC<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LXI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;H,TRAP<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SCALL&nbsp;&nbsp;&nbsp;.CTLC<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;JC&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ERROR<br>. . .<br>TRAP&nbsp;&nbsp;&nbsp;&nbsp;EQU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*<br></font><font face="Geneva" size=2><p><a href="#top">go to top</a></p></font></dd><dt><a name="openr"></a><font size="2" face="courier">.OPENR (open for read access)</font></dt><dd><font face="Geneva" size=2><p>Open a file for read access. Any given file can be open for read on as many channels as you like.</p></font><font size="2" face="courier">Entry:<br>&nbsp;&nbsp;(DE) = default block address<br>&nbsp;&nbsp;(HL) = file name address<br>&nbsp;&nbsp;(A)&nbsp; = channel number<br>Exit:<br>&nbsp;&nbsp;'C' clear if file open ok<br>&nbsp;&nbsp;'C' set if error:<br>&nbsp;&nbsp;&nbsp;&nbsp;(A) = error code<br>Uses:<br>&nbsp;&nbsp;all<br></font><font face="Geneva" size=2><p>Valid channel numbers are -1 through 5. -1 is a special case: when your program is first launched, channel -1 is open for read on your program file. This is so that you can use the <a href="#name">.NAME</a> scall to get your program name and device. In order to reuse channel -1, you will have to <a href="#close">.CLOSE</a> or <a href="#clear">.CLEAR</a> it first.</p></font><font size="2" face="courier">Example:<br><br>DFLTBLK DB&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'SY1TXT'<br>FILENAM DB&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'myfile.dat',0<br>. . .<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LXI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;D,DFLTBLK<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LXI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;H,FILENAM<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;XRA&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(A) = Channel zero<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SCALL&nbsp;&nbsp;&nbsp;.OPENR<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;JC&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ERROR<br></font><font face="Geneva" size=2><p><a href="#top">go to top</a></p></font></dd><dt><a name="openw"></a><font size="2" face="courier">.OPENW (open for write access)</font></dt><dd><font face="Geneva" size=2><p>Open a file for write access. See <a href="#openr">.OPENR</a> for parameters and a discussion of valid channel numbers.</p><p>.OPENW opens a file for exclusive access on one channel only. If the file exists, new space will be created for the file and the directory entry will remain undisurbed until the file is successfully closed. At that time, the old space is returned to the free pool and the new file takes it's place in the directory.</p><p>You can both read and write to a file open for write access. After writing some sectors,  use the <a href="#posit">.POSIT</a> scall to "rewind" the file to the beginning and read the file back.</p><p>If you <a href="#clear">.CLEAR</a> a file opened for write, any sectors written will be returned to the free pool and any existing file with the same name will be preserved unchanged.</p></font><font face="Geneva" size=2><p><a href="#top">go to top</a></p></font></dd><dt><a name="openu"></a><font size="2" face="courier">.OPENU (open for update access)</font></dt><dd><font face="Geneva" size=2><p>Open a file for update access. See <a href="#openr">.OPENR</a> for parameters and a discussion of valid channel numbers.</p><p>.OPENU opens a file for exclusive access on one channel only. The file is open for both read and write access. The sector cursor is positioned before sector 0. Writes will overwrite existing data. To add to the end of the file, use <a href="#posit">.POSIT</a> to set the sector cursor to the end and then write. Thus, you can append to an existing file by using .OPENU and .POSIT.</p><p>Be sure to close a file open for update. If you <a href="#clear">.CLEAR</a> the file after adding to the end, those additions will be lost and the sectors will not be returned to the free pool until the next time the disk is mounted. Any changed sectors, however, will remain changed.</p></font><font face="Geneva" size=2><p><a href="#top">go to top</a></p></font></dd><dt><a name="close"></a><font size="2" face="courier">.CLOSE (close a file)</font></dt><dd><font face="Geneva" size=2><p>Close a file.</p><font size="2" face="courier">Entry:<br>&nbsp;&nbsp;(A)&nbsp; = channel number<br>Exit:<br>&nbsp;&nbsp;'C' clear if close ok<br>&nbsp;&nbsp;'C' set if error:<br>&nbsp;&nbsp;&nbsp;&nbsp;(A) = error code (EC.FNO)<br>Uses:<br>&nbsp;&nbsp;all<br></font><p>You should always close a file that you opened, with two exceptions:</p></font><ol><li><font face="Geneva" size=2><p>HDOS enters your program with channel -1 open. If you don't use it yourself, you don't have to close it; HDOS will take care of that for you.</p></font></li><li><font face="Geneva" size=2><p>Scratch files that you opened with <a href="#openw">.OPENW</a> and that you don't intend to keep can be cleared with <a href="#clear">.CLEAR</a> to throw the file away and return its space to the free pool</p></font></li></ol><font face="Geneva" size=2><p><a href="#top">go to top</a></p></font></dd><dt><a name="posit"></a><font size="2" face="courier">.POSIT (move the file sector cursor)</font></dt><dd><font face="Geneva" size=2><p>Move the sector cursor to a new logical sector number.</p><p>Setting the cursor to logical sector 0 effectively "rewinds" the file to the beginning (e.g., positions the cursor before the first sector). Setting it to 5 positions the cursor before the 6th sector, etc.</p><p>To position to the end of the file, .POSIT to 'n' where 'n' is equal to the number of sectors in the file. If you don't know how many sectors there are, use -1 and verify that you got an error of EC.EOF. The sector cursor is positioned at the end of the file.</p></font><font size="2" face="courier">Entry:<br>&nbsp;&nbsp;(A)&nbsp; = channel number<br>&nbsp;&nbsp;(BC) = logical sector number to position before<br>Exit:<br>&nbsp;&nbsp;'C' clear if file positioned ok<br>&nbsp;&nbsp;'C' set if error:<br>&nbsp;&nbsp;&nbsp;&nbsp;(A) = error code<br>&nbsp;&nbsp;&nbsp;&nbsp;(A) = EC.EOF if off end:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(BC) = unskipped sectors<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;File positioned at end<br>Uses:<br>&nbsp;&nbsp;all<br><br>Example:<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MVI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A,CHANNEL<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LXI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;B,-1<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SCALL&nbsp;&nbsp;&nbsp;.POSIT<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;JNC&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PROBLEM&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Should have gotten error<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CPI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;EC.EOF<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;JNZ&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PROBLEM&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Should have gotten EC.EOF<br>*<br>*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;File positioned past end<br><br></font><font face="Geneva" size=2><p> If you want to know the file size, you can .POSIT to -1 and then subtract the (BC) pair from 377377A to get the number of sectors.</p></font><font size="2" face="courier">Example:<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;XRA&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(A) = channel<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LXI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;B,-1<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SCALL&nbsp;&nbsp;&nbsp;.POSIT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;position to end of file<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;JNC&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PROBLEM&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;really should get an error<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MVI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A,377Q&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;377377A - (BC)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SUB&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;C<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOV&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;C,A<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MVI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A,377Q<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SBB&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;B<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOV&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;B,A&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(BC) = file size in sectors<br></font><font face="Geneva" size=2><p><a href="#top">go to top</a></p></font></dd><dt><a name="delete"></a><font size="2" face="courier">.DELETE (delete a file)</font></dt><dd><font face="Geneva" size=2><p>Delete an existing file.</p></font><font size="2" face="courier">Entry:<br>&nbsp;&nbsp;(HL) = address of file name string<br>&nbsp;&nbsp;(DE) = default block address<br>Exit:<br>&nbsp;&nbsp;'C' clear if delete worked<br>&nbsp;&nbsp;'C' set if error:<br>&nbsp;&nbsp;&nbsp;&nbsp;(A) = error code<br>Uses:<br>&nbsp;&nbsp;all<br></font><font face="Geneva" size=2><p><a href="#top">go to top</a></p></font></dd><dt><a name="rename"></a><font size="2" face="courier">.RENAME (rename a file)</font></dt><dd><font face="Geneva" size=2><p>Rename a file.</p><p>The new name must not already exist. Unfortunately, .RENAME doesn't check for this, so you should check by trying to <a href="#openr">.OPENR</a> the new file name before renaming it. If you don't get an error (EC.FNF), you can't rename the file. Also, both the old and new file must be on the same disk drive.</p><p>The default block applies only to the old name. The new name must be fully specified including device and unit, name and extension.</p></font><font size="2" face="courier">Entry:<br>&nbsp;&nbsp;(HL) = old file name string address<br>&nbsp;&nbsp;(DE) = default block (applies to old file only)<br>&nbsp;&nbsp;(BE) = new file name string address<br>Exit:<br>&nbsp;&nbsp;'C' clear if rename worked<br>&nbsp;&nbsp;'C' set if error:<br>&nbsp;&nbsp;&nbsp;&nbsp;(A) = error code<br>Uses:<br>&nbsp;&nbsp;all<br><br>Example:<br><br>DFLTBLK DB&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'SY1DAT'<br>OLDNAME DB&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'MYFILE.TXT',0<br>NEWNAME DB&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'SY1:NEWFILE.ASM',0<br>. . .<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LXI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;H,NEWNAME<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LXI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;D,DFLTBLK<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MVI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A,5<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SCALL&nbsp;&nbsp;&nbsp;.OPENR&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;See if the file exists<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;JNC&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;EXISTS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;It does - can't rename<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CPI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;EC.FNF&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;File not found error?<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;JNZ&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ERROR&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Some other problem<br>*<br>*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;It is legal to rename this file<br>*<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LXI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;H,OLDNAME<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LXI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;D,DFLTBLK<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LXI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;B,NEWNAME<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SCALL&nbsp;&nbsp;&nbsp;.RENAME<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;JC&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ERROR<br></font><font face="Geneva" size=2><p><a href="#top">go to top</a></p></font></dd><dt><a name="settop"></a><font size="2" face="courier">.SETTOP (allocate memory)</font></dt><dd><font face="Geneva" size=2><p>Set the highest memory address that your program will use.</p><p>HDOS uses any free memory above your program to load overlays and device drivers. If you intend to use that memory for yourself, you have to inform HDOS or you stand a chance of having your memory overwitten.</p><p>On entry, your program top is set to the address of the last program byte loaded. If you have allocated additional space off the end of your program using DS statements, you will need to inform HDOS of that by using .SETTOP as in the first example.</p><p>To allocate all free memory to your program, use -1 to find out the highest possible address and then set that address, as shown in the second example (ref: <a href="memory.html#addr">Address Space Utilization</a>).</p></font><font size="2" face="courier">Entry:<br>&nbsp;&nbsp;(HL) = new top address<br>Exit:<br>&nbsp;&nbsp;'C' clear if top set<br>&nbsp;&nbsp;'C' set if you tried to set too high:<br>&nbsp;&nbsp;&nbsp;&nbsp;(A)&nbsp; = error code<br>&nbsp;&nbsp;&nbsp;&nbsp;(HL) = maximum address<br>Uses:<br>&nbsp;&nbsp;all<br><br>Examples:<br><br>*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Example 1: Set to your program top<br><br>ALLOC&nbsp;&nbsp;&nbsp;EQU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LXI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;H,PROGTOP<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SCALL&nbsp;&nbsp;&nbsp;.SETTOP<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;JC&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ERROR<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RET<br><br>LASTCON EQU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*<br>BUFFER&nbsp;&nbsp;DS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;10*256<br>PROGTOP EQU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Set top here<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ORG&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LASTCON<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;END&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;BEGIN<br><br><br>*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Example 2: Set maximum memory<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LXI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;H,-1<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SCALL&nbsp;&nbsp;&nbsp;.SETTOP&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Cause error deliberately<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SHLD&nbsp;&nbsp;&nbsp;&nbsp;MAXMEM&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Save for reference<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SCALL&nbsp;&nbsp;&nbsp;.SETTOP&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Set top for real<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;JC&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ERROR&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This should not happen<br>. . .<br>MAXMEM&nbsp;&nbsp;DS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2<br><br><br>*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Example 3: Leave room for overlay swaps<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LHLD&nbsp;&nbsp;&nbsp;&nbsp;S.OMAX<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;XCHG&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(DE) = max overlay size<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LXI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;H,-1<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SCALL&nbsp;&nbsp;&nbsp;.SETTOP&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(HL) = max available<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOV&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A,L<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SUB&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;E<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOV&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;L,A<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOV&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A,H<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SBB&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;D<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOV&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;H,A&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(HL) = max with no swapouts<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SHLD&nbsp;&nbsp;&nbsp;&nbsp;MAXMEM<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SCALL&nbsp;&nbsp;&nbsp;.SETTOP<br>. . .<br>MAXMEM&nbsp;&nbsp;DS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2<br></font><font face="Geneva" size=2><p>In the second and third examples, we have to save MAXMEM before we set the top, as a successful .SETTOP scall will destroy the contents of the (HL) pair. Of course, we could always retrieve the value from <a href="memory.html#hdosram">S.USRM</a>.</p><p>In the third example, we subtract the size of the largest overlay, kept in <a href="memory.html#hdosram">S.OMAX</a>, from the maximum available memory, and set that as the top of our application space. HDOS will be able to use that area to read in either overlay without the need for swapping our space to disk. And the overlay can remain in memory, further speeding execution.</p><p><a href="#top">go to top</a></p></font></dd><dt><a name="decode"></a><font size="2" face="courier">.DECODE (decode a file name)</font></dt><dd><font face="Geneva" size=2><p>Decode a file name into its component parts. The format of the decoded file name is shown in the example below. It is also included in the version of HDOS.ACM that is included on the Extra's disk.</p></font><font size="2" face="courier">Entry:<br>&nbsp;&nbsp;(BC) = address of decode block (see example)<br>&nbsp;&nbsp;(DE) = default block address<br>&nbsp;&nbsp;(HL) = file name string address<br>Exit:<br>&nbsp;&nbsp;'C' clear if file successfully decoded<br>&nbsp;&nbsp;'C' set if error:<br>&nbsp;&nbsp;&nbsp;&nbsp;(A) = error code<br>Uses:<br>&nbsp;&nbsp;all<br><br>Example:<br><br>DCD.BLK&nbsp;EQU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Reserved<br>DCD.DEV DS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Device name<br>DCD.UNT DS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Unit number<br>DCD.NAM DS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;8&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;File name<br>DCD.EXT DS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;File extension<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Reserved<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ERRNZ&nbsp;&nbsp;&nbsp;*-DCD.BLK-19&nbsp;&nbsp;s/b 19 bytes long<br><br>DFLTBLK DB&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'SY0TXT'<br>FILENAM DS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;17&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;File name from user<br>. . .<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LXI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;B,DCD.BLK<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LXI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;D,DFLTBLK<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LXI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;H,FILENAM<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SCALL&nbsp;&nbsp;&nbsp;.DECODE<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;JC&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ERROR<br></font><font face="Geneva" size=2><p><a href="#top">go to top</a></p></font></dd><dt><a name="name"></a><font size="2" face="courier">.NAME (get file name from channel)</font></dt><dd><font face="Geneva" size=2><p>Return the device, unit, name and extension from an open file channel.</p><p>The file name is returned as a string of 8 characters followed by a null (0H). The device, unit and extension are returned in default block format.</p></font><font size="2" face="courier">Entry:<br>&nbsp;&nbsp;(A)&nbsp; = channel number<br>&nbsp;&nbsp;(DE) = default block target address<br>&nbsp;&nbsp;(HL) = file name target address<br>Exit:<br>&nbsp;&nbsp;'C' clear if name returned successfully<br>&nbsp;&nbsp;'C' set if error:<br>&nbsp;&nbsp;&nbsp;&nbsp;(A) = error code<br>Uses:<br>&nbsp;&nbsp;all<br><br>Example:<br><br>DFLTBLK DS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Room for standard default block<br>FILENAM DS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;9&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Room for null-terminated name<br>. . .<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LXI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;D,DFLTBLK<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LXI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;H,FILENAM<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MVI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A,CHANNEL<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SCALL&nbsp;&nbsp;&nbsp;.NAME<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;JC&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ERROR<br></font><font face="Geneva" size=2><p><a href="#top">go to top</a></p></font></dd><dt><a name="clear"></a><font size="2" face="courier">.CLEAR (clear a file channel)</font></dt><dd><font face="Geneva" size=2><p>Clear a file channel.</p><p>If the file was open for read access, this is the same as <a href="#close">.CLOSE</a>, which is the preferred way to close a file.</p><p>If the file was open for write access, the file is forgotten and any sectors written are returned to the free pool. If the file was open for update access, any sectors appended to the file will be lost until the next time the disk is mounted (ref. <a href="#openu">.OPENU</a>). But any changed sectors remain changed.</p><p><b>Emulator note:</b> If you are closing the AT: or LP: device drivers, please use <a href="#close">.CLOSE</a> and not .CLEAR. The driver needs to inform the emulator that the file has closed, but the driver is not notified of a .CLEAR call so it can't inform the emulator.</p></font><font size="2" face="courier">Entry:<br>&nbsp;&nbsp;(A) = channel number<br>Exit:<br>&nbsp;&nbsp;'C' clear if ok<br>&nbsp;&nbsp;'C' set if error:<br>&nbsp;&nbsp;&nbsp;&nbsp;(A) = error code<br>Uses:<br>&nbsp;&nbsp;all<br></font><font face="Geneva" size=2><p><a href="#top">go to top</a></p></font></dd><dt><a name="error"></a><font size="2" face="courier">.ERROR (print an error message)</font></dt><dd><font face="Geneva" size=2><p>Print an error message on the console from the file "sy0:errormsg.sys".</p><p>If errormsg.sys is not on the sy0: drive, the error message printed will be "SYSTEM ERROR # nnn" with "nnn" replaced by the error code passed to .ERROR.</p><p>.ERROR will itself, thankfully, never return an error.</p><font size="2" face="courier">Entry:<br>&nbsp;&nbsp;(A) = error code (usually from a scall)<br>&nbsp;&nbsp;(H) = trailing character (printed after error message)<br>Exit:<br>&nbsp;&nbsp;none<br>Uses:<br>&nbsp;&nbsp;all<br><br>Example:<br><br>ERROR&nbsp;&nbsp;&nbsp;EQU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MVI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;H,NL&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Print NL after msg<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SCALL&nbsp;&nbsp;&nbsp;.ERROR&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Print error message<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RET<br></font><font face="Geneva" size=2><p><a href="#top">go to top</a></p></font></dd><dt><a name="chflg"></a><font size="2" face="courier">.CHFLG (change file flags)</font></dt><dd><font face="Geneva" size=2><p>Change file flags. File flags are:</p></font><table border="1" cellspacing="0" cellpadding="2"><tr align="left" valign="top">	<td><font face="Geneva" size=2><b>Mnemonic</b></font></td>	<td align="center"><font face="Geneva" size=2><b>Bit Value</b></font></td>	<td><font face="Geneva" size=2><b>Meaning</b></font></td></tr><tr align="left" valign="top">	<td><font face="courier" size=2>DIF.SYS</font></td>	<td align="center"><font face="courier" size=2>200Q</font></td>	<td><font face="Geneva" size=2>System file</font></td></tr><tr align="left" valign="top">	<td><font face="courier" size=2>DIF.LOC</font></td>	<td align="center"><font face="courier" size=2>100Q</font></td>	<td><font face="Geneva" size=2>Locked for change (can't change flags again)</font></td></tr><tr align="left" valign="top">	<td><font face="courier" size=2>DIF.WP</font></td>	<td align="center"><font face="courier" size=2>040Q</font></td>	<td><font face="Geneva" size=2>Write protected</font></td></tr></table><font size="2" face="courier"><br>Entry:<br>&nbsp;&nbsp;(B)&nbsp; = new bit values<br>&nbsp;&nbsp;(C)&nbsp; = mask of bits to change<br>&nbsp;&nbsp;(HL) = file name string address<br>&nbsp;&nbsp;(DE) = default block address<br>Exit<br>&nbsp;&nbsp;'C' clear if change done<br>&nbsp;&nbsp;'C' set if error:<br>&nbsp;&nbsp;&nbsp;&nbsp;(A) = error code<br>Uses:<br>&nbsp;&nbsp;all<br><br>Example:<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MVI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;B,DIF.WP<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOV&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;C,B<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LXI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;H,FNAME<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LXI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;D,DFLTBLK<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SCALL&nbsp;&nbsp;&nbsp;.CHFLG&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Set write protection<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;JC&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ERROR<br></font><font face="Geneva" size=2><p>If you set the lock flag, the only way to clear it is to copy the file, delete the old file, and rename the new file. If you set both lock and write protect, then the file is there "forever" (until the disk volume is re-initialized).</p></font><font face="Geneva" size=2><p><a href="#top">go to top</a></p></font></dd><dt><a name="loadd"></a><font size="2" face="courier">.LOADD (load a device driver)</font></dt><dd><font face="Geneva" size=2><p>Load a device driver into memory.</p><p>Like <a href="#loado">.LOADO</a>, this call can't be used after the SY0: device is dismounted, so any driver not in memory when the disk is dismounted is inaccessable until the next boot.</p></font><font size="2" face="courier">Entry:<br>&nbsp;&nbsp;(HL) = device driver name string<br>Exit:<br>&nbsp;&nbsp;'C' clear if driver loaded<br>&nbsp;&nbsp;'C' set if error:<br>&nbsp;&nbsp;&nbsp;&nbsp;(A) = error code<br>Uses:<br>&nbsp;&nbsp;all<br><br>Example:<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LXI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;H,LP.DRVR<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SCALL&nbsp;&nbsp;&nbsp;.LOADD<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;JC&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ERROR<br>. . .<br>LP.DRVR DB&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'LP:',0<br></font><font face="Geneva" size=2><p><a href="#top">go to top</a></p></font></dd></dl></ul><hr><a name="hdosovl1"></a><font size=2 face="Geneva,Arial" color="0000FF"><p><b>HDOSOVL1 Scalls</b></p></font><ul><font face="Geneva" size=2><p>These scalls require that HDOSOVL0 be in memory. If it is not already in memory, it will need to be swapped in by HDOS with a resulting performance penalty.</p><p>If you have allocated all available RAM for your program, the top end of your memory space may have to be swapped out to load the overlay. Make sure that neither the scall nor the data areas being worked on as part of the call are in this memory area.</p></font><dl><dt><a name="mount"></a><font size="2" face="courier">.MOUNT (mount a disk)</font></dt><dd><font face="Geneva" size=2><p>Mount a disk drive and print a message on the console informing the user.</p></font><font size="2" face="courier">Entry:<br>&nbsp;&nbsp;(HL) = address of device name string<br>Exit:<br>&nbsp;&nbsp;'C' clear if mounted<br>&nbsp;&nbsp;'C' set if error:<br>&nbsp;&nbsp;&nbsp;&nbsp;(A) = error code<br>Uses:<br>&nbsp;&nbsp;all<br><br>Example:<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LXI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;H,DEV<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SCALL&nbsp;&nbsp;&nbsp;.MOUNT<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;JC&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ERROR<br>. . .<br>DEV&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DB&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'SY1:',0<br></font><font face="Geneva" size=2><p><a href="#top">go to top</a></p></font></dd><dt><a name="dmoun"></a><font size="2" face="courier">.DMOUN (dismount a disk)</font></dt><dd><font face="Geneva" size=2><p>Dismount a disk and print a message on the console. Parameters same as <a href="#mount">.MOUNT</a>.</p></font><font face="Geneva" size=2><p><a href="#top">go to top</a></p></font></dd><dt><a name="monms"></a><font size="2" face="courier">.MONMS (mount with no message)</font></dt><dd><font face="Geneva" size=2><p>Mount a disk, but do not produce a mount message on the console. See <a href="#mount">.MOUNT</a> above.</p></font><font face="Geneva" size=2><p><a href="#top">go to top</a></p></font></dd><dt><a name="dmnms"></a><font size="2" face="courier">.DMNMS (dismount with no message)</font></dt><dd><font face="Geneva" size=2><p>Dismount a disk, but do not produce a dismount message on the console. See <a href="#dmoun">.DMOUN</a> above.</p></font><font face="Geneva" size=2><p><a href="#top">go to top</a></p></font></dd><dt><a name="reset"></a><font size="2" face="courier">.RESET (dismount/mount)</font></dt><dd><font face="Geneva" size=2><p>Reset a drive. This is effectively the same as a dismount followed by a mount.</p><p>The drive will be dismounted with a message printed on the console. If there is no disk currently on the drive, this step will be skipped.</p><p>A message will be printed asking the user to replace the disk. HDOS will wait until the drive becomes not ready (e.g., the disk is removed), and then wait until the drive becomes ready again (e.g., a new disk is inserted). Then the disk will be mounted, with message.</p><p>The call may be interrupted (by a Ctl-C, etc.) between the dismount and mount. In that case, the drive will be left in the dismounted condition.</p><p>The parameters are the same as the <a href="#mount">.MOUNT</a> call above.</p><p><b>Emulator note:</b> When prompted to mount the new disk, open the Manage Diskettes dialog box, remove the disk and insert a new one. If you want to keep the same disk on the drive, open the Manage Diskettes dialog box and click the Reset button associated with the drive.</p></font><font face="Geneva" size=2><p><a href="#top">go to top</a></p></font></dd></dl></ul><hr><a name="tables"></a><font size=2 face="Geneva,Arial" color="0000FF"><p><b>SCALL Value Tables</b></p></font><ul><table border="1" cellspacing="0" cellpadding="2">	<caption><font face="geneva" size="2"><b>Resident Scalls - Values</b></caption><tr>	<td align="left"><font face="geneva" size="2"><b>Mnemonic</b></font></td>	<td align="center"><font face="geneva" size="2"><b>Value</b></font></td>	<td align="left"><font face="geneva" size="2"><b>Description</b></font></td></tr><tr>	<td align="left"><font face="courier" size="2">.EXIT</font></td>	<td align="center"><font face="courier" size="2">000Q</font></td>	<td align="left"><font face="geneva" size="2">Exit and return to HDOS command prompt.</font></td></tr><tr>	<td align="left"><font face="courier" size="2">.SCIN</font></td>	<td align="center"><font face="courier" size="2">001Q</font></td>	<td align="left"><font face="geneva" size="2">Read a character from the console</font></td></tr><tr>	<td align="left"><font face="courier" size="2">.SCOUT</font></td>	<td align="center"><font face="courier" size="2">002Q</font></td>	<td align="left"><font face="geneva" size="2">Write a character to the console</font></td></tr><tr>	<td align="left"><font face="courier" size="2">.PRINT</font></td>	<td align="center"><font face="courier" size="2">003Q</font></td>	<td align="left"><font face="geneva" size="2">Write a string to the console</font></td></tr><tr>	<td align="left"><font face="courier" size="2">.READ</font></td>	<td align="center"><font face="courier" size="2">004Q</font></td>	<td align="left"><font face="geneva" size="2">Read from a file</font></td></tr><tr>	<td align="left"><font face="courier" size="2">.WRITE</font></td>	<td align="center"><font face="courier" size="2">005Q</font></td>	<td align="left"><font face="geneva" size="2">Write to a file</font></td></tr><tr>	<td align="left"><font face="courier" size="2">.CONSL</font></td>	<td align="center"><font face="courier" size="2">006Q</font></td>	<td align="left"><font face="geneva" size="2">Change console options</font></td></tr><tr>	<td align="left"><font face="courier" size="2">.CLRCO</font></td>	<td align="center"><font face="courier" size="2">007Q</font></td>	<td align="left"><font face="geneva" size="2">Clear console type-ahead buffer</font></td></tr><tr>	<td align="left"><font face="courier" size="2">.LOADO</font></td>	<td align="center"><font face="courier" size="2">010Q</font></td>	<td align="left"><font face="geneva" size="2">Load an overlay</font></td></tr><tr>	<td align="left"><font face="courier" size="2">.VERS</font></td>	<td align="center"><font face="courier" size="2">011Q</font></td>	<td align="left"><font face="geneva" size="2">Return the HDOS version</font></td></tr></table><font face="Geneva" size=2><p><a href="#top">go to top</a></p></font><a name="val0"></a><table border="1" cellspacing="0" cellpadding="2">	<caption><font face="geneva" size="2"><b>HDOSOVL0 Scalls - Values</b></caption><tr>	<td align="left"><font face="geneva" size="2"><b>Mnemonic</b></font></td>	<td align="center"><font face="geneva" size="2"><b>Value</b></font></td>	<td align="left"><font face="geneva" size="2"><b>Description</b></font></td></tr><tr>	<td align="left"><font face="courier" size="2">.LINK</font></td>	<td align="center"><font face="courier" size="2">040Q</font></td>	<td align="left"><font face="geneva" size="2">Load and execute another program</font></td></tr><tr>	<td align="left"><font face="courier" size="2">.CTLC</font></td>	<td align="center"><font face="courier" size="2">041Q</font></td>	<td align="left"><font face="geneva" size="2">Set a control character trap</font></td></tr><tr>	<td align="left"><font face="courier" size="2">.OPENR</font></td>	<td align="center"><font face="courier" size="2">042Q</font></td>	<td align="left"><font face="geneva" size="2">Open a file for read access</font></td></tr><tr>	<td align="left"><font face="courier" size="2">.OPENW</font></td>	<td align="center"><font face="courier" size="2">043Q</font></td>	<td align="left"><font face="geneva" size="2">Open a file for write access</font></td></tr><tr>	<td align="left"><font face="courier" size="2">.OPENU</font></td>	<td align="center"><font face="courier" size="2">044Q</font></td>	<td align="left"><font face="geneva" size="2">Open a file for update access</font></td></tr><tr>	<td align="left"><font face="courier" size="2">.CLOSE</font></td>	<td align="center"><font face="courier" size="2">046Q</font></td>	<td align="left"><font face="geneva" size="2">Close an open file</font></td></tr><tr>	<td align="left"><font face="courier" size="2">.POSIT</font></td>	<td align="center"><font face="courier" size="2">047Q</font></td>	<td align="left"><font face="geneva" size="2">Position the file sector cursor</font></td></tr><tr>	<td align="left"><font face="courier" size="2">.DELETE</font></td>	<td align="center"><font face="courier" size="2">050Q</font></td>	<td align="left"><font face="geneva" size="2">Delete a file</font></td></tr><tr>	<td align="left"><font face="courier" size="2">.RENAME</font></td>	<td align="center"><font face="courier" size="2">051Q</font></td>	<td align="left"><font face="geneva" size="2">Rename a file</font></td></tr><tr>	<td align="left"><font face="courier" size="2">.SETTOP</font></td>	<td align="center"><font face="courier" size="2">052Q</font></td>	<td align="left"><font face="geneva" size="2">Allocate memory to your program</font></td></tr><tr>	<td align="left"><font face="courier" size="2">.DECODE</font></td>	<td align="center"><font face="courier" size="2">053Q</font></td>	<td align="left"><font face="geneva" size="2">Decode a file name</font></td></tr><tr>	<td align="left"><font face="courier" size="2">.NAME</font></td>	<td align="center"><font face="courier" size="2">054Q</font></td>	<td align="left"><font face="geneva" size="2">Retrieve a file name from an open channel</font></td></tr><tr>	<td align="left"><font face="courier" size="2">.CLEAR</font></td>	<td align="center"><font face="courier" size="2">055Q</font></td>	<td align="left"><font face="geneva" size="2">Clear a file channel</font></td></tr><tr>	<td align="left"><font face="courier" size="2">.ERROR</font></td>	<td align="center"><font face="courier" size="2">057Q</font></td>	<td align="left"><font face="geneva" size="2">Display an error message</font></td></tr><tr>	<td align="left"><font face="courier" size="2">.CHFLG</font></td>	<td align="center"><font face="courier" size="2">060Q</font></td>	<td align="left"><font face="geneva" size="2">Change file flags</font></td></tr><tr>	<td align="left"><font face="courier" size="2">.LOADD</font></td>	<td align="center"><font face="courier" size="2">062Q</font></td>	<td align="left"><font face="geneva" size="2">Load a device driver</font></td></tr></table><font face="Geneva" size=2><p><a href="#top">go to top</a></p></font><a name="val1"></a><table border="1" cellspacing="0" cellpadding="2">	<caption><font face="geneva" size="2"><b>HDOSOVL1 Scalls - Values</b></caption><tr>	<td align="left"><font face="geneva" size="2"><b>Mnemonic</b></font></td>	<td align="center"><font face="geneva" size="2"><b>Value</b></font></td>	<td align="left"><font face="geneva" size="2"><b>Description</b></font></td></tr><tr>	<td align="left"><font face="courier" size="2">.MOUNT</font></td>	<td align="center"><font face="courier" size="2">200Q</font></td>	<td align="left"><font face="geneva" size="2">Mount a disk on a device</font></td></tr><tr>	<td align="left"><font face="courier" size="2">.DMOUN</font></td>	<td align="center"><font face="courier" size="2">201Q</font></td>	<td align="left"><font face="geneva" size="2">Dismount a disk</font></td></tr><tr>	<td align="left"><font face="courier" size="2">.MONMS</font></td>	<td align="center"><font face="courier" size="2">202Q</font></td>	<td align="left"><font face="geneva" size="2">Mount with no console message</font></td></tr><tr>	<td align="left"><font face="courier" size="2">.DMNMS</font></td>	<td align="center"><font face="courier" size="2">203Q</font></td>	<td align="left"><font face="geneva" size="2">Dismount with no console message</font></td></tr><tr>	<td align="left"><font face="courier" size="2">.RESET</font></td>	<td align="center"><font face="courier" size="2">204Q</font></td>	<td align="left"><font face="geneva" size="2">Reset a disk device (dismount/mount)</font></td></tr></table><font face="Geneva" size=2><p><a href="#top">go to top</a></p></font></ul><hr><a name="errtab"></a><font size=2 face="Geneva,Arial" color="0000FF"><p><b>Error Code Value Table</b></p></font><ul><table border="1" cellspacing="0" cellpadding="2">	<caption><font face="geneva,arial" size="2"><b>Error Codes - Values</b></font></caption><tr>	<td align="left"><font face=" geneva,arial" size="2"><b>Mnemonic</b></font></td>	<td align="center"><font face=" geneva,arial" size="2"><b>Value</b></font></td>	<td align="left"><font face="geneva,arial" size="2"><b>Description</b></font></td></tr><tr>	<td align="left"><font face="courier" size="2">EC.EOF</font></td>	<td align="center"><font face="courier" size="2">001Q</font></td>	<td align="left"><font face="geneva,arial" size="2">End of file</font></td></tr><tr>	<td align="left"><font face="courier" size="2">EC.EOM</font></td>	<td align="center"><font face="courier" size="2">002Q</font></td>	<td align="left"><font face="geneva,arial" size="2">End of media</font></td></tr><tr>	<td align="left"><font face="courier" size="2">EC.ILC</font></td>	<td align="center"><font face="courier" size="2">003Q</font></td>	<td align="left"><font face="geneva,arial" size="2">Illegal Syscall code</font></td></tr><tr>	<td align="left"><font face="courier" size="2">EC.CNA</font></td>	<td align="center"><font face="courier" size="2">004Q</font></td>	<td align="left"><font face="geneva,arial" size="2">Channel not available</font></td></tr><tr>	<td align="left"><font face="courier" size="2">EC.DNS</font></td>	<td align="center"><font face="courier" size="2">005Q</font></td>	<td align="left"><font face="geneva,arial" size="2">Device not suitable</font></td></tr><tr>	<td align="left"><font face="courier" size="2">EC.IDN</font></td>	<td align="center"><font face="courier" size="2">006Q</font></td>	<td align="left"><font face="geneva,arial" size="2">Illegal device name</font></td></tr><tr>	<td align="left"><font face="courier" size="2">EC.IFN</font></td>	<td align="center"><font face="courier" size="2">007Q</font></td>	<td align="left"><font face="geneva,arial" size="2">Illegal file name</font></td></tr><tr>	<td align="left"><font face="courier" size="2">EC.NRD</font></td>	<td align="center"><font face="courier" size="2">010Q</font></td>	<td align="left"><font face="geneva,arial" size="2">No room for device driver</font></td></tr><tr>	<td align="left"><font face="courier" size="2">EC.FNO</font></td>	<td align="center"><font face="courier" size="2">011Q</font></td>	<td align="left"><font face="geneva,arial" size="2">Channel not open</font></td></tr><tr>	<td align="left"><font face="courier" size="2">EC.ILR</font></td>	<td align="center"><font face="courier" size="2">012Q</font></td>	<td align="left"><font face="geneva,arial" size="2">Illegal request</font></td></tr><tr>	<td align="left"><font face="courier" size="2">EC.FUC</font></td>	<td align="center"><font face="courier" size="2">013Q</font></td>	<td align="left"><font face="geneva,arial" size="2">File usage conflict</font></td></tr><tr>	<td align="left"><font face="courier" size="2">EC.FNF</font></td>	<td align="center"><font face="courier" size="2">014Q</font></td>	<td align="left"><font face="geneva,arial" size="2">File name not found</font></td></tr><tr>	<td align="left"><font face="courier" size="2">EC.UND</font></td>	<td align="center"><font face="courier" size="2">015Q</font></td>	<td align="left"><font face="geneva,arial" size="2">Unknown device</font></td></tr><tr>	<td align="left"><font face="courier" size="2">EC.ICN</font></td>	<td align="center"><font face="courier" size="2">016Q</font></td>	<td align="left"><font face="geneva,arial" size="2">Illegal channel number</font></td></tr><tr>	<td align="left"><font face="courier" size="2">EC.DIF</font></td>	<td align="center"><font face="courier" size="2">017Q</font></td>	<td align="left"><font face="geneva,arial" size="2">Directory full</font></td></tr><tr>	<td align="left"><font face="courier" size="2">EC.IFC</font></td>	<td align="center"><font face="courier" size="2">020Q</font></td>	<td align="left"><font face="geneva,arial" size="2">Illegal file contents</font></td></tr><tr>	<td align="left"><font face="courier" size="2">EC.NEM</font></td>	<td align="center"><font face="courier" size="2">021Q</font></td>	<td align="left"><font face="geneva,arial" size="2">Not enough memory</font></td></tr><tr>	<td align="left"><font face="courier" size="2">EC.RF</font></td>	<td align="center"><font face="courier" size="2">022Q</font></td>	<td align="left"><font face="geneva,arial" size="2">Read failure</font></td></tr><tr>	<td align="left"><font face="courier" size="2">EC.WF</font></td>	<td align="center"><font face="courier" size="2">023Q</font></td>	<td align="left"><font face="geneva,arial" size="2">Write failure</font></td></tr><tr>	<td align="left"><font face="courier" size="2">EC.WPV</font></td>	<td align="center"><font face="courier" size="2">024Q</font></td>	<td align="left"><font face="geneva,arial" size="2">Write protection violation</font></td></tr><tr>	<td align="left"><font face="courier" size="2">EC.WP</font></td>	<td align="center"><font face="courier" size="2">025Q</font></td>	<td align="left"><font face="geneva,arial" size="2">Disk write protected</font></td></tr><tr>	<td align="left"><font face="courier" size="2">EC.FAP</font></td>	<td align="center"><font face="courier" size="2">026Q</font></td>	<td align="left"><font face="geneva,arial" size="2">File already present</font></td></tr><tr>	<td align="left"><font face="courier" size="2">EC.DDA</font></td>	<td align="center"><font face="courier" size="2">027Q</font></td>	<td align="left"><font face="geneva,arial" size="2">Device driver abort</font></td></tr><tr>	<td align="left"><font face="courier" size="2">EC.FL</font></td>	<td align="center"><font face="courier" size="2">030Q</font></td>	<td align="left"><font face="geneva,arial" size="2">File locked</font></td></tr><tr>	<td align="left"><font face="courier" size="2">EC.FAO</font></td>	<td align="center"><font face="courier" size="2">031Q</font></td>	<td align="left"><font face="geneva,arial" size="2">File already open</font></td></tr><tr>	<td align="left"><font face="courier" size="2">EC.IS</font></td>	<td align="center"><font face="courier" size="2">032Q</font></td>	<td align="left"><font face="geneva,arial" size="2">Illegal switch</font></td></tr><tr>	<td align="left"><font face="courier" size="2">EC.UUN</font></td>	<td align="center"><font face="courier" size="2">033Q</font></td>	<td align="left"><font face="geneva,arial" size="2">Unknown unit number</font></td></tr><tr>	<td align="left"><font face="courier" size="2">EC.FNR</font></td>	<td align="center"><font face="courier" size="2">034Q</font></td>	<td align="left"><font face="geneva,arial" size="2">File name required</font></td></tr><tr>	<td align="left"><font face="courier" size="2">EC.DIW</font></td>	<td align="center"><font face="courier" size="2">035Q</font></td>	<td align="left"><font face="geneva,arial" size="2">Device is not writable (or write locked)</font></td></tr><tr>	<td align="left"><font face="courier" size="2">EC.UNA</font></td>	<td align="center"><font face="courier" size="2">036Q</font></td>	<td align="left"><font face="geneva,arial" size="2">Unit not available</font></td></tr><tr>	<td align="left"><font face="courier" size="2">EC.ILV</font></td>	<td align="center"><font face="courier" size="2">037Q</font></td>	<td align="left"><font face="geneva,arial" size="2">Illegal value</font></td></tr><tr>	<td align="left"><font face="courier" size="2">EC.ILO</font></td>	<td align="center"><font face="courier" size="2">040Q</font></td>	<td align="left"><font face="geneva,arial" size="2">Illegal option</font></td></tr><tr>	<td align="left"><font face="courier" size="2">EC.VPM</font></td>	<td align="center"><font face="courier" size="2">041Q</font></td>	<td align="left"><font face="geneva,arial" size="2">Volume presently mounted on device</font></td></tr><tr>	<td align="left"><font face="courier" size="2">EC.NVM</font></td>	<td align="center"><font face="courier" size="2">042Q</font></td>	<td align="left"><font face="geneva,arial" size="2">No volume presently mounted</font></td></tr><tr>	<td align="left"><font face="courier" size="2">EC.FOD</font></td>	<td align="center"><font face="courier" size="2">043Q</font></td>	<td align="left"><font face="geneva,arial" size="2">File open on device</font></td></tr><tr>	<td align="left"><font face="courier" size="2">EC.NPM</font></td>	<td align="center"><font face="courier" size="2">044Q</font></td>	<td align="left"><font face="geneva,arial" size="2">No provisions made for remounting more disks</font></td></tr><tr>	<td align="left"><font face="courier" size="2">EC.DNI</font></td>	<td align="center"><font face="courier" size="2">045Q</font></td>	<td align="left"><font face="geneva,arial" size="2">Disk not initialized</font></td></tr><tr>	<td align="left"><font face="courier" size="2">EC.DNR</font></td>	<td align="center"><font face="courier" size="2">046Q</font></td>	<td align="left"><font face="geneva,arial" size="2">Disk is not readable</font></td></tr><tr>	<td align="left"><font face="courier" size="2">EC.DSC</font></td>	<td align="center"><font face="courier" size="2">047Q</font></td>	<td align="left"><font face="geneva,arial" size="2">Disk structure is corrupt</font></td></tr><tr>	<td align="left"><font face="courier" size="2">EC.NCV</font></td>	<td align="center"><font face="courier" size="2">050Q</font></td>	<td align="left"><font face="geneva,arial" size="2">Not correct version of HDOS</font></td></tr><tr>	<td align="left"><font face="courier" size="2">EC.NOS</font></td>	<td align="center"><font face="courier" size="2">051Q</font></td>	<td align="left"><font face="geneva,arial" size="2">No operating system mounted</font></td></tr><tr>	<td align="left"><font face="courier" size="2">EC.IOI</font></td>	<td align="center"><font face="courier" size="2">052Q</font></td>	<td align="left"><font face="geneva,arial" size="2">Illegal overlay index</font></td></tr><tr>	<td align="left"><font face="courier" size="2">EC.OTL</font></td>	<td align="center"><font face="courier" size="2">053Q</font></td>	<td align="left"><font face="geneva,arial" size="2">Overlay too large</font></td></tr></table><font face="Geneva" size=2><p><a href="#top">go to top</a></p></font></ul><hr><font face="Geneva,Arial" size=1><center><a href="program.html">Programming Table of Contents</a><br><br><a href="../h8_toc.html">Main Table of Contents</a></center><br><br></font></body>
+<head>
+<title>H8 Emulation Help - HDOS System Calls</title>
+<meta name="AppleTitle" content="H8 Emulation Help">
+<meta name="description" content="HDOS System Calls">
+</head>
+
+<!-- altered 10/28/2002, das -->
+
+<body bgcolor="white">
+<a name="top"></a>
+<p>
+<font size=3 face="Verdana,Geneva" color="0000FF">
+<b>HDOS System Calls</b>
+</font>
+
+<ul>
+<font size="2" face="Geneva,Arial">
+<p>This page will document the set of system calls that make up the HDOS assembly language Application Program Interface (API). The calls will be documented as they were in the HDOS System Programmer's Guide, grouped by resident calls, HDOSOVL0 calls, and HDOSOVL1 calls. A table of scall values and a table of error code values will follow.</p>
+</font>
+</ul>
+
+
+<hr>
+<font face="Geneva,Arial" size=1>
+<center>
+<a href="program.html">Programming Table of Contents</a>
+<br><br>
+<a href="../h8_toc.html">Main Table of Contents</a>
+</center>
+<hr>
+
+<table border="0" cellspacing="0" cellpadding="2">
+<tr align="left" valign="top">
+	<td width="50"><font size=3 face="Verdana,Geneva" color="0000FF"><b>Page Index</b></font></td>
+	<td width="130"><font face="Geneva" size=2><a href="#scall">SCALL Pseudo Opcode</a></font></td>
+	<td>&nbsp;</td>
+	<td>&nbsp;</td>
+</tr>	
+<tr align="left" valign="top">
+	<td>&nbsp;</td>
+	<td width="130"><font face="Geneva" size=2><a href="#resident">Resident Scalls</a></font></td>
+	<td width="35">
+	<a href="#exit">.EXIT</a><br>
+	<a href="#scin">.SCIN</a><br>
+	<a href="#scout">.SCOUT</a><br>
+	<a href="#print">.PRINT</a><br>
+	<a href="#read">.READ</a>
+	</td>
+	<td width="35">
+	<a href="#write">.WRITE</a><br>
+	<a href="#consl">.CONSL</a><br>
+	<a href="#clrco">.CLRCO</a><br>
+	<a href="#loado">.LOADO</a><br>
+	<a href="#vers">.VERS</a></td>
+</tr>
+<tr align="left" valign="top">
+	<td>&nbsp;</td>
+	<td width="130"><font face="Geneva" size=2><a href="#hdosovl0">HDOSOVL0 Scalls</a></font></td>
+	<td width="35">
+	<a href="#link">.LINK</a><br>
+	<a href="#ctlc">.CTLC</a><br>
+	<a href="#openr">.OPENR</a><br>
+	<a href="#openw">.OPENW</a><br>
+	<a href="#openu">.OPENU</a><br>
+	<a href="#close">.CLOSE</a><br>
+	<a href="#posit">.POSIT</a><br>
+	<a href="#delete">.DELETE</a>
+	</td>
+	<td width="35">
+	<a href="#rename">.RENAME</a><br>
+	<a href="#settop">.SETTOP</a><br>
+	<a href="#decode">.DECODE</a><br>
+	<a href="#name">.NAME</a><br>
+	<a href="#clear">.CLEAR</a><br>
+	<a href="#error">.ERROR</a><br>
+	<a href="#chflg">.CHFLG</a><br>
+	<a href="#loadd">.LOADD</a>
+	</td>
+</tr>
+<tr align="left" valign="top">
+	<td>&nbsp;</td>
+	<td width="130"><font face="Geneva" size=2><a href="#hdosovl1">HDOSOVL1 Scalls</a></font></td>
+	<td width="35">
+	<a href="#mount">.MOUNT</a><br>
+	<a href="#dmoun">.DMOUN</a><br>
+	<a href="#monms">.MONMS</a>
+	</td>
+	<td width="35">
+	<a href="#dmnms">.DMNMS</a><br>
+	<a href="#reset">.RESET</a>
+	</td>
+</tr>
+<tr align="left" valign="top">
+	<td>&nbsp;</td>
+	<td width="130"><font face="Geneva" size=2><a href="#tables">SCALL Value Tables</a></font></td>
+	<td>&nbsp;</td>
+	<td>&nbsp;</td>
+</tr>
+<tr align="left" valign="top">
+	<td>&nbsp;</td>
+	<td width="130"><font face="Geneva" size=2><a href="#errtab">Error Code Value Table</a></font></td>
+	<td>&nbsp;</td>
+	<td>&nbsp;</td>
+</tr>
+</table>	
+<hr>
+
+<a name="scall"></a>
+<font size=2 face="Geneva,Arial" color="0000FF">
+<p><b>SCALL Pseudo Opcode</b></p>
+</font>
+
+<ul>
+<font face="Geneva" size=2>
+<p>A system call (scall) consists of an RST 7 instruction followed by a one-byte code. The assembler has a special pseudo opcode for scalls:</p>
+
+<font size="2" face="courier">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SCALL&nbsp;&nbsp;&nbsp;code<br>
+</font>
+
+<p>...where 'code' is the number of the scall request (ref. <a href="#tables">SCALL Value Tables</a>). This statement is equivalent to:</p>
+
+<font size="2" face="courier">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DB&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;377Q,code<br>
+</font>
+<p>...or...</p>
+<font size="2" face="courier">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RST&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;7<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DB&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;code<br>
+</font>
+
+<p>You should build a .ACM file with the scall codes in it, or use the version included on the Extra's disk, and include that file in any assembly language program that uses HDOS system calls.</p></font>
+
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</ul>
+
+<hr>
+
+<a name="resident"></a>
+<font size=2 face="Geneva,Arial" color="0000FF">
+<p><b>Resident Scalls</b></p>
+</font>
+
+<ul>
+<font face="Geneva" size=2>
+<p>These scalls are part of the resident HDOS system; they do not require that either overlay be present in memory.</p></font>
+<dl>
+
+
+<dt><a name="exit"></a><font size="2" face="courier">.EXIT (exit to HDOS)</font></dt>
+<dd><font face="Geneva" size=2>
+<p>End program and return to HDOS (to COMMAND.SYS, actually).</p></font>
+
+<font size="2" face="courier">
+Entry:<br>
+&nbsp;&nbsp;(A) = flag (0=normal, 1=abort)<br>
+Exit:<br>
+&nbsp;&nbsp;to COMMAND.SYS if system mounted; boot if not<br>
+
+<p>Abort exit is not recommended.</p>
+</font>
+
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+
+<dt><a name="scin"></a><font size="2" face="courier">.SCIN (system console in)</font></dt>
+<dd><font face="Geneva" size=2>
+<p>Read one byte from the console. If the console options have not been changed, the console will be in "line mode" and your program will wait until the user presses return or enter before it starts receiving characters. You can change to character mode with the <a href="#consl">.CONSL</a> scall and subsequently get characters as they are typed. However, you will need to handle backspace and other editing that is provided by HDOS in line mode.</p></font>
+
+
+<font size="2" face="courier">
+Entry:<br>
+&nbsp;&nbsp;none<br>
+Exit:<br>
+&nbsp;&nbsp;'C' set if nothing to read<br>
+&nbsp;&nbsp;'C' clear:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;(A) = character<br>
+Uses:<br>
+&nbsp;&nbsp;A, F<br>
+<br>
+Example:<br>
+<br>
+RDCHAR&nbsp;&nbsp;SCALL&nbsp;&nbsp;&nbsp;.SCIN<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;JC&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RDCHAR<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RET&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(A) has character<br>
+</font>
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+
+<dt><a name="scout"></a><font size="2" face="courier">.SCOUT (system console out)</font></dt>
+<dd><font face="Geneva" size=2>
+<p>Write one character to the system console.</p></font>
+
+<font size="2" face="courier">
+Entry:<br>
+&nbsp;&nbsp;(A) = character to write<br>
+Exit:<br>
+&nbsp;&nbsp;none<br>
+Uses:<br>
+&nbsp;&nbsp;none<br>
+<br>
+Example:<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LXI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;H,MESSAGE<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MVI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;B,MSG.LEN<br>
+PUT.MSG&nbsp;EQU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOV&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A,M<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SCALL&nbsp;&nbsp;&nbsp;.SCOUT<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;INX&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;H<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DCR&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;B&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Length in (B)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;JNZ&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PUT.MSG<br>
+. . .<br>
+MESSAGE&nbsp;DB&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'Message for the console'<br>
+MSG.LEN&nbsp;EQU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*-MESSAGE<br>
+</font>
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+
+<dt><a name="print"></a><font size="2" face="courier">.PRINT (print to console)</font></dt>
+<dd><font face="Geneva" size=2>
+<p>Print a line of text on the console. The last character must have the 200Q bit set to mark the end of the string.</p></font>
+
+<font size="2" face="courier">
+Entry:<br>
+&nbsp;&nbsp;(HL) = address of line of text<br>
+Exit:<br>
+&nbsp;&nbsp;(HL) = LWA of text +1<br>
+Uses:<br>
+&nbsp;&nbsp;A, F, H, L<br>
+<br>
+Example:<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LXI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;H,MESSAGE<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SCALL&nbsp;&nbsp;&nbsp;.PRINT<br>
+. . .<br>
+MESSAGE DB&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'Message for the console',212Q<br>
+</font>
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+
+<dt><a name="read"></a><font size="2" face="courier">.READ (read a file channel)</font></dt>
+<dd><font face="Geneva" size=2>
+<p>Read data from an open file channel. The channel can be open on a disk file or a character device (TT: or AT:).</p>
+<p>All I/O done with .READ and <a href="#write">.WRITE</a> is in "block mode" with the block size being a multiple of 256 bytes. For text files, the last sector should be padded out with nulls (00H bytes).</p></font>
+
+<font size="2" face="courier">
+Entry:<br>
+&nbsp;&nbsp;(A)&nbsp; = channel number<br>
+&nbsp;&nbsp;(BC) = byte count (in multiples of 256)<br>
+&nbsp;&nbsp;(DE) = buffer address<br>
+Exit:<br>
+&nbsp;&nbsp;'C' clear if data read correctly<br>
+&nbsp;&nbsp;'C' set if error:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;(A) &nbsp;= error code<br>
+&nbsp;&nbsp;&nbsp;&nbsp;(BC) = unread transfer count<br>
+&nbsp;&nbsp;&nbsp;&nbsp;(DE) = next address to read into<br>
+Uses:<br>
+&nbsp;&nbsp;all<br>
+<br>
+Example:<br>
+<br>
+READ&nbsp;&nbsp;&nbsp;&nbsp;MVI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A,1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Previously-opened channel<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LXI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;B,256<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LXI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;D,BUFFER<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SCALL&nbsp;&nbsp;&nbsp;.READ<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;JNC&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;READ.OK<br>
+*<br>
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'C' set - error on read<br>
+*<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CPI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;EC.EOF&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Just end of file?<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;JNZ&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;BAD.ERR&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Something bad<br>
+. . .<br>
+BUFFER&nbsp;&nbsp;DS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;256<br>
+</font>
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+
+<dt><a name="write"></a><font size="2" face="courier">.WRITE (write a file channel)</font></dt>
+<dd><font face="Geneva" size=2>
+<p>Write data to an open file channel. The channel can be open on a disk file or a character device (TT: or AT:).</p>
+<p>All I/O done with <a href="#read">.READ</a> and .WRITE is in "block mode" with the block size being a multiple of 256 bytes. For text files, the last sector should be padded out with nulls (00H bytes).</p></font>
+
+<font size="2" face="courier">
+Entry:<br>
+&nbsp;&nbsp;(A)&nbsp; = channel number<br>
+&nbsp;&nbsp;(BC) = data count<br>
+&nbsp;&nbsp;(DE) = data address<br>
+Exit:<br>
+&nbsp;&nbsp;'C' clear if write succeeded<br>
+&nbsp;&nbsp;'C' set if error:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;(A)&nbsp; = error code<br>
+&nbsp;&nbsp;&nbsp;&nbsp;(BC) = unused data count<br>
+&nbsp;&nbsp;&nbsp;&nbsp;(DE) = next address to write<br>
+Uses:<br>
+&nbsp;&nbsp;all<br>
+<br>
+Example:<br>
+<br>
+WRITE&nbsp;&nbsp;&nbsp;MVI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A,1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Open channel<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LXI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;B,512<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LXI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;D,BUFFER<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SCALL&nbsp;&nbsp;&nbsp;.WRITE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Write it<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;JC&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ERROR<br>
+. . .<br>
+BUFFER&nbsp;&nbsp;DS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;512<br>
+</font>
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+
+<dt><a name="consl"></a><font size="2" face="courier">.CONSL (change console options)</font></dt>
+<dd><font face="Geneva" size=2>
+<p>Set and clear console control bits and bytes. These bytes are available in well-known locations in memory, but use of the .CONSL call is recommended.</p>
+<p>You supply HDOS with three values: the index of the byte to be changed, a bit mask of the bits to be changed, and a "new values" pattern. The use of a mask and a new-value pattern allows you to set or clear just one bit without having to know how the other bits are set.</p>
+<p>There are a number of definitions that you should have in a common deck:</p>
+</font>
+
+<font size="2" face="courier">
+I.CSLMD EQU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Console mode byte<br>
+CSL.ECH EQU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;10000000B&nbsp;&nbsp;&nbsp;&nbsp;Suppress echo<br>
+CSL.WRP EQU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;00000010B&nbsp;&nbsp;&nbsp;&nbsp;Wrap lines at width<br>
+CSL.CHR EQU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;00000001B&nbsp;&nbsp;&nbsp;&nbsp;Operate in character mode<br>
+<br>
+I.CONTY EQU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Console characteristics<br>
+CTP.BKS EQU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;10000000B&nbsp;&nbsp;&nbsp;&nbsp;Terminal processes backspace<br>
+CTP.MLI EQU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;00100000B&nbsp;&nbsp;&nbsp;&nbsp;Map lower case to upper on input<br>
+CTP.MLO EQU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;00010000B&nbsp;&nbsp;&nbsp;&nbsp;Map lower case to upper on output<br>
+CTP.2SB EQU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;00001000B&nbsp;&nbsp;&nbsp;&nbsp;Terminal needs 2 stop bits<br>
+CTP.BKM EQU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;00000010B&nbsp;&nbsp;&nbsp;&nbsp;Map backspace to rubout<br>
+CTP.TAB EQU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;00000001B&nbsp;&nbsp;&nbsp;&nbsp;Terminal supports tab<br>
+<br>
+I.CUSOR EQU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Current cursor position<br>
+<br>
+I.CONWI EQU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Console width<br>
+<br>
+I.CONFL EQU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Console flags<br>
+CO.FLG&nbsp;&nbsp;EQU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;00000001B&nbsp;&nbsp;&nbsp;&nbsp;Ctl-O was used (toss output)<br>
+CS.FLG&nbsp;&nbsp;EQU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;10000000B&nbsp;&nbsp;&nbsp;&nbsp;Ctl-S was used (hold output)<br>
+<br>
+Entry:<br>
+&nbsp;&nbsp;(A) = index<br>
+&nbsp;&nbsp;(B) = new values<br>
+&nbsp;&nbsp;(C) = mask ('1' bit for every bit to change)<br>
+Exit:<br>
+&nbsp;&nbsp;'C' clear if no error:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;(A) = new value of byte<br>
+&nbsp;&nbsp;'C' set if error:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;(A) = error code<br>
+Uses:<br>
+&nbsp;&nbsp;all<br>
+<br>
+Example:<br>
+<br>
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Set character mode, echo ON<br>
+*<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MVI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A,I.CSLMD<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MVI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;B,CSL.CHR&nbsp;&nbsp;&nbsp;Only setting this bit<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MVI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;C,CSL.ECH+CSL.CHR&nbsp;&nbsp;&nbsp;Mask needs both<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SCALL&nbsp;&nbsp;&nbsp;.CONSL<br>
+*<br>
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Set console width to 80<br>
+*<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MVI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A,I.CONWI<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MVI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;B,80<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MVI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;C,377Q&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Changing all bits<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SCALL&nbsp;&nbsp;&nbsp;.CONSL<br>
+*<br>
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Read cursor position (column)<br>
+*<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MVI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A,I.CUSOR<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MVI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;B,0<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOV&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;C,B&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;We're changing nothing<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SCALL&nbsp;&nbsp;&nbsp;.CONSL&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(A) = cursor position<br>
+</font>
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+
+<dt><a name="clrco"></a><font size="2" face="courier">.CLRCO (clear console type ahead)</font></dt>
+<dd><font face="Geneva" size=2>
+<p>Clear console type-ahead buffer. This can be used if the user enters Ctl-C, for example, and you want to flush any type-ahead and reprint a fresh prompt for input.</p></font>
+
+<font size="2" face="courier">
+Entry:<br>
+&nbsp;&nbsp;none<br>
+Exit:<br>
+&nbsp;&nbsp;none<br>
+Uses:<br>
+&nbsp;&nbsp;all<br>
+</font>
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+
+<dt><a name="loado"></a><font size="2" face="courier">.LOADO (load an overlay)</font></dt>
+<dd><font face="Geneva" size=2>
+<p>Load an overlay.</p>
+<p>You must load both overlays before dismounting the system disk. Make sure that you do this before allocating all system memory for your application.</p>
+<p>You do <b>not</b> need to load the overlays before using an overlay-resident scall, however: HDOS does this for you.</p></font>
+
+<font size="2" face="courier">
+Entry:<br>
+&nbsp;&nbsp;(A) = Overlay index<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OVL0&nbsp;EQU&nbsp;0&nbsp;&nbsp;HDOSOVL0<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OVL1&nbsp;EQU&nbsp;1&nbsp;&nbsp;HDOSOVL1<br>
+Exit:<br>
+&nbsp;&nbsp;'C' clear if overlay loaded<br>
+&nbsp;&nbsp;'C' set if error:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;(A) = Error code<br>
+Uses:<br>
+&nbsp;&nbsp;all<br>
+<br>
+Example:<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MVI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A,OVL0<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SCALL&nbsp;&nbsp;&nbsp;.LOADO<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;JC&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FATAL<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MVI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A,OVL1<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SCALL&nbsp;&nbsp;&nbsp;.LOADO<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;JC&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FATAL<br>
+</font>
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+
+<dt><a name="vers"></a><font size="2" face="courier">.VERS (get HDOS version number</font></dt>
+<dd><font face="Geneva" size=2>
+<p>Returns the HDOS version number as a one-byte BCD number. HDOS 2.0 will return the value 020H.</p>
+<p>HDOS versions prior to 1.5 did not respond to this scall and would return 'C'. That's not going to happen with 2.0.</p></font>
+
+<font size="2" face="courier">
+Entry:<br>
+&nbsp;&nbsp;none<br>
+Exit:<br>
+&nbsp;&nbsp;'C' clear:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;(A) = Version number<br>
+&nbsp;&nbsp;'C' set if error:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;(A) = error code (EC.ILC)<br>
+Uses:<br>
+&nbsp;&nbsp;A, F<br>
+</font>
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+</dl>
+
+</ul>
+
+<hr>
+
+<a name="hdosovl0"></a>
+<font size=2 face="Geneva,Arial" color="0000FF">
+<p><b>HDOSOVL0 Scalls</b></p>
+</font>
+
+<ul>
+<font face="Geneva" size=2>
+<p>These scalls require that HDOSOVL0 be in memory. If it is not already in memory, it will need to be swapped in by HDOS with a resulting performance penalty.</p>
+<p>If you have allocated all available RAM for your program, the top end of your memory space may have to be swapped out to load the overlay. Make sure that neither the scall nor the data areas being worked on as part of the scall are in this memory area.</p>
+
+<p>Many of these calls require a file name. File names generally follow the form:</p>
+<font size="2" face="courier">
+<p>&nbsp;&nbsp;[device and unit:]name[.ext]</p></font>
+<p>Names in memory must be delimited somehow so that HDOS knows where the end is. There exists no exhaustive list of valid delimeters that the author is aware of. The list does include null (0H), comma, blank, equal sign, and slash. There may well be others.</p>
+<p>Your program can provide defaults for device and unit and for extension. This is done via a "default block." Here are two examples:</p>
+<font size="2" face="courier">
+&nbsp;&nbsp;DFLTBLK DB&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'SY0ASM'<br>
+&nbsp;&nbsp;DFLT.2&nbsp;&nbsp;DB&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'SY1',0,0,0</font>
+<p>The first example gives a default drive of sy0: and a default extension of .ASM. The second gives a default drive of sy1: and no default extension; files which specify a name and no extension will be assumed to have a null extension.</p>
+<p>See further examples in the scall descriptions below.</p>
+</font>
+
+<dl>
+
+
+<dt><a name="link"></a><font size="2" face="courier">.LINK (load and run a program)</font></dt>
+<dd><font face="Geneva" size=2>
+<p>Load and execute another program.</p>
+<p>All open files, system tables, and the stack are completely undisturbed. The value in register (A) is passed undisturbed.</p>
+<p>If the .LINK scall is successful, the .LINK scall will be the last statement executed in the old program; the new program will begin execution at its entry point. If the .LINK scall is not successful, execution proceeds with the statement following the .LINK scall. You should include some kind of error trap in case this happens.</p>
+<p>In the example, we're going to use the <a href="#name">.NAME</a> scall to get the device that we were run from, and then .LINK to a program called CLEANUP.ABS that should be found on the same device.</p></font>
+
+<font size="2" face="courier">
+Entry:<br>
+&nbsp;&nbsp;(HL) = address of program file descriptor (fully specified)<br>
+Exit:<br>
+&nbsp;&nbsp;'C' clear:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;To linked program<br>
+&nbsp;&nbsp;&nbsp;&nbsp;(A) = remains unchanged<br>
+&nbsp;&nbsp;'C' set if error:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;(A) = error code<br>
+Uses:<br>
+&nbsp;&nbsp;all<br>
+<br>
+Example:<br>
+<br>
+DFLTBLK DS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This program dev and ext<br>
+MYNAME&nbsp;&nbsp;DS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;9&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This program name<br>
+CLEANUP DB&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'SYn:CLEANUP.ABS',0<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LXI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;D,DFLTBLK<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LXI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;H,MYNAME<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MVI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A,-1<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SCALL&nbsp;&nbsp;&nbsp;.NAME&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Get my name<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;JC&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ERROR<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LDA&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DFLTBLK+2&nbsp;&nbsp;&nbsp;Get device<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;STA&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CLEANUP+2&nbsp;&nbsp;&nbsp;Set in next prog string<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LXI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;H,CLEANUP<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MVI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A,1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pass a code byte to cleanup<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SCALL&nbsp;&nbsp;&nbsp;.LINK&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Run new program<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;JMP&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ERROR&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Whups!<br>
+</font>
+
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+
+<dt><a name="ctlc"></a><font size="2" face="courier">.CTLC (set a control character trap)</font></dt>
+<dd><font face="Geneva" size=2>
+<p>Set a trap to handle Ctl-A, Ctl-B and/or Ctl-C at interrupt time.</p>
+<p>After the trap is set up, when the user types the control character, your routine is entered after HDOS handles the interrupt. Interrupts are enabled when your routine receives control.</p>
+<p>On entry to your processing routine, registers B, C, D, E, H, and L have whatever they had in them at the time of the interrupt. The stack contains:</p>
+<p>
+((SP)+0) = return address into HDOS<br>
+((SP)+2) = PSW from interrupted program<br>
+((SP)+4) = (PC) from interrupted program</p>
+<p>There no restrictions on what you can do from here. You may do some processing and then return to HDOS, which will clean up and return to your program at the point where it was interrupted, with all registers intact. You may pop the first two words off the stack and return to your program yourself. Or you may clean up the stack and JMP to some other routine.</p>
+<p>The example will show a trap setup for Ctl-C. It will not show a trap processing routine.</p></font>
+
+<font size="2" face="courier">
+Entry:<br>
+&nbsp;&nbsp;(A)&nbsp; = trap control character (Ctl-A, Ctl-B or Ctl-C)<br>
+&nbsp;&nbsp;(HL) = trap processing address; 0 to clear the trap<br>
+Exit:<br>
+&nbsp;&nbsp;'C' clear if ok<br>
+&nbsp;&nbsp;'C' set if error:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;(A) = error code<br>
+Uses:<br>
+&nbsp;&nbsp;A, F, H, L<br>
+<br>
+Example:<br>
+<br>
+CTLC&nbsp;&nbsp;&nbsp;&nbsp;EQU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MVI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A,CTLC<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LXI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;H,TRAP<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SCALL&nbsp;&nbsp;&nbsp;.CTLC<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;JC&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ERROR<br>
+. . .<br>
+TRAP&nbsp;&nbsp;&nbsp;&nbsp;EQU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*<br>
+</font>
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+
+<dt><a name="openr"></a><font size="2" face="courier">.OPENR (open for read access)</font></dt>
+<dd><font face="Geneva" size=2>
+<p>Open a file for read access. Any given file can be open for read on as many channels as you like.</p></font>
+
+<font size="2" face="courier">
+Entry:<br>
+&nbsp;&nbsp;(DE) = default block address<br>
+&nbsp;&nbsp;(HL) = file name address<br>
+&nbsp;&nbsp;(A)&nbsp; = channel number<br>
+Exit:<br>
+&nbsp;&nbsp;'C' clear if file open ok<br>
+&nbsp;&nbsp;'C' set if error:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;(A) = error code<br>
+Uses:<br>
+&nbsp;&nbsp;all<br>
+</font>
+
+<font face="Geneva" size=2>
+<p>Valid channel numbers are -1 through 5. -1 is a special case: when your program is first launched, channel -1 is open for read on your program file. This is so that you can use the <a href="#name">.NAME</a> scall to get your program name and device. In order to reuse channel -1, you will have to <a href="#close">.CLOSE</a> or <a href="#clear">.CLEAR</a> it first.</p></font>
+
+<font size="2" face="courier">
+Example:<br>
+<br>
+DFLTBLK DB&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'SY1TXT'<br>
+FILENAM DB&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'myfile.dat',0<br>
+. . .<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LXI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;D,DFLTBLK<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LXI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;H,FILENAM<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;XRA&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(A) = Channel zero<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SCALL&nbsp;&nbsp;&nbsp;.OPENR<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;JC&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ERROR<br>
+</font>
+
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+
+<dt><a name="openw"></a><font size="2" face="courier">.OPENW (open for write access)</font></dt>
+<dd><font face="Geneva" size=2>
+<p>Open a file for write access. See <a href="#openr">.OPENR</a> for parameters and a discussion of valid channel numbers.</p>
+<p>.OPENW opens a file for exclusive access on one channel only. If the file exists, new space will be created for the file and the directory entry will remain undisurbed until the file is successfully closed. At that time, the old space is returned to the free pool and the new file takes it's place in the directory.</p>
+<p>You can both read and write to a file open for write access. After writing some sectors,  use the <a href="#posit">.POSIT</a> scall to "rewind" the file to the beginning and read the file back.</p>
+<p>If you <a href="#clear">.CLEAR</a> a file opened for write, any sectors written will be returned to the free pool and any existing file with the same name will be preserved unchanged.</p></font>
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+
+<dt><a name="openu"></a><font size="2" face="courier">.OPENU (open for update access)</font></dt>
+<dd><font face="Geneva" size=2>
+<p>Open a file for update access. See <a href="#openr">.OPENR</a> for parameters and a discussion of valid channel numbers.</p>
+<p>.OPENU opens a file for exclusive access on one channel only. The file is open for both read and write access. The sector cursor is positioned before sector 0. Writes will overwrite existing data. To add to the end of the file, use <a href="#posit">.POSIT</a> to set the sector cursor to the end and then write. Thus, you can append to an existing file by using .OPENU and .POSIT.</p>
+<p>Be sure to close a file open for update. If you <a href="#clear">.CLEAR</a> the file after adding to the end, those additions will be lost and the sectors will not be returned to the free pool until the next time the disk is mounted. Any changed sectors, however, will remain changed.</p></font>
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+
+<dt><a name="close"></a><font size="2" face="courier">.CLOSE (close a file)</font></dt>
+<dd><font face="Geneva" size=2>
+<p>Close a file.</p>
+
+<font size="2" face="courier">
+Entry:<br>
+&nbsp;&nbsp;(A)&nbsp; = channel number<br>
+Exit:<br>
+&nbsp;&nbsp;'C' clear if close ok<br>
+&nbsp;&nbsp;'C' set if error:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;(A) = error code (EC.FNO)<br>
+Uses:<br>
+&nbsp;&nbsp;all<br>
+</font>
+
+<p>You should always close a file that you opened, with two exceptions:</p></font>
+<ol>
+<li><font face="Geneva" size=2><p>HDOS enters your program with channel -1 open. If you don't use it yourself, you don't have to close it; HDOS will take care of that for you.</p></font></li>
+<li><font face="Geneva" size=2><p>Scratch files that you opened with <a href="#openw">.OPENW</a> and that you don't intend to keep can be cleared with <a href="#clear">.CLEAR</a> to throw the file away and return its space to the free pool</p></font></li>
+</ol>
+
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+
+<dt><a name="posit"></a>
+<font size="2" face="courier">.POSIT (move the file sector cursor)</font></dt>
+<dd><font face="Geneva" size=2>
+<p>Move the sector cursor to a new logical sector number.</p>
+<p>Setting the cursor to logical sector 0 effectively "rewinds" the file to the beginning (e.g., positions the cursor before the first sector). Setting it to 5 positions the cursor before the 6th sector, etc.</p>
+<p>To position to the end of the file, .POSIT to 'n' where 'n' is equal to the number of sectors in the file. If you don't know how many sectors there are, use -1 and verify that you got an error of EC.EOF. The sector cursor is positioned at the end of the file.</p></font>
+
+<font size="2" face="courier">
+Entry:<br>
+&nbsp;&nbsp;(A)&nbsp; = channel number<br>
+&nbsp;&nbsp;(BC) = logical sector number to position before<br>
+Exit:<br>
+&nbsp;&nbsp;'C' clear if file positioned ok<br>
+&nbsp;&nbsp;'C' set if error:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;(A) = error code<br>
+&nbsp;&nbsp;&nbsp;&nbsp;(A) = EC.EOF if off end:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(BC) = unskipped sectors<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;File positioned at end<br>
+Uses:<br>
+&nbsp;&nbsp;all<br>
+<br>
+Example:<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MVI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A,CHANNEL<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LXI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;B,-1<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SCALL&nbsp;&nbsp;&nbsp;.POSIT<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;JNC&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PROBLEM&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Should have gotten error<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CPI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;EC.EOF<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;JNZ&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PROBLEM&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Should have gotten EC.EOF<br>
+*<br>
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;File positioned past end<br>
+<br>
+</font>
+
+<font face="Geneva" size=2>
+<p> If you want to know the file size, you can .POSIT to -1 and then subtract the (BC) pair from 377377A to get the number of sectors.</p>
+</font>
+
+<font size="2" face="courier">
+Example:<br><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;XRA&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(A) = channel<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LXI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;B,-1<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SCALL&nbsp;&nbsp;&nbsp;.POSIT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;position to end of file<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;JNC&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PROBLEM&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;really should get an error<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MVI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A,377Q&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;377377A - (BC)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SUB&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;C<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOV&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;C,A<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MVI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A,377Q<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SBB&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;B<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOV&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;B,A&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(BC) = file size in sectors<br>
+</font>
+
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+
+<dt><a name="delete"></a><font size="2" face="courier">.DELETE (delete a file)</font></dt>
+<dd><font face="Geneva" size=2>
+<p>Delete an existing file.</p></font>
+
+<font size="2" face="courier">
+Entry:<br>
+&nbsp;&nbsp;(HL) = address of file name string<br>
+&nbsp;&nbsp;(DE) = default block address<br>
+Exit:<br>
+&nbsp;&nbsp;'C' clear if delete worked<br>
+&nbsp;&nbsp;'C' set if error:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;(A) = error code<br>
+Uses:<br>
+&nbsp;&nbsp;all<br>
+
+</font>
+
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+
+<dt><a name="rename"></a><font size="2" face="courier">.RENAME (rename a file)</font></dt>
+<dd><font face="Geneva" size=2>
+<p>Rename a file.</p>
+<p>The new name must not already exist. Unfortunately, .RENAME doesn't check for this, so you should check by trying to <a href="#openr">.OPENR</a> the new file name before renaming it. If you don't get an error (EC.FNF), you can't rename the file. Also, both the old and new file must be on the same disk drive.</p>
+<p>The default block applies only to the old name. The new name must be fully specified including device and unit, name and extension.</p></font>
+
+<font size="2" face="courier">
+Entry:<br>
+&nbsp;&nbsp;(HL) = old file name string address<br>
+&nbsp;&nbsp;(DE) = default block (applies to old file only)<br>
+&nbsp;&nbsp;(BE) = new file name string address<br>
+Exit:<br>
+&nbsp;&nbsp;'C' clear if rename worked<br>
+&nbsp;&nbsp;'C' set if error:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;(A) = error code<br>
+Uses:<br>
+&nbsp;&nbsp;all<br>
+<br>
+Example:<br>
+<br>
+DFLTBLK DB&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'SY1DAT'<br>
+OLDNAME DB&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'MYFILE.TXT',0<br>
+NEWNAME DB&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'SY1:NEWFILE.ASM',0<br>
+. . .<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LXI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;H,NEWNAME<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LXI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;D,DFLTBLK<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MVI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A,5<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SCALL&nbsp;&nbsp;&nbsp;.OPENR&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;See if the file exists<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;JNC&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;EXISTS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;It does - can't rename<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CPI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;EC.FNF&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;File not found error?<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;JNZ&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ERROR&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Some other problem<br>
+*<br>
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;It is legal to rename this file<br>
+*<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LXI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;H,OLDNAME<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LXI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;D,DFLTBLK<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LXI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;B,NEWNAME<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SCALL&nbsp;&nbsp;&nbsp;.RENAME<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;JC&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ERROR<br>
+</font>
+
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+
+<dt><a name="settop"></a><font size="2" face="courier">.SETTOP (allocate memory)</font></dt>
+<dd><font face="Geneva" size=2>
+<p>Set the highest memory address that your program will use.</p>
+<p>HDOS uses any free memory above your program to load overlays and device drivers. If you intend to use that memory for yourself, you have to inform HDOS or you stand a chance of having your memory overwitten.</p>
+<p>On entry, your program top is set to the address of the last program byte loaded. If you have allocated additional space off the end of your program using DS statements, you will need to inform HDOS of that by using .SETTOP as in the first example.</p>
+<p>To allocate all free memory to your program, use -1 to find out the highest possible address and then set that address, as shown in the second example (ref: <a href="memory.html#addr">Address Space Utilization</a>).</p>
+</font>
+
+<font size="2" face="courier">
+Entry:<br>
+&nbsp;&nbsp;(HL) = new top address<br>
+Exit:<br>
+&nbsp;&nbsp;'C' clear if top set<br>
+&nbsp;&nbsp;'C' set if you tried to set too high:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;(A)&nbsp; = error code<br>
+&nbsp;&nbsp;&nbsp;&nbsp;(HL) = maximum address<br>
+Uses:<br>
+&nbsp;&nbsp;all<br>
+<br>
+Examples:<br>
+<br>
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Example 1: Set to your program top<br>
+<br>
+ALLOC&nbsp;&nbsp;&nbsp;EQU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LXI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;H,PROGTOP<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SCALL&nbsp;&nbsp;&nbsp;.SETTOP<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;JC&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ERROR<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RET<br>
+<br>
+LASTCON EQU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*<br>
+BUFFER&nbsp;&nbsp;DS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;10*256<br>
+PROGTOP EQU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Set top here<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ORG&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LASTCON<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;END&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;BEGIN<br>
+<br><br>
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Example 2: Set maximum memory<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LXI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;H,-1<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SCALL&nbsp;&nbsp;&nbsp;.SETTOP&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Cause error deliberately<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SHLD&nbsp;&nbsp;&nbsp;&nbsp;MAXMEM&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Save for reference<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SCALL&nbsp;&nbsp;&nbsp;.SETTOP&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Set top for real<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;JC&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ERROR&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This should not happen<br>
+. . .<br>
+MAXMEM&nbsp;&nbsp;DS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2<br>
+<br><br>
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Example 3: Leave room for overlay swaps<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LHLD&nbsp;&nbsp;&nbsp;&nbsp;S.OMAX<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;XCHG&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(DE) = max overlay size<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LXI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;H,-1<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SCALL&nbsp;&nbsp;&nbsp;.SETTOP&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(HL) = max available<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOV&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A,L<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SUB&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;E<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOV&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;L,A<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOV&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A,H<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SBB&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;D<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOV&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;H,A&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(HL) = max with no swapouts<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SHLD&nbsp;&nbsp;&nbsp;&nbsp;MAXMEM<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SCALL&nbsp;&nbsp;&nbsp;.SETTOP<br>
+. . .<br>
+MAXMEM&nbsp;&nbsp;DS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2<br>
+</font>
+<font face="Geneva" size=2>
+<p>In the second and third examples, we have to save MAXMEM before we set the top, as a successful .SETTOP scall will destroy the contents of the (HL) pair. Of course, we could always retrieve the value from <a href="memory.html#hdosram">S.USRM</a>.</p>
+<p>In the third example, we subtract the size of the largest overlay, kept in <a href="memory.html#hdosram">S.OMAX</a>, from the maximum available memory, and set that as the top of our application space. HDOS will be able to use that area to read in either overlay without the need for swapping our space to disk. And the overlay can remain in memory, further speeding execution.</p>
+<p><a href="#top">go to top</a></p></font>
+</dd>
+
+
+<dt><a name="decode"></a><font size="2" face="courier">.DECODE (decode a file name)</font></dt>
+<dd><font face="Geneva" size=2>
+<p>Decode a file name into its component parts. The format of the decoded file name is shown in the example below. It is also included in the version of HDOS.ACM that is included on the Extra's disk.</p></font>
+
+<font size="2" face="courier">
+Entry:<br>
+&nbsp;&nbsp;(BC) = address of decode block (see example)<br>
+&nbsp;&nbsp;(DE) = default block address<br>
+&nbsp;&nbsp;(HL) = file name string address<br>
+Exit:<br>
+&nbsp;&nbsp;'C' clear if file successfully decoded<br>
+&nbsp;&nbsp;'C' set if error:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;(A) = error code<br>
+Uses:<br>
+&nbsp;&nbsp;all<br>
+<br>
+Example:<br>
+<br>
+DCD.BLK&nbsp;EQU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Reserved<br>
+DCD.DEV DS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Device name<br>
+DCD.UNT DS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Unit number<br>
+DCD.NAM DS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;8&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;File name<br>
+DCD.EXT DS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;File extension<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Reserved<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ERRNZ&nbsp;&nbsp;&nbsp;*-DCD.BLK-19&nbsp;&nbsp;s/b 19 bytes long<br>
+<br>
+DFLTBLK DB&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'SY0TXT'<br>
+FILENAM DS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;17&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;File name from user<br>
+. . .<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LXI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;B,DCD.BLK<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LXI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;D,DFLTBLK<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LXI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;H,FILENAM<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SCALL&nbsp;&nbsp;&nbsp;.DECODE<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;JC&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ERROR<br>
+</font>
+
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+
+<dt><a name="name"></a><font size="2" face="courier">.NAME (get file name from channel)</font></dt>
+<dd><font face="Geneva" size=2>
+<p>Return the device, unit, name and extension from an open file channel.</p>
+<p>The file name is returned as a string of 8 characters followed by a null (0H). The device, unit and extension are returned in default block format.</p></font>
+
+<font size="2" face="courier">
+Entry:<br>
+&nbsp;&nbsp;(A)&nbsp; = channel number<br>
+&nbsp;&nbsp;(DE) = default block target address<br>
+&nbsp;&nbsp;(HL) = file name target address<br>
+Exit:<br>
+&nbsp;&nbsp;'C' clear if name returned successfully<br>
+&nbsp;&nbsp;'C' set if error:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;(A) = error code<br>
+Uses:<br>
+&nbsp;&nbsp;all<br>
+<br>
+Example:<br>
+<br>
+DFLTBLK DS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Room for standard default block<br>
+FILENAM DS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;9&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Room for null-terminated name<br>
+. . .<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LXI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;D,DFLTBLK<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LXI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;H,FILENAM<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MVI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A,CHANNEL<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SCALL&nbsp;&nbsp;&nbsp;.NAME<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;JC&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ERROR<br>
+</font>
+
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+
+<dt><a name="clear"></a><font size="2" face="courier">.CLEAR (clear a file channel)</font></dt>
+<dd><font face="Geneva" size=2>
+<p>Clear a file channel.</p>
+<p>If the file was open for read access, this is the same as <a href="#close">.CLOSE</a>, which is the preferred way to close a file.</p>
+<p>If the file was open for write access, the file is forgotten and any sectors written are returned to the free pool. If the file was open for update access, any sectors appended to the file will be lost until the next time the disk is mounted (ref. <a href="#openu">.OPENU</a>). But any changed sectors remain changed.</p>
+<p><b>Emulator note:</b> If you are closing the AT: or LP: device drivers, please use <a href="#close">.CLOSE</a> and not .CLEAR. The driver needs to inform the emulator that the file has closed, but the driver is not notified of a .CLEAR call so it can't inform the emulator.</p></font>
+
+<font size="2" face="courier">
+Entry:<br>
+&nbsp;&nbsp;(A) = channel number<br>
+Exit:<br>
+&nbsp;&nbsp;'C' clear if ok<br>
+&nbsp;&nbsp;'C' set if error:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;(A) = error code<br>
+Uses:<br>
+&nbsp;&nbsp;all<br>
+</font>
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+
+<dt><a name="error"></a><font size="2" face="courier">.ERROR (print an error message)</font></dt>
+<dd><font face="Geneva" size=2>
+<p>Print an error message on the console from the file "sy0:errormsg.sys".</p>
+<p>If errormsg.sys is not on the sy0: drive, the error message printed will be "SYSTEM ERROR # nnn" with "nnn" replaced by the error code passed to .ERROR.</p>
+<p>.ERROR will itself, thankfully, never return an error.</p>
+
+<font size="2" face="courier">
+Entry:<br>
+&nbsp;&nbsp;(A) = error code (usually from a scall)<br>
+&nbsp;&nbsp;(H) = trailing character (printed after error message)<br>
+Exit:<br>
+&nbsp;&nbsp;none<br>
+Uses:<br>
+&nbsp;&nbsp;all<br>
+<br>
+Example:<br>
+<br>
+ERROR&nbsp;&nbsp;&nbsp;EQU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MVI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;H,NL&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Print NL after msg<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SCALL&nbsp;&nbsp;&nbsp;.ERROR&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Print error message<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RET<br>
+</font>
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+
+<dt><a name="chflg"></a><font size="2" face="courier">.CHFLG (change file flags)</font></dt>
+<dd><font face="Geneva" size=2>
+<p>Change file flags. File flags are:</p></font>
+
+<table border="1" cellspacing="0" cellpadding="2">
+<tr align="left" valign="top">
+	<td><font face="Geneva" size=2><b>Mnemonic</b></font></td>
+	<td align="center"><font face="Geneva" size=2><b>Bit Value</b></font></td>
+	<td><font face="Geneva" size=2><b>Meaning</b></font></td>
+</tr>
+<tr align="left" valign="top">
+	<td><font face="courier" size=2>DIF.SYS</font></td>
+	<td align="center"><font face="courier" size=2>200Q</font></td>
+	<td><font face="Geneva" size=2>System file</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td><font face="courier" size=2>DIF.LOC</font></td>
+	<td align="center"><font face="courier" size=2>100Q</font></td>
+	<td><font face="Geneva" size=2>Locked for change (can't change flags again)</font></td>
+</tr>
+<tr align="left" valign="top">
+	<td><font face="courier" size=2>DIF.WP</font></td>
+	<td align="center"><font face="courier" size=2>040Q</font></td>
+	<td><font face="Geneva" size=2>Write protected</font></td>
+</tr>
+</table>
+
+<font size="2" face="courier">
+<br>
+Entry:<br>
+&nbsp;&nbsp;(B)&nbsp; = new bit values<br>
+&nbsp;&nbsp;(C)&nbsp; = mask of bits to change<br>
+&nbsp;&nbsp;(HL) = file name string address<br>
+&nbsp;&nbsp;(DE) = default block address<br>
+Exit<br>
+&nbsp;&nbsp;'C' clear if change done<br>
+&nbsp;&nbsp;'C' set if error:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;(A) = error code<br>
+Uses:<br>
+&nbsp;&nbsp;all<br>
+<br>
+Example:<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MVI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;B,DIF.WP<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOV&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;C,B<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LXI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;H,FNAME<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LXI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;D,DFLTBLK<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SCALL&nbsp;&nbsp;&nbsp;.CHFLG&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Set write protection<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;JC&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ERROR<br>
+</font>
+
+<font face="Geneva" size=2>
+<p>If you set the lock flag, the only way to clear it is to copy the file, delete the old file, and rename the new file. If you set both lock and write protect, then the file is there "forever" (until the disk volume is re-initialized).</p></font>
+
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+
+<dt><a name="loadd"></a><font size="2" face="courier">.LOADD (load a device driver)</font></dt>
+<dd><font face="Geneva" size=2>
+<p>Load a device driver into memory.</p>
+<p>Like <a href="#loado">.LOADO</a>, this call can't be used after the SY0: device is dismounted, so any driver not in memory when the disk is dismounted is inaccessable until the next boot.</p></font>
+
+<font size="2" face="courier">
+Entry:<br>
+&nbsp;&nbsp;(HL) = device driver name string<br>
+Exit:<br>
+&nbsp;&nbsp;'C' clear if driver loaded<br>
+&nbsp;&nbsp;'C' set if error:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;(A) = error code<br>
+Uses:<br>
+&nbsp;&nbsp;all<br>
+<br>
+Example:<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LXI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;H,LP.DRVR<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SCALL&nbsp;&nbsp;&nbsp;.LOADD<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;JC&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ERROR<br>
+. . .<br>
+LP.DRVR DB&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'LP:',0<br>
+</font>
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+</dl>
+
+</ul>
+
+<hr>
+
+<a name="hdosovl1"></a>
+<font size=2 face="Geneva,Arial" color="0000FF">
+<p><b>HDOSOVL1 Scalls</b></p>
+</font>
+
+<ul>
+<font face="Geneva" size=2>
+<p>These scalls require that HDOSOVL0 be in memory. If it is not already in memory, it will need to be swapped in by HDOS with a resulting performance penalty.</p>
+<p>If you have allocated all available RAM for your program, the top end of your memory space may have to be swapped out to load the overlay. Make sure that neither the scall nor the data areas being worked on as part of the call are in this memory area.</p></font>
+
+<dl>
+
+
+<dt><a name="mount"></a><font size="2" face="courier">.MOUNT (mount a disk)</font></dt>
+<dd><font face="Geneva" size=2>
+<p>Mount a disk drive and print a message on the console informing the user.</p></font>
+
+<font size="2" face="courier">
+Entry:<br>
+&nbsp;&nbsp;(HL) = address of device name string<br>
+Exit:<br>
+&nbsp;&nbsp;'C' clear if mounted<br>
+&nbsp;&nbsp;'C' set if error:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;(A) = error code<br>
+Uses:<br>
+&nbsp;&nbsp;all<br>
+<br>
+Example:<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LXI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;H,DEV<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SCALL&nbsp;&nbsp;&nbsp;.MOUNT<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;JC&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ERROR<br>
+. . .<br>
+DEV&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DB&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'SY1:',0<br>
+</font>
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+
+<dt><a name="dmoun"></a><font size="2" face="courier">.DMOUN (dismount a disk)</font></dt>
+<dd><font face="Geneva" size=2>
+<p>Dismount a disk and print a message on the console. Parameters same as <a href="#mount">.MOUNT</a>.</p></font>
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+
+<dt><a name="monms"></a><font size="2" face="courier">.MONMS (mount with no message)</font></dt>
+<dd><font face="Geneva" size=2>
+<p>Mount a disk, but do not produce a mount message on the console. See <a href="#mount">.MOUNT</a> above.</p></font>
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+
+<dt><a name="dmnms"></a><font size="2" face="courier">.DMNMS (dismount with no message)</font></dt>
+<dd><font face="Geneva" size=2>
+<p>Dismount a disk, but do not produce a dismount message on the console. See <a href="#dmoun">.DMOUN</a> above.</p></font>
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+
+
+<dt><a name="reset"></a><font size="2" face="courier">.RESET (dismount/mount)</font></dt>
+<dd><font face="Geneva" size=2>
+<p>Reset a drive. This is effectively the same as a dismount followed by a mount.</p>
+<p>The drive will be dismounted with a message printed on the console. If there is no disk currently on the drive, this step will be skipped.</p>
+<p>A message will be printed asking the user to replace the disk. HDOS will wait until the drive becomes not ready (e.g., the disk is removed), and then wait until the drive becomes ready again (e.g., a new disk is inserted). Then the disk will be mounted, with message.</p>
+<p>The call may be interrupted (by a Ctl-C, etc.) between the dismount and mount. In that case, the drive will be left in the dismounted condition.</p>
+<p>The parameters are the same as the <a href="#mount">.MOUNT</a> call above.</p>
+
+<p><b>Emulator note:</b> When prompted to mount the new disk, open the Manage Diskettes dialog box, remove the disk and insert a new one. If you want to keep the same disk on the drive, open the Manage Diskettes dialog box and click the Reset button associated with the drive.</p>
+</font>
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</dd>
+</dl>
+</ul>
+
+<hr>
+
+<a name="tables"></a>
+<font size=2 face="Geneva,Arial" color="0000FF">
+<p><b>SCALL Value Tables</b></p>
+</font>
+<ul>
+<table border="1" cellspacing="0" cellpadding="2">
+	<caption><font face="geneva" size="2"><b>Resident Scalls - Values</b></caption>
+<tr>
+	<td align="left"><font face="geneva" size="2"><b>Mnemonic</b></font></td>
+	<td align="center"><font face="geneva" size="2"><b>Value</b></font></td>
+	<td align="left"><font face="geneva" size="2"><b>Description</b></font></td>
+</tr>
+<tr>
+	<td align="left"><font face="courier" size="2">.EXIT</font></td>
+	<td align="center"><font face="courier" size="2">000Q</font></td>
+	<td align="left"><font face="geneva" size="2">Exit and return to HDOS command prompt.</font></td>
+</tr>
+<tr>
+	<td align="left"><font face="courier" size="2">.SCIN</font></td>
+	<td align="center"><font face="courier" size="2">001Q</font></td>
+	<td align="left"><font face="geneva" size="2">Read a character from the console</font></td>
+</tr>
+<tr>
+	<td align="left"><font face="courier" size="2">.SCOUT</font></td>
+	<td align="center"><font face="courier" size="2">002Q</font></td>
+	<td align="left"><font face="geneva" size="2">Write a character to the console</font></td>
+</tr>
+<tr>
+	<td align="left"><font face="courier" size="2">.PRINT</font></td>
+	<td align="center"><font face="courier" size="2">003Q</font></td>
+	<td align="left"><font face="geneva" size="2">Write a string to the console</font></td>
+</tr>
+<tr>
+	<td align="left"><font face="courier" size="2">.READ</font></td>
+	<td align="center"><font face="courier" size="2">004Q</font></td>
+	<td align="left"><font face="geneva" size="2">Read from a file</font></td>
+</tr>
+<tr>
+	<td align="left"><font face="courier" size="2">.WRITE</font></td>
+	<td align="center"><font face="courier" size="2">005Q</font></td>
+	<td align="left"><font face="geneva" size="2">Write to a file</font></td>
+</tr>
+<tr>
+	<td align="left"><font face="courier" size="2">.CONSL</font></td>
+	<td align="center"><font face="courier" size="2">006Q</font></td>
+	<td align="left"><font face="geneva" size="2">Change console options</font></td>
+</tr>
+<tr>
+	<td align="left"><font face="courier" size="2">.CLRCO</font></td>
+	<td align="center"><font face="courier" size="2">007Q</font></td>
+	<td align="left"><font face="geneva" size="2">Clear console type-ahead buffer</font></td>
+</tr>
+<tr>
+	<td align="left"><font face="courier" size="2">.LOADO</font></td>
+	<td align="center"><font face="courier" size="2">010Q</font></td>
+	<td align="left"><font face="geneva" size="2">Load an overlay</font></td>
+</tr>
+<tr>
+	<td align="left"><font face="courier" size="2">.VERS</font></td>
+	<td align="center"><font face="courier" size="2">011Q</font></td>
+	<td align="left"><font face="geneva" size="2">Return the HDOS version</font></td>
+</tr>
+</table>
+
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+
+<a name="val0"></a>
+<table border="1" cellspacing="0" cellpadding="2">
+	<caption><font face="geneva" size="2"><b>HDOSOVL0 Scalls - Values</b></caption>
+<tr>
+	<td align="left"><font face="geneva" size="2"><b>Mnemonic</b></font></td>
+	<td align="center"><font face="geneva" size="2"><b>Value</b></font></td>
+	<td align="left"><font face="geneva" size="2"><b>Description</b></font></td>
+</tr>
+<tr>
+	<td align="left"><font face="courier" size="2">.LINK</font></td>
+	<td align="center"><font face="courier" size="2">040Q</font></td>
+	<td align="left"><font face="geneva" size="2">Load and execute another program</font></td>
+</tr>
+<tr>
+	<td align="left"><font face="courier" size="2">.CTLC</font></td>
+	<td align="center"><font face="courier" size="2">041Q</font></td>
+	<td align="left"><font face="geneva" size="2">Set a control character trap</font></td>
+</tr>
+<tr>
+	<td align="left"><font face="courier" size="2">.OPENR</font></td>
+	<td align="center"><font face="courier" size="2">042Q</font></td>
+	<td align="left"><font face="geneva" size="2">Open a file for read access</font></td>
+</tr>
+<tr>
+	<td align="left"><font face="courier" size="2">.OPENW</font></td>
+	<td align="center"><font face="courier" size="2">043Q</font></td>
+	<td align="left"><font face="geneva" size="2">Open a file for write access</font></td>
+</tr>
+<tr>
+	<td align="left"><font face="courier" size="2">.OPENU</font></td>
+	<td align="center"><font face="courier" size="2">044Q</font></td>
+	<td align="left"><font face="geneva" size="2">Open a file for update access</font></td>
+</tr>
+<tr>
+	<td align="left"><font face="courier" size="2">.CLOSE</font></td>
+	<td align="center"><font face="courier" size="2">046Q</font></td>
+	<td align="left"><font face="geneva" size="2">Close an open file</font></td>
+</tr>
+<tr>
+	<td align="left"><font face="courier" size="2">.POSIT</font></td>
+	<td align="center"><font face="courier" size="2">047Q</font></td>
+	<td align="left"><font face="geneva" size="2">Position the file sector cursor</font></td>
+</tr>
+<tr>
+	<td align="left"><font face="courier" size="2">.DELETE</font></td>
+	<td align="center"><font face="courier" size="2">050Q</font></td>
+	<td align="left"><font face="geneva" size="2">Delete a file</font></td>
+</tr>
+<tr>
+	<td align="left"><font face="courier" size="2">.RENAME</font></td>
+	<td align="center"><font face="courier" size="2">051Q</font></td>
+	<td align="left"><font face="geneva" size="2">Rename a file</font></td>
+</tr>
+<tr>
+	<td align="left"><font face="courier" size="2">.SETTOP</font></td>
+	<td align="center"><font face="courier" size="2">052Q</font></td>
+	<td align="left"><font face="geneva" size="2">Allocate memory to your program</font></td>
+</tr>
+<tr>
+	<td align="left"><font face="courier" size="2">.DECODE</font></td>
+	<td align="center"><font face="courier" size="2">053Q</font></td>
+	<td align="left"><font face="geneva" size="2">Decode a file name</font></td>
+</tr>
+<tr>
+	<td align="left"><font face="courier" size="2">.NAME</font></td>
+	<td align="center"><font face="courier" size="2">054Q</font></td>
+	<td align="left"><font face="geneva" size="2">Retrieve a file name from an open channel</font></td>
+</tr>
+<tr>
+	<td align="left"><font face="courier" size="2">.CLEAR</font></td>
+	<td align="center"><font face="courier" size="2">055Q</font></td>
+	<td align="left"><font face="geneva" size="2">Clear a file channel</font></td>
+</tr>
+<tr>
+	<td align="left"><font face="courier" size="2">.ERROR</font></td>
+	<td align="center"><font face="courier" size="2">057Q</font></td>
+	<td align="left"><font face="geneva" size="2">Display an error message</font></td>
+</tr>
+<tr>
+	<td align="left"><font face="courier" size="2">.CHFLG</font></td>
+	<td align="center"><font face="courier" size="2">060Q</font></td>
+	<td align="left"><font face="geneva" size="2">Change file flags</font></td>
+</tr>
+<tr>
+	<td align="left"><font face="courier" size="2">.LOADD</font></td>
+	<td align="center"><font face="courier" size="2">062Q</font></td>
+	<td align="left"><font face="geneva" size="2">Load a device driver</font></td>
+</tr>
+</table>
+
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+
+<a name="val1"></a>
+<table border="1" cellspacing="0" cellpadding="2">
+	<caption><font face="geneva" size="2"><b>HDOSOVL1 Scalls - Values</b></caption>
+<tr>
+	<td align="left"><font face="geneva" size="2"><b>Mnemonic</b></font></td>
+	<td align="center"><font face="geneva" size="2"><b>Value</b></font></td>
+	<td align="left"><font face="geneva" size="2"><b>Description</b></font></td>
+</tr>
+<tr>
+	<td align="left"><font face="courier" size="2">.MOUNT</font></td>
+	<td align="center"><font face="courier" size="2">200Q</font></td>
+	<td align="left"><font face="geneva" size="2">Mount a disk on a device</font></td>
+</tr>
+<tr>
+	<td align="left"><font face="courier" size="2">.DMOUN</font></td>
+	<td align="center"><font face="courier" size="2">201Q</font></td>
+	<td align="left"><font face="geneva" size="2">Dismount a disk</font></td>
+</tr>
+<tr>
+	<td align="left"><font face="courier" size="2">.MONMS</font></td>
+	<td align="center"><font face="courier" size="2">202Q</font></td>
+	<td align="left"><font face="geneva" size="2">Mount with no console message</font></td>
+</tr>
+<tr>
+	<td align="left"><font face="courier" size="2">.DMNMS</font></td>
+	<td align="center"><font face="courier" size="2">203Q</font></td>
+	<td align="left"><font face="geneva" size="2">Dismount with no console message</font></td>
+</tr>
+<tr>
+	<td align="left"><font face="courier" size="2">.RESET</font></td>
+	<td align="center"><font face="courier" size="2">204Q</font></td>
+	<td align="left"><font face="geneva" size="2">Reset a disk device (dismount/mount)</font></td>
+</tr>
+</table>
+
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+
+</ul>
+<hr>
+
+<a name="errtab"></a>
+<font size=2 face="Geneva,Arial" color="0000FF">
+<p><b>Error Code Value Table</b></p>
+</font>
+<ul>
+<table border="1" cellspacing="0" cellpadding="2">
+	<caption><font face="geneva,arial" size="2"><b>Error Codes - Values</b></font></caption>
+<tr>
+	<td align="left"><font face=" geneva,arial" size="2"><b>Mnemonic</b></font></td>
+	<td align="center"><font face=" geneva,arial" size="2"><b>Value</b></font></td>
+	<td align="left"><font face="geneva,arial" size="2"><b>Description</b></font></td>
+</tr>
+<tr>
+	<td align="left"><font face="courier" size="2">EC.EOF</font></td>
+	<td align="center"><font face="courier" size="2">001Q</font></td>
+	<td align="left"><font face="geneva,arial" size="2">End of file</font></td>
+</tr>
+<tr>
+	<td align="left"><font face="courier" size="2">EC.EOM</font></td>
+	<td align="center"><font face="courier" size="2">002Q</font></td>
+	<td align="left"><font face="geneva,arial" size="2">End of media</font></td>
+</tr>
+<tr>
+	<td align="left"><font face="courier" size="2">EC.ILC</font></td>
+	<td align="center"><font face="courier" size="2">003Q</font></td>
+	<td align="left"><font face="geneva,arial" size="2">Illegal Syscall code</font></td>
+</tr>
+<tr>
+	<td align="left"><font face="courier" size="2">EC.CNA</font></td>
+	<td align="center"><font face="courier" size="2">004Q</font></td>
+	<td align="left"><font face="geneva,arial" size="2">Channel not available</font></td>
+</tr>
+<tr>
+	<td align="left"><font face="courier" size="2">EC.DNS</font></td>
+	<td align="center"><font face="courier" size="2">005Q</font></td>
+	<td align="left"><font face="geneva,arial" size="2">Device not suitable</font></td>
+</tr>
+<tr>
+	<td align="left"><font face="courier" size="2">EC.IDN</font></td>
+	<td align="center"><font face="courier" size="2">006Q</font></td>
+	<td align="left"><font face="geneva,arial" size="2">Illegal device name</font></td>
+</tr>
+<tr>
+	<td align="left"><font face="courier" size="2">EC.IFN</font></td>
+	<td align="center"><font face="courier" size="2">007Q</font></td>
+	<td align="left"><font face="geneva,arial" size="2">Illegal file name</font></td>
+</tr>
+<tr>
+	<td align="left"><font face="courier" size="2">EC.NRD</font></td>
+	<td align="center"><font face="courier" size="2">010Q</font></td>
+	<td align="left"><font face="geneva,arial" size="2">No room for device driver</font></td>
+</tr>
+<tr>
+	<td align="left"><font face="courier" size="2">EC.FNO</font></td>
+	<td align="center"><font face="courier" size="2">011Q</font></td>
+	<td align="left"><font face="geneva,arial" size="2">Channel not open</font></td>
+</tr>
+<tr>
+	<td align="left"><font face="courier" size="2">EC.ILR</font></td>
+	<td align="center"><font face="courier" size="2">012Q</font></td>
+	<td align="left"><font face="geneva,arial" size="2">Illegal request</font></td>
+</tr>
+<tr>
+	<td align="left"><font face="courier" size="2">EC.FUC</font></td>
+	<td align="center"><font face="courier" size="2">013Q</font></td>
+	<td align="left"><font face="geneva,arial" size="2">File usage conflict</font></td>
+</tr>
+<tr>
+	<td align="left"><font face="courier" size="2">EC.FNF</font></td>
+	<td align="center"><font face="courier" size="2">014Q</font></td>
+	<td align="left"><font face="geneva,arial" size="2">File name not found</font></td>
+</tr>
+<tr>
+	<td align="left"><font face="courier" size="2">EC.UND</font></td>
+	<td align="center"><font face="courier" size="2">015Q</font></td>
+	<td align="left"><font face="geneva,arial" size="2">Unknown device</font></td>
+</tr>
+<tr>
+	<td align="left"><font face="courier" size="2">EC.ICN</font></td>
+	<td align="center"><font face="courier" size="2">016Q</font></td>
+	<td align="left"><font face="geneva,arial" size="2">Illegal channel number</font></td>
+</tr>
+<tr>
+	<td align="left"><font face="courier" size="2">EC.DIF</font></td>
+	<td align="center"><font face="courier" size="2">017Q</font></td>
+	<td align="left"><font face="geneva,arial" size="2">Directory full</font></td>
+</tr>
+<tr>
+	<td align="left"><font face="courier" size="2">EC.IFC</font></td>
+	<td align="center"><font face="courier" size="2">020Q</font></td>
+	<td align="left"><font face="geneva,arial" size="2">Illegal file contents</font></td>
+</tr>
+<tr>
+	<td align="left"><font face="courier" size="2">EC.NEM</font></td>
+	<td align="center"><font face="courier" size="2">021Q</font></td>
+	<td align="left"><font face="geneva,arial" size="2">Not enough memory</font></td>
+</tr>
+<tr>
+	<td align="left"><font face="courier" size="2">EC.RF</font></td>
+	<td align="center"><font face="courier" size="2">022Q</font></td>
+	<td align="left"><font face="geneva,arial" size="2">Read failure</font></td>
+</tr>
+<tr>
+	<td align="left"><font face="courier" size="2">EC.WF</font></td>
+	<td align="center"><font face="courier" size="2">023Q</font></td>
+	<td align="left"><font face="geneva,arial" size="2">Write failure</font></td>
+</tr>
+<tr>
+	<td align="left"><font face="courier" size="2">EC.WPV</font></td>
+	<td align="center"><font face="courier" size="2">024Q</font></td>
+	<td align="left"><font face="geneva,arial" size="2">Write protection violation</font></td>
+</tr>
+<tr>
+	<td align="left"><font face="courier" size="2">EC.WP</font></td>
+	<td align="center"><font face="courier" size="2">025Q</font></td>
+	<td align="left"><font face="geneva,arial" size="2">Disk write protected</font></td>
+</tr>
+<tr>
+	<td align="left"><font face="courier" size="2">EC.FAP</font></td>
+	<td align="center"><font face="courier" size="2">026Q</font></td>
+	<td align="left"><font face="geneva,arial" size="2">File already present</font></td>
+</tr>
+<tr>
+	<td align="left"><font face="courier" size="2">EC.DDA</font></td>
+	<td align="center"><font face="courier" size="2">027Q</font></td>
+	<td align="left"><font face="geneva,arial" size="2">Device driver abort</font></td>
+</tr>
+<tr>
+	<td align="left"><font face="courier" size="2">EC.FL</font></td>
+	<td align="center"><font face="courier" size="2">030Q</font></td>
+	<td align="left"><font face="geneva,arial" size="2">File locked</font></td>
+</tr>
+<tr>
+	<td align="left"><font face="courier" size="2">EC.FAO</font></td>
+	<td align="center"><font face="courier" size="2">031Q</font></td>
+	<td align="left"><font face="geneva,arial" size="2">File already open</font></td>
+</tr>
+<tr>
+	<td align="left"><font face="courier" size="2">EC.IS</font></td>
+	<td align="center"><font face="courier" size="2">032Q</font></td>
+	<td align="left"><font face="geneva,arial" size="2">Illegal switch</font></td>
+</tr>
+<tr>
+	<td align="left"><font face="courier" size="2">EC.UUN</font></td>
+	<td align="center"><font face="courier" size="2">033Q</font></td>
+	<td align="left"><font face="geneva,arial" size="2">Unknown unit number</font></td>
+</tr>
+<tr>
+	<td align="left"><font face="courier" size="2">EC.FNR</font></td>
+	<td align="center"><font face="courier" size="2">034Q</font></td>
+	<td align="left"><font face="geneva,arial" size="2">File name required</font></td>
+</tr>
+<tr>
+	<td align="left"><font face="courier" size="2">EC.DIW</font></td>
+	<td align="center"><font face="courier" size="2">035Q</font></td>
+	<td align="left"><font face="geneva,arial" size="2">Device is not writable (or write locked)</font></td>
+</tr>
+<tr>
+	<td align="left"><font face="courier" size="2">EC.UNA</font></td>
+	<td align="center"><font face="courier" size="2">036Q</font></td>
+	<td align="left"><font face="geneva,arial" size="2">Unit not available</font></td>
+</tr>
+<tr>
+	<td align="left"><font face="courier" size="2">EC.ILV</font></td>
+	<td align="center"><font face="courier" size="2">037Q</font></td>
+	<td align="left"><font face="geneva,arial" size="2">Illegal value</font></td>
+</tr>
+<tr>
+	<td align="left"><font face="courier" size="2">EC.ILO</font></td>
+	<td align="center"><font face="courier" size="2">040Q</font></td>
+	<td align="left"><font face="geneva,arial" size="2">Illegal option</font></td>
+</tr>
+<tr>
+	<td align="left"><font face="courier" size="2">EC.VPM</font></td>
+	<td align="center"><font face="courier" size="2">041Q</font></td>
+	<td align="left"><font face="geneva,arial" size="2">Volume presently mounted on device</font></td>
+</tr>
+<tr>
+	<td align="left"><font face="courier" size="2">EC.NVM</font></td>
+	<td align="center"><font face="courier" size="2">042Q</font></td>
+	<td align="left"><font face="geneva,arial" size="2">No volume presently mounted</font></td>
+</tr>
+<tr>
+	<td align="left"><font face="courier" size="2">EC.FOD</font></td>
+	<td align="center"><font face="courier" size="2">043Q</font></td>
+	<td align="left"><font face="geneva,arial" size="2">File open on device</font></td>
+</tr>
+<tr>
+	<td align="left"><font face="courier" size="2">EC.NPM</font></td>
+	<td align="center"><font face="courier" size="2">044Q</font></td>
+	<td align="left"><font face="geneva,arial" size="2">No provisions made for remounting more disks</font></td>
+</tr>
+<tr>
+	<td align="left"><font face="courier" size="2">EC.DNI</font></td>
+	<td align="center"><font face="courier" size="2">045Q</font></td>
+	<td align="left"><font face="geneva,arial" size="2">Disk not initialized</font></td>
+</tr>
+<tr>
+	<td align="left"><font face="courier" size="2">EC.DNR</font></td>
+	<td align="center"><font face="courier" size="2">046Q</font></td>
+	<td align="left"><font face="geneva,arial" size="2">Disk is not readable</font></td>
+</tr>
+<tr>
+	<td align="left"><font face="courier" size="2">EC.DSC</font></td>
+	<td align="center"><font face="courier" size="2">047Q</font></td>
+	<td align="left"><font face="geneva,arial" size="2">Disk structure is corrupt</font></td>
+</tr>
+<tr>
+	<td align="left"><font face="courier" size="2">EC.NCV</font></td>
+	<td align="center"><font face="courier" size="2">050Q</font></td>
+	<td align="left"><font face="geneva,arial" size="2">Not correct version of HDOS</font></td>
+</tr>
+<tr>
+	<td align="left"><font face="courier" size="2">EC.NOS</font></td>
+	<td align="center"><font face="courier" size="2">051Q</font></td>
+	<td align="left"><font face="geneva,arial" size="2">No operating system mounted</font></td>
+</tr>
+<tr>
+	<td align="left"><font face="courier" size="2">EC.IOI</font></td>
+	<td align="center"><font face="courier" size="2">052Q</font></td>
+	<td align="left"><font face="geneva,arial" size="2">Illegal overlay index</font></td>
+</tr>
+<tr>
+	<td align="left"><font face="courier" size="2">EC.OTL</font></td>
+	<td align="center"><font face="courier" size="2">053Q</font></td>
+	<td align="left"><font face="geneva,arial" size="2">Overlay too large</font></td>
+</tr>
+</table>
+
+<font face="Geneva" size=2><p><a href="#top">go to top</a></p></font>
+</ul>
+<hr>
+<font face="Geneva,Arial" size=1>
+<center>
+<a href="program.html">Programming Table of Contents</a>
+<br><br>
+<a href="../h8_toc.html">Main Table of Contents</a>
+</center>
+<br><br>
+</font>
+</body>
+
 <!-- Mirrored from davidwallace2000.home.comcast.net/~davidwallace2000/h8/project8080_archive/pgs/scalls.html by HTTrack Website Copier/3.x [XR&CO'2010], Mon, 10 Sep 2012 13:15:41 GMT -->
 </html>

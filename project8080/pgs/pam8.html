@@ -1,189 +1,266 @@
 <html>
 
 <!-- Mirrored from davidwallace2000.home.comcast.net/~davidwallace2000/h8/project8080_archive/pgs/pam8.html by HTTrack Website Copier/3.x [XR&CO'2010], Mon, 10 Sep 2012 13:15:42 GMT -->
+
 <head>
-<title>H8 Emulation Help  - PAM/8</title>
-<meta name="AppleTitle" content="H8 Emulation Help">
-<meta name="description" content="PAM/8 Operation">
+    <title>H8 Emulation Help - PAM/8</title>
+    <meta name="AppleTitle" content="H8 Emulation Help">
+    <meta name="description" content="PAM/8 Operation">
 </head>
 
 <!-- updated 10/4/2002, das -->
 
 <body bgcolor="white">
 
-<p>
-<font size=3 face="Verdana,Arial"  color="0000FF">
-<b>PAM/8 Operation</b>
-</font>
+    <p>
+        <font size=3 face="Verdana,Arial" color="0000FF">
+            <b>PAM/8 Operation</b>
+        </font>
 
-<ul>
-<font face="Geneva,Arial" size=2 color="black">
-<p>
-<b><font color="#0000ff">Operation Using a Mouse</font></b>
-<p>
-You should find that PAM/8 works the same as a real H8 when you use a mouse to click the front-panel buttons on the GUI window. The buttons will even auto-repeat when you hold them down long enough.
-<p>
-But two-button sequences are not possible: there is no good way to hold down the '0' key while you press the '#' (return to montior) or '/' (reset) keys.
-<p>
-The solution was to use the Option key instead of the '0' button:</p>
+        <ul>
+            <font face="Geneva,Arial" size=2 color="black">
+                <p>
+                    <b><font color="#0000ff">Operation Using a Mouse</font></b>
+                    <p>
+                        You should find that PAM/8 works the same as a real H8 when you use a mouse to click the front-panel buttons on the GUI window. The buttons will even auto-repeat when you hold them down long enough.
+                        <p>
+                            But two-button sequences are not possible: there is no good way to hold down the '0' key while you press the '#' (return to montior) or '/' (reset) keys.
+                            <p>
+                                The solution was to use the Option key instead of the '0' button:</p>
 
-<dl>
-<dt><font size="2" face="Geneva,Arial">Return to Monitor (RTM)</font></dt>
-<dd><font size="2" face="Geneva,Arial"><p>Hold down the Macintosh Option key while you press the '#' button.</p></font></dd>
-<dt><font size="2" face="Geneva,Arial">Reset</font></dt>
-<dd><font size="2" face="Geneva,Arial"><p>Hold down the Macintosh Option key while you press the '/' button.</p></font></dd>
-</dl>
+                            <dl>
+                                <dt><font size="2" face="Geneva,Arial">Return to Monitor (RTM)</font></dt>
+                                <dd>
+                                    <font size="2" face="Geneva,Arial">
+                                        <p>Hold down the Macintosh Option key while you press the '#' button.</p>
+                                    </font>
+                                </dd>
+                                <dt><font size="2" face="Geneva,Arial">Reset</font></dt>
+                                <dd>
+                                    <font size="2" face="Geneva,Arial">
+                                        <p>Hold down the Macintosh Option key while you press the '/' button.</p>
+                                    </font>
+                                </dd>
+                            </dl>
 
-<font size="2" face="Geneva,Arial">
-<p>
-While other two-key sequences were possible on the real H8, these are the only two-key sequences that PAM/8 supported and the only two that have been emulated.
+                            <font size="2" face="Geneva,Arial">
+                                <p>
+                                    While other two-key sequences were possible on the real H8, these are the only two-key sequences that PAM/8 supported and the only two that have been emulated.
 
-<p>
-<b><font color="#0000ff">Operation Using the Mac Keyboard</font></b>
-<p>
-The emulator allows you to type commands on the Mac keyboard instead of pressing the front-panel buttons with the mouse. The H8 GUI window must be the front window in order for this to work.
-<p>
-Here are the equivalent keystrokes:</p>
+                                    <p>
+                                        <b><font color="#0000ff">Operation Using the Mac Keyboard</font></b>
+                                        <p>
+                                            The emulator allows you to type commands on the Mac keyboard instead of pressing the front-panel buttons with the mouse. The H8 GUI window must be the front window in order for this to work.
+                                            <p>
+                                                Here are the equivalent keystrokes:</p>
 
-<table border=1 cellspacing = 0 cellpadding=3>
-<tr>
-<td><font face="Geneva,Arial" size=2><b>H8 Key</b></font></td>
-<td><font face="Geneva,Arial" size=2><b>Macintosh Key(s)</b></font></td>
-<td><font face="Geneva,Arial" size=2><b>H8 Key</b></font></td>
-<td><font face="Geneva,Arial" size=2><b>Macintosh Key(s)</b></font></td>
-</tr>
-<tr align=center>
-<td><font face="Geneva,Arial" size=2>0</td>
-<td><font face="Geneva,Arial" size=2>0</td>
-<td><font face="Geneva,Arial" size=2>8</td>
-<td><font face="Geneva,Arial" size=2>8</td>
-</tr>
-<tr align=center>
-<td><font face="Geneva,Arial" size=2>1</td>
-<td><font face="Geneva,Arial" size=2>1, s</td>
-<td><font face="Geneva,Arial" size=2>9</td>
-<td><font face="Geneva,Arial" size=2>9</td>
-</tr>
-<tr align=center>
-<td><font face="Geneva,Arial" size=2>2</td>
-<td><font face="Geneva,Arial" size=2>2, f</td>
-<td><font face="Geneva,Arial" size=2>+</td>
-<td><font face="Geneva,Arial" size=2>+</td>
-</tr>
-<tr align=center>
-<td><font face="Geneva,Arial" size=2>3</td>
-<td><font face="Geneva,Arial" size=2>3, b</td>
-<td><font face="Geneva,Arial" size=2>-</td>
-<td><font face="Geneva,Arial" size=2>-</td>
-</tr>
-<tr align=center>
-<td><font face="Geneva,Arial" size=2>4</td>
-<td><font face="Geneva,Arial" size=2>4, d, g</td>
-<td><font face="Geneva,Arial" size=2>*</td>
-<td><font face="Geneva,Arial" size=2>*</td>
-</tr>
-<tr align=center>
-<td><font face="Geneva,Arial" size=2>5</td>
-<td><font face="Geneva,Arial" size=2>5, h</td>
-<td><font face="Geneva,Arial" size=2>#</td>
-<td><font face="Geneva,Arial" size=2>#</td>
-</tr>
-<tr align=center>
-<td><font face="Geneva,Arial" size=2>6</td>
-<td><font face="Geneva,Arial" size=2>6, p</td>
-<td><font face="Geneva,Arial" size=2>/</td>
-<td><font face="Geneva,Arial" size=2>/, a</td>
-</tr>
-<tr align=center>
-<td><font face="Geneva,Arial" size=2>7</td>
-<td><font face="Geneva,Arial" size=2>7, x</td>
-<td><font face="Geneva,Arial" size=2>. (dot)</td>
-<td><font face="Geneva,Arial" size=2>. (dot), r</td>
-</tr>
-<tr align=center>
-<td><font face="Geneva,Arial" size=2>RTM</td>
-<td><font face="Geneva,Arial" size=2>option-#</td>
-<td><font face="Geneva,Arial" size=2>Reset</td>
-<td><font face="Geneva,Arial" size=2>option-/</font></td>
-</tr>
-</table>
+                                            <table border=1 cellspacing=0 cellpadding=3>
+                                                <tr>
+                                                    <td>
+                                                        <font face="Geneva,Arial" size=2><b>H8 Key</b></font>
+                                                    </td>
+                                                    <td>
+                                                        <font face="Geneva,Arial" size=2><b>Macintosh Key(s)</b></font>
+                                                    </td>
+                                                    <td>
+                                                        <font face="Geneva,Arial" size=2><b>H8 Key</b></font>
+                                                    </td>
+                                                    <td>
+                                                        <font face="Geneva,Arial" size=2><b>Macintosh Key(s)</b></font>
+                                                    </td>
+                                                </tr>
+                                                <tr align=center>
+                                                    <td>
+                                                        <font face="Geneva,Arial" size=2>0</td>
+                                                    <td>
+                                                        <font face="Geneva,Arial" size=2>0</td>
+                                                    <td>
+                                                        <font face="Geneva,Arial" size=2>8</td>
+                                                    <td>
+                                                        <font face="Geneva,Arial" size=2>8</td>
+                                                </tr>
+                                                <tr align=center>
+                                                    <td>
+                                                        <font face="Geneva,Arial" size=2>1</td>
+                                                    <td>
+                                                        <font face="Geneva,Arial" size=2>1, s</td>
+                                                    <td>
+                                                        <font face="Geneva,Arial" size=2>9</td>
+                                                    <td>
+                                                        <font face="Geneva,Arial" size=2>9</td>
+                                                </tr>
+                                                <tr align=center>
+                                                    <td>
+                                                        <font face="Geneva,Arial" size=2>2</td>
+                                                    <td>
+                                                        <font face="Geneva,Arial" size=2>2, f</td>
+                                                    <td>
+                                                        <font face="Geneva,Arial" size=2>+</td>
+                                                    <td>
+                                                        <font face="Geneva,Arial" size=2>+</td>
+                                                </tr>
+                                                <tr align=center>
+                                                    <td>
+                                                        <font face="Geneva,Arial" size=2>3</td>
+                                                    <td>
+                                                        <font face="Geneva,Arial" size=2>3, b</td>
+                                                    <td>
+                                                        <font face="Geneva,Arial" size=2>-</td>
+                                                    <td>
+                                                        <font face="Geneva,Arial" size=2>-</td>
+                                                </tr>
+                                                <tr align=center>
+                                                    <td>
+                                                        <font face="Geneva,Arial" size=2>4</td>
+                                                    <td>
+                                                        <font face="Geneva,Arial" size=2>4, d, g</td>
+                                                    <td>
+                                                        <font face="Geneva,Arial" size=2>*</td>
+                                                    <td>
+                                                        <font face="Geneva,Arial" size=2>*</td>
+                                                </tr>
+                                                <tr align=center>
+                                                    <td>
+                                                        <font face="Geneva,Arial" size=2>5</td>
+                                                    <td>
+                                                        <font face="Geneva,Arial" size=2>5, h</td>
+                                                    <td>
+                                                        <font face="Geneva,Arial" size=2>#</td>
+                                                    <td>
+                                                        <font face="Geneva,Arial" size=2>#</td>
+                                                </tr>
+                                                <tr align=center>
+                                                    <td>
+                                                        <font face="Geneva,Arial" size=2>6</td>
+                                                    <td>
+                                                        <font face="Geneva,Arial" size=2>6, p</td>
+                                                    <td>
+                                                        <font face="Geneva,Arial" size=2>/</td>
+                                                    <td>
+                                                        <font face="Geneva,Arial" size=2>/, a</td>
+                                                </tr>
+                                                <tr align=center>
+                                                    <td>
+                                                        <font face="Geneva,Arial" size=2>7</td>
+                                                    <td>
+                                                        <font face="Geneva,Arial" size=2>7, x</td>
+                                                    <td>
+                                                        <font face="Geneva,Arial" size=2>. (dot)</td>
+                                                    <td>
+                                                        <font face="Geneva,Arial" size=2>. (dot), r</td>
+                                                </tr>
+                                                <tr align=center>
+                                                    <td>
+                                                        <font face="Geneva,Arial" size=2>RTM</td>
+                                                    <td>
+                                                        <font face="Geneva,Arial" size=2>option-#</td>
+                                                    <td>
+                                                        <font face="Geneva,Arial" size=2>Reset</td>
+                                                    <td>
+                                                        <font face="Geneva,Arial" size=2>option-/</font>
+                                                    </td>
+                                                </tr>
+                                            </table>
 
-<font size="2" face="Geneva,Arial">
-<p>
-So, for example, you can replace this front-panel button sequence:</p>
-<pre>&nbsp;&nbsp;&nbsp;&nbsp;(reg) (pc) (alter) 0 3 0 0 0 0 (alter) (go)</pre>
-<p>
-....with:</p>
-<pre>&nbsp;&nbsp;&nbsp;&nbsp;. 6 / 0 3 0 0 0 0 / 4</pre>
-<p>
-...or:</p>
-<pre>&nbsp;&nbsp;&nbsp;&nbsp;r p a 0 3 0 0 0 0 a g</pre>
+                                            <font size="2" face="Geneva,Arial">
+                                                <p>
+                                                    So, for example, you can replace this front-panel button sequence:</p>
+                                                <pre>&nbsp;&nbsp;&nbsp;&nbsp;(reg) (pc) (alter) 0 3 0 0 0 0 (alter) (go)</pre>
+                                                <p>
+                                                    ....with:</p>
+                                                <pre>&nbsp;&nbsp;&nbsp;&nbsp;. 6 / 0 3 0 0 0 0 / 4</pre>
+                                                <p>
+                                                    ...or:</p>
+                                                <pre>&nbsp;&nbsp;&nbsp;&nbsp;r p a 0 3 0 0 0 0 a g</pre>
 
-<font size="2" face="Geneva,Arial">
-<p>
-...typed on the Mac keyboard.</p>
-</font>
+                                                <font size="2" face="Geneva,Arial">
+                                                    <p>
+                                                        ...typed on the Mac keyboard.</p>
+                                                </font>
 
-<dl>
-<dt><font size="2" face="Geneva,Arial">Return to Monitor (RTM)</font></dt>
-<dd><font size="2" face="Geneva,Arial"><p>Hold down the Macintosh Option key while you press the '#' keyboard key.</p></font></dd>
-<dt><font size="2" face="Geneva,Arial">Reset</font></dt>
-<dd><font size="2" face="Geneva,Arial"><p>Hold down the Macintosh Option key while you press the '/' keyboard key.</p></font></dd>
-</dl>
+                                                <dl>
+                                                    <dt><font size="2" face="Geneva,Arial">Return to Monitor (RTM)</font></dt>
+                                                    <dd>
+                                                        <font size="2" face="Geneva,Arial">
+                                                            <p>Hold down the Macintosh Option key while you press the '#' keyboard key.</p>
+                                                        </font>
+                                                    </dd>
+                                                    <dt><font size="2" face="Geneva,Arial">Reset</font></dt>
+                                                    <dd>
+                                                        <font size="2" face="Geneva,Arial">
+                                                            <p>Hold down the Macintosh Option key while you press the '/' keyboard key.</p>
+                                                        </font>
+                                                    </dd>
+                                                </dl>
 
-<font size="2" face="Geneva,Arial">
-<p>
-When you type a valid PAM/8 key equivalent on the Mac keyboard, the key is "held down" for approximately 30 milliseconds. This is long enough that PAM/8 can see the keystroke on the keypad port and take action on it. It's short enough that you can type pretty quickly without problems. However, note that if you are doing heavy processing in a background application, keyboard emulation can get sluggish and not work well. This happens to the author whenever he prints. In these cases, it's best to use the keypad and mouse.
+                                                <font size="2" face="Geneva,Arial">
+                                                    <p>
+                                                        When you type a valid PAM/8 key equivalent on the Mac keyboard, the key is "held down" for approximately 30 milliseconds. This is long enough that PAM/8 can see the keystroke on the keypad port and take action on it. It's short enough that you can type
+                                                        pretty quickly without problems. However, note that if you are doing heavy processing in a background application, keyboard emulation can get sluggish and not work well. This happens to the author
+                                                        whenever he prints. In these cases, it's best to use the keypad and mouse.
 
-<p>
-<b><font color="#0000ff">Tape Load and Dump</font></b>
-<p>
-The Load and Dump keys work the same as they do in a real H8, except that they use disk files instead of tape casettes to hold a dumped memory image.
-<p>
-Use the "Open PAM Input Tape..." and "Open PAM Output Tape..." items on the File menu to open a file for input or output, respectively. Open the file before pressing the Load or Dump key. (Actually, you can press the key before opening the file; PAM/8 will simply wait for the "tape" device to become ready. If you change your mind, press Cancel.)
-<p>
-(You can also open a PAM/8 input tape by opening the tape file with the Finder. If an input tape file was already open, the file will be closed and the new one opened.)
-<p>
-As a reminder, to dump memory:</p>
-<ul type="disc">
-<li><font size="2" face="Geneva,Arial">open a Mac output file using "Open PAM Output Tape...";</font></li>
-<li><font size="2" face="Geneva,Arial">set (PC) to the program's entry point address;</font></li>
-<li><font size="2" face="Geneva,Arial">put the dump start address into cells 040.000A and 040.001A (low-order byte first!);</font></li>
-<li><font size="2" face="Geneva,Arial">display the memory address of the last byte of the program to be dumped;</font></li>
-<li><font size="2" face="Geneva,Arial">press the Dump key;</font></li>
-<li><font size="2" face="Geneva,Arial">close the Mac output file using "Close PAM Output Tape...".</font></li>
-</ul>
+                                                        <p>
+                                                            <b><font color="#0000ff">Tape Load and Dump</font></b>
+                                                            <p>
+                                                                The Load and Dump keys work the same as they do in a real H8, except that they use disk files instead of tape casettes to hold a dumped memory image.
+                                                                <p>
+                                                                    Use the "Open PAM Input Tape..." and "Open PAM Output Tape..." items on the File menu to open a file for input or output, respectively. Open the file before pressing the Load or Dump key. (Actually, you can press the key before opening the file; PAM/8
+                                                                    will simply wait for the "tape" device to become ready. If you change your mind, press Cancel.)
+                                                                    <p>
+                                                                        (You can also open a PAM/8 input tape by opening the tape file with the Finder. If an input tape file was already open, the file will be closed and the new one opened.)
+                                                                        <p>
+                                                                            As a reminder, to dump memory:</p>
+                                                                        <ul type="disc">
+                                                                            <li>
+                                                                                <font size="2" face="Geneva,Arial">open a Mac output file using "Open PAM Output Tape...";</font>
+                                                                            </li>
+                                                                            <li>
+                                                                                <font size="2" face="Geneva,Arial">set (PC) to the program's entry point address;</font>
+                                                                            </li>
+                                                                            <li>
+                                                                                <font size="2" face="Geneva,Arial">put the dump start address into cells 040.000A and 040.001A (low-order byte first!);</font>
+                                                                            </li>
+                                                                            <li>
+                                                                                <font size="2" face="Geneva,Arial">display the memory address of the last byte of the program to be dumped;</font>
+                                                                            </li>
+                                                                            <li>
+                                                                                <font size="2" face="Geneva,Arial">press the Dump key;</font>
+                                                                            </li>
+                                                                            <li>
+                                                                                <font size="2" face="Geneva,Arial">close the Mac output file using "Close PAM Output Tape...".</font>
+                                                                            </li>
+                                                                        </ul>
 
-<font size="2" face="Geneva,Arial">
-<p>
-Example: We have a program at 040.100A, with an entry point of 040.100A, that ends at 042.372A. Here are the key sequences required to dump this program:</p>
+                                                                        <font size="2" face="Geneva,Arial">
+                                                                            <p>
+                                                                                Example: We have a program at 040.100A, with an entry point of 040.100A, that ends at 042.372A. Here are the key sequences required to dump this program:</p>
 
-<ul>
-<p><font size="2" face="Courier">
-(reg) (pc) (alter) 0 4 0 1 0 0 (alter)<br>
-(mem) 0 4 0 0 0 0<br>
-(alter) 1 0 0 0 4 0 (alter)<br>
-(mem) 0 4 2 3 7 2<br>
-(dump)</font></p>
-</ul>
+                                                                            <ul>
+                                                                                <p>
+                                                                                    <font size="2" face="Courier">
+                                                                                        (reg) (pc) (alter) 0 4 0 1 0 0 (alter)<br> (mem) 0 4 0 0 0 0<br> (alter) 1 0 0 0 4 0 (alter)<br> (mem) 0 4 2 3 7 2<br> (dump)
+                                                                                    </font>
+                                                                                </p>
+                                                                            </ul>
 
-<font size="2" face="Geneva,Arial">
-<p>
-Remember to close the file.
-<p>
-To load the file later, simply open the file and press the Load key.
-<p>
-</font>
-</ul>
+                                                                            <font size="2" face="Geneva,Arial">
+                                                                                <p>
+                                                                                    Remember to close the file.
+                                                                                    <p>
+                                                                                        To load the file later, simply open the file and press the Load key.
+                                                                                        <p>
+                                                                            </font>
+        </ul>
 
-<hr>
-<font face="Geneva,Arial" size=1>
-<center>
-<a href="../h8_toc.html">Table of Contents</a>
-</center>
-<br><br>
-</font>
+        <hr>
+        <font face="Geneva,Arial" size=1>
+            <center>
+                <a href="../h8_toc.html">Table of Contents</a>
+            </center>
+            <br><br>
+        </font>
 </body>
 
 <!-- Mirrored from davidwallace2000.home.comcast.net/~davidwallace2000/h8/project8080_archive/pgs/pam8.html by HTTrack Website Copier/3.x [XR&CO'2010], Mon, 10 Sep 2012 13:15:42 GMT -->
+
 </html>
