@@ -1,102 +1,139 @@
- <html>
+<html>
 
 <!-- Mirrored from davidwallace2000.home.comcast.net/~davidwallace2000/h8/project8080_archive/pgs/menus.html by HTTrack Website Copier/3.x [XR&CO'2010], Mon, 10 Sep 2012 13:15:34 GMT -->
+
 <head>
-<title>H8 Emulation Help - Menus</title>
-<meta name="AppleTitle" content="H8 Emulator Help">
-<meta name="description" content="H8 Emulator Menus">
+    <title>H8 Emulation Help - Menus</title>
+    <meta name="AppleTitle" content="H8 Emulator Help">
+    <meta name="description" content="H8 Emulator Menus">
 </head>
 
 <!-- updated 2/23/2003, das -->
 
 <body bgcolor="white">
-<a name="top"></a>
-<p>
-<font size=3 face="Verdana,Arial" color="0000FF">
-<b>H8 Emulator Menus</b>
-</font>
+    <a name="top"></a>
+    <p>
+        <font size=3 face="Verdana,Arial" color="0000FF">
+            <b>H8 Emulator Menus</b>
+        </font>
 
-<ul>
+        <ul>
 
-<font face="Geneva,Arial" size=2 color="black">
-<a href="#apple">Apple Menu</a><br>
-<a href="#file">File Menu</a><br>
-<a href="#edit">Edit Menu</a><br>
-<a href="#speed">Speed Menu</a><br>
-<a href="#window">Window Menu</a><br>
-<a href="#help">Help Menu</a><br><br>
+            <font face="Geneva,Arial" size=2 color="black">
+                <a href="#apple">Apple Menu</a><br>
+                <a href="#file">File Menu</a><br>
+                <a href="#edit">Edit Menu</a><br>
+                <a href="#speed">Speed Menu</a><br>
+                <a href="#window">Window Menu</a><br>
+                <a href="#help">Help Menu</a><br><br>
 
-<hr>
-<font face="Geneva,Arial" size=1>
-<center>
-<a href="../h8_toc.html">Table of Contents</a>
-</center>
+                <hr>
+                <font face="Geneva,Arial" size=1>
+                    <center>
+                        <a href="../h8_toc.html">Table of Contents</a>
+                    </center>
 
-<hr>
+                    <hr>
 
-<font face="Geneva,Arial" size=2 color="black">
-<p>
-<a name="apple"></a>
-<b><font color="#0000ff">Apple Menu</font></b>
-</p>
-<dl>
-<dt><font size="2" face="Geneva,Arial">About H8</font></dt>
-<dd><font size="2" face="Geneva,Arial"><p>Displays a descriptive dialog box. Note that the emulator will continue to run normally under this window. The window is closed by pressing a key or clicking anywhere on the screen.</p>
-<p>The following statistics are shown:</p>
-</font>
+                    <font face="Geneva,Arial" size=2 color="black">
+                        <p>
+                            <a name="apple"></a>
+                            <b><font color="#0000ff">Apple Menu</font></b>
+                        </p>
+                        <dl>
+                            <dt><font size="2" face="Geneva,Arial">About H8</font></dt>
+                            <dd>
+                                <font size="2" face="Geneva,Arial">
+                                    <p>Displays a descriptive dialog box. Note that the emulator will continue to run normally under this window. The window is closed by pressing a key or clicking anywhere on the screen.</p>
+                                    <p>The following statistics are shown:</p>
+                                </font>
 
-<dl>
-<dt><font face="Geneva,Arial" size="2">instructions/scond</font></dt>
-<dd><font face="Geneva,Arial" size="2"><p>(instructions / milliseconds) * 1000</p>
-<p> Instructions and milliseconds are reset to zero whenever a selection is made from the Speed menu.</p></font></dd>
+                                <dl>
+                                    <dt><font face="Geneva,Arial" size="2">instructions/scond</font></dt>
+                                    <dd>
+                                        <font face="Geneva,Arial" size="2">
+                                            <p>(instructions / milliseconds) * 1000</p>
+                                            <p> Instructions and milliseconds are reset to zero whenever a selection is made from the Speed menu.</p>
+                                        </font>
+                                    </dd>
 
-<dt><font face="Geneva,Arial" size="2">% with interrups off</font></dt>
-<dd><font face="Geneva,Arial" size="2"><p>(interrupts off instructions / instructions) * 100</p>
-<p>Interrupts-off instructions and instructions are reset to zero whenever a selection is made from the Speed menu.</p></font></dd>
+                                    <dt><font face="Geneva,Arial" size="2">% with interrups off</font></dt>
+                                    <dd>
+                                        <font face="Geneva,Arial" size="2">
+                                            <p>(interrupts off instructions / instructions) * 100</p>
+                                            <p>Interrupts-off instructions and instructions are reset to zero whenever a selection is made from the Speed menu.</p>
+                                        </font>
+                                    </dd>
 
-<dt><font face="Geneva,Arial" size="2">characters to console</font></dt>
-<dd><font face="Geneva,Arial" size="2"><p>A count of all characters output to the H-19 by the H8. The maximum value is 999,999,999 which allows for over 138 hours of non-stop output at the console's maximum speed.</p></font></dd>
+                                    <dt><font face="Geneva,Arial" size="2">characters to console</font></dt>
+                                    <dd>
+                                        <font face="Geneva,Arial" size="2">
+                                            <p>A count of all characters output to the H-19 by the H8. The maximum value is 999,999,999 which allows for over 138 hours of non-stop output at the console's maximum speed.</p>
+                                        </font>
+                                    </dd>
 
-<dt><font face="Geneva,Arial" size="2">characters to printer</font></dt>
-<dd><font face="Geneva,Arial" size="2"><p>A count of all data characters output to the printer by the H8. Special session control characters (open new print job, close print job, etc.) are not included in this count. The maximum value is 999,999,999.</p></font></dd>
+                                    <dt><font face="Geneva,Arial" size="2">characters to printer</font></dt>
+                                    <dd>
+                                        <font face="Geneva,Arial" size="2">
+                                            <p>A count of all data characters output to the printer by the H8. Special session control characters (open new print job, close print job, etc.) are not included in this count. The maximum value is 999,999,999.</p>
+                                        </font>
+                                    </dd>
 
-<dt><font face="Geneva,Arial" size="2">Reads and Writes, by drive</font></dt>
-<dd><font face="Geneva,Arial" size="2"><p>Count of all completed sector reads and writes, per drive. The maximum value is 999,999,999 each.</p>
-<p>These stats will generally not match HDOS's own statistics, as HDOS counts read and write operations, which may be multiple-sector operations. The statistics here count all sectors read and written, individually.</p></font></dd>
-</dl>
+                                    <dt><font face="Geneva,Arial" size="2">Reads and Writes, by drive</font></dt>
+                                    <dd>
+                                        <font face="Geneva,Arial" size="2">
+                                            <p>Count of all completed sector reads and writes, per drive. The maximum value is 999,999,999 each.</p>
+                                            <p>These stats will generally not match HDOS's own statistics, as HDOS counts read and write operations, which may be multiple-sector operations. The statistics here count all sectors read and written, individually.</p>
+                                        </font>
+                                    </dd>
+                                </dl>
 
-<font face="Geneva,Arial" size="2">
-<p>The statistics are refreshed approximately every two seconds when the About window is open.</p>
-</font></dd>
-</dl>
-<font face="Geneva,Arial" size=2 color="black"><a href="#top">go to top</a></font>
+                                <font face="Geneva,Arial" size="2">
+                                    <p>The statistics are refreshed approximately every two seconds when the About window is open.</p>
+                                </font>
+                            </dd>
+                        </dl>
+                        <font face="Geneva,Arial" size=2 color="black"><a href="#top">go to top</a></font>
 
-<p>
-<a name="file"></a>
-<font size="2" face="Geneva,Arial" color="#0000ff"><b>File Menu</b></font>
-</p>
+                        <p>
+                            <a name="file"></a>
+                            <font size="2" face="Geneva,Arial" color="#0000ff"><b>File Menu</b></font>
+                        </p>
 
-<dl>
-<dt><font size="2" face="Geneva,Arial">Hide Window (command-W)</font></dt>
-<dd><font size="2" face="Geneva,Arial"><p>Hide the front emulator window. The next window down, if any, will become the active, front window. The hidden window can be redisplayed by selecting the window on the Window menu.</p></font>
-</dd>
+                        <dl>
+                            <dt><font size="2" face="Geneva,Arial">Hide Window (command-W)</font></dt>
+                            <dd>
+                                <font size="2" face="Geneva,Arial">
+                                    <p>Hide the front emulator window. The next window down, if any, will become the active, front window. The hidden window can be redisplayed by selecting the window on the Window menu.</p>
+                                </font>
+                            </dd>
 
-<dt><font size="2" face="Geneva,Arial">Close Print Job</font></dt>
-<dd><font size="2" face="Geneva,Arial"><p>If you cancel a program that's printing to the LP: driver, and HDOS clears the file channel rather than closing the file channel, or if you reset the H8 system while an application is printing, the LP: driver won't be notified and can't cause the emulator to close the temporary spool file.</p>
-<p>When this happens, you can use this menu item to close the print job manually.</p>
-<p>This menu item is enabled only when there is a channel open to the LP: driver.</p></font>
-</dd>
+                            <dt><font size="2" face="Geneva,Arial">Close Print Job</font></dt>
+                            <dd>
+                                <font size="2" face="Geneva,Arial">
+                                    <p>If you cancel a program that's printing to the LP: driver, and HDOS clears the file channel rather than closing the file channel, or if you reset the H8 system while an application is printing, the LP: driver won't
+                                        be notified and can't cause the emulator to close the temporary spool file.</p>
+                                    <p>When this happens, you can use this menu item to close the print job manually.</p>
+                                    <p>This menu item is enabled only when there is a channel open to the LP: driver.</p>
+                                </font>
+                            </dd>
 
-<dt><font size="2" face="Geneva,Arial">Use Modem</font></dt>
-<dd><font size="2" face="Geneva,Arial"><p>Opens the Macintosh serial modem port driver and makes the modem available to the H8 on serial port 330Q. Any characters written to the port before the modem is "used" will be lost.</p>
-<p>Once the modem opens, this menu item will change to Release Modem. When you are through using the modem, you should release it so that it is available without interference to other Mac programs.</p></font>
-</dd>
+                            <dt><font size="2" face="Geneva,Arial">Use Modem</font></dt>
+                            <dd>
+                                <font size="2" face="Geneva,Arial">
+                                    <p>Opens the Macintosh serial modem port driver and makes the modem available to the H8 on serial port 330Q. Any characters written to the port before the modem is "used" will be lost.</p>
+                                    <p>Once the modem opens, this menu item will change to Release Modem. When you are through using the modem, you should release it so that it is available without interference to other Mac programs.</p>
+                                </font>
+                            </dd>
 
-<dt><font size="2" face="Geneva,Arial">Open PAM Input Tape</font></dt>
-<dd><font size="2" face="Geneva,Arial"><p>Open a Mac file that holds a dumped memory image, for use with the PAM/8 Load key. Please refer to <a href="pam8.html">PAM/8 Operation</a> for more information on Load/Dump.</p></font>
-</dd>
+                            <dt><font size="2" face="Geneva,Arial">Open PAM Input Tape</font></dt>
+                            <dd>
+                                <font size="2" face="Geneva,Arial">
+                                    <p>Open a Mac file that holds a dumped memory image, for use with the PAM/8 Load key. Please refer to <a href="pam8.html">PAM/8 Operation</a> for more information on Load/Dump.</p>
+                                </font>
+                            </dd>
 
-<dt><font size="2" face="Geneva,Arial">Open PAM Output Tape</font><dt>
+                            <dt><font size="2" face="Geneva,Arial">Open PAM Output Tape</font><dt>
 <dd><font size="2" face="Geneva,Arial"><p>Open a Mac file to hold a dumped memory image, for use with the PAM/8 Dump key. Please refer to <a href="pam8.html">PAM/8 Operation</a> for more information on Load/Dump.</p></font>
 </dd>
 
@@ -105,195 +142,310 @@
 </dd>
 
 <dt><font size="2" face="Geneva,Arial">Quit (command-Q)</font></dt>
-<dd><font size="2" face="Geneva,Arial"><p>Quit the emulator. You will be prompted to confirm the quit command. If you confirm, the disks will be removed from the drives, auto-saved if so configured (or you will be prompted for each if you have unchecked auto-save), and the emulator will quit.
-<p>
-Technically, you do not have to shut down HDOS with the "bye" command before quitting the emulator. But be aware that you may be leaving the disks in an odd state and might even corrupt individual H8 files if you do this. This is no different than switching off the power on a real H8 without first shutting down and removing the disks.</p></font>
-</dd>
-</dl>
-<font face="Geneva,Arial" size=2 color="black"><a href="#top">go to top</a></font>
+                            <dd>
+                                <font size="2" face="Geneva,Arial">
+                                    <p>Quit the emulator. You will be prompted to confirm the quit command. If you confirm, the disks will be removed from the drives, auto-saved if so configured (or you will be prompted for each if you have unchecked auto-save),
+                                        and the emulator will quit.
+                                        <p>
+                                            Technically, you do not have to shut down HDOS with the "bye" command before quitting the emulator. But be aware that you may be leaving the disks in an odd state and might even corrupt individual H8 files if you do this. This is no different than switching
+                                            off the power on a real H8 without first shutting down and removing the disks.</p>
+                                </font>
+                            </dd>
+                        </dl>
+                        <font face="Geneva,Arial" size=2 color="black"><a href="#top">go to top</a></font>
 
-<p>
-<a name="edit"></a>
-<font size="2" face="Geneva,Arial" color="#0000ff"><b>Edit Menu</b></font>
-<font size="2" face="Geneva,Arial"><p>
-None of the standard Edit menu items are suppored by the emulator at this time.</p></font>
+                        <p>
+                            <a name="edit"></a>
+                            <font size="2" face="Geneva,Arial" color="#0000ff"><b>Edit Menu</b></font>
+                            <font size="2" face="Geneva,Arial">
+                                <p>
+                                    None of the standard Edit menu items are suppored by the emulator at this time.</p>
+                            </font>
 
-<dl>
-<dt><font size="2" face="Geneva,Arial">Copy</font></dt>
-<dd><font size="2" face="Geneva,Arial"><p>If the H-19 window is front and any text is selected, this item will be enabled. Select Copy to copy the text to the clipboard.</p></font></dd>
+                            <dl>
+                                <dt><font size="2" face="Geneva,Arial">Copy</font></dt>
+                                <dd>
+                                    <font size="2" face="Geneva,Arial">
+                                        <p>If the H-19 window is front and any text is selected, this item will be enabled. Select Copy to copy the text to the clipboard.</p>
+                                    </font>
+                                </dd>
 
-<dt><font size="2" face="Geneva,Arial">Paste</font></dt>
-<dd><font size="2" face="Geneva,Arial"><p>If the H-19 window is front and there is text in the clipboard, this item will be enabled. If you select Paste, the text in the clipboard will be input to the H8 as if it were being typed at the keyboard. The input rate is 200 characters per second.</p>
-<p>Caution: Certain applications may not be able to keep up with a sustained data rate of 200 cps. We know that the Pie editor, running at a speed of less than 8mhz, cannot take more than about 80 pasted characters before it starts to lose data.</p>
-<p>A paste in progress can be stopped by selecting Cancel Paste (see below) from the Edit menu, or typing Control-.</p></font></dd>
+                                <dt><font size="2" face="Geneva,Arial">Paste</font></dt>
+                                <dd>
+                                    <font size="2" face="Geneva,Arial">
+                                        <p>If the H-19 window is front and there is text in the clipboard, this item will be enabled. If you select Paste, the text in the clipboard will be input to the H8 as if it were being typed at the keyboard. The input
+                                            rate is 200 characters per second.</p>
+                                        <p>Caution: Certain applications may not be able to keep up with a sustained data rate of 200 cps. We know that the Pie editor, running at a speed of less than 8mhz, cannot take more than about 80 pasted characters
+                                            before it starts to lose data.</p>
+                                        <p>A paste in progress can be stopped by selecting Cancel Paste (see below) from the Edit menu, or typing Control-.</p>
+                                    </font>
+                                </dd>
 
-<dt><font size="2" face="Geneva,Arial">Cancel Paste</font></dt>
-<dd><font size="2" face="Geneva,Arial"><p>If there is a paste in progress, it can be canceled by selecting this item, or typing Command-v, or typing Command-.</p></font></dd>
+                                <dt><font size="2" face="Geneva,Arial">Cancel Paste</font></dt>
+                                <dd>
+                                    <font size="2" face="Geneva,Arial">
+                                        <p>If there is a paste in progress, it can be canceled by selecting this item, or typing Command-v, or typing Command-.</p>
+                                    </font>
+                                </dd>
 
-<dt><font size="2" face="Geneva,Arial">Select All</font></dt>
-<dd><font size="2" face="Geneva,Arial"><p>If the H-19 window is front, this item will be enabled. Select All will select all the text in the scroll-back buffer from the first non-blank line through line 24 of the active screen.</p>
-<p>See <a href="h19kb.html">H-19 Terminal Keyboard Map and User Guide</a> for more information on text selection.</p></font></dd>
+                                <dt><font size="2" face="Geneva,Arial">Select All</font></dt>
+                                <dd>
+                                    <font size="2" face="Geneva,Arial">
+                                        <p>If the H-19 window is front, this item will be enabled. Select All will select all the text in the scroll-back buffer from the first non-blank line through line 24 of the active screen.</p>
+                                        <p>See <a href="h19kb.html">H-19 Terminal Keyboard Map and User Guide</a> for more information on text selection.</p>
+                                    </font>
+                                </dd>
 
-<dt><a name="h17pref"></a>
+                                <dt><a name="h17pref"></a>
 <font size="2" face="Geneva,Arial">H-17 Preferences</font></dt>
-<dd><font size="2" face="Geneva,Arial"><p>Allows you to specify the diskette image to be inserted in each of the three disk drives when the emulator is first started. The possibilities are:</p></font>
-<ul type=disc>
-<li><font size="2" face="Geneva,Arial">None - There will be no disk inserted into the drive when the emulator starts. The file name area will show &lt;no disk inserted>.</font></li>
-<li><font size="2" face="Geneva,Arial">Last Mounted - The disk, if any, that was in the drive when the emulator was last quit will be inserted when the emulator is next started. The file name area will show the currently mounted disk, which will be the disk next mounted on the drive if you quit the emulator now. If there is no disk currently mounted on the drive the file name area will show &lt;no disk inserted>.</font></li>
-<li><font size="2" face="Geneva,Arial">Specific Disk - A specific, named disk will be inserted in the drive when the emulator starts. The disk's file name is displayed.</font></li>
-</ul>
+                                <dd>
+                                    <font size="2" face="Geneva,Arial">
+                                        <p>Allows you to specify the diskette image to be inserted in each of the three disk drives when the emulator is first started. The possibilities are:</p>
+                                    </font>
+                                    <ul type=disc>
+                                        <li>
+                                            <font size="2" face="Geneva,Arial">None - There will be no disk inserted into the drive when the emulator starts. The file name area will show &lt;no disk inserted>.</font>
+                                        </li>
+                                        <li>
+                                            <font size="2" face="Geneva,Arial">Last Mounted - The disk, if any, that was in the drive when the emulator was last quit will be inserted when the emulator is next started. The file name area will show the currently mounted disk, which will
+                                                be the disk next mounted on the drive if you quit the emulator now. If there is no disk currently mounted on the drive the file name area will show &lt;no disk inserted>.</font>
+                                        </li>
+                                        <li>
+                                            <font size="2" face="Geneva,Arial">Specific Disk - A specific, named disk will be inserted in the drive when the emulator starts. The disk's file name is displayed.</font>
+                                        </li>
+                                    </ul>
 
-<center>
-<img src="../gfx/h17pref.gif" border="0">
-</center>
+                                    <center>
+                                        <img src="../gfx/h17pref.gif" border="0">
+                                    </center>
 
-<font size="2" face="Geneva,Arial">
-<p>The preferences dialog also lets you specify which drives are to support 80-track disks. If you are using the original HDOS 2.0 SY: driver, these must be left unchecked.</p>
-<p>If you are using the HUG SY: driver (available at the project web site), these settings must match the settings ("SET SYn: 40TRK" and "SET SYn: 80TRK") in the SY: driver on all of your bootable disks. If there is a mismatch, you will find that you are unable to read 40-track disks mounted on 80-track drives. (The emulator uses these settings to correctly mount a 40-track disk on an 80-track drive so that the SY: driver can mount and read it in "compatibility mode." See the HUG SY: driver documentation for details.)</p>
-<p>These preferences, when changed, have no immediate effect on the drives; they take effect when the emulator is next started.</p>
-<p>In order for the Last Mounted or Specific Disk options to work, the diskette images must be on the Macintosh startup disk. If the diskette is moved or deleted, an error dialog will appear during startup and the preference will be changed to None.</p>
-<p>If you want to be able to insert a disk by opening it with the Finder, make sure you leave a drive empty for this purpose.</p>
-</font></dd>
+                                    <font size="2" face="Geneva,Arial">
+                                        <p>The preferences dialog also lets you specify which drives are to support 80-track disks. If you are using the original HDOS 2.0 SY: driver, these must be left unchecked.</p>
+                                        <p>If you are using the HUG SY: driver (available at the project web site), these settings must match the settings ("SET SYn: 40TRK" and "SET SYn: 80TRK") in the SY: driver on all of your bootable disks. If there is
+                                            a mismatch, you will find that you are unable to read 40-track disks mounted on 80-track drives. (The emulator uses these settings to correctly mount a 40-track disk on an 80-track drive so that the SY: driver
+                                            can mount and read it in "compatibility mode." See the HUG SY: driver documentation for details.)</p>
+                                        <p>These preferences, when changed, have no immediate effect on the drives; they take effect when the emulator is next started.</p>
+                                        <p>In order for the Last Mounted or Specific Disk options to work, the diskette images must be on the Macintosh startup disk. If the diskette is moved or deleted, an error dialog will appear during startup and the
+                                            preference will be changed to None.</p>
+                                        <p>If you want to be able to insert a disk by opening it with the Finder, make sure you leave a drive empty for this purpose.</p>
+                                    </font>
+                                </dd>
 
-<dt><a name="emupref"></a>
+                                <dt><a name="emupref"></a>
 <font size="2" face="Geneva,Arial">Emulator Preferences</font></dt>
-<dd><font size="2" face="Geneva,Arial"><p>Displays the following dialog box:</p>
+                                <dd>
+                                    <font size="2" face="Geneva,Arial">
+                                        <p>Displays the following dialog box:</p>
 
-<center>
-<img src="../gfx/syspref.gif" border="0">
-</center>
+                                        <center>
+                                            <img src="../gfx/syspref.gif" border="0">
+                                        </center>
 
-<p>This allows you to specify:</p>
-<ul type="disc">
-<li><font size="2" face="Geneva,Arial"><p>the cursor type to be used by default on the H-19 Terminal: underline or block. Application programs can change the cursor type with escape sequences, but when the terminal is reset, this is the cursor that is displayed. This setting takes effect the next time the H-19 is reset.</p></li>
+                                        <p>This allows you to specify:</p>
+                                        <ul type="disc">
+                                            <li>
+                                                <font size="2" face="Geneva,Arial">
+                                                    <p>the cursor type to be used by default on the H-19 Terminal: underline or block. Application programs can change the cursor type with escape sequences, but when the terminal is reset, this is the cursor
+                                                        that is displayed. This setting takes effect the next time the H-19 is reset.</p>
+                                            </li>
 
-<li><font size="2" face="Geneva,Arial"><p>the PAM ROM image to be used; check the box for the PAM/GO ROM, and leave it unchecked for the original ROM. This setting takes effect, and the ROM is reloaded, the next time the H8 is reset.</p></li>
+                                            <li>
+                                                <font size="2" face="Geneva,Arial">
+                                                    <p>the PAM ROM image to be used; check the box for the PAM/GO ROM, and leave it unchecked for the original ROM. This setting takes effect, and the ROM is reloaded, the next time the H8 is reset.</p>
+                                            </li>
 
-<li><font size="2" face="Geneva,Arial"><p>the start-up processor speed: 2 mhz, 4 mhz, 8 mhz or Turbo. The speed can subsequently be changed on the Speed menu; this setting is only used to select the initial system speed when the emulator is started.</p>
-<p><font size="2" face="Geneva,Arial">Note that you should not change from the default of 2 mhz unless you are using the HUG replacement disk driver (available on the project web site), as the default HDOS 2.0 disk driver will not boot correctly at speeds in excess of 2 mhz.</p></li>
+                                            <li>
+                                                <font size="2" face="Geneva,Arial">
+                                                    <p>the start-up processor speed: 2 mhz, 4 mhz, 8 mhz or Turbo. The speed can subsequently be changed on the Speed menu; this setting is only used to select the initial system speed when the emulator is
+                                                        started.</p>
+                                                    <p>
+                                                        <font size="2" face="Geneva,Arial">Note that you should not change from the default of 2 mhz unless you are using the HUG replacement disk driver (available on the project web site), as the default HDOS 2.0 disk driver will not boot
+                                                            correctly at speeds in excess of 2 mhz.</p>
+                                            </li>
 
-<li><font size="2" face="Geneva,Arial"><p>the file creator code for Mac files created by copying them to the AT: drive, and for the saved H-19 screen buffer. If you don't know the 4-character code, click on the "Like this file..." button and open any file that has the creator that you want. The file type will be 'TEXT' in both cases. This setting takes effect the next time a file is written to the Mac.</p>
-<p>If the creator of the H-19 screen buffer is 'ttxt' (SimpleText), the emulator adds a 'STYL' resource to the dump file telling SimpleText to use 10-point Heath font to display the file. Thus the Mac file will look identical to the H-19 screen, with the exception of inverse video.</p></li>
+                                            <li>
+                                                <font size="2" face="Geneva,Arial">
+                                                    <p>the file creator code for Mac files created by copying them to the AT: drive, and for the saved H-19 screen buffer. If you don't know the 4-character code, click on the "Like this file..." button and
+                                                        open any file that has the creator that you want. The file type will be 'TEXT' in both cases. This setting takes effect the next time a file is written to the Mac.</p>
+                                                    <p>If the creator of the H-19 screen buffer is 'ttxt' (SimpleText), the emulator adds a 'STYL' resource to the dump file telling SimpleText to use 10-point Heath font to display the file. Thus the Mac file
+                                                        will look identical to the H-19 screen, with the exception of inverse video.</p>
+                                            </li>
 
-<li><font size="2" face="Geneva,Arial"><p>printer page margins. These are specified in points; there are 72 points to the inch. The default values are 36, or 1/2 inch. These values take effect the next time a file is printed.</p>
-<p>If the values are too small to print on your printer without clipping, you will be prompted to allow the emulator to adjust the too-small values or cancel the print job (ref: <a href="error.html#margin">error message</a>). Clicking OK will increase only the too-small values to the minimum values acceptable to your printer.</p>
-<p>Note that there really isn't a right margin in this release of the emulator. The right margin size is maintained and validated, but not used at this time.</p></li>
-</ul>
-<font size="2" face="Geneva,Arial">
-<p>As noted above, all but system speed take effect during this H8 session.</p>
-<p>Click the "Defaults" button to reset all preferences to their default values, after confirmation. Caution: this takes effect immediately; subsequently clicking "Cancel" will not restore your previous values.</p>
-<p></p>
-</dd>
-</dl>
-<font face="Geneva,Arial" size=2 color="black"><a href="#top">go to top</a></font>
+                                            <li>
+                                                <font size="2" face="Geneva,Arial">
+                                                    <p>printer page margins. These are specified in points; there are 72 points to the inch. The default values are 36, or 1/2 inch. These values take effect the next time a file is printed.</p>
+                                                    <p>If the values are too small to print on your printer without clipping, you will be prompted to allow the emulator to adjust the too-small values or cancel the print job (ref: <a href="error.html#margin">error message</a>).
+                                                        Clicking OK will increase only the too-small values to the minimum values acceptable to your printer.</p>
+                                                    <p>Note that there really isn't a right margin in this release of the emulator. The right margin size is maintained and validated, but not used at this time.</p>
+                                            </li>
+                                        </ul>
+                                        <font size="2" face="Geneva,Arial">
+                                            <p>As noted above, all but system speed take effect during this H8 session.</p>
+                                            <p>Click the "Defaults" button to reset all preferences to their default values, after confirmation. Caution: this takes effect immediately; subsequently clicking "Cancel" will not restore your previous values.</p>
+                                            <p></p>
+                                </dd>
+                            </dl>
+                            <font face="Geneva,Arial" size=2 color="black"><a href="#top">go to top</a></font>
 
-<p>
-<a name="speed"></a>
-<font size="2" face="Geneva,Arial" color="#0000ff"><b>Speed Menu</b></font>
-</p>
-<dl>
-<dt><font size="2" face="Geneva,Arial">2 mhz</font></dt>
-<dd><font size="2" face="Geneva,Arial"><p>When this item is checked, the processor is paced to perform like a standard H8 system with an 8080A processor - 2.048 million instruction cycles per second. This is the default setting.</p></dd>
+                            <p>
+                                <a name="speed"></a>
+                                <font size="2" face="Geneva,Arial" color="#0000ff"><b>Speed Menu</b></font>
+                            </p>
+                            <dl>
+                                <dt><font size="2" face="Geneva,Arial">2 mhz</font></dt>
+                                <dd>
+                                    <font size="2" face="Geneva,Arial">
+                                        <p>When this item is checked, the processor is paced to perform like a standard H8 system with an 8080A processor - 2.048 million instruction cycles per second. This is the default setting.</p>
+                                </dd>
 
-<dt><font size="2" face="Geneva,Arial">4 mhz</font></dt>
-<dd><font size="2" face="Geneva,Arial"><p>When this item is checked, the processor is paced to operate at 4 mhz, approximately twice the speed of a standard H8 system - 4.096 million instruction cycles per second.</p></dd>
+                                <dt><font size="2" face="Geneva,Arial">4 mhz</font></dt>
+                                <dd>
+                                    <font size="2" face="Geneva,Arial">
+                                        <p>When this item is checked, the processor is paced to operate at 4 mhz, approximately twice the speed of a standard H8 system - 4.096 million instruction cycles per second.</p>
+                                </dd>
 
-<dt><font size="2" face="Geneva,Arial">8 mhz</font></dt>
-<dd><font size="2" face="Geneva,Arial"><p>When this item is checked, the processor is paced to operate at 8 mhz, approximately four times the speed of a standard H8 system - 8.192 million instruction cycles per second.</p></dd>
+                                <dt><font size="2" face="Geneva,Arial">8 mhz</font></dt>
+                                <dd>
+                                    <font size="2" face="Geneva,Arial">
+                                        <p>When this item is checked, the processor is paced to operate at 8 mhz, approximately four times the speed of a standard H8 system - 8.192 million instruction cycles per second.</p>
+                                </dd>
 
-<dt><font size="2" face="Geneva,Arial">Turbo</font></dt>
-<dd><font size="2" face="Geneva,Arial"><p>When this item is checked, the emulator is operating unpaced; it will run as fast as the host Macintosh will drive it.</p></dd>
-</dl>
+                                <dt><font size="2" face="Geneva,Arial">Turbo</font></dt>
+                                <dd>
+                                    <font size="2" face="Geneva,Arial">
+                                        <p>When this item is checked, the emulator is operating unpaced; it will run as fast as the host Macintosh will drive it.</p>
+                                </dd>
+                            </dl>
 
-<font size="2" face="Geneva,Arial"><p>The system clock speed can be changed at any time.</p>
-<p>On the author's 300 mhz G3, Turbo operates about twice as fast as the 8 mhz setting. But slower Macintosh host systems may not see any difference between Turbo and a slower clock setting. See the Performance page in the Design section of the project web site for more information.</p>
+                            <font size="2" face="Geneva,Arial">
+                                <p>The system clock speed can be changed at any time.</p>
+                                <p>On the author's 300 mhz G3, Turbo operates about twice as fast as the 8 mhz setting. But slower Macintosh host systems may not see any difference between Turbo and a slower clock setting. See the Performance page in the
+                                    Design section of the project web site for more information.</p>
 
-<p><b>Caution:</b> The standard Heath SY: driver has a poorly implemented "ready" function that will fail if the processor speed exceeds normal speeds. (This was fixed in the HUG enhanced SY: driver.) This comes into play when you are mounting disks or running software that uses low-level driver calls to check the ready status of a disk drive. In addition, the INIT program will appear to "hang" with interrupts disabled when operating faster than 2 mhz.</p>
-<p>In these cases, you must run at the normal, 2 mhz speed. Other software may exhibit different failures at higher speeds; we offer no guarantees that your favorite software will operate at speeds higher than 2 mhz.</p>
-<p>If you have odd, hard to explain problems with any particular piece of software while using one of the higher speeds, go back to 2 mhz and try again. The software may be incompatible with a very fast 8080A processor.</p></font>
-<font face="Geneva,Arial" size=2 color="black"><a href="#top">go to top</a></font>
+                                <p><b>Caution:</b> The standard Heath SY: driver has a poorly implemented "ready" function that will fail if the processor speed exceeds normal speeds. (This was fixed in the HUG enhanced SY: driver.) This comes into play
+                                    when you are mounting disks or running software that uses low-level driver calls to check the ready status of a disk drive. In addition, the INIT program will appear to "hang" with interrupts disabled when operating
+                                    faster than 2 mhz.</p>
+                                <p>In these cases, you must run at the normal, 2 mhz speed. Other software may exhibit different failures at higher speeds; we offer no guarantees that your favorite software will operate at speeds higher than 2 mhz.</p>
+                                <p>If you have odd, hard to explain problems with any particular piece of software while using one of the higher speeds, go back to 2 mhz and try again. The software may be incompatible with a very fast 8080A processor.</p>
+                            </font>
+                            <font face="Geneva,Arial" size=2 color="black"><a href="#top">go to top</a></font>
 
-<p>
-<a name="window"></a>
-<font size="2" face="Geneva,Arial" color="#0000ff"><b>Window Menu</b></font>
-</p>
+                            <p>
+                                <a name="window"></a>
+                                <font size="2" face="Geneva,Arial" color="#0000ff"><b>Window Menu</b></font>
+                            </p>
 
-<dl>
-<dt><font size="2" face="Geneva,Arial">H8 Front Panel (command-8)</font></dt>
-<dd><font size="2" face="Geneva,Arial"><p>If the front panel GUI window is hidden or not front, make it visible and the front window.</p></font>
-</dd>
+                            <dl>
+                                <dt><font size="2" face="Geneva,Arial">H8 Front Panel (command-8)</font></dt>
+                                <dd>
+                                    <font size="2" face="Geneva,Arial">
+                                        <p>If the front panel GUI window is hidden or not front, make it visible and the front window.</p>
+                                    </font>
+                                </dd>
 
-<dt><font size="2" face="Geneva,Arial">H-19 Terminal (command-T)</font></dt>
-<dd><font size="2" face="Geneva,Arial"><p>If the H-19 terminal window is hidden or not front, make it visible and the front window. (This is automatic the first time HDOS writes to the H-19 after the emulator is started.)</p></font>
-</dd>
+                                <dt><font size="2" face="Geneva,Arial">H-19 Terminal (command-T)</font></dt>
+                                <dd>
+                                    <font size="2" face="Geneva,Arial">
+                                        <p>If the H-19 terminal window is hidden or not front, make it visible and the front window. (This is automatic the first time HDOS writes to the H-19 after the emulator is started.)</p>
+                                    </font>
+                                </dd>
 
-<dt><font size="2" face="Geneva,Arial">Reset H-19 (active only when window is front)</font></dt>
-<dd><font size="2" face="Geneva,Arial"><p>Reset the H-19 terminal emulator to its power-up configuration: 25th line off, preferred cursor, hold-mode disabled, normal video, no graphics. The screen is cleared and the cursor homed. A 'transmit page' or 'transmit line 25' operation in progress is halted early by sending Carriage Return and ringing the bell.</p>
-<p>(This menu item performs the same functions as when you send esc-z from the H8, but operation is local to the H-19 terminal.)</p></font>
-</dd>
+                                <dt><font size="2" face="Geneva,Arial">Reset H-19 (active only when window is front)</font></dt>
+                                <dd>
+                                    <font size="2" face="Geneva,Arial">
+                                        <p>Reset the H-19 terminal emulator to its power-up configuration: 25th line off, preferred cursor, hold-mode disabled, normal video, no graphics. The screen is cleared and the cursor homed. A 'transmit page' or 'transmit
+                                            line 25' operation in progress is halted early by sending Carriage Return and ringing the bell.</p>
+                                        <p>(This menu item performs the same functions as when you send esc-z from the H8, but operation is local to the H-19 terminal.)</p>
+                                    </font>
+                                </dd>
 
-<dt><font size="2" face="Geneva,Arial">H-17 Management (command-M)</font></dt>
-<dd><font size="2" face="Geneva,Arial"><p>Allows you to mount an old H-17 disk, create a new one, or remove a disk from a drive. Please refer to the figure.</p>
+                                <dt><font size="2" face="Geneva,Arial">H-17 Management (command-M)</font></dt>
+                                <dd>
+                                    <font size="2" face="Geneva,Arial">
+                                        <p>Allows you to mount an old H-17 disk, create a new one, or remove a disk from a drive. Please refer to the figure.</p>
 
-<center>
-<img src="../gfx/h17dlg.gif" width="287" height="105" border="0">
-</center>
+                                        <center>
+                                            <img src="../gfx/h17dlg.gif" width="287" height="105" border="0">
+                                        </center>
 
-<p>
-In the manage window:</p></font>
+                                        <p>
+                                            In the manage window:</p>
+                                    </font>
 
-<ul type="disc">
-<li><font size="2" face="Geneva,Arial">click the "Insert" button to mount an existing diskette file on a drive;</font></li>
-<li><font size="2" face="Geneva,Arial">click the "New" button to create a new diskette file on the drive (remember to run init.abs!);</font></li>
-<li><font size="2" face="Geneva,Arial">click the "Reset" button to make HDOS believe that the disk has been removed then inserted back into the drive (simulates opening then closing the drive door);</font></li>
-<li><font size="2" face="Geneva,Arial">click the "Remove" button to remove a disk from the drive.</font></li>
-</ul>
+                                    <ul type="disc">
+                                        <li>
+                                            <font size="2" face="Geneva,Arial">click the "Insert" button to mount an existing diskette file on a drive;</font>
+                                        </li>
+                                        <li>
+                                            <font size="2" face="Geneva,Arial">click the "New" button to create a new diskette file on the drive (remember to run init.abs!);</font>
+                                        </li>
+                                        <li>
+                                            <font size="2" face="Geneva,Arial">click the "Reset" button to make HDOS believe that the disk has been removed then inserted back into the drive (simulates opening then closing the drive door);</font>
+                                        </li>
+                                        <li>
+                                            <font size="2" face="Geneva,Arial">click the "Remove" button to remove a disk from the drive.</font>
+                                        </li>
+                                    </ul>
 
-<font size="2" face="Geneva,Arial">
-<p>An inserted, formatted disk will have its volume number, Mac file name, and HDOS label displayed. An inserted, unformatted disk will only show the Mac file name.</p>
-<p>If the HDOS label is one continuous string of characters without spaces, it will be displayed on one line and will be truncated if need be at the right margin of the window. Otherwise, the name will be word-wrapped into a two-line display as shown in the figure above.</p>
-<p>
-Check "Write Protect" if you want the diskette to be write protected in the H8 environment. Uncheck "Auto-Save" if you want to be prompted to save a diskette image to the Mac disk after it has been changed.
-<p>
-If the "Write Protect" check box is checked and dim, this disk is locked and you can't remove write protection.
-<p>
-Select "Save in portable format?" at the bottom of the window to save each disk image as a text file. This applies only to disks removed while this feature is selected. Unselect this feature to save each disk image in a compressed format. (Ref: <a href="feat.html">Emulator Features</a>)
-<p>If you click the 'reset' button or insert a disk into a drive, hole detection will be suppressed for 300 milliseconds, long enough for HDOS to recognize that the disk has been removed from the drive, then another inserted. This enables the easy use of the 'reset' HDOS command: you can either swap disks, or click the Reset button to simulate removing and inserting the same disk.</p>
-<p>You can hide the dialog by clicking the "close" box on the title bar or by using the Hide Window item on the File menu. However, the emulator will continue to operate normally if this window is left open.</p>
-</dd>
-<dt><font size="2" face="Geneva,Arial">Remember Window Positions</font></dt>
-<dd><font size="2" face="Geneva,Arial"><p>When this item is checked, the current positions of the Front Panel, H-19 and H-17 Management windows are saved in the preferences file. When the emulator is next started, the windows will open in their saved positions.</p>
-<p>This menu item setting is saved as well; if the emulator is quit with "remember" unchecked, it will be unchecked on the next launch, and the windows will all open in their standard positions.</p>
-<p>If for some reason you want to forget the saved positions and reset to the standard positions, simply uncheck this menu item and restart the emulator.</p>
-</font>
+                                    <font size="2" face="Geneva,Arial">
+                                        <p>An inserted, formatted disk will have its volume number, Mac file name, and HDOS label displayed. An inserted, unformatted disk will only show the Mac file name.</p>
+                                        <p>If the HDOS label is one continuous string of characters without spaces, it will be displayed on one line and will be truncated if need be at the right margin of the window. Otherwise, the name will be word-wrapped
+                                            into a two-line display as shown in the figure above.</p>
+                                        <p>
+                                            Check "Write Protect" if you want the diskette to be write protected in the H8 environment. Uncheck "Auto-Save" if you want to be prompted to save a diskette image to the Mac disk after it has been changed.
+                                            <p>
+                                                If the "Write Protect" check box is checked and dim, this disk is locked and you can't remove write protection.
+                                                <p>
+                                                    Select "Save in portable format?" at the bottom of the window to save each disk image as a text file. This applies only to disks removed while this feature is selected. Unselect this feature to save each disk image in a compressed format. (Ref:
+                                                    <a
+                                                        href="feat.html">Emulator Features</a>)
+                                                        <p>If you click the 'reset' button or insert a disk into a drive, hole detection will be suppressed for 300 milliseconds, long enough for HDOS to recognize that the disk has been removed from the drive,
+                                                            then another inserted. This enables the easy use of the 'reset' HDOS command: you can either swap disks, or click the Reset button to simulate removing and inserting the same disk.</p>
+                                                        <p>You can hide the dialog by clicking the "close" box on the title bar or by using the Hide Window item on the File menu. However, the emulator will continue to operate normally if this window is left
+                                                            open.</p>
+                                </dd>
+                                <dt><font size="2" face="Geneva,Arial">Remember Window Positions</font></dt>
+                                <dd>
+                                    <font size="2" face="Geneva,Arial">
+                                        <p>When this item is checked, the current positions of the Front Panel, H-19 and H-17 Management windows are saved in the preferences file. When the emulator is next started, the windows will open in their saved positions.</p>
+                                        <p>This menu item setting is saved as well; if the emulator is quit with "remember" unchecked, it will be unchecked on the next launch, and the windows will all open in their standard positions.</p>
+                                        <p>If for some reason you want to forget the saved positions and reset to the standard positions, simply uncheck this menu item and restart the emulator.</p>
+                                    </font>
 
-</dl>
-<font face="Geneva,Arial" size=2 color="black"><a href="#top">go to top</a></font>
+                            </dl>
+                            <font face="Geneva,Arial" size=2 color="black"><a href="#top">go to top</a></font>
 
-<p>
-<a name="help"></a>
-<font size="2" face="Geneva,Arial" color="#0000ff"><b>Help Menu</b></font>
-</p>
+                            <p>
+                                <a name="help"></a>
+                                <font size="2" face="Geneva,Arial" color="#0000ff"><b>Help Menu</b></font>
+                            </p>
 
-<dl>
-<dt><font size="2" face="Geneva,Arial">H-19 Keyboard Map</font></dt>
-<dd><font size="2" face="Geneva,Arial"><p>Displays the <a href="h19kb.html">H-19 Keyboard Map and User Guide</a> page from this help system. This page can also be displayed by typing command-? or pressing the Help key on an Apple extended keyboard.</p></font>
+                            <dl>
+                                <dt><font size="2" face="Geneva,Arial">H-19 Keyboard Map</font></dt>
+                                <dd>
+                                    <font size="2" face="Geneva,Arial">
+                                        <p>Displays the <a href="h19kb.html">H-19 Keyboard Map and User Guide</a> page from this help system. This page can also be displayed by typing command-? or pressing the Help key on an Apple extended keyboard.</p>
+                                    </font>
 
-<dt><font size="2" face="Geneva,Arial">H8 Emulation Help</font></dt>
-<dd><font size="2" face="Geneva,Arial"><p>Displays this help system.</p></font>
-</dd>
-<font face="Geneva,Arial" size=2 color="black"><a href="#top">go to top</a></font>
-</ul>
+                                    <dt><font size="2" face="Geneva,Arial">H8 Emulation Help</font></dt>
+                                    <dd>
+                                        <font size="2" face="Geneva,Arial">
+                                            <p>Displays this help system.</p>
+                                        </font>
+                                    </dd>
+                                    <font face="Geneva,Arial" size=2 color="black"><a href="#top">go to top</a></font>
+        </ul>
 
 
-<hr>
-<font face="Geneva,Arial" size=1>
-<center>
-<a href="../h8_toc.html">Table of Contents</a>
-</center>
-<br><br>
-</font>
+        <hr>
+        <font face="Geneva,Arial" size=1>
+            <center>
+                <a href="../h8_toc.html">Table of Contents</a>
+            </center>
+            <br><br>
+        </font>
 </body>
 
 <!-- Mirrored from davidwallace2000.home.comcast.net/~davidwallace2000/h8/project8080_archive/pgs/menus.html by HTTrack Website Copier/3.x [XR&CO'2010], Mon, 10 Sep 2012 13:15:36 GMT -->
+
 </html>

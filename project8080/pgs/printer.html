@@ -1,261 +1,389 @@
 <html>
 
 <!-- Mirrored from davidwallace2000.home.comcast.net/~davidwallace2000/h8/project8080_archive/pgs/printer.html by HTTrack Website Copier/3.x [XR&CO'2010], Mon, 10 Sep 2012 13:15:41 GMT -->
+
 <head>
-<title>H8 Emulation Help - Printer Documentation</title>
-<meta name="AppleTitle" content="H8 Emulation Help">
-<meta name="description" content="Printer Documentation">
+    <title>H8 Emulation Help - Printer Documentation</title>
+    <meta name="AppleTitle" content="H8 Emulation Help">
+    <meta name="description" content="Printer Documentation">
 </head>
 
 <!-- updated 10/22/2002, das -->
 
 <body bgcolor="white">
-<a name="top"></a>
-<p>
-<font size=3 face="Verdana,Geneva" color="0000FF">
-<b>Printer Documentation</b>
-</font>
-<ul>
-<font face="Geneva,Arial" size=2>
-<p>This page describes the control characters and escape sequences recognized by the printer. You should add these sequences to an assembler common (.ACM) deck, or use the ASCII.ACM file supplied on the extras disk.</p>
-<p>For information on how to use the LP: driver to print, see the <a href="print.html">Printing</a> page.</p>
-<p><b>Important Note:</b> In order to use the printer escape sequences documented below, you <b>must</b> upgrade to  v1.1 of the LP: driver. The correct lp.dvd file is included on the extras and  boot/sysgen disks distributed with the emulator. </p>
-</font>
-</ul>
+    <a name="top"></a>
+    <p>
+        <font size=3 face="Verdana,Geneva" color="0000FF">
+            <b>Printer Documentation</b>
+        </font>
+        <ul>
+            <font face="Geneva,Arial" size=2>
+                <p>This page describes the control characters and escape sequences recognized by the printer. You should add these sequences to an assembler common (.ACM) deck, or use the ASCII.ACM file supplied on the extras disk.</p>
+                <p>For information on how to use the LP: driver to print, see the <a href="print.html">Printing</a> page.</p>
+                <p><b>Important Note:</b> In order to use the printer escape sequences documented below, you <b>must</b> upgrade to v1.1 of the LP: driver. The correct lp.dvd file is included on the extras and boot/sysgen disks distributed with the emulator.
+                    </p>
+            </font>
+        </ul>
 
-<hr>
-<font face="Geneva,Arial" size=1>
-<center>
-<a href="program.html">Programming Table of Contents</a>
-<br><br>
-<a href="../h8_toc.html">Main Table of Contents</a>
-</center>
-<hr>
+        <hr>
+        <font face="Geneva,Arial" size=1>
+            <center>
+                <a href="program.html">Programming Table of Contents</a>
+                <br><br>
+                <a href="../h8_toc.html">Main Table of Contents</a>
+            </center>
+            <hr>
 
-<table border="0" cellspacing="2" cellpadding="2">
-<tr align="left" valign="top">
-	<td width="100"><font size=3 face="Verdana,Geneva" color="0000FF"><b>Page Index</b></font></td>
-	<td><font face="Geneva" size=2><a href="#control">Control Characters</a></font></td>
-</tr>
-<tr align="left" valign="top">
-	<td>&nbsp;</td>
-	<td><font face="Geneva" size=2><a href="#escape">Escape Sequences</a></font></td>
-</tr>
-<tr align="left" valign="top">
-	<td>&nbsp;</td>
-	<td><font face="Geneva" size=2><a href="#defaults">Defaults</a></font></td>
-</tr>
-</table>
+            <table border="0" cellspacing="2" cellpadding="2">
+                <tr align="left" valign="top">
+                    <td width="100">
+                        <font size=3 face="Verdana,Geneva" color="0000FF"><b>Page Index</b></font>
+                    </td>
+                    <td>
+                        <font face="Geneva" size=2><a href="#control">Control Characters</a></font>
+                    </td>
+                </tr>
+                <tr align="left" valign="top">
+                    <td>&nbsp;</td>
+                    <td>
+                        <font face="Geneva" size=2><a href="#escape">Escape Sequences</a></font>
+                    </td>
+                </tr>
+                <tr align="left" valign="top">
+                    <td>&nbsp;</td>
+                    <td>
+                        <font face="Geneva" size=2><a href="#defaults">Defaults</a></font>
+                    </td>
+                </tr>
+            </table>
 
-<hr>
-<font size=3 face="Verdana,Geneva" color="0000FF">
-<p>
-<a name="control"></a>
-<b>Control Characters</b></p>
-</font>
-<ul>
-<font face="Geneva,Arial" size=2>
-<p>The printer responds to the following control characters. See <a href="#escape">Escape Sequences</a> for the list of special features supported and how to use them.</p>
-</font>
+            <hr>
+            <font size=3 face="Verdana,Geneva" color="0000FF">
+                <p>
+                    <a name="control"></a>
+                    <b>Control Characters</b></p>
+            </font>
+            <ul>
+                <font face="Geneva,Arial" size=2>
+                    <p>The printer responds to the following control characters. See <a href="#escape">Escape Sequences</a> for the list of special features supported and how to use them.</p>
+                </font>
 
-<table border="1" cellspacing="0" cellpadding="4">
-	<caption><font face="Geneva,Arial" size=2><b>Control Characters</b></font></caption>
+                <table border="1" cellspacing="0" cellpadding="4">
+                    <caption>
+                        <font face="Geneva,Arial" size=2><b>Control Characters</b></font>
+                    </caption>
 
-<tr align="left" valign="top">
-	<th align="left"><font face="Geneva,Arial" size=2>Character</font></th>
-	<th align="left"><font face="Geneva,Arial" size=2>Action</font></th>
-</tr>
-<tr align="left" valign="top">
-	<td><font face="Geneva,Arial" size=2>NL</font></td>
-	<td><font face="Geneva,Arial" size=2>carriage return/line feed - move down one line and to the left margin</font></td>
-</tr>
-<tr align="left" valign="top">
-	<td><font face="Geneva,Arial" size=2>FF</font></td>
-	<td><font face="Geneva,Arial" size=2>form feed - finish this page and skip to the top of the next page</font></td>
-</tr>
-<tr align="left" valign="top">
-	<td><font face="Geneva,Arial" size=2>HT</font></td>
-	<td><font face="Geneva,Arial" size=2>horizontal tab - move to the next tab stop (tab stops fixed at 8 column intervals, same as the H-19)</font></td>
-</tr>
-<tr align="left" valign="top">
-	<td><font face="Geneva,Arial" size=2>ESC</font></td>
-	<td><font face="Geneva,Arial" size=2>escape - starts an <a href="#escape">escape sequence</a></font></td>
-</tr>
-</table>
-<font face="Geneva,Arial" size=2>
-<p>All other non-printing characters are filtered out by the emulator.</p>
-</font>
+                    <tr align="left" valign="top">
+                        <th align="left">
+                            <font face="Geneva,Arial" size=2>Character</font>
+                        </th>
+                        <th align="left">
+                            <font face="Geneva,Arial" size=2>Action</font>
+                        </th>
+                    </tr>
+                    <tr align="left" valign="top">
+                        <td>
+                            <font face="Geneva,Arial" size=2>NL</font>
+                        </td>
+                        <td>
+                            <font face="Geneva,Arial" size=2>carriage return/line feed - move down one line and to the left margin</font>
+                        </td>
+                    </tr>
+                    <tr align="left" valign="top">
+                        <td>
+                            <font face="Geneva,Arial" size=2>FF</font>
+                        </td>
+                        <td>
+                            <font face="Geneva,Arial" size=2>form feed - finish this page and skip to the top of the next page</font>
+                        </td>
+                    </tr>
+                    <tr align="left" valign="top">
+                        <td>
+                            <font face="Geneva,Arial" size=2>HT</font>
+                        </td>
+                        <td>
+                            <font face="Geneva,Arial" size=2>horizontal tab - move to the next tab stop (tab stops fixed at 8 column intervals, same as the H-19)</font>
+                        </td>
+                    </tr>
+                    <tr align="left" valign="top">
+                        <td>
+                            <font face="Geneva,Arial" size=2>ESC</font>
+                        </td>
+                        <td>
+                            <font face="Geneva,Arial" size=2>escape - starts an <a href="#escape">escape sequence</a></font>
+                        </td>
+                    </tr>
+                </table>
+                <font face="Geneva,Arial" size=2>
+                    <p>All other non-printing characters are filtered out by the emulator.</p>
+                </font>
 
-<font face="Geneva,Arial" size=2>
-<p><a href="#top">go to top</a></p>
-</font>
-</ul>
+                <font face="Geneva,Arial" size=2>
+                    <p><a href="#top">go to top</a></p>
+                </font>
+            </ul>
 
-<hr>
+            <hr>
 
-<font size=3 face="Verdana,Geneva" color="0000FF">
-<p>
-<a name="escape"></a>
-<b>Escape Sequences</b></p>
-</font>
-<ul>
-<font face="Geneva,Arial" size=2>
-<p>Special print features are controlled by sending escape sequences to the printer.</p>
-<p><b>Note</b>:  Numbers as parameters to the Size or Color commands can be expressed in either decimal or octal, and spaces are ignored. This should make it convenient to use these features in both Basic and Assembler programs.</p>
-</font>
+            <font size=3 face="Verdana,Geneva" color="0000FF">
+                <p>
+                    <a name="escape"></a>
+                    <b>Escape Sequences</b></p>
+            </font>
+            <ul>
+                <font face="Geneva,Arial" size=2>
+                    <p>Special print features are controlled by sending escape sequences to the printer.</p>
+                    <p><b>Note</b>: Numbers as parameters to the Size or Color commands can be expressed in either decimal or octal, and spaces are ignored. This should make it convenient to use these features in both Basic and Assembler programs.</p>
+                </font>
 
-<dl>
-<dt><font face="Geneva,Arial" size=2>Decimal numbers</dt>
-<dd><font face="Geneva,Arial" size=2><p>No leading zeros. Example: 27 = decimal 27.</p></dd>
-<dt><font face="Geneva,Arial" size=2>Octal numbers</dt>
-<dd><font face="Geneva,Arial" size=2><p>Must have at least one leading zero to signal the emulator that it's octal. Example: 033 = decimal 27.</p></dd>
-</dl>
+                <dl>
+                    <dt><font face="Geneva,Arial" size=2>Decimal numbers</dt>
+                    <dd>
+                        <font face="Geneva,Arial" size=2>
+                            <p>No leading zeros. Example: 27 = decimal 27.</p>
+                    </dd>
+                    <dt><font face="Geneva,Arial" size=2>Octal numbers</dt>
+                    <dd>
+                        <font face="Geneva,Arial" size=2>
+                            <p>Must have at least one leading zero to signal the emulator that it's octal. Example: 033 = decimal 27.</p>
+                    </dd>
+                </dl>
 
-<font face="Geneva,Arial" size=2>
-<p><b>Note:</b> In the table below, "esc" refers to the escape character: </p>
-</font>
-<dl>
-<dt><font face="Geneva,Arial" size=2>in assembler...</dt>
-<dd><font face="Geneva,Arial" size=2><p>ESC&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;EQU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;033Q</p></dd>
-<dt><font face="Geneva,Arial" size=2>in Basic...</dt>
-<dd><font face="Geneva,Arial" size=2><p>00010 e$=CHR$(27) : REM e$ contains the escape character</p></dd>
-</dd>
+                <font face="Geneva,Arial" size=2>
+                    <p><b>Note:</b> In the table below, "esc" refers to the escape character: </p>
+                </font>
+                <dl>
+                    <dt><font face="Geneva,Arial" size=2>in assembler...</dt>
+                    <dd>
+                        <font face="Geneva,Arial" size=2>
+                            <p>ESC&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;EQU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;033Q</p>
+                    </dd>
+                    <dt><font face="Geneva,Arial" size=2>in Basic...</dt>
+                    <dd>
+                        <font face="Geneva,Arial" size=2>
+                            <p>00010 e$=CHR$(27) : REM e$ contains the escape character</p>
+                    </dd>
+                    </dd>
 
-<table border="1" cellspacing="0" cellpadding="4">
-	<caption><font face="Geneva,Arial" size=2><b>Printer Escape Sequences</b></font></caption>
+                    <table border="1" cellspacing="0" cellpadding="4">
+                        <caption>
+                            <font face="Geneva,Arial" size=2><b>Printer Escape Sequences</b></font>
+                        </caption>
 
-<tr align="left" valign="top">
-	<th align="left"><font face="Geneva,Arial" size=2>Sequence</font></th>
-	<th align="left"><font face="Geneva,Arial" size=2>Mnemonic</font></th>
-	<th align="left"><font face="Geneva,Arial" size=2>Action</font></th>
-</tr>
-<tr align="left" valign="top">
-	<td><font face="Geneva,Arial" size=2>esc B</font></td>
-	<td><font face="Geneva,Arial" size=2>PE.BOLD</font></td>
-	<td><font face="Geneva,Arial" size=2>start <b>bold face</b> type</font></td>
-</tr>
-<tr align="left" valign="top">
-	<td><font face="Geneva,Arial" size=2>esc b</font></td>
-	<td><font face="Geneva,Arial" size=2>PX.BOLD</font></td>
-	<td><font face="Geneva,Arial" size=2>end bold face type</font></td>
-</tr>
-<tr align="left" valign="top">
-	<td><font face="Geneva,Arial" size=2>esc I</font></td>
-	<td><font face="Geneva,Arial" size=2>PE.ITAL</font></td>
-	<td><font face="Geneva,Arial" size=2>start <i>italic</i>&nbsp;type (upper-case "eye")</font></td>
-</tr>
-<tr align="left" valign="top">
-	<td><font face="Geneva,Arial" size=2>esc i</font></td>
-	<td><font face="Geneva,Arial" size=2>PX.ITAL</font></td>
-	<td><font face="Geneva,Arial" size=2>end italic type</font></td>
-</tr>
-<tr align="left" valign="top">
-	<td><font face="Geneva,Arial" size=2>esc U</font></td>
-	<td><font face="Geneva,Arial" size=2>PE.UNDR</font></td>
-	<td><font face="Geneva,Arial" size=2>start <u>underlined</u> type</font></td>
-</tr>
-<tr align="left" valign="top">
-	<td><font face="Geneva,Arial" size=2>esc u</font></td>
-	<td><font face="Geneva,Arial" size=2>PX.UNDR</font></td>
-	<td><font face="Geneva,Arial" size=2>end underlined type</font></td>
-</tr>
-<tr align="left" valign="top">
-	<td><font face="Geneva,Arial" size=2>esc F</font></td>
-	<td><font face="Geneva,Arial" size=2>HEGM</font></td>
-	<td><font face="Geneva,Arial" size=2>enter graphics mode<br><br>The current font is saved, and the active font is changed to Heath. The font cannot be changed to anything else until the esc G sequence ends graphics mode.</font></td>
-</tr>
-<tr align="left" valign="top">
-	<td><font face="Geneva,Arial" size=2>esc G</font></td>
-	<td><font face="Geneva,Arial" size=2>HXGM</font></td>
-	<td><font face="Geneva,Arial" size=2>exit graphics mode<br><br>The font that was in use when esc F enabled graphics mode is restored.</font></td>
-</tr>
-<tr align="left" valign="top">
-	<td><font face="Geneva,Arial" size=2>esc f</font></td>
-	<td><font face="Geneva,Arial" size=2>P.FONT</font></td>
-	<td><font face="Geneva,Arial" size=2>change font<br><br>
-	Format is:<br>
-	&nbsp;&nbsp;esc f&lt;font name>;<br><br>
-	If the font name is too long (30 characters, max), the sequence is ignored. If the trailing semicolon is missing, characters will be "eaten" from the output until 30 characters have been removed or the next NL character is encountered.<br><br>
-	Example:<br>
-	&nbsp;&nbsp;esc fHelvetica;</font></td>
-</tr>
-<tr align="left" valign="top">
-	<td><font face="Geneva,Arial" size=2>esc s</font></td>
-	<td><font face="Geneva,Arial" size=2>P.SIZE</font></td>
-	<td><font face="Geneva,Arial" size=2>change font size<br><br>
-	Format is:<br>
-	&nbsp;&nbsp;esc s&lt;size>;<br><br>
-	Size must be expressed as a decimal or octal number (a leading zero indicates octal) expressed in printable ASCII characters. Spaces between the 's' and ';' are ignored. If the emulator encounters any other non-numeric character or NL before encountering the semicolon, the command is ignored.<br><br>
-	Example:<br>
-	&nbsp;&nbsp;esc s 12 ; - change to 12-point type; size expressed in decimal, spaces are ignored<br>
-	&nbsp;&nbsp;esc s014; - change to 12-point type; size expressed in octal</font></td>
-</tr>
-<tr align="left" valign="top">
-	<td><font face="Geneva,Arial" size=2>esc c</font></td>
-	<td><font face="Geneva,Arial" size=2>P.COLOR</font></td>
-	<td><font face="Geneva,Arial" size=2>change font color<br><br>
-	Format is:<br>
-	&nbsp;&nbsp;esc c&lt;% red,% green,%blue>;<br><br>
-	Percentages must be between 0 and 100, expressed as a decimal or octal number (a leading zero indicates octal) in printable ASCII characters. Spaces between the 'c' and ';' are ignored. If any other illegal character or an illegal number is encountered, the command is ignored.<br><br>
-	To select a precise font color, use the Macintosh RGB color picker to find the color then copy the color percentages into your H8 program.<br><br>
-	Example:<br>
-	&nbsp;&nbsp;esc c 25 , 50 , 85 ; - decimal expression; spaces ignored<br>
-	&nbsp;&nbsp;esc c0031, 0062, 0125; - same color expressed in octal; spaces ignored<br><br>
-	Note that esc c 0, 0, 0; will set the color to black; this is the default color. Esc c 100, 100, 100; is white and will generally not print. Esc c 50,50,50; is medium gray.</font></td>
-</tr>
-<tr align="left" valign="top">
-	<td><font face="Geneva,Arial" size=2>esc r</font></td>
-	<td><font face="Geneva,Arial" size=2>P.RESET</font></td>
-	<td><font face="Geneva,Arial" size=2>reset printer to <a href="#defaults">default values</a></font></td>
-</tr>
-</table>
-<font face="Geneva,Arial" size=2>
-<p>Note that <b>bold, <i>italic, and <u>underline</u></i></b>&nbsp;can be used in combination.</p>
-<p>If any other escape sequence is encountered, it is ignored and printing resumes immediately following the bad two-character escape sequence.</p>
-</font>
+                        <tr align="left" valign="top">
+                            <th align="left">
+                                <font face="Geneva,Arial" size=2>Sequence</font>
+                            </th>
+                            <th align="left">
+                                <font face="Geneva,Arial" size=2>Mnemonic</font>
+                            </th>
+                            <th align="left">
+                                <font face="Geneva,Arial" size=2>Action</font>
+                            </th>
+                        </tr>
+                        <tr align="left" valign="top">
+                            <td>
+                                <font face="Geneva,Arial" size=2>esc B</font>
+                            </td>
+                            <td>
+                                <font face="Geneva,Arial" size=2>PE.BOLD</font>
+                            </td>
+                            <td>
+                                <font face="Geneva,Arial" size=2>start <b>bold face</b> type</font>
+                            </td>
+                        </tr>
+                        <tr align="left" valign="top">
+                            <td>
+                                <font face="Geneva,Arial" size=2>esc b</font>
+                            </td>
+                            <td>
+                                <font face="Geneva,Arial" size=2>PX.BOLD</font>
+                            </td>
+                            <td>
+                                <font face="Geneva,Arial" size=2>end bold face type</font>
+                            </td>
+                        </tr>
+                        <tr align="left" valign="top">
+                            <td>
+                                <font face="Geneva,Arial" size=2>esc I</font>
+                            </td>
+                            <td>
+                                <font face="Geneva,Arial" size=2>PE.ITAL</font>
+                            </td>
+                            <td>
+                                <font face="Geneva,Arial" size=2>start <i>italic</i>&nbsp;type (upper-case "eye")</font>
+                            </td>
+                        </tr>
+                        <tr align="left" valign="top">
+                            <td>
+                                <font face="Geneva,Arial" size=2>esc i</font>
+                            </td>
+                            <td>
+                                <font face="Geneva,Arial" size=2>PX.ITAL</font>
+                            </td>
+                            <td>
+                                <font face="Geneva,Arial" size=2>end italic type</font>
+                            </td>
+                        </tr>
+                        <tr align="left" valign="top">
+                            <td>
+                                <font face="Geneva,Arial" size=2>esc U</font>
+                            </td>
+                            <td>
+                                <font face="Geneva,Arial" size=2>PE.UNDR</font>
+                            </td>
+                            <td>
+                                <font face="Geneva,Arial" size=2>start <u>underlined</u> type</font>
+                            </td>
+                        </tr>
+                        <tr align="left" valign="top">
+                            <td>
+                                <font face="Geneva,Arial" size=2>esc u</font>
+                            </td>
+                            <td>
+                                <font face="Geneva,Arial" size=2>PX.UNDR</font>
+                            </td>
+                            <td>
+                                <font face="Geneva,Arial" size=2>end underlined type</font>
+                            </td>
+                        </tr>
+                        <tr align="left" valign="top">
+                            <td>
+                                <font face="Geneva,Arial" size=2>esc F</font>
+                            </td>
+                            <td>
+                                <font face="Geneva,Arial" size=2>HEGM</font>
+                            </td>
+                            <td>
+                                <font face="Geneva,Arial" size=2>enter graphics mode<br><br>The current font is saved, and the active font is changed to Heath. The font cannot be changed to anything else until the esc G sequence ends graphics mode.</font>
+                            </td>
+                        </tr>
+                        <tr align="left" valign="top">
+                            <td>
+                                <font face="Geneva,Arial" size=2>esc G</font>
+                            </td>
+                            <td>
+                                <font face="Geneva,Arial" size=2>HXGM</font>
+                            </td>
+                            <td>
+                                <font face="Geneva,Arial" size=2>exit graphics mode<br><br>The font that was in use when esc F enabled graphics mode is restored.</font>
+                            </td>
+                        </tr>
+                        <tr align="left" valign="top">
+                            <td>
+                                <font face="Geneva,Arial" size=2>esc f</font>
+                            </td>
+                            <td>
+                                <font face="Geneva,Arial" size=2>P.FONT</font>
+                            </td>
+                            <td>
+                                <font face="Geneva,Arial" size=2>change font<br><br> Format is:<br> &nbsp;&nbsp;esc f&lt;font name>;<br><br> If the font name is too long (30 characters, max), the sequence is ignored. If the trailing semicolon is missing, characters will be "eaten" from
+                                    the output until 30 characters have been removed or the next NL character is encountered.<br><br> Example:
+                                    <br> &nbsp;&nbsp;esc fHelvetica;</font>
+                            </td>
+                        </tr>
+                        <tr align="left" valign="top">
+                            <td>
+                                <font face="Geneva,Arial" size=2>esc s</font>
+                            </td>
+                            <td>
+                                <font face="Geneva,Arial" size=2>P.SIZE</font>
+                            </td>
+                            <td>
+                                <font face="Geneva,Arial" size=2>change font size<br><br> Format is:<br> &nbsp;&nbsp;esc s&lt;size>;<br><br> Size must be expressed as a decimal or octal number (a leading zero indicates octal) expressed in printable ASCII characters. Spaces between the
+                                    's' and ';' are ignored. If the emulator encounters any other non-numeric character or NL before encountering the semicolon, the command is ignored.<br><br> Example:
+                                    <br> &nbsp;&nbsp;esc s 12 ; - change to 12-point type; size expressed in decimal, spaces are ignored<br> &nbsp;&nbsp;esc s014; - change to 12-point type; size expressed in octal</font>
+                            </td>
+                        </tr>
+                        <tr align="left" valign="top">
+                            <td>
+                                <font face="Geneva,Arial" size=2>esc c</font>
+                            </td>
+                            <td>
+                                <font face="Geneva,Arial" size=2>P.COLOR</font>
+                            </td>
+                            <td>
+                                <font face="Geneva,Arial" size=2>change font color<br><br> Format is:<br> &nbsp;&nbsp;esc c&lt;% red,% green,%blue>;<br><br> Percentages must be between 0 and 100, expressed as a decimal or octal number (a leading zero indicates octal) in printable ASCII
+                                    characters. Spaces between the 'c' and ';' are ignored. If any other illegal character or an illegal number is encountered, the command is ignored.<br><br> To select a precise font color, use the Macintosh RGB color
+                                    picker to find the color then copy the color percentages into your H8 program.<br><br> Example:
+                                    <br> &nbsp;&nbsp;esc c 25 , 50 , 85 ; - decimal expression; spaces ignored<br> &nbsp;&nbsp;esc c0031, 0062, 0125; - same color expressed in octal; spaces ignored<br><br> Note that esc c 0, 0, 0; will set the color to
+                                    black; this is the default color. Esc c 100, 100, 100; is white and will generally not print. Esc c 50,50,50; is medium gray.</font>
+                            </td>
+                        </tr>
+                        <tr align="left" valign="top">
+                            <td>
+                                <font face="Geneva,Arial" size=2>esc r</font>
+                            </td>
+                            <td>
+                                <font face="Geneva,Arial" size=2>P.RESET</font>
+                            </td>
+                            <td>
+                                <font face="Geneva,Arial" size=2>reset printer to <a href="#defaults">default values</a></font>
+                            </td>
+                        </tr>
+                    </table>
+                    <font face="Geneva,Arial" size=2>
+                        <p>Note that <b>bold, <i>italic, and <u>underline</u></i></b>&nbsp;can be used in combination.</p>
+                        <p>If any other escape sequence is encountered, it is ignored and printing resumes immediately following the bad two-character escape sequence.</p>
+                    </font>
 
-<font face="Geneva,Arial" size=2>
-<p><a href="#top">go to top</a></p>
-</font>
-</ul>
+                    <font face="Geneva,Arial" size=2>
+                        <p><a href="#top">go to top</a></p>
+                    </font>
+            </ul>
 
-<hr>
-<font size=3 face="Verdana,Geneva" color="0000FF">
-<p>
-<a name="defaults"></a>
-<b>Defaults</b></p>
-</font>
-<ul>
-<font face="Geneva,Arial" size=2>
-<p>The default printer configuration is:</p>
-</font>
-<ul type="disc">
-<li><font face="geneva,arial" size=2><b>font</b> - Courier</font></li>
-<li><font face="geneva,arial" size=2><b>color</b> - black</font></li>
-<li><font face="geneva,arial" size=2><b>size</b> - 10 point</font></li>
-<li><font face="geneva,arial" size=2><b>bold</b> - off</font></li>
-<li><font face="geneva,arial" size=2><b>italic</b> - off</font></li>
-<li><font face="geneva,arial" size=2><b>underline</b> - off</font></li>
-<li><font face="geneva,arial" size=2><b>graphics</b> - off</font></li>
-</ul>
-<font face="Geneva,Arial" size=2>
-<p>Defaults are set when a new print job is started, and when the printer is <a href="#escape">reset</a>.</p>
-</font>
-<font face="Geneva,Arial" size=2>
-<p><a href="#top">go to top</a></p>
-</font>
-</ul>
+            <hr>
+            <font size=3 face="Verdana,Geneva" color="0000FF">
+                <p>
+                    <a name="defaults"></a>
+                    <b>Defaults</b></p>
+            </font>
+            <ul>
+                <font face="Geneva,Arial" size=2>
+                    <p>The default printer configuration is:</p>
+                </font>
+                <ul type="disc">
+                    <li>
+                        <font face="geneva,arial" size=2><b>font</b> - Courier</font>
+                    </li>
+                    <li>
+                        <font face="geneva,arial" size=2><b>color</b> - black</font>
+                    </li>
+                    <li>
+                        <font face="geneva,arial" size=2><b>size</b> - 10 point</font>
+                    </li>
+                    <li>
+                        <font face="geneva,arial" size=2><b>bold</b> - off</font>
+                    </li>
+                    <li>
+                        <font face="geneva,arial" size=2><b>italic</b> - off</font>
+                    </li>
+                    <li>
+                        <font face="geneva,arial" size=2><b>underline</b> - off</font>
+                    </li>
+                    <li>
+                        <font face="geneva,arial" size=2><b>graphics</b> - off</font>
+                    </li>
+                </ul>
+                <font face="Geneva,Arial" size=2>
+                    <p>Defaults are set when a new print job is started, and when the printer is <a href="#escape">reset</a>.</p>
+                </font>
+                <font face="Geneva,Arial" size=2>
+                    <p><a href="#top">go to top</a></p>
+                </font>
+            </ul>
 
-<hr>
-<font face="Geneva,Arial" size=1>
-<center>
-<a href="program.html">Programming Table of Contents</a>
-<br><br>
-<a href="../h8_toc.html">Main Table of Contents</a>
-</center>
-<br><br>
-</font>
+            <hr>
+            <font face="Geneva,Arial" size=1>
+                <center>
+                    <a href="program.html">Programming Table of Contents</a>
+                    <br><br>
+                    <a href="../h8_toc.html">Main Table of Contents</a>
+                </center>
+                <br><br>
+            </font>
 </body>
 
 <!-- Mirrored from davidwallace2000.home.comcast.net/~davidwallace2000/h8/project8080_archive/pgs/printer.html by HTTrack Website Copier/3.x [XR&CO'2010], Mon, 10 Sep 2012 13:15:41 GMT -->
+
 </html>

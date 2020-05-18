@@ -1,81 +1,83 @@
 <html>
 
 <!-- Mirrored from davidwallace2000.home.comcast.net/~davidwallace2000/h8/project8080_archive/pgs/xfer.html by HTTrack Website Copier/3.x [XR&CO'2010], Mon, 10 Sep 2012 13:15:43 GMT -->
+
 <head>
-<title>H8 Emulation Help - Transferring Files</title>
-<meta name="AppleTitle" content="H8 Emulation Help">
-<meta name="description" content="How To Transfer Files Between the H8 and Macintosh">
+    <title>H8 Emulation Help - Transferring Files</title>
+    <meta name="AppleTitle" content="H8 Emulation Help">
+    <meta name="description" content="How To Transfer Files Between the H8 and Macintosh">
 </head>
 
 <!-- updated 10/4/2002, das -->
 
 <body bgcolor="white">
 
-<p>
-<font size=3 face="Verdana,Arial"  color="0000FF">
-<b>How To Transfer Files Between the H8 and Macintosh</b>
-</font>
+    <p>
+        <font size=3 face="Verdana,Arial" color="0000FF">
+            <b>How To Transfer Files Between the H8 and Macintosh</b>
+        </font>
 
-<ul>
-<font face="Geneva,Arial" size=2 color="black">
-<p>
-You can transfer text files between the H8 and the Macintosh. This will let you, say, use a Mac editor to prepare an assembler source file for assembly on the H8.
-<p>
+        <ul>
+            <font face="Geneva,Arial" size=2 color="black">
+                <p>
+                    You can transfer text files between the H8 and the Macintosh. This will let you, say, use a Mac editor to prepare an assembler source file for assembly on the H8.
+                    <p>
 
-<b><font color="#0000ff">To copy from the H8 to the Mac</font></b></p>
-</font>
+                        <b><font color="#0000ff">To copy from the H8 to the Mac</font></b></p>
+            </font>
 
-<font face="Geneva,Arial" size=2 color=black>
-<p>Simply copy the file to the AT: device driver. Example:</p>
-</font>
+            <font face="Geneva,Arial" size=2 color=black>
+                <p>Simply copy the file to the AT: device driver. Example:</p>
+            </font>
 
-<font face="Courier" size=2 color=black>
-<p>pip at:=sy1:prog.asm</p>
-</font>
+            <font face="Courier" size=2 color=black>
+                <p>pip at:=sy1:prog.asm</p>
+            </font>
 
-<font face="Geneva,Arial" size=2 color=black>
-<p>The Save File As dialog box will pop up so that you can select the proper folder and file name. Then the file will be copied. If you cancel the Save File As dialog, the copy will be aborted with the HDOS error "write failure on the device."</p>
-<p>
-Remember that only TEXT files can be copied to the Mac. The H8 end-of-line characters (NL) will be changed to Mac end-of-line characters (CR). Non-printing characters other than Tab, NL, and Form Feed will be stripped from the file.
-<p>
-<b><font color="#0000ff">To copy from the Mac to the H8</font></b></p>
-</font>
+            <font face="Geneva,Arial" size=2 color=black>
+                <p>The Save File As dialog box will pop up so that you can select the proper folder and file name. Then the file will be copied. If you cancel the Save File As dialog, the copy will be aborted with the HDOS error "write failure on the device."</p>
+                <p>
+                    Remember that only TEXT files can be copied to the Mac. The H8 end-of-line characters (NL) will be changed to Mac end-of-line characters (CR). Non-printing characters other than Tab, NL, and Form Feed will be stripped from the file.
+                    <p>
+                        <b><font color="#0000ff">To copy from the Mac to the H8</font></b></p>
+            </font>
 
-<font face="Geneva,Arial" size=2 color=black>
-<p>Simply copy from the AT: driver to the HDOS file. Example:</p>
-</font>
+            <font face="Geneva,Arial" size=2 color=black>
+                <p>Simply copy from the AT: driver to the HDOS file. Example:</p>
+            </font>
 
-<font face="Courier" size=2 color=black>
-<p>pip sy1:program.asm=at:</p>
-</font>
+            <font face="Courier" size=2 color=black>
+                <p>pip sy1:program.asm=at:</p>
+            </font>
 
-<font face="Geneva,Arial" size=2 color=black>
-<p>The Open File dialog box will pop up so that you can select the folder and file name. Then the file will be copied. If you cancel the Open File dialog, the copy will be aborted with the HDOS error "read failure on the device."</p>
+            <font face="Geneva,Arial" size=2 color=black>
+                <p>The Open File dialog box will pop up so that you can select the folder and file name. Then the file will be copied. If you cancel the Open File dialog, the copy will be aborted with the HDOS error "read failure on the device."</p>
 
-<p>
-Remember that only TEXT files can be copied to the H8. The Mac end-of-line characers (CR) will te changed to H8 end-of-line characters (NL). Non-printing characters other than Tab, NL, and Form Feed will be stripped from the file.
+                <p>
+                    Remember that only TEXT files can be copied to the H8. The Mac end-of-line characers (CR) will te changed to H8 end-of-line characters (NL). Non-printing characters other than Tab, NL, and Form Feed will be stripped from the file.
 
-</ul>
-<font size=3 face="Verdana,Arial" color="#0000ff">
-<b>Important</b>
-</font>
+        </ul>
+        <font size=3 face="Verdana,Arial" color="#0000ff">
+            <b>Important</b>
+        </font>
 
-<ul>
-<font face="Geneva,Arial" color=black size=2>
-<p>
-Make sure to use the AT: driver that's included on the bootable "HDOS 2.0 Gen Master" distribution disk, or on the "Mac H8 Emulator Drivers Release 2.3" source disk. This driver has been customized to work with the Mac H8 Emulator.
-<p>
-The use of any other AT: driver on the H8 system will give undefined results. Translation: Your guess is as good as mine, but I'm sure it won't transfer anything useful.
-<p>
-</font>
-<hr>
-<font face="Geneva,Arial" size=1>
-<center>
-<a href="../h8_toc.html">Table of Contents</a>
-</center>
-<br><br>
-</font>
+        <ul>
+            <font face="Geneva,Arial" color=black size=2>
+                <p>
+                    Make sure to use the AT: driver that's included on the bootable "HDOS 2.0 Gen Master" distribution disk, or on the "Mac H8 Emulator Drivers Release 2.3" source disk. This driver has been customized to work with the Mac H8 Emulator.
+                    <p>
+                        The use of any other AT: driver on the H8 system will give undefined results. Translation: Your guess is as good as mine, but I'm sure it won't transfer anything useful.
+                        <p>
+            </font>
+            <hr>
+            <font face="Geneva,Arial" size=1>
+                <center>
+                    <a href="../h8_toc.html">Table of Contents</a>
+                </center>
+                <br><br>
+            </font>
 </body>
 
 <!-- Mirrored from davidwallace2000.home.comcast.net/~davidwallace2000/h8/project8080_archive/pgs/xfer.html by HTTrack Website Copier/3.x [XR&CO'2010], Mon, 10 Sep 2012 13:15:43 GMT -->
+
 </html>

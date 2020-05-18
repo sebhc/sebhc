@@ -1,5 +1,859 @@
 <html>
 <!-- Mirrored from davidwallace2000.home.comcast.net/~davidwallace2000/h8/project8080_archive/design_pam8.html by HTTrack Website Copier/3.x [XR&CO'2010], Mon, 10 Sep 2012 13:15:38 GMT -->
-<head><title>Heath8080A - Product Design : PAM/8 GUI</title><!-- Headers -- common to all pages --><meta name="description" content="This site provides a free Heathkit H8 microcomputer emulator for the Macintosh"><meta name="author" content="David A. Shaw"><link rev="made" href="mailto:&#104;&#101;&#97;&#116;&#104;8080&#97;&#64;&#97;&#111;&#108;.&#99;&#111;&#109;"><meta name="generator" content="Optima PageSpinner for MacOS"><meta name="robots" content="all"><meta name="keywords" content="Heathkit,Heath,H8,H17,H-17,H19,H-19,8080A,Intel 8080A,computer emulation,H8 emulation,Mac,Macintosh,G3,Linux"><style type="text/css">body {background-color: #ffffff}.left   { background:      #ffffff; vertical-align: top; color: blue }.left p { font-family:     verdana        }.head   { background:     #ffffcc; vertical-align: top; color: blue }.head p { font-family:    geneva, arial        }.lhead   { background:     #ffffcc; vertical-align: top; color: blue }.lhead p { font-family:    verdana         }.body   { vertical-align: top;}.body p, ul, ol, dl         { font-family:    geneva, arial         }div.c1 { font-family: geneva, arial;  text-align: center }div.c2 { font-family: geneva, arial;  text-align: right  }a:visited {color: green }a:hover   {color: red; text-decoration: none }p.outside {font-family: geneva, arial;font-size: small;}pre { font-family: courier; font-size: 10px }h1, h2 {font-family: "times new roman" }</style></head><body><a name="top"></a><!-- Page Heading -- common to all pages --><table border="0" cellspacing="0" cellpadding="4" width="100%"><tr>	<td class="lhead">		<p><b>Heath8080A &#8212; Product Design : PAM/8 GUI</b></p>	</td>	<td class="head" align="right"><!-- this reads "site" on the index page and "page" on all others -->		<font size="-1"><p>Page last updated</p></font>	</td></tr><tr>	<td class="head">		<font size="-1"><p><a href="index.html" onMouseOver="self.status='Go to home page'; return true">home</a>		&nbsp;&nbsp;<a href="release.html" onMouseOver="self.status='Go to release page'; return true">release</a>		&nbsp;&nbsp;<a href="support.html" onMouseOver="self.status='Go to support page'; return true">support</a>		&nbsp;&nbsp;<a href="design.html" onMouseOver="self.status='Go to design page'; return true">design</a>		&nbsp;&nbsp;<a href="resources.html" onMouseOver="self.status='Go to resources page'; return true">resources</a>		&nbsp;&nbsp;<a href="legal.html" onMouseOver="self.status='Go to legal page'; return true">legal</a>		&nbsp;&nbsp;<a href="sitemap.html" onMouseOver="self.status='Go to site map'; return true">site map</a></p></font>	</td>	<td class="head" align="right">		<font size="-1"><p>26-October-2002</p></font>	</td></tr><tr><td>&nbsp;</td></tr></table><!-- Standard content ends. Page body starts here.  --><table border="0" cellspacing="0" cellpadding="4" width="100%"><tr><!-- page index --><td class="left" width="20%"><font size="-1"><p>On this page</p><p>&#149; <a href="#keypad" onMouseOver="self.status='Go to keypad events'; return true">keypad</a><br>&#149; <a href="#leds" onMouseOver="self.status='Go to led drawing'; return true">leds</a><br>&#149; <a href="#sound" onMouseOver="self.status='Go to sound'; return true">sound</a><br></p><p>Related links</p><p>&#149; <a href="design_arch.html" onMouseOver="self.status='Go to system architecture'; return true">system architecture</a><br>&#149; <a href="design_io.html" onMouseOver="self.status='Go to i/o package'; return true">i/o package</a><br></p></font></td><td class="body"><font size="-1"><p><b>PAM/8 GUI</b></p><p>Management of the PAM/8 GUI window is split between the event loop, which handles all the mouse-down and key-down events for the front panel, and a drawing routine that keeps the window itself updated. All of the PAM/8 I/O ports are managed by the I/O package.</p><p>This page focuses on keypad handling, which is done in the event handler, LED drawing, which is done in panel drawing, and sound, which is done entirely in the I/O package.</p><hr><a name="keypad"></a><p><b>Keypad Events</b></p><p><i>Keypad/Mouse Use</i></p><p>When there's a mouse-down event in the body of the GUI window, it may be on a front-panel keypad button.</p><p>The buttons are icons drawn on adjacent 36 x 36 pixel squares. Our requirements for mouse-down notification are very simple, so I bypassed the overhead of using controls to represent the buttons and handle the mouse-down events locally.</p><p>If the point hit is not within the keypad rectangle, it's ignored. Otherwise, the point is scaled by subtracting the top and left rectangle offset so that we're working from an origin of zero. The event handler maintains an array of buttons, starting at the top left and working across then down to the bottom right. An index to that array is developed from this scaled v & h coordinate pair:</p><pre>    keyHit = (v/36)*4 + (h/36);</p></pre><p>The key table contains the key code to put on PAM's input port (360q) and a button-down version of the icon, which is drawn. Key code values are:</p><ul><table border="1" cellspacing="0" cellpadding="4">	<caption><font size="-1"><p><b>Key code Values</b></p></caption><tr align="center" valign="top">	<th class="body"><font size="-1"><p>Key</p></th>	<th class="body"><font size="-1"><p>Value</p></th>	<th class="body"><font size="-1"><p>Key</p></th>	<th class="body"><font size="-1"><p>Value</p></th></tr></tr><tr align="center" valign="top">	<td class="body"><font size="-1"><p>0</p></td>	<td class="body"><font size="-1"><p>0xfe</p></td>	<td class="body"><font size="-1"><p>8</p></td>	<td class="body"><font size="-1"><p>0xef</p></td></tr><tr align="center" valign="top">	<td class="body"><font size="-1"><p>1</p></td>	<td class="body"><font size="-1"><p>0xfc</p></td>	<td class="body"><font size="-1"><p>9</p></td>	<td class="body"><font size="-1"><p>0xcf</p></td></tr><tr align="center" valign="top">	<td class="body"><font size="-1"><p>2</p></td>	<td class="body"><font size="-1"><p>0xfa</p></td>	<td class="body"><font size="-1"><p>+</p></td>	<td class="body"><font size="-1"><p>0xaf</p></td></tr><tr align="center" valign="top">	<td class="body"><font size="-1"><p>3</p></td>	<td class="body"><font size="-1"><p>0xf8</p></td>	<td class="body"><font size="-1"><p>-</p></td>	<td class="body"><font size="-1"><p>0x8f</p></td></tr><tr align="center" valign="top">	<td class="body"><font size="-1"><p>4</p></td>	<td class="body"><font size="-1"><p>0xf6</p></td>	<td class="body"><font size="-1"><p>*</p></td>	<td class="body"><font size="-1"><p>0x6f</p></td></tr><tr align="center" valign="top">	<td class="body"><font size="-1"><p>5</p></td>	<td class="body"><font size="-1"><p>0xf4</p></td>	<td class="body"><font size="-1"><p>/</p></td>	<td class="body"><font size="-1"><p>0x4f</p></td></tr><tr align="center" valign="top">	<td class="body"><font size="-1"><p>6</p></td>	<td class="body"><font size="-1"><p>0xf2</p></td>	<td class="body"><font size="-1"><p>#</p></td>	<td class="body"><font size="-1"><p>0x2f</p></td></tr><tr align="center" valign="top">	<td class="body"><font size="-1"><p>7</p></td>	<td class="body"><font size="-1"><p>0xf0</p></td>	<td class="body"><font size="-1"><p>. (dot)</p></td>	<td class="body"><font size="-1"><p>0x0f</p></td></tr></table></ul><p>The button stays down as long as you keep the mouse button down. When the subsequent mouse-up event comes in, the no-key value (377q) is placed on PAM's input port and the button-up version of the icon is drawn.</p><p>The two-key sequences, 0-# and 0-/, are entered by holding down the keyboard option key while clicking the # or / button, respectively. Option-/ resets the H8 hardware. Option-#, Return to Monitor, forces a clock interrupt and places the value 0x2e (the value of the # key in the high bank and the 0 key in the low bank) on the PAM/8 keypad input port.</p><p><i>Keyboard Use</i></p><p>For convenience and speed in operating the emulator, I mapped certain Mac keyboard keys to emulator functions so that, for example, to enter a "go" command you can click the '4' key on the GUI using the mouse, type '4' on the keyboard, or type 'g' on the keyboard.</p><p>Key-down events are processed for the GUI only if the GUI window is front. Keys are mapped as follows:</p><ul><table border="1" cellspacing="0" cellpadding="4"><caption><font size="-1"><b>Keyboard Mapping</b></caption><tr align="center">	<th class="body"><font size="-1"><p>H8 Key</p></th>	<th class="body"><font size="-1"><p>Mac Key(s)</p></th>	<th class="body"><font size="-1"><p>H8 Key</p></th>	<th class="body"><font size="-1"><p>Mac Key(s)</p></th></tr><tr align="center" valign="middle">	<td class="body"><font size="-1"><p>0</p></td>	<td class="body"><font size="-1"><p>0</p></td>	<td class="body"><font size="-1"><p>8</p></td>	<td class="body"><font size="-1"><p>8</p></td></tr><tr align="center" valign="middle">	<td class="body"><font size="-1"><p>1</p></td>	<td class="body"><font size="-1"><p>1, s</p></td>	<td class="body"><font size="-1"><p>9</p></td>	<td class="body"><font size="-1"><p>9</p></td></tr><tr align="center" valign="middle">	<td class="body"><font size="-1"><p>2</p></td>	<td class="body"><font size="-1"><p>2, f</p></td>	<td class="body"><font size="-1"><p>(dot)</p></td>	<td class="body"><font size="-1"><p>(period), r</p></td></tr><tr align="center" valign="middle">	<td class="body"><font size="-1"><p>3</p></td>	<td class="body"><font size="-1"><p>3, b</p></td>	<td class="body"><font size="-1"><p>#</p></td>	<td class="body"><font size="-1"><p>#, m</p></td></tr><tr align="center" valign="middle">	<td class="body"><font size="-1"><p>4</p></td>	<td class="body"><font size="-1"><p>4, d, g</p></td>	<td class="body"><font size="-1"><p>/</p></td>	<td class="body"><font size="-1"><p>/, a</p></td></tr><tr align="center" valign="middle">	<td class="body"><font size="-1"><p>5</p></td>	<td class="body"><font size="-1"><p>5, h</p></td>	<td class="body"><font size="-1"><p>*</p></td>	<td class="body"><font size="-1"><p>*</p></td></tr><tr align="center" valign="middle">	<td class="body"><font size="-1"><p>6</p></td>	<td class="body"><font size="-1"><p>6, p</p></td>	<td class="body"><font size="-1"><p>-</p></td>	<td class="body"><font size="-1"><p>-</p></td></tr><tr align="center" valign="middle">	<td class="body"><font size="-1"><p>7</p></td>	<td class="body"><font size="-1"><p>7, x</p></td>	<td class="body"><font size="-1"><p>+</p></td>	<td class="body"><font size="-1"><p>+</p></td></tr></table></ul><br><br><ul><table border="1" cellspacing="0" cellpadding="4"><caption><font size="-1"><b>Alpha Key Meaning</b></caption><tr valign="middle">	<th class="body" align="center"><font size="-1"><p>Key</p></th>	<th class="body" align="left"><font size="-1"><p>Meaning</p></th></tr><tr valign="middle">	<td class="body" align="center"><font size="-1"><p>r</p></td>	<td class="body"><font size="-1"><p>Register - Select a register.</p></td></tr><tr valign="middle">	<td class="body" align="center"><font size="-1"><p>m</p></td>	<td class="body"><font size="-1"><p>Memory - Select a memory address to display.</p></td></tr><tr valign="middle">	<td class="body" align="center"><font size="-1"><p>a</p></td>	<td class="body"><font size="-1"><p>Alter - Enter alter mode.</p></td></tr><tr valign="middle">	<td class="body" align="center"><font size="-1"><p>p</p></td>	<td class="body"><font size="-1"><p>Select the PC register pair.</p></td></tr><tr valign="middle">	<td class="body" align="center"><font size="-1"><p>b</p></td>	<td class="body"><font size="-1"><p>Select the BC register pair.</p></td></tr><tr valign="middle">	<td class="body" align="center"><font size="-1"><p>d</p></td>	<td class="body"><font size="-1"><p>Select the DE register pair.</p></td></tr><tr valign="middle">	<td class="body" align="center"><font size="-1"><p>f</p></td>	<td class="body"><font size="-1"><p>Select the AF register pair (f = flags).</p></td></tr><tr valign="middle">	<td class="body" align="center"><font size="-1"><p>s</p></td>	<td class="body"><font size="-1"><p>Select the SP register pair.</p></td></tr><tr valign="middle">	<td class="body" align="center"><font size="-1"><p>h</p></td>	<td class="body"><font size="-1"><p>Select the HL register pair.</p></td></tr><tr valign="middle">	<td class="body" align="center"><font size="-1"><p>g</p></td>	<td class="body"><font size="-1"><p>Go.</p></td></tr><tr valign="middle">	<td class="body" align="center"><font size="-1"><p>x</p></td>	<td class="body"><font size="-1"><p>Single Step</p></td></tr></table></ul><p>Usage example: to set PC to 040.100a and go, enter this command string:</p><pre>        r p a 0 4 0 1 0 0 a g</pre><p>... which is equivalent to this command string:</p><pre>        . 6 / 0 4 0 1 0 0 / 4</pre><p>There is no state checking in the emulator: we don't verify that 'p' is only used after 'r'. Pressing 'p' is the same as pressing '6' and any user-interface state-related processing is done by PAM/8 as if the front panel keypad were being used.</p><p>Both upper and lower case characters are supported.</p><p>The two-key sequences, 0-# and 0-/, are entered by holding down the keyboard option key while typing the # or either / key. Option-/ resets the H8 hardware. Option-#, Return to Monitor, forces a clock interrupt and places the value 0x2e on the PAM/8 keypad input port.</p><p>The implementation goes generally like this:</p><ol><li>On receipt of a key-down or auto-repeat event, check for the Option key modifier. If present:  <ul type="disc">  <li>If the keystroke entered is '/', reset the system.</li>  <li>If the keystroke entered is '#', force a clock interrupt and put the "return to monitor mode" code (0x2e) on the PAM/8 input port.</li>  <li>Exit.</li>  </ul><li>Continuing if no option key: Scan the mapping table for a matching entry. If none is found, exit ignoring the key.</li><li>Place the PAM/8 key value corresponding to the keyboard key onto the PAM/8 input port (360q). Then set a timer to expire in 30ms.</li><li>Exit key handler.</li></ol><p>The scheduling loop decrements the key-down timer and when it expires, puts the no-key code (377q) onto port 360q (ref. <a href="design_time.html#distribution" onMouseOver="self.status='Go to time distribution'; return true">time distribution</a>).</p><p>PAM/8 expects keystrokes to stay on the port for at least 20ms. I felt that 30ms was a good length of time to keep the key on the port, and it has proven to be very responsive in practice, keeping up with fairly fast typing.</p><p><a href="#top" onMouseOver="self.status='go to the top of this page'; return true">go to top</a></p><hr><a name="leds"></a><p><b>LED Drawing</b></p><p>The H8's 8-segment LEDs are managed by PAM/8. The LEDs themselves, when written, will flash briefly and then blank, and have to be repeatedly refreshed so that, to the user, they appear to be on constantly. If the LED is not refreshed, it will go blank. This happens when interrupts are disabled for too long &#8212; say, during a disk I/O operation &#8212; or when front panel refresh is disabled.</p><p>PAM/8 refreshes one LED every 2ms clock tick; a given LED will be refreshed every 18ms. The refresh is done in reverse order, right to left. PAM starts by outputting the selected digit index in the low-order nibble of the hardware control port (360q). (The high-order nibble holds hardware flags that control sound, the clock, the single-step instruction interrupt and the monitor lamp.) The LED segment pattern is then output to port 361q.<p><img src="gfx/segbitmap.gif" width="123" height="132" hspace="4" vspace="4" align="left" border="0" alt="Bit to Segment Mapping"><p>LED segments are active-off &#8212; zero bits are on and one bits are off. Bits correspond to segments as shown in the figure. (Bit zero is the low-order bit.)</p><p>The LEDs are addressed with indices of '1' through '9'. Front panel LED refresh can be disabled by setting the UO.NFR bit in the .MFLAG byte in PAM/8's workspace. In that case, the first OUT still takes place but the selected LED index is '0'.</p><p>Redrawing a LED every two milliseconds is way too much overhead, so the emulator will buffer output digit patterns. The front panel LEDs are updated en mass immediately before checking for Macintosh events (every 25ms if we're in the foreground and every 10ms if background; ref. <a href="design_time.html#distribution" onMouseOver="self.status='Go to time distribution'; return true">time distribution</a>). To simulate blanking when refresh stops, the time of the last refresh is kept. If an LED is not refreshed within 50ms, its pattern is set to 377q &#8212; all segments off.</p><p>In order to reduce overhead even further, we only redraw the segments that change from draw to draw. To do that, we keep a before and after picture of each LED. Before drawing, the before and after segment patterns are XOR'd together to create a mask; the '1' bits in the mask represent changed bits. Only the "after" segments that correspond with '1' bits in the mask are actually drawn.</p><p>While the emulator doesn't redraw on the same frequency as a real H8, the visual appearance is identical, at least according to my memory of the beast.</p><p><a href="#top" onMouseOver="self.status='go to the top of this page'; return true">go to top</a></p><hr><a name="sound"></a><p><b>Sound</b></p><p>The H8's beeps and clicks are produced in the I/O package.</p><p>A real H8 will produce sound by resetting the high-order bit of the byte output to the control port (360q). (The bit is active-on.) While any program can produce sound by setting and resetting this bit, PAM/8 produces only three sounds:</p><ul><table border="1" cellspacing="0" cellpadding="4"><tr align="center">	<th class="body"><font size="-1"><p>Sound</p></th>	<th class="body"><font size="-1"><p>Out Count</p></th>	<th class="body" align="left"><font size="-1"><p>Usage</p></th></tr><tr align="center">	<td class="body"><font size="-1"><p>short click</p></td>	<td class="body"><font size="-1"><p>&lt; 10</p></td>	<td class="body" align="left"><font size="-1"><p>Key click</p></td></tr><tr align="center">	<td class="body"><font size="-1"><p>medium click</p></td>	<td class="body"><font size="-1"><p>approx. 30</p></td>	<td class="body" align="left"><font size="-1"><p>"Bip" after the 3rd digit when entering octal data</p></td></tr><tr align="center">	<td class="body"><font size="-1"><p>beep</p></td>	<td class="body"><font size="-1"><p>> 36</p></td>	<td class="body" align="left"><font size="-1"><p>Alarm</p></td></tr></table></ul><p>The emulator ignores the short sound, counting on the Mac keyboard and mouse to produce effective feedback. The medium sound is produced by playing a sound resource.</p><p>The long alarm is produced by allocating a sound channel and playing a suitable tone using SndDoCommand. This was a simple thing under Mac OS System 8.5, but under System 9.1, I have to clock the sound down myself and clear the channel to clear the sound.</p><p><a href="#top" onMouseOver="self.status='go to the top of this page'; return true">go to top</a></p></font><br></td></tr></table><!-- Footer area -- common to all pages --><hr><div class="c1"><font size="-1"><a href="index.html" onMouseOver="self.status='Go to Heath8080A home page'; return true">home</a>&nbsp;<a href="release.html" onMouseOver="self.status='Go to release page'; return true">release</a>&nbsp;<a href="support.html" onMouseOver="self.status='Go to support page'; return true">support</a>&nbsp;<a href="design.html" onMouseOver="self.status='Go to design page'; return true">design</a>&nbsp;<a href="resources.html" onMouseOver="self.status='Go to resources page'; return true">resources</a>&nbsp;<a href="legal.html" onMouseOver="self.status='Go to legal page'; return true">legal</a>&nbsp;<a href="sitemap.html" onMouseOver="self.status='Go to site map'; return true">site map</a>&nbsp;</font></div><hr><br></body>
+
+<head>
+    <title>Heath8080A - Product Design : PAM/8 GUI</title>
+
+    <!-- Headers -- common to all pages -->
+
+    <meta name="description" content="This site provides a free Heathkit H8 microcomputer emulator for the Macintosh">
+    <meta name="author" content="David A. Shaw">
+    <link rev="made" href="mailto:&#104;&#101;&#97;&#116;&#104;8080&#97;&#64;&#97;&#111;&#108;.&#99;&#111;&#109;">
+    <meta name="generator" content="Optima PageSpinner for MacOS">
+    <meta name="robots" content="all">
+    <meta name="keywords" content="Heathkit,Heath,H8,H17,H-17,H19,H-19,8080A,Intel 8080A,computer emulation,H8 emulation,Mac,Macintosh,G3,Linux">
+
+    <style type="text/css">
+        body {
+            background-color: #ffffff
+        }
+        
+        .left {
+            background: #ffffff;
+            vertical-align: top;
+            color: blue
+        }
+        
+        .left p {
+            font-family: verdana
+        }
+        
+        .head {
+            background: #ffffcc;
+            vertical-align: top;
+            color: blue
+        }
+        
+        .head p {
+            font-family: geneva, arial
+        }
+        
+        .lhead {
+            background: #ffffcc;
+            vertical-align: top;
+            color: blue
+        }
+        
+        .lhead p {
+            font-family: verdana
+        }
+        
+        .body {
+            vertical-align: top;
+        }
+        
+        .body p,
+        ul,
+        ol,
+        dl {
+            font-family: geneva, arial
+        }
+        
+        div.c1 {
+            font-family: geneva, arial;
+            text-align: center
+        }
+        
+        div.c2 {
+            font-family: geneva, arial;
+            text-align: right
+        }
+        
+        a:visited {
+            color: green
+        }
+        
+        a:hover {
+            color: red;
+            text-decoration: none
+        }
+        
+        p.outside {
+            font-family: geneva, arial;
+            font-size: small;
+        }
+        
+        pre {
+            font-family: courier;
+            font-size: 10px
+        }
+        
+        h1,
+        h2 {
+            font-family: "times new roman"
+        }
+    </style>
+
+</head>
+
+<body>
+    <a name="top"></a>
+
+    <!-- Page Heading -- common to all pages -->
+
+    <table border="0" cellspacing="0" cellpadding="4" width="100%">
+
+        <tr>
+            <td class="lhead">
+                <p><b>Heath8080A &#8212; Product Design : PAM/8 GUI</b></p>
+            </td>
+            <td class="head" align="right">
+
+                <!-- this reads "site" on the index page and "page" on all others -->
+
+                <font size="-1">
+                    <p>Page last updated</p>
+                </font>
+            </td>
+        </tr>
+        <tr>
+            <td class="head">
+                <font size="-1">
+                    <p><a href="index.html" onMouseOver="self.status='Go to home page'; return true">home</a> &nbsp;&nbsp;
+                        <a href="release.html" onMouseOver="self.status='Go to release page'; return true">release</a> &nbsp;&nbsp;
+                        <a href="support.html" onMouseOver="self.status='Go to support page'; return true">support</a> &nbsp;&nbsp;
+                        <a href="design.html" onMouseOver="self.status='Go to design page'; return true">design</a> &nbsp;&nbsp;
+                        <a href="resources.html" onMouseOver="self.status='Go to resources page'; return true">resources</a> &nbsp;&nbsp;
+                        <a href="legal.html" onMouseOver="self.status='Go to legal page'; return true">legal</a> &nbsp;&nbsp;
+                        <a href="sitemap.html" onMouseOver="self.status='Go to site map'; return true">site map</a></p>
+                </font>
+            </td>
+            <td class="head" align="right">
+                <font size="-1">
+                    <p>26-October-2002</p>
+                </font>
+            </td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+        </tr>
+
+    </table>
+
+    <!-- Standard content ends. Page body starts here.  -->
+
+    <table border="0" cellspacing="0" cellpadding="4" width="100%">
+        <tr>
+
+            <!-- page index -->
+            <td class="left" width="20%">
+
+                <font size="-1">
+                    <p>On this page</p>
+                    <p>
+                        &#149; <a href="#keypad" onMouseOver="self.status='Go to keypad events'; return true">keypad</a><br> &#149; <a href="#leds" onMouseOver="self.status='Go to led drawing'; return true">leds</a><br> &#149; <a href="#sound" onMouseOver="self.status='Go to sound'; return true">sound</a><br>
+                    </p>
+
+                    <p>Related links</p>
+                    <p>
+                        &#149; <a href="design_arch.html" onMouseOver="self.status='Go to system architecture'; return true">system architecture</a><br> &#149; <a href="design_io.html" onMouseOver="self.status='Go to i/o package'; return true">i/o package</a><br>
+                    </p>
+                </font>
+            </td>
+
+            <td class="body">
+
+                <font size="-1">
+                    <p><b>PAM/8 GUI</b></p>
+
+                    <p>Management of the PAM/8 GUI window is split between the event loop, which handles all the mouse-down and key-down events for the front panel, and a drawing routine that keeps the window itself updated. All of the PAM/8 I/O ports are
+                        managed by the I/O package.</p>
+
+                    <p>This page focuses on keypad handling, which is done in the event handler, LED drawing, which is done in panel drawing, and sound, which is done entirely in the I/O package.</p>
+
+
+                    <hr>
+                    <a name="keypad"></a>
+
+                    <p><b>Keypad Events</b></p>
+
+                    <p><i>Keypad/Mouse Use</i></p>
+
+                    <p>When there's a mouse-down event in the body of the GUI window, it may be on a front-panel keypad button.</p>
+
+                    <p>The buttons are icons drawn on adjacent 36 x 36 pixel squares. Our requirements for mouse-down notification are very simple, so I bypassed the overhead of using controls to represent the buttons and handle the mouse-down events locally.</p>
+
+                    <p>If the point hit is not within the keypad rectangle, it's ignored. Otherwise, the point is scaled by subtracting the top and left rectangle offset so that we're working from an origin of zero. The event handler maintains an array of
+                        buttons, starting at the top left and working across then down to the bottom right. An index to that array is developed from this scaled v & h coordinate pair:</p>
+
+                    <pre>
+    keyHit = (v/36)*4 + (h/36);</p>
+</pre>
+
+                    <p>The key table contains the key code to put on PAM's input port (360q) and a button-down version of the icon, which is drawn. Key code values are:</p>
+
+                    <ul>
+                        <table border="1" cellspacing="0" cellpadding="4">
+                            <caption>
+                                <font size="-1">
+                                    <p><b>Key code Values</b></p>
+                            </caption>
+
+                            <tr align="center" valign="top">
+                                <th class="body">
+                                    <font size="-1">
+                                        <p>Key</p>
+                                </th>
+                                <th class="body">
+                                    <font size="-1">
+                                        <p>Value</p>
+                                </th>
+                                <th class="body">
+                                    <font size="-1">
+                                        <p>Key</p>
+                                </th>
+                                <th class="body">
+                                    <font size="-1">
+                                        <p>Value</p>
+                                </th>
+                            </tr>
+        </tr>
+        <tr align="center" valign="top">
+            <td class="body">
+                <font size="-1">
+                    <p>0</p>
+            </td>
+            <td class="body">
+                <font size="-1">
+                    <p>0xfe</p>
+            </td>
+            <td class="body">
+                <font size="-1">
+                    <p>8</p>
+            </td>
+            <td class="body">
+                <font size="-1">
+                    <p>0xef</p>
+            </td>
+        </tr>
+        <tr align="center" valign="top">
+            <td class="body">
+                <font size="-1">
+                    <p>1</p>
+            </td>
+            <td class="body">
+                <font size="-1">
+                    <p>0xfc</p>
+            </td>
+            <td class="body">
+                <font size="-1">
+                    <p>9</p>
+            </td>
+            <td class="body">
+                <font size="-1">
+                    <p>0xcf</p>
+            </td>
+        </tr>
+        <tr align="center" valign="top">
+            <td class="body">
+                <font size="-1">
+                    <p>2</p>
+            </td>
+            <td class="body">
+                <font size="-1">
+                    <p>0xfa</p>
+            </td>
+            <td class="body">
+                <font size="-1">
+                    <p>+</p>
+            </td>
+            <td class="body">
+                <font size="-1">
+                    <p>0xaf</p>
+            </td>
+        </tr>
+        <tr align="center" valign="top">
+            <td class="body">
+                <font size="-1">
+                    <p>3</p>
+            </td>
+            <td class="body">
+                <font size="-1">
+                    <p>0xf8</p>
+            </td>
+            <td class="body">
+                <font size="-1">
+                    <p>-</p>
+            </td>
+            <td class="body">
+                <font size="-1">
+                    <p>0x8f</p>
+            </td>
+        </tr>
+        <tr align="center" valign="top">
+            <td class="body">
+                <font size="-1">
+                    <p>4</p>
+            </td>
+            <td class="body">
+                <font size="-1">
+                    <p>0xf6</p>
+            </td>
+            <td class="body">
+                <font size="-1">
+                    <p>*</p>
+            </td>
+            <td class="body">
+                <font size="-1">
+                    <p>0x6f</p>
+            </td>
+        </tr>
+        <tr align="center" valign="top">
+            <td class="body">
+                <font size="-1">
+                    <p>5</p>
+            </td>
+            <td class="body">
+                <font size="-1">
+                    <p>0xf4</p>
+            </td>
+            <td class="body">
+                <font size="-1">
+                    <p>/</p>
+            </td>
+            <td class="body">
+                <font size="-1">
+                    <p>0x4f</p>
+            </td>
+        </tr>
+        <tr align="center" valign="top">
+            <td class="body">
+                <font size="-1">
+                    <p>6</p>
+            </td>
+            <td class="body">
+                <font size="-1">
+                    <p>0xf2</p>
+            </td>
+            <td class="body">
+                <font size="-1">
+                    <p>#</p>
+            </td>
+            <td class="body">
+                <font size="-1">
+                    <p>0x2f</p>
+            </td>
+        </tr>
+        <tr align="center" valign="top">
+            <td class="body">
+                <font size="-1">
+                    <p>7</p>
+            </td>
+            <td class="body">
+                <font size="-1">
+                    <p>0xf0</p>
+            </td>
+            <td class="body">
+                <font size="-1">
+                    <p>. (dot)</p>
+            </td>
+            <td class="body">
+                <font size="-1">
+                    <p>0x0f</p>
+            </td>
+        </tr>
+        </table>
+        </ul>
+
+        <p>The button stays down as long as you keep the mouse button down. When the subsequent mouse-up event comes in, the no-key value (377q) is placed on PAM's input port and the button-up version of the icon is drawn.</p>
+
+        <p>The two-key sequences, 0-# and 0-/, are entered by holding down the keyboard option key while clicking the # or / button, respectively. Option-/ resets the H8 hardware. Option-#, Return to Monitor, forces a clock interrupt and places the value
+            0x2e (the value of the # key in the high bank and the 0 key in the low bank) on the PAM/8 keypad input port.</p>
+
+        <p><i>Keyboard Use</i></p>
+
+        <p>For convenience and speed in operating the emulator, I mapped certain Mac keyboard keys to emulator functions so that, for example, to enter a "go" command you can click the '4' key on the GUI using the mouse, type '4' on the keyboard, or type
+            'g' on the keyboard.</p>
+
+        <p>Key-down events are processed for the GUI only if the GUI window is front. Keys are mapped as follows:</p>
+
+        <ul>
+            <table border="1" cellspacing="0" cellpadding="4">
+                <caption>
+                    <font size="-1"><b>Keyboard Mapping</b></caption>
+                <tr align="center">
+                    <th class="body">
+                        <font size="-1">
+                            <p>H8 Key</p>
+                    </th>
+                    <th class="body">
+                        <font size="-1">
+                            <p>Mac Key(s)</p>
+                    </th>
+                    <th class="body">
+                        <font size="-1">
+                            <p>H8 Key</p>
+                    </th>
+                    <th class="body">
+                        <font size="-1">
+                            <p>Mac Key(s)</p>
+                    </th>
+                </tr>
+                <tr align="center" valign="middle">
+                    <td class="body">
+                        <font size="-1">
+                            <p>0</p>
+                    </td>
+                    <td class="body">
+                        <font size="-1">
+                            <p>0</p>
+                    </td>
+                    <td class="body">
+                        <font size="-1">
+                            <p>8</p>
+                    </td>
+                    <td class="body">
+                        <font size="-1">
+                            <p>8</p>
+                    </td>
+                </tr>
+                <tr align="center" valign="middle">
+                    <td class="body">
+                        <font size="-1">
+                            <p>1</p>
+                    </td>
+                    <td class="body">
+                        <font size="-1">
+                            <p>1, s</p>
+                    </td>
+                    <td class="body">
+                        <font size="-1">
+                            <p>9</p>
+                    </td>
+                    <td class="body">
+                        <font size="-1">
+                            <p>9</p>
+                    </td>
+                </tr>
+                <tr align="center" valign="middle">
+                    <td class="body">
+                        <font size="-1">
+                            <p>2</p>
+                    </td>
+                    <td class="body">
+                        <font size="-1">
+                            <p>2, f</p>
+                    </td>
+                    <td class="body">
+                        <font size="-1">
+                            <p>(dot)</p>
+                    </td>
+                    <td class="body">
+                        <font size="-1">
+                            <p>(period), r</p>
+                    </td>
+                </tr>
+                <tr align="center" valign="middle">
+                    <td class="body">
+                        <font size="-1">
+                            <p>3</p>
+                    </td>
+                    <td class="body">
+                        <font size="-1">
+                            <p>3, b</p>
+                    </td>
+                    <td class="body">
+                        <font size="-1">
+                            <p>#</p>
+                    </td>
+                    <td class="body">
+                        <font size="-1">
+                            <p>#, m</p>
+                    </td>
+                </tr>
+                <tr align="center" valign="middle">
+                    <td class="body">
+                        <font size="-1">
+                            <p>4</p>
+                    </td>
+                    <td class="body">
+                        <font size="-1">
+                            <p>4, d, g</p>
+                    </td>
+                    <td class="body">
+                        <font size="-1">
+                            <p>/</p>
+                    </td>
+                    <td class="body">
+                        <font size="-1">
+                            <p>/, a</p>
+                    </td>
+                </tr>
+                <tr align="center" valign="middle">
+                    <td class="body">
+                        <font size="-1">
+                            <p>5</p>
+                    </td>
+                    <td class="body">
+                        <font size="-1">
+                            <p>5, h</p>
+                    </td>
+                    <td class="body">
+                        <font size="-1">
+                            <p>*</p>
+                    </td>
+                    <td class="body">
+                        <font size="-1">
+                            <p>*</p>
+                    </td>
+                </tr>
+                <tr align="center" valign="middle">
+                    <td class="body">
+                        <font size="-1">
+                            <p>6</p>
+                    </td>
+                    <td class="body">
+                        <font size="-1">
+                            <p>6, p</p>
+                    </td>
+                    <td class="body">
+                        <font size="-1">
+                            <p>-</p>
+                    </td>
+                    <td class="body">
+                        <font size="-1">
+                            <p>-</p>
+                    </td>
+                </tr>
+                <tr align="center" valign="middle">
+                    <td class="body">
+                        <font size="-1">
+                            <p>7</p>
+                    </td>
+                    <td class="body">
+                        <font size="-1">
+                            <p>7, x</p>
+                    </td>
+                    <td class="body">
+                        <font size="-1">
+                            <p>+</p>
+                    </td>
+                    <td class="body">
+                        <font size="-1">
+                            <p>+</p>
+                    </td>
+                </tr>
+            </table>
+        </ul>
+
+        <br><br>
+
+        <ul>
+            <table border="1" cellspacing="0" cellpadding="4">
+                <caption>
+                    <font size="-1"><b>Alpha Key Meaning</b></caption>
+                <tr valign="middle">
+                    <th class="body" align="center">
+                        <font size="-1">
+                            <p>Key</p>
+                    </th>
+                    <th class="body" align="left">
+                        <font size="-1">
+                            <p>Meaning</p>
+                    </th>
+                </tr>
+                <tr valign="middle">
+                    <td class="body" align="center">
+                        <font size="-1">
+                            <p>r</p>
+                    </td>
+                    <td class="body">
+                        <font size="-1">
+                            <p>Register - Select a register.</p>
+                    </td>
+                </tr>
+                <tr valign="middle">
+                    <td class="body" align="center">
+                        <font size="-1">
+                            <p>m</p>
+                    </td>
+                    <td class="body">
+                        <font size="-1">
+                            <p>Memory - Select a memory address to display.</p>
+                    </td>
+                </tr>
+                <tr valign="middle">
+                    <td class="body" align="center">
+                        <font size="-1">
+                            <p>a</p>
+                    </td>
+                    <td class="body">
+                        <font size="-1">
+                            <p>Alter - Enter alter mode.</p>
+                    </td>
+                </tr>
+                <tr valign="middle">
+                    <td class="body" align="center">
+                        <font size="-1">
+                            <p>p</p>
+                    </td>
+                    <td class="body">
+                        <font size="-1">
+                            <p>Select the PC register pair.</p>
+                    </td>
+                </tr>
+                <tr valign="middle">
+                    <td class="body" align="center">
+                        <font size="-1">
+                            <p>b</p>
+                    </td>
+                    <td class="body">
+                        <font size="-1">
+                            <p>Select the BC register pair.</p>
+                    </td>
+                </tr>
+                <tr valign="middle">
+                    <td class="body" align="center">
+                        <font size="-1">
+                            <p>d</p>
+                    </td>
+                    <td class="body">
+                        <font size="-1">
+                            <p>Select the DE register pair.</p>
+                    </td>
+                </tr>
+                <tr valign="middle">
+                    <td class="body" align="center">
+                        <font size="-1">
+                            <p>f</p>
+                    </td>
+                    <td class="body">
+                        <font size="-1">
+                            <p>Select the AF register pair (f = flags).</p>
+                    </td>
+                </tr>
+                <tr valign="middle">
+                    <td class="body" align="center">
+                        <font size="-1">
+                            <p>s</p>
+                    </td>
+                    <td class="body">
+                        <font size="-1">
+                            <p>Select the SP register pair.</p>
+                    </td>
+                </tr>
+                <tr valign="middle">
+                    <td class="body" align="center">
+                        <font size="-1">
+                            <p>h</p>
+                    </td>
+                    <td class="body">
+                        <font size="-1">
+                            <p>Select the HL register pair.</p>
+                    </td>
+                </tr>
+                <tr valign="middle">
+                    <td class="body" align="center">
+                        <font size="-1">
+                            <p>g</p>
+                    </td>
+                    <td class="body">
+                        <font size="-1">
+                            <p>Go.</p>
+                    </td>
+                </tr>
+                <tr valign="middle">
+                    <td class="body" align="center">
+                        <font size="-1">
+                            <p>x</p>
+                    </td>
+                    <td class="body">
+                        <font size="-1">
+                            <p>Single Step</p>
+                    </td>
+                </tr>
+            </table>
+        </ul>
+
+        <p>Usage example: to set PC to 040.100a and go, enter this command string:</p>
+
+        <pre>
+        r p a 0 4 0 1 0 0 a g
+</pre>
+
+        <p>... which is equivalent to this command string:</p>
+
+        <pre>
+        . 6 / 0 4 0 1 0 0 / 4
+</pre>
+
+        <p>There is no state checking in the emulator: we don't verify that 'p' is only used after 'r'. Pressing 'p' is the same as pressing '6' and any user-interface state-related processing is done by PAM/8 as if the front panel keypad were being used.</p>
+
+        <p>Both upper and lower case characters are supported.</p>
+
+        <p>The two-key sequences, 0-# and 0-/, are entered by holding down the keyboard option key while typing the # or either / key. Option-/ resets the H8 hardware. Option-#, Return to Monitor, forces a clock interrupt and places the value 0x2e on the
+            PAM/8 keypad input port.</p>
+
+        <p>The implementation goes generally like this:</p>
+
+        <ol>
+            <li>On receipt of a key-down or auto-repeat event, check for the Option key modifier. If present:
+
+                <ul type="disc">
+                    <li>If the keystroke entered is '/', reset the system.</li>
+                    <li>If the keystroke entered is '#', force a clock interrupt and put the "return to monitor mode" code (0x2e) on the PAM/8 input port.</li>
+                    <li>Exit.</li>
+                </ul>
+
+
+                <li>Continuing if no option key: Scan the mapping table for a matching entry. If none is found, exit ignoring the key.</li>
+                <li>Place the PAM/8 key value corresponding to the keyboard key onto the PAM/8 input port (360q). Then set a timer to expire in 30ms.</li>
+                <li>Exit key handler.</li>
+        </ol>
+
+        <p>The scheduling loop decrements the key-down timer and when it expires, puts the no-key code (377q) onto port 360q (ref. <a href="design_time.html#distribution" onMouseOver="self.status='Go to time distribution'; return true">time distribution</a>).</p>
+
+        <p>PAM/8 expects keystrokes to stay on the port for at least 20ms. I felt that 30ms was a good length of time to keep the key on the port, and it has proven to be very responsive in practice, keeping up with fairly fast typing.</p>
+
+        <p><a href="#top" onMouseOver="self.status='go to the top of this page'; return true">go to top</a></p>
+
+
+
+        <hr>
+        <a name="leds"></a>
+
+        <p><b>LED Drawing</b></p>
+
+        <p>The H8's 8-segment LEDs are managed by PAM/8. The LEDs themselves, when written, will flash briefly and then blank, and have to be repeatedly refreshed so that, to the user, they appear to be on constantly. If the LED is not refreshed, it will
+            go blank. This happens when interrupts are disabled for too long &#8212; say, during a disk I/O operation &#8212; or when front panel refresh is disabled.</p>
+
+        <p>PAM/8 refreshes one LED every 2ms clock tick; a given LED will be refreshed every 18ms. The refresh is done in reverse order, right to left. PAM starts by outputting the selected digit index in the low-order nibble of the hardware control port
+            (360q). (The high-order nibble holds hardware flags that control sound, the clock, the single-step instruction interrupt and the monitor lamp.) The LED segment pattern is then output to port 361q.
+            <p>
+
+                <img src="gfx/segbitmap.gif" width="123" height="132" hspace="4" vspace="4" align="left" border="0" alt="Bit to Segment Mapping">
+
+                <p>LED segments are active-off &#8212; zero bits are on and one bits are off. Bits correspond to segments as shown in the figure. (Bit zero is the low-order bit.)</p>
+
+                <p>The LEDs are addressed with indices of '1' through '9'. Front panel LED refresh can be disabled by setting the UO.NFR bit in the .MFLAG byte in PAM/8's workspace. In that case, the first OUT still takes place but the selected LED index
+                    is '0'.</p>
+
+                <p>Redrawing a LED every two milliseconds is way too much overhead, so the emulator will buffer output digit patterns. The front panel LEDs are updated en mass immediately before checking for Macintosh events (every 25ms if we're in the foreground
+                    and every 10ms if background; ref. <a href="design_time.html#distribution" onMouseOver="self.status='Go to time distribution'; return true">time distribution</a>). To simulate blanking when refresh stops, the time of the last refresh
+                    is kept. If an LED is not refreshed within 50ms, its pattern is set to 377q &#8212; all segments off.</p>
+
+                <p>In order to reduce overhead even further, we only redraw the segments that change from draw to draw. To do that, we keep a before and after picture of each LED. Before drawing, the before and after segment patterns are XOR'd together to
+                    create a mask; the '1' bits in the mask represent changed bits. Only the "after" segments that correspond with '1' bits in the mask are actually drawn.</p>
+
+                <p>While the emulator doesn't redraw on the same frequency as a real H8, the visual appearance is identical, at least according to my memory of the beast.</p>
+
+                <p><a href="#top" onMouseOver="self.status='go to the top of this page'; return true">go to top</a></p>
+
+
+
+                <hr>
+                <a name="sound"></a>
+                <p><b>Sound</b></p>
+
+                <p>The H8's beeps and clicks are produced in the I/O package.</p>
+
+                <p>A real H8 will produce sound by resetting the high-order bit of the byte output to the control port (360q). (The bit is active-on.) While any program can produce sound by setting and resetting this bit, PAM/8 produces only three sounds:</p>
+
+                <ul>
+                    <table border="1" cellspacing="0" cellpadding="4">
+                        <tr align="center">
+                            <th class="body">
+                                <font size="-1">
+                                    <p>Sound</p>
+                            </th>
+                            <th class="body">
+                                <font size="-1">
+                                    <p>Out Count</p>
+                            </th>
+                            <th class="body" align="left">
+                                <font size="-1">
+                                    <p>Usage</p>
+                            </th>
+                        </tr>
+                        <tr align="center">
+                            <td class="body">
+                                <font size="-1">
+                                    <p>short click</p>
+                            </td>
+                            <td class="body">
+                                <font size="-1">
+                                    <p>&lt; 10</p>
+                            </td>
+                            <td class="body" align="left">
+                                <font size="-1">
+                                    <p>Key click</p>
+                            </td>
+                        </tr>
+                        <tr align="center">
+                            <td class="body">
+                                <font size="-1">
+                                    <p>medium click</p>
+                            </td>
+                            <td class="body">
+                                <font size="-1">
+                                    <p>approx. 30</p>
+                            </td>
+                            <td class="body" align="left">
+                                <font size="-1">
+                                    <p>"Bip" after the 3rd digit when entering octal data</p>
+                            </td>
+                        </tr>
+                        <tr align="center">
+                            <td class="body">
+                                <font size="-1">
+                                    <p>beep</p>
+                            </td>
+                            <td class="body">
+                                <font size="-1">
+                                    <p>> 36</p>
+                            </td>
+                            <td class="body" align="left">
+                                <font size="-1">
+                                    <p>Alarm</p>
+                            </td>
+                        </tr>
+                    </table>
+                </ul>
+
+                <p>The emulator ignores the short sound, counting on the Mac keyboard and mouse to produce effective feedback. The medium sound is produced by playing a sound resource.</p>
+
+                <p>The long alarm is produced by allocating a sound channel and playing a suitable tone using SndDoCommand. This was a simple thing under Mac OS System 8.5, but under System 9.1, I have to clock the sound down myself and clear the channel
+                    to clear the sound.</p>
+
+
+                <p><a href="#top" onMouseOver="self.status='go to the top of this page'; return true">go to top</a></p>
+                </font>
+                <br>
+
+
+                </td>
+                </tr>
+    </table>
+
+    <!-- Footer area -- common to all pages -->
+
+    <hr>
+    <div class="c1">
+        <font size="-1">
+            <a href="index.html" onMouseOver="self.status='Go to Heath8080A home page'; return true">home</a> &nbsp;
+            <a href="release.html" onMouseOver="self.status='Go to release page'; return true">release</a> &nbsp;
+            <a href="support.html" onMouseOver="self.status='Go to support page'; return true">support</a> &nbsp;
+            <a href="design.html" onMouseOver="self.status='Go to design page'; return true">design</a> &nbsp;
+            <a href="resources.html" onMouseOver="self.status='Go to resources page'; return true">resources</a> &nbsp;
+            <a href="legal.html" onMouseOver="self.status='Go to legal page'; return true">legal</a> &nbsp;
+            <a href="sitemap.html" onMouseOver="self.status='Go to site map'; return true">site map</a> &nbsp;
+        </font>
+    </div>
+    <hr>
+    <br>
+
+</body>
+
 <!-- Mirrored from davidwallace2000.home.comcast.net/~davidwallace2000/h8/project8080_archive/design_pam8.html by HTTrack Website Copier/3.x [XR&CO'2010], Mon, 10 Sep 2012 13:15:39 GMT -->
-</html>
+
+</html>

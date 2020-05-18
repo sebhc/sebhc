@@ -1,5 +1,903 @@
 <html>
 <!-- Mirrored from davidwallace2000.home.comcast.net/~davidwallace2000/h8/project8080_archive/design_perf.html by HTTrack Website Copier/3.x [XR&CO'2010], Mon, 10 Sep 2012 13:15:33 GMT -->
-<head><title>Heath8080A - Product Design : Performance</title><!-- Headers -- common to all pages --><meta name="description" content="This site provides a free Heathkit H8 microcomputer emulator for the Macintosh"><meta name="author" content="David A. Shaw"><link rev="made" href="mailto:&#104;&#101;&#97;&#116;&#104;8080&#97;&#64;&#97;&#111;&#108;.&#99;&#111;&#109;"><meta name="generator" content="Optima PageSpinner for MacOS"><meta name="robots" content="all"><meta name="keywords" content="Heathkit,Heath,H8,H17,H-17,H19,H-19,8080A,Intel 8080A,computer emulation,H8 emulation,Mac,Macintosh,G3,Linux"><style type="text/css">body {background-color: #ffffff}.left   { background:      #ffffff; vertical-align: top; color: blue }.left p { font-family:     verdana        }.head   { background:     #ffffcc; vertical-align: top; color: blue }.head p { font-family:    geneva, arial        }.lhead   { background:     #ffffcc; vertical-align: top; color: blue }.lhead p { font-family:    verdana         }.body   { vertical-align: top;}.body p, ul, ol, dl         { font-family:    geneva, arial         }div.c1 { font-family: geneva, arial;  text-align: center }div.c2 { font-family: geneva, arial;  text-align: right  }a:visited {color: green }a:hover   {color: red; text-decoration: none }p.outside {font-family: geneva, arial;font-size: small;}pre { font-family: courier; font-size: 10px }h1, h2 {font-family: "times new roman" }</style></head><body><a name="top"></a><!-- Page Heading -- common to all pages --><table border="0" cellspacing="0" cellpadding="4" width="100%"><tr>	<td class="lhead">		<p><b>Heath8080A &#8212; Product Design : Performance</b></p>	</td>	<td class="head" align="right"><!-- this reads "site" on the index page and "page" on all others -->		<font size="-1"><p>Page last updated</p></font>	</td></tr><tr>	<td class="head">		<font size="-1"><p><a href="index.html" onMouseOver="self.status='Go to home page'; return true">home</a>		&nbsp;&nbsp;<a href="release.html" onMouseOver="self.status='Go to release page'; return true">release</a>		&nbsp;&nbsp;<a href="support.html" onMouseOver="self.status='Go to support page'; return true">support</a>		&nbsp;&nbsp;<a href="design.html" onMouseOver="self.status='Go to design page'; return true">design</a>		&nbsp;&nbsp;<a href="resources.html" onMouseOver="self.status='Go to resources page'; return true">resources</a>		&nbsp;&nbsp;<a href="legal.html" onMouseOver="self.status='Go to legal page'; return true">legal</a>		&nbsp;&nbsp;<a href="sitemap.html" onMouseOver="self.status='Go to site map'; return true">site map</a></p></font>	</td>	<td  class="head" align="right">		<font size="-1"><p>22-December-2002</p></font>	</td></tr><tr><td >&nbsp;</td></tr></table><!-- Standard content ends. Page body starts here.  --><table border="0" cellspacing="0" cellpadding="4" width="100%"><tr><!-- page index --><td  class="left" width="20%"><font size="-1"><p>On this page</p><p>&#149; <a href="#var" onMouseOver="self.status='Go to variables'; return true">variables</a><br>&#149; <a href="#meth" onMouseOver="self.status='Go to methodology'; return true">method</a><br>&#149; <a href="#meas" onMouseOver="self.status='Go to results'; return true">results</a><br></p><p>Related links</p><p>&#149; <a href="design_arch.html" onMouseOver="self.status='Go to system architecture'; return true">system architecture</a><br>&#149; <a href="design_time.html" onMouseOver="self.status='Go to time'; return true">time</a><br></p></font></td><td class="body"><font size="-1"><p><b>Performance</b></p><p>One of my major goals was to create a system that performed like an H8. What I have achieved is a system that puts on a pretty darned good H8 show on relatively fast Mac hardware, but for any number of reasons it will never perform "like an H8." The list of reasons can be found in various other design notes &#8212; especially <a href="design_time.html" onMouseOver="self.status='Go to time'; return true">time</a> &#8212; and in the <a href="support.html#limitations" onMouseOver="self.status='Go to limitations'; return true">limitations</a> section of the <a href="support.html" onMouseOver="self.status='Go to support page'; return true">support</a> page, but in brief:</p><ul><li>we have to contend with different Macintosh host systems operating at different levels of performance;</li><li>we have to contend with different job mixes at any given point in time, some "polite" and others not, on the Macintosh host;</li><li>while the emulator does a good job of emulating the H8's speed over time, it doesn't even try to emulate the processing speed of each 8080A instruction;</li><li>we're emulating several hardware and software systems with one processor;</li><li>and on and on...</li></ul><p>Simply measuring performance and reporting it in terms that make sense, the subject of this design note, is something of an interesting challenge.</p><hr><a name="var"></a><p><b>Performance Variables</b></p><p>There are a number of variables that affect the performance of the emulator and our ability to obtain and report meaningful performance statistics. The issues specific to each are discussed here.</p><dl><dt><p>CPU</p></dt><dd><p>8080A instruction execution is variable speed depending on:</p><ul type="disc"><li>the speed of the Macintosh host system;</li><li>the selected H8 clock speed;</li><li>the instruction being executed.</li></ul><p>While the pacing mechanism will reproduce the H8's processing speed fairly well <b>over time</b> on a sufficiently-fast host, it's not granular enough to use machine cycles to time events of very short duration. Add the new operating speeds (4 mhz, etc.), and you just can't count on instruction timing.</p></dd><dt><p>Interrupt Scheduler</p></dt><dd><p>In a real H8, hardware separate from the CPU handles interrupt prioritization and initiation and operates in parallel with the processor. Here, the request for the interrupt will generally occur outside of the H8's time universe, depending on the interrupt source. Checking for an interrupt and calculating the vector is done before every 8080A instruction is run, inside of the H8's time universe. The time required is variable, being just a little longer if there is an interrupt to be scheduled.</p></dd><dt><p>Memory</p></dt><dd><p>The emulator is required to enforce memory write protection inside the low 8K of the address space. Since we have to check the address before every write, and check the protection state for writes below the 8K-address boundary, memory write is slower than memory read. The extra write delay takes place inside the H8's time universe. This delay is fairly significant, and adds to the variability of execution time dependent on the dynamic instruction mix.</p><dd><dt><p>Disk</p><dt><dd><p>There are two components to consider:</p><ol><li><p>Mechanical &#8212; HDOS expects the disks to spin at 300 rpm. It goes to some trouble, here and there, to verify that the disks are spinning at more or less the correct speed. We need to generate hole detection at the correct interval or we risk problems in the disk system. "Waiting for sector zero to come around" will take on average 100ms every time we change tracks.</p><p>HDOS enforces a number of delays to keep from overdriving the hardware. These include track-to-track step delay, head load debounce time, delay after write gate enable and others. We have a range of control over one or two of these variables, depending on which disk driver is in use and within limits enforced by the driver. In general, however, these useless delays are the price of good H-17 emulation.</p></li><li><p>I/O Transfer &#8212; Once we're in the process of actually moving data to and from the memory structures that represent disks, things progress very quickly as the lack of spin delay makes the emulated disk system ready to go when the next IN or OUT is executed. I/O transfer will move at the speed of the 8080A processor.</p></li></ol><p>The fixed mechanical delays in the disk system, tied to the millisecond clock, are one reason that real-application benchmarks do not improve at the same rate as the increase in processor throughput.</p><p>(Switching to the HUG enhanced SY: driver, available on the <a href="release.html#util" onMouseOver="self.status='Go to release page'; return true">release</a> page, is a good way to improve overall system performance. The driver itself is significantly faster than the original H-17 driver, but in addition, you can set the track-to-track step delay down from 8ms minimum on the original to 2ms minimum on the HUG driver. That's a major improvement.)</p></dd><dt><p>Event-Driven I/O</p></dt><dd><p>In order to reduce internal polling overhead, an OUT to a device will generally push the character all the way to the device while the OUT instruction is processing. This makes OUT processing variable length. IN works in much the same way. All of this time is inside the H8's time universe.</p></dd><dt><p>External Factors</p></dt><dd><p>There are other factors, completely out of our control, that will tend to take time away from the emulator:</p><ul type="disc"><li>low-level Macintosh interrupt handling (inside and outside the H8's time universe);</li><li>mouse movement (a low-level interrupt condition);</li><li>time used by other tasks being run on the host Macintosh, whether we are the foreground application or one of the background applications;</li><li>dead time caused by the user lingering in the menu system, dragging windows, etc.</li></ul><p>None of this can be quantified.</p></dd></dl><p><a href="#top" onMouseOver="self.status='go to the top of this page'; return true">go to top</a></p><hr><a name="meth"></a><p><b>Methodology</b></p><p>After all the caveats, you must be wondering why we're bothering to measure performance at all! In fact, there are some useful measurements that add to our understanding of how the emulator performs. This section will the methodology used to collect the statistics. Results are in the <a href="#meas" onMouseOver="self.status='Go to measurements'; return true">following section</a>.</p><dl><dt><p>Point of View<p></dt><dd><p>When reporting performance statistics, it's important to establish the point of view. As discussed in <a href="design_time.html" onMouseOver="self.status='Go to time'; return true">time</a>, significant portions of emulation overhead take place outside the H8's time universe, which results in an apparent slowing of the H8's internal clock. Measurements taken based on the internal clock will not necessarily agree with measurements taken using an external clock.</p><p>Each of the measurements discussed below will clearly state the point of view of the observer.</p></dd><dt><p>General Methodology</p></dt><dd><p>I had no specialized or highly accurate timing hardware available to me when making external observations; all I used was the sweep second hand on my quartz watch. This makes it impossible to accurately measure an event of very short duration.</p><p>For that reason, the tests that require external observation were constructed to take quite a bit of "wall time" in order to minimize the error induced by this crude measurement tool.</p><p>Internally observed tests were all based on the 16-bit tick counter which, according to the definition of <a href="design_time.html" onMouseOver="self.status='Go to time'; return true">time</a> itself, is... well, it's the definition of time itself!</p></dd><dt><p>Reference Machine</p></dt><dd><p>The host Macintosh configuration for these tests was:</p><ul type="disc"><li>300 mhz PowerPC G3, beige desktop enclosure;</li><li>6 G/byte IDE disk drive;</li><li>256 M/bytes of memory &#8212; 5 M/bytes allocated to the emulator.</li></ul><p>In all cases, the H8 is the foreground or "front" application with nothing in the background but the finder. I was "hands off" during test execution: no mouse movements, no keystrokes. These results are all best case as a result.</p></dd></dl><p><a href="#top" onMouseOver="self.status='go to the top of this page'; return true">go to top</a></p><hr><a name="meas"></a><p><b>Results</b></p><p>This section will present and discuss my performance testing results in the following areas:</p><ul type="disc"><li><a href="#drift" onMouseOver="self.status='Go to clock drift'; return true">clock drift</a></li><li><a href="#speed" onMouseOver="self.status='Go to cpu speed'; return true">raw CPU speed</a></li><li><a href="#basic" onMouseOver="self.status='Go to basic benchmark'; return true">BASIC benchmark</a></li><li><a href="#appl" onMouseOver="self.status='Go to application impact'; return true">application impact</a></li></ul><a name="drift"></a><p><b>Clock Drift</b></p><p>It seems reasonable to start by quantifying the minimum clock drift.</p><p>The following program was run under PAM/8. The GUI window was front; the terminal window was open behind it. The program sends a BEL character to the terminal once every time the high-order byte of the 16-bit tick counter reaches zero.</p><!-- there are tabs in the following text --><pre>040.034			HITICK	EQU	40034A040.100				ORG	40100A040.100             	WAIT.Z	EQU	*040.100  072 034 040		LDA	HITICK040.103  267			ORA	A040.104  302 100 040		JNZ	WAIT.Z040.107  076 007		MVI	A,7040.111  323 350		OUT	350Q040.113			WAITNZ	EQU	*040.113  072 034 040		LDA	HITICK040.116  267			ORA	A040.117  312 113 040		JZ	WAITNZ040.122  303 100 040		JMP	WAIT.Z040.125  000			END	WAIT.Z</pre><p>The high byte of the tick counter will transition from 377q to 000q once every 65,536 clock ticks. There are 500 ticks/second in the emulator, so this will go to zero every 131.072 seconds by internal observation.</p><p>Results are based on external observation.</p><ul><table border="1" cellspacing="0" cellpadding="4">	<caption><font size="-1"><b>Clock Drift Results</b></font></caption><tr align="left" valign="top">	<th class="body"><font size="-1"><p>Release</p></th>	<th class="body"><font size="-1"><p>System Speed</p></th>	<th class="body"><font size="-1"><p>Time (seconds)</p></th></tr><tr align="left" valign="top">	<td class="body" rowspan="2" align="center"><font size="-1"><p>R4.2</p></font></td>	<td class="body"><font size="-1"><p>Normal</p></font></td>	<td class="body" align="center"><font size="-1"><p>135</p></font></td></tr><tr align="left" valign="top">	<td class="body"><font size="-1"><p>Turbo</p></font></td>	<td class="body" align="center"><font size="-1"><p>135</p></font></td></tr><tr align="left" valign="top">	<td class="body" rowspan="4" align="center"><font size="-1"><p>R5</p></font></td>	<td class="body"><font size="-1"><p>2 mhz</p></font></td>	<td class="body" align="center"><font size="-1"><p>131</p></font></td></tr><tr align="left" valign="top">	<td class="body"><font size="-1"><p>4 mhz</p></font></td>	<td class="body" align="center"><font size="-1"><p>131</p></font></td></tr><tr align="left" valign="top">	<td class="body"><font size="-1"><p>8 mhz</p></font></td>	<td class="body" align="center"><font size="-1"><p>131</p></font></td></tr><tr align="left" valign="top">	<td class="body"><font size="-1"><p>Turbo</p></font></td>	<td class="body" align="center"><font size="-1"><p>135</p></font></td></tr></table></ul><p>On the reference system when running at non-turbo speeds, there is no apparent clock drift. This is due to:</p><ul type="disc"><li>the pacing code which allows internal emulator operations to start after the pacing count has expired, regardless of whether the 1ms timer has expired;</li><li>the speed of the host system.</li></ul><p>The following figure is a fair representation of time usage inside of a millisecond time period on the reference system when running an "average" mix of 8080A code. The length of the green bars is based on the results of the <a href="#speed" onMouseOver="self.status='Go to raw cpu speed'; return true">raw CPU speed</a> test below.</p><center><img src="gfx/perf_f1.gif" width="504" height="216" border="0" alt="use of time - reference system"></center><p>In release 4.2, the emulator would:<ol><li>exhaust the (instruction based) pacing count;</li><li>waste time until the clock expired;</li><li>do internal processing, which averaged approximately 29 microseconds over time.</li></ol><p>The clock was restarted after this internal processing. The accumulation of 29 microseconds per millisecond of overhead resulted in clock drift.</p><p>Release 5 allows this internal processing to start before the clock expires so that when the millisecond timer expires it can be immediately restarted, virtually eliminating minimum drift.</p><p>(If the user lingers on a menu item or walks away with a file-open dialog open, for example, drift becomes effectively infinite. This cannot be eliminated.)</p><p>Turbo mode, by definition, executes instructions until the clock expires. Therefore, emulator internal processing takes place after the tick and drift accumulates, just as with R4.2, but because of the increased speed of R5, it accumulates at an average of 22 microseconds per millisecond.</p><p>Please be clear on this point: this figure is the <b>minimum</b> measured clock drift. As soon as other portions of the emulator get busy, other applications are launched, you select a menu item, etc., this drift will grow, in some cases significantly and, in all cases, unpredictably.</p><p>Now consider a slower host system:</p><center><img src="gfx/perf_f2.gif" width="504" height="216" border="0" alt="use of time - slow system"></center><p>This system is fast enough to run at 2 mhz with no drift and at 4 mhz with a little drift. But the user will get no benefit from the 8 mhz or Turbo settings since the system is not fast enough to squeeze in more processing before the clock ticks. Drift is also likely to be much longer than above due to the slower processing of the emulator's internal housekeeping code.</p><p><a href="#top" onMouseOver="self.status='go to the top of this page'; return true">go to top</a></p><a name="speed"></a><p><b>Raw CPU Speed</b></p><p>Dave Wallace (ref. <a href="resources.html#credits" onMouseOver="self.status='credits'; return true">Cedits and Contributions</a>) provided the following benchmark program. It runs with interrupts off to eliminate PAM/8 and other operating system interrupt overhead so that we get an accurate instruction count.</p><p>The program sounds a bell and then starts a long loop. The outer loop runs 50 times. The inner loop runs 65,536 times for each cycle through the outer loop, or 3,276,800 times.</p><p>The body of the loop contains a mix of instructions with real-8080A execution times representative of a typical user program. The comment to the right of each instruction gives the number of clock states required to execute the instruction on a real 8080A.</p><!-- there are tabs in the following text --><pre>*	Written by D.Wallace.	ORG     42200ASTART	EQU	*	DI	MVI	A,7	OUT	350Q	LXI     B,0	MVI     D,50LOOP	EQU	*		8080 clock states	PUSH    B			11	PUSH    D			11	PUSH    H			11	POP     H			10	POP     D			10	POP     B			10	NOP				 4	NOP				 4	NOP				 4	NOP				 4	MOV     A,B			 5	XRA     D			 4	RAL				 4	DCX     B			 5	MOV     A,B			 5	ORA     C			 4	JNZ     LOOP			10**	116 for each loop*	65536 loops**	7,602,176 per set of 50*	DCR     D			 5	JNZ     LOOP			10**	+15 = 7,602,191 for each loop*	50 loops**	380,109,550 clocks, total*	MVI	A,7	OUT	350Q	EI	XRA	A	SCALL	0	END	START</pre><p>The H8 uses a 2.048 megahertz clock, which gives us an anticipated interrupts-off execution time of 380,109,550 divided by 2,048,000 = <b>185.6 seconds</b> on real hardware. The program will cause the emulator to execute ((17*65536)+2)*50 = <b>55,705,700 instructions</b>. Dividing by the execution time gives us instructions per second.</p><p>Results are measured externally.</p><ul><table border="1" cellspacing="0" cellpadding="4">	<caption><font size="-1"><b>CPU Speed Results</b></font></caption><tr>	<th class="body" align="left"><font size="-1"><p>Version</p></th>	<th class="body" align="left"><font size="-1"><p>Mode</p></th>	<th class="body" align="center"><font size="-1"><p>Time (seconds)</p></th>	<th class="body" align="right"><font size="-1"><p>Average Inst/Sec</p></th></tr><tr>	<td class="body" align="center" rowspan="2" align="center">		<font size="-1"><p>R4.2</p></td>	<td class="body" align="left"><font size="-1"><p>normal</p></td>	<td class="body" align="center"><font size="-1"><p>181</p></td>	<td class="body" align="right"><font size="-1"><p>307,700</p></td></tr><tr>	<td class="body" align="left"><font size="-1"><p>Turbo</p></td>	<td class="body" align="center"><font size="-1"><p>26</p></td>	<td class="body" align="right"><font size="-1"><p>2,142,500</p></td></tr><tr>	<td class="body" align="center" rowspan="4" align="center">		<font size="-1"><p>R5</p></td>	<td class="body" align="left"><font size="-1"><p>2 mhz</p></td>	<td class="body" align="center"><font size="-1"><p>185</p></td>	<td class="body" align="right"><font size="-1"><p>301,100</p></td></tr><tr>	<td class="body" align="left"><font size="-1"><p>4 mhz</p></td>	<td class="body" align="center"><font size="-1"><p>93</p></td>	<td class="body" align="right"><font size="-1"><p>598,900</p></td></tr><tr>	<td class="body" align="left"><font size="-1"><p>8 mhz</p></td>	<td class="body" align="center"><font size="-1"><p>47</p></td>	<td class="body" align="right"><font size="-1"><p>1,185,200</p></td></tr><tr>	<td class="body" align="left"><font size="-1"><p>Turbo</p></td>	<td class="body" align="center"><font size="-1"><p>29</p></td>	<td class="body" align="right"><font size="-1"><p>1,920,886</p></td></tr></table></ul><p>R4.2 ran a little too fast. But R5, when set to 2 mhz, runs the test loop in exactly the same amount of time as a real H8, in minimum-drift conditions.</p><p><a href="#top" onMouseOver="self.status='go to the top of this page'; return true">go to top</a></p><a name="basic"></a><p><b>BASIC Benchmark</b></p><p>A better CPU performance benchmark is the basic program used by Creative Computing way back in 1984 to rate the performance of some 183 different machines, ranging from a Cray-1 to a TI programmable calculator.</p><p>Any benchmark is contrived &#8212; one has to wonder why the authors wanted to compare the performance of a Cray to a TI calculator &#8212; but we have some reason to believe that this benchmark is more real-world than some of the others above, from the perspective of the mix of machine instructions that are executed in interpreting the program. And since the program writes to the screen only at the very end and does not access the disk, I/O doesn't get in the way of a good processor speed test.</p><ul><pre>00010 REM Ahl's Simple Benchmark00020 FOR N=1 TO 100: A=N00030 FOR I=1 TO 1000040 A=SQR(A): R=R+RND(1)00050 NEXT I00060 FOR I=1 TO 1000070 A=A^2: R=R+RND(1)00080 NEXT I00090 S=S+A: NEXT N00100 PRINT ABS(1010-S/5)00110 PRINT ABS(1000-R)</pre></ul><p>This program was meant to show floating-point accuracy and the "randomness" of the random number generator, as well as execution speed. All we care about here is execution speed.</p><p>Results by external observation.</p><ul><table border="1" cellspacing="0" cellpadding="4">	<caption><font size="-1"><b>Ahl's Simple Benchmark Results</b></caption><tr align="left" valign="top">	<th class="body" colspan="2" align="center"><font size="-1"><p>Host</p></th>	<th class="body" align="center"><font size="-1"><p>Time (h:mm:ss)</p></th></tr><tr align="left" valign="top">	<td class="body" colspan="2" align="center"><font size="-1"><p>H8 circa 1984</p></td>	<td class="body" align="center"><font size="-1"><p>0:01:35</p></td></tr><tr align="left" valign="top">	<td class="body" rowspan="4" width="30px" align="center"><font size="-1"><p>R5</p></td>	<td class="body" align="left"><font size="-1"><p>2 mhz</p></td>	<td class="body" align="center"><font size="-1"><p>0:01:36</p></td></tr><tr align="left" valign="top">	<td class="body" align="left"><font size="-1"><p>4 mhz</p></td>	<td class="body" align="center"><font size="-1"><p>0:00:44</p></td></tr><tr align="left" valign="top">	<td class="body" align="left"><font size="-1"><p>8 mhz</p></td>	<td class="body" align="center"><font size="-1"><p>0:00:21</p></td></tr><tr align="left" valign="top">	<td class="body" align="left"><font size="-1"><p>Turbo</p></td>	<td class="body" align="center"><font size="-1"><p>0:00:13</p></td></tr></table></ul><p>I was a little surprised to run a second longer than a real H8, given the results of the <a href="#speed" onMouseOver="self.status='Go to raw cpu speed'; return true">speed benchmark</a> above. But since my time measurement methods are crude and I don't know how Creative Computing measured their results, I will leave them as is and call them 'close enough.'</p><p><a href="#top" onMouseOver="self.status='go to the top of this page'; return true">go to top</a></p><a name="appl"></a><p><b>Turbo Mode and Its Affect on Applications</b></p><p>We get a significant bump in throughput in Turbo mode, but not quite the seven-times improvement we get in the processor. This is due to the fixed speed of the disk drives and the maximum 2,000 cps we get from the H-19 terminal.</p><p>For example, I assembled the disk dump program (available on the <a href="release.html#util" onMouseOver="self.status='Go to release page'; return true">release</a> page) using the following command:</p><pre>    asm    *=sy2:diskdump</pre><p>I entered the actual command on a separate line to take assembler load time out of the equation. Results by external observation.</p><ul><table border="1" cellspacing="0" cellpadding="4">	<caption><font size="-1"><b>Assembly Time</b></caption><tr align="left" valign="top">	<th class="body" align="center"><font size="-1"><p>Release</p></th>	<th class="body"><font size="-1"><p>Speed</p></th>	<th class="body" align="center"><font size="-1"><p>Time (h:mm:ss)</p></th></tr><tr align="left" valign="top">	<td class="body" rowspan="4" align="center"><font size="-1"><p>R5</p></td>	<td class="body"><font size="-1"><p>2 mhz</p></td>	<td class="body" align="center"><font size="-1"><p>0:01:46</p></td></tr><tr align="left" valign="top">	<td class="body"><font size="-1"><p>4 mhz</p></td>	<td class="body" align="center"><font size="-1"><p>0:00:59</p></td></tr><tr align="left" valign="top">	<td class="body"><font size="-1"><p>8 mhz</p></td>	<td class="body" align="center"><font size="-1"><p>0:00:38</p></td></tr><tr align="left" valign="top">	<td class="body"><font size="-1"><p>Turbo</p></td>	<td class="body" align="center"><font size="-1"><p>0:00:31</p></td></tr></table></ul><p>Looking at CPU time alone, we might expect a Turbo mode completion time of around 15 seconds on the reference machine if we did a linear regression based on the <a href="#speed" onMouseOver="self.status='Go to raw cpu speed'; return true">raw CPU speed</a> results above. The extra 16 seconds of execution time is due to the fixed disk rotation delays and other delays imposed by the device driver on this "mechanical" device.</p><img src="gfx/perf_f3.gif" width="369" height="166" border="0" align="right" alt="assembly time graph"><p>In fact, when moving from 2 mhz to 4 mhz, assembly time was nearly cut in half. But as we got closer to Turbo speeds the improvement was less and less due to the fixed speed of the I/O device. CPU time, which was improving at each step, was a smaller and smaller portion of total time; improving it had less and less impact on total execution time.</p><p>The assembler is a heavy user of both the CPU and the disk system, which makes it a good example. In general, the more I/O-bound an application is the less it will benefit from the higher clock rates.</p><p><a href="#top" onMouseOver="self.status='go to the top of this page'; return true">go to top</a></p></font><br></td></tr></table><!-- Footer area -- common to all pages --><hr><div class="c1"><font size="-1"><a href="index.html" onMouseOver="self.status='Go to Heath8080A home page'; return true">home</a>&nbsp;<a href="release.html" onMouseOver="self.status='Go to release page'; return true">release</a>&nbsp;<a href="support.html" onMouseOver="self.status='Go to support page'; return true">support</a>&nbsp;<a href="design.html" onMouseOver="self.status='Go to design page'; return true">design</a>&nbsp;<a href="resources.html" onMouseOver="self.status='Go to resources page'; return true">resources</a>&nbsp;<a href="legal.html" onMouseOver="self.status='Go to legal page'; return true">legal</a>&nbsp;<a href="sitemap.html" onMouseOver="self.status='Go to site map'; return true">site map</a>&nbsp;</font></div><hr><br></body>
+
+<head>
+    <title>Heath8080A - Product Design : Performance</title>
+
+    <!-- Headers -- common to all pages -->
+
+    <meta name="description" content="This site provides a free Heathkit H8 microcomputer emulator for the Macintosh">
+    <meta name="author" content="David A. Shaw">
+    <link rev="made" href="mailto:&#104;&#101;&#97;&#116;&#104;8080&#97;&#64;&#97;&#111;&#108;.&#99;&#111;&#109;">
+    <meta name="generator" content="Optima PageSpinner for MacOS">
+    <meta name="robots" content="all">
+    <meta name="keywords" content="Heathkit,Heath,H8,H17,H-17,H19,H-19,8080A,Intel 8080A,computer emulation,H8 emulation,Mac,Macintosh,G3,Linux">
+
+    <style type="text/css">
+        body {
+            background-color: #ffffff
+        }
+        
+        .left {
+            background: #ffffff;
+            vertical-align: top;
+            color: blue
+        }
+        
+        .left p {
+            font-family: verdana
+        }
+        
+        .head {
+            background: #ffffcc;
+            vertical-align: top;
+            color: blue
+        }
+        
+        .head p {
+            font-family: geneva, arial
+        }
+        
+        .lhead {
+            background: #ffffcc;
+            vertical-align: top;
+            color: blue
+        }
+        
+        .lhead p {
+            font-family: verdana
+        }
+        
+        .body {
+            vertical-align: top;
+        }
+        
+        .body p,
+        ul,
+        ol,
+        dl {
+            font-family: geneva, arial
+        }
+        
+        div.c1 {
+            font-family: geneva, arial;
+            text-align: center
+        }
+        
+        div.c2 {
+            font-family: geneva, arial;
+            text-align: right
+        }
+        
+        a:visited {
+            color: green
+        }
+        
+        a:hover {
+            color: red;
+            text-decoration: none
+        }
+        
+        p.outside {
+            font-family: geneva, arial;
+            font-size: small;
+        }
+        
+        pre {
+            font-family: courier;
+            font-size: 10px
+        }
+        
+        h1,
+        h2 {
+            font-family: "times new roman"
+        }
+    </style>
+
+</head>
+
+<body>
+    <a name="top"></a>
+
+    <!-- Page Heading -- common to all pages -->
+
+    <table border="0" cellspacing="0" cellpadding="4" width="100%">
+
+        <tr>
+            <td class="lhead">
+                <p><b>Heath8080A &#8212; Product Design : Performance</b></p>
+            </td>
+            <td class="head" align="right">
+
+                <!-- this reads "site" on the index page and "page" on all others -->
+
+                <font size="-1">
+                    <p>Page last updated</p>
+                </font>
+            </td>
+        </tr>
+        <tr>
+            <td class="head">
+                <font size="-1">
+                    <p><a href="index.html" onMouseOver="self.status='Go to home page'; return true">home</a> &nbsp;&nbsp;
+                        <a href="release.html" onMouseOver="self.status='Go to release page'; return true">release</a> &nbsp;&nbsp;
+                        <a href="support.html" onMouseOver="self.status='Go to support page'; return true">support</a> &nbsp;&nbsp;
+                        <a href="design.html" onMouseOver="self.status='Go to design page'; return true">design</a> &nbsp;&nbsp;
+                        <a href="resources.html" onMouseOver="self.status='Go to resources page'; return true">resources</a> &nbsp;&nbsp;
+                        <a href="legal.html" onMouseOver="self.status='Go to legal page'; return true">legal</a> &nbsp;&nbsp;
+                        <a href="sitemap.html" onMouseOver="self.status='Go to site map'; return true">site map</a></p>
+                </font>
+            </td>
+            <td class="head" align="right">
+                <font size="-1">
+                    <p>22-December-2002</p>
+                </font>
+            </td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+        </tr>
+
+    </table>
+
+    <!-- Standard content ends. Page body starts here.  -->
+
+    <table border="0" cellspacing="0" cellpadding="4" width="100%">
+        <tr>
+
+            <!-- page index -->
+            <td class="left" width="20%">
+
+                <font size="-1">
+                    <p>On this page</p>
+                    <p>
+                        &#149; <a href="#var" onMouseOver="self.status='Go to variables'; return true">variables</a><br> &#149; <a href="#meth" onMouseOver="self.status='Go to methodology'; return true">method</a><br> &#149; <a href="#meas" onMouseOver="self.status='Go to results'; return true">results</a><br>
+                    </p>
+
+                    <p>Related links</p>
+                    <p>
+                        &#149; <a href="design_arch.html" onMouseOver="self.status='Go to system architecture'; return true">system architecture</a><br> &#149; <a href="design_time.html" onMouseOver="self.status='Go to time'; return true">time</a><br>
+                    </p>
+
+                </font>
+            </td>
+
+            <td class="body">
+
+                <font size="-1">
+                    <p><b>Performance</b></p>
+
+                    <p>One of my major goals was to create a system that performed like an H8. What I have achieved is a system that puts on a pretty darned good H8 show on relatively fast Mac hardware, but for any number of reasons it will never perform
+                        "like an H8." The list of reasons can be found in various other design notes &#8212; especially <a href="design_time.html" onMouseOver="self.status='Go to time'; return true">time</a> &#8212; and in the <a href="support.html#limitations"
+                            onMouseOver="self.status='Go to limitations'; return true">limitations</a> section of the <a href="support.html" onMouseOver="self.status='Go to support page'; return true">support</a> page, but in brief:</p>
+
+                    <ul>
+                        <li>we have to contend with different Macintosh host systems operating at different levels of performance;</li>
+                        <li>we have to contend with different job mixes at any given point in time, some "polite" and others not, on the Macintosh host;</li>
+                        <li>while the emulator does a good job of emulating the H8's speed over time, it doesn't even try to emulate the processing speed of each 8080A instruction;</li>
+                        <li>we're emulating several hardware and software systems with one processor;</li>
+                        <li>and on and on...</li>
+                    </ul>
+
+                    <p>Simply measuring performance and reporting it in terms that make sense, the subject of this design note, is something of an interesting challenge.</p>
+
+                    <hr>
+                    <a name="var"></a>
+
+                    <p><b>Performance Variables</b></p>
+
+                    <p>There are a number of variables that affect the performance of the emulator and our ability to obtain and report meaningful performance statistics. The issues specific to each are discussed here.</p>
+
+                    <dl>
+                        <dt><p>CPU</p></dt>
+                        <dd>
+                            <p>8080A instruction execution is variable speed depending on:</p>
+                            <ul type="disc">
+                                <li>the speed of the Macintosh host system;</li>
+                                <li>the selected H8 clock speed;</li>
+                                <li>the instruction being executed.</li>
+                            </ul>
+                            <p>While the pacing mechanism will reproduce the H8's processing speed fairly well <b>over time</b> on a sufficiently-fast host, it's not granular enough to use machine cycles to time events of very short duration. Add the new
+                                operating speeds (4 mhz, etc.), and you just can't count on instruction timing.</p>
+                        </dd>
+
+                        <dt><p>Interrupt Scheduler</p></dt>
+                        <dd>
+                            <p>In a real H8, hardware separate from the CPU handles interrupt prioritization and initiation and operates in parallel with the processor. Here, the request for the interrupt will generally occur outside of the H8's time universe,
+                                depending on the interrupt source. Checking for an interrupt and calculating the vector is done before every 8080A instruction is run, inside of the H8's time universe. The time required is variable, being just a little
+                                longer if there is an interrupt to be scheduled.</p>
+                        </dd>
+
+                        <dt><p>Memory</p></dt>
+                        <dd>
+                            <p>The emulator is required to enforce memory write protection inside the low 8K of the address space. Since we have to check the address before every write, and check the protection state for writes below the 8K-address boundary,
+                                memory write is slower than memory read. The extra write delay takes place inside the H8's time universe. This delay is fairly significant, and adds to the variability of execution time dependent on the dynamic instruction
+                                mix.
+                            </p>
+                            <dd>
+
+                                <dt><p>Disk</p><dt>
+<dd><p>There are two components to consider:</p>
+
+<ol>
+<li><p>Mechanical &#8212; HDOS expects the disks to spin at 300 rpm. It goes to some trouble, here and there, to verify that the disks are spinning at more or less the correct speed. We need to generate hole detection at the correct interval or we risk problems in the disk system. "Waiting for sector zero to come around" will take on average 100ms every time we change tracks.</p>
+<p>HDOS enforces a number of delays to keep from overdriving the hardware. These include track-to-track step delay, head load debounce time, delay after write gate enable and others. We have a range of control over one or two of these variables, depending on which disk driver is in use and within limits enforced by the driver. In general, however, these useless delays are the price of good H-17 emulation.</p></li>
+
+<li><p>I/O Transfer &#8212; Once we're in the process of actually moving data to and from the memory structures that represent disks, things progress very quickly as the lack of spin delay makes the emulated disk system ready to go when the next IN or OUT is executed. I/O transfer will move at the speed of the 8080A processor.</p></li>
+</ol>
+
+<p>The fixed mechanical delays in the disk system, tied to the millisecond clock, are one reason that real-application benchmarks do not improve at the same rate as the increase in processor throughput.</p>
+
+<p>(Switching to the HUG enhanced SY: driver, available on the <a href="release.html#util" onMouseOver="self.status='Go to release page'; return true">release</a> page, is a good way to improve overall system performance. The driver itself is significantly faster than the original H-17 driver, but in addition, you can set the track-to-track step delay down from 8ms minimum on the original to 2ms minimum on the HUG driver. That's a major improvement.)</p></dd>
+
+<dt><p>Event-Driven I/O</p></dt>
+                                <dd>
+                                    <p>In order to reduce internal polling overhead, an OUT to a device will generally push the character all the way to the device while the OUT instruction is processing. This makes OUT processing variable length. IN works
+                                        in much the same way. All of this time is inside the H8's time universe.</p>
+                                </dd>
+
+                                <dt><p>External Factors</p></dt>
+                                <dd>
+                                    <p>There are other factors, completely out of our control, that will tend to take time away from the emulator:</p>
+
+                                    <ul type="disc">
+                                        <li>low-level Macintosh interrupt handling (inside and outside the H8's time universe);</li>
+                                        <li>mouse movement (a low-level interrupt condition);</li>
+                                        <li>time used by other tasks being run on the host Macintosh, whether we are the foreground application or one of the background applications;</li>
+                                        <li>dead time caused by the user lingering in the menu system, dragging windows, etc.</li>
+                                    </ul>
+
+                                    <p>None of this can be quantified.</p>
+                                </dd>
+                    </dl>
+
+                    <p><a href="#top" onMouseOver="self.status='go to the top of this page'; return true">go to top</a></p>
+
+
+                    <hr>
+                    <a name="meth"></a>
+
+                    <p><b>Methodology</b></p>
+
+                    <p>After all the caveats, you must be wondering why we're bothering to measure performance at all! In fact, there are some useful measurements that add to our understanding of how the emulator performs. This section will the methodology
+                        used to collect the statistics. Results are in the <a href="#meas" onMouseOver="self.status='Go to measurements'; return true">following section</a>.</p>
+
+                    <dl>
+                        <dt><p>Point of View<p></dt>
+                        <dd>
+                            <p>When reporting performance statistics, it's important to establish the point of view. As discussed in <a href="design_time.html" onMouseOver="self.status='Go to time'; return true">time</a>, significant portions of emulation
+                                overhead take place outside the H8's time universe, which results in an apparent slowing of the H8's internal clock. Measurements taken based on the internal clock will not necessarily agree with measurements taken using
+                                an external clock.</p>
+
+                            <p>Each of the measurements discussed below will clearly state the point of view of the observer.</p>
+                        </dd>
+
+                        <dt><p>General Methodology</p></dt>
+                        <dd>
+                            <p>I had no specialized or highly accurate timing hardware available to me when making external observations; all I used was the sweep second hand on my quartz watch. This makes it impossible to accurately measure an event of
+                                very short duration.</p>
+
+                            <p>For that reason, the tests that require external observation were constructed to take quite a bit of "wall time" in order to minimize the error induced by this crude measurement tool.</p>
+
+                            <p>Internally observed tests were all based on the 16-bit tick counter which, according to the definition of <a href="design_time.html" onMouseOver="self.status='Go to time'; return true">time</a> itself, is... well, it's the
+                                definition of time itself!</p>
+                        </dd>
+
+                        <dt><p>Reference Machine</p></dt>
+                        <dd>
+                            <p>The host Macintosh configuration for these tests was:</p>
+
+                            <ul type="disc">
+                                <li>300 mhz PowerPC G3, beige desktop enclosure;</li>
+                                <li>6 G/byte IDE disk drive;</li>
+                                <li>256 M/bytes of memory &#8212; 5 M/bytes allocated to the emulator.</li>
+                            </ul>
+
+                            <p>In all cases, the H8 is the foreground or "front" application with nothing in the background but the finder. I was "hands off" during test execution: no mouse movements, no keystrokes. These results are all best case as a result.</p>
+                        </dd>
+                    </dl>
+
+                    <p><a href="#top" onMouseOver="self.status='go to the top of this page'; return true">go to top</a></p>
+
+
+                    <hr>
+                    <a name="meas"></a>
+                    <p><b>Results</b></p>
+
+                    <p>This section will present and discuss my performance testing results in the following areas:</p>
+
+                    <ul type="disc">
+                        <li><a href="#drift" onMouseOver="self.status='Go to clock drift'; return true">clock drift</a></li>
+                        <li><a href="#speed" onMouseOver="self.status='Go to cpu speed'; return true">raw CPU speed</a></li>
+                        <li><a href="#basic" onMouseOver="self.status='Go to basic benchmark'; return true">BASIC benchmark</a></li>
+                        <li><a href="#appl" onMouseOver="self.status='Go to application impact'; return true">application impact</a></li>
+                    </ul>
+
+                    <a name="drift"></a>
+                    <p><b>Clock Drift</b></p>
+
+                    <p>It seems reasonable to start by quantifying the minimum clock drift.</p>
+
+                    <p>The following program was run under PAM/8. The GUI window was front; the terminal window was open behind it. The program sends a BEL character to the terminal once every time the high-order byte of the 16-bit tick counter reaches zero.</p>
+
+                    <!-- there are tabs in the following text -->
+                    <pre>
+040.034			HITICK	EQU	40034A
+040.100				ORG	40100A
+040.100             	WAIT.Z	EQU	*
+040.100  072 034 040		LDA	HITICK
+040.103  267			ORA	A
+040.104  302 100 040		JNZ	WAIT.Z
+040.107  076 007		MVI	A,7
+040.111  323 350		OUT	350Q
+040.113			WAITNZ	EQU	*
+040.113  072 034 040		LDA	HITICK
+040.116  267			ORA	A
+040.117  312 113 040		JZ	WAITNZ
+040.122  303 100 040		JMP	WAIT.Z
+040.125  000			END	WAIT.Z
+</pre>
+
+                    <p>The high byte of the tick counter will transition from 377q to 000q once every 65,536 clock ticks. There are 500 ticks/second in the emulator, so this will go to zero every 131.072 seconds by internal observation.</p>
+                    <p>Results are based on external observation.</p>
+
+                    <ul>
+                        <table border="1" cellspacing="0" cellpadding="4">
+                            <caption>
+                                <font size="-1"><b>Clock Drift Results</b></font>
+                            </caption>
+
+                            <tr align="left" valign="top">
+                                <th class="body">
+                                    <font size="-1">
+                                        <p>Release</p>
+                                </th>
+                                <th class="body">
+                                    <font size="-1">
+                                        <p>System Speed</p>
+                                </th>
+                                <th class="body">
+                                    <font size="-1">
+                                        <p>Time (seconds)</p>
+                                </th>
+                            </tr>
+
+                            <tr align="left" valign="top">
+                                <td class="body" rowspan="2" align="center">
+                                    <font size="-1">
+                                        <p>R4.2</p>
+                                    </font>
+                                </td>
+                                <td class="body">
+                                    <font size="-1">
+                                        <p>Normal</p>
+                                    </font>
+                                </td>
+                                <td class="body" align="center">
+                                    <font size="-1">
+                                        <p>135</p>
+                                    </font>
+                                </td>
+                            </tr>
+                            <tr align="left" valign="top">
+                                <td class="body">
+                                    <font size="-1">
+                                        <p>Turbo</p>
+                                    </font>
+                                </td>
+                                <td class="body" align="center">
+                                    <font size="-1">
+                                        <p>135</p>
+                                    </font>
+                                </td>
+                            </tr>
+                            <tr align="left" valign="top">
+                                <td class="body" rowspan="4" align="center">
+                                    <font size="-1">
+                                        <p>R5</p>
+                                    </font>
+                                </td>
+                                <td class="body">
+                                    <font size="-1">
+                                        <p>2 mhz</p>
+                                    </font>
+                                </td>
+                                <td class="body" align="center">
+                                    <font size="-1">
+                                        <p>131</p>
+                                    </font>
+                                </td>
+                            </tr>
+                            <tr align="left" valign="top">
+                                <td class="body">
+                                    <font size="-1">
+                                        <p>4 mhz</p>
+                                    </font>
+                                </td>
+                                <td class="body" align="center">
+                                    <font size="-1">
+                                        <p>131</p>
+                                    </font>
+                                </td>
+                            </tr>
+                            <tr align="left" valign="top">
+                                <td class="body">
+                                    <font size="-1">
+                                        <p>8 mhz</p>
+                                    </font>
+                                </td>
+                                <td class="body" align="center">
+                                    <font size="-1">
+                                        <p>131</p>
+                                    </font>
+                                </td>
+                            </tr>
+                            <tr align="left" valign="top">
+                                <td class="body">
+                                    <font size="-1">
+                                        <p>Turbo</p>
+                                    </font>
+                                </td>
+                                <td class="body" align="center">
+                                    <font size="-1">
+                                        <p>135</p>
+                                    </font>
+                                </td>
+                            </tr>
+                        </table>
+                    </ul>
+
+                    <p>On the reference system when running at non-turbo speeds, there is no apparent clock drift. This is due to:</p>
+
+                    <ul type="disc">
+                        <li>the pacing code which allows internal emulator operations to start after the pacing count has expired, regardless of whether the 1ms timer has expired;</li>
+                        <li>the speed of the host system.</li>
+                    </ul>
+
+                    <p>The following figure is a fair representation of time usage inside of a millisecond time period on the reference system when running an "average" mix of 8080A code. The length of the green bars is based on the results of the <a href="#speed"
+                            onMouseOver="self.status='Go to raw cpu speed'; return true">raw CPU speed</a> test below.</p>
+
+                    <center>
+                        <img src="gfx/perf_f1.gif" width="504" height="216" border="0" alt="use of time - reference system">
+                    </center>
+
+                    <p>In release 4.2, the emulator would:
+                        <ol>
+                            <li>exhaust the (instruction based) pacing count;</li>
+                            <li>waste time until the clock expired;</li>
+                            <li>do internal processing, which averaged approximately 29 microseconds over time.</li>
+                        </ol>
+                        <p>The clock was restarted after this internal processing. The accumulation of 29 microseconds per millisecond of overhead resulted in clock drift.</p>
+                        <p>Release 5 allows this internal processing to start before the clock expires so that when the millisecond timer expires it can be immediately restarted, virtually eliminating minimum drift.</p>
+                        <p>(If the user lingers on a menu item or walks away with a file-open dialog open, for example, drift becomes effectively infinite. This cannot be eliminated.)</p>
+                        <p>Turbo mode, by definition, executes instructions until the clock expires. Therefore, emulator internal processing takes place after the tick and drift accumulates, just as with R4.2, but because of the increased speed of R5, it
+                            accumulates at an average of 22 microseconds per millisecond.</p>
+
+                        <p>Please be clear on this point: this figure is the <b>minimum</b> measured clock drift. As soon as other portions of the emulator get busy, other applications are launched, you select a menu item, etc., this drift will grow, in
+                            some cases significantly and, in all cases, unpredictably.</p>
+
+                        <p>Now consider a slower host system:</p>
+
+                        <center>
+                            <img src="gfx/perf_f2.gif" width="504" height="216" border="0" alt="use of time - slow system">
+                        </center>
+
+                        <p>This system is fast enough to run at 2 mhz with no drift and at 4 mhz with a little drift. But the user will get no benefit from the 8 mhz or Turbo settings since the system is not fast enough to squeeze in more processing before
+                            the clock ticks. Drift is also likely to be much longer than above due to the slower processing of the emulator's internal housekeeping code.</p>
+
+                        <p><a href="#top" onMouseOver="self.status='go to the top of this page'; return true">go to top</a></p>
+
+                        <a name="speed"></a>
+                        <p><b>Raw CPU Speed</b></p>
+
+                        <p>Dave Wallace (ref. <a href="resources.html#credits" onMouseOver="self.status='credits'; return true">Cedits and Contributions</a>) provided the following benchmark program. It runs with interrupts off to eliminate PAM/8 and other
+                            operating system interrupt overhead so that we get an accurate instruction count.</p>
+
+                        <p>The program sounds a bell and then starts a long loop. The outer loop runs 50 times. The inner loop runs 65,536 times for each cycle through the outer loop, or 3,276,800 times.</p>
+
+                        <p>The body of the loop contains a mix of instructions with real-8080A execution times representative of a typical user program. The comment to the right of each instruction gives the number of clock states required to execute the
+                            instruction on a real 8080A.</p>
+
+                        <!-- there are tabs in the following text -->
+                        <pre>
+*	Written by D.Wallace.
+
+	ORG     42200A
+START	EQU	*
+	DI
+	MVI	A,7
+	OUT	350Q
+	LXI     B,0
+	MVI     D,50
+LOOP	EQU	*		8080 clock states
+	PUSH    B			11
+	PUSH    D			11
+	PUSH    H			11
+	POP     H			10
+	POP     D			10
+	POP     B			10
+	NOP				 4
+	NOP				 4
+	NOP				 4
+	NOP				 4
+	MOV     A,B			 5
+	XRA     D			 4
+	RAL				 4
+	DCX     B			 5
+	MOV     A,B			 5
+	ORA     C			 4
+	JNZ     LOOP			10
+*
+*	116 for each loop
+*	65536 loops
+*
+*	7,602,176 per set of 50
+*
+	DCR     D			 5
+	JNZ     LOOP			10
+*
+*	+15 = 7,602,191 for each loop
+*	50 loops
+*
+*	380,109,550 clocks, total
+*
+	MVI	A,7
+	OUT	350Q
+	EI
+	XRA	A
+	SCALL	0
+	END	START
+</pre>
+
+                        <p>The H8 uses a 2.048 megahertz clock, which gives us an anticipated interrupts-off execution time of 380,109,550 divided by 2,048,000 = <b>185.6 seconds</b> on real hardware. The program will cause the emulator to execute ((17*65536)+2)*50
+                            = <b>55,705,700 instructions</b>. Dividing by the execution time gives us instructions per second.</p>
+                        <p>Results are measured externally.</p>
+
+                        <ul>
+                            <table border="1" cellspacing="0" cellpadding="4">
+                                <caption>
+                                    <font size="-1"><b>CPU Speed Results</b></font>
+                                </caption>
+                                <tr>
+                                    <th class="body" align="left">
+                                        <font size="-1">
+                                            <p>Version</p>
+                                    </th>
+                                    <th class="body" align="left">
+                                        <font size="-1">
+                                            <p>Mode</p>
+                                    </th>
+                                    <th class="body" align="center">
+                                        <font size="-1">
+                                            <p>Time (seconds)</p>
+                                    </th>
+                                    <th class="body" align="right">
+                                        <font size="-1">
+                                            <p>Average Inst/Sec</p>
+                                    </th>
+
+                                </tr>
+                                <tr>
+                                    <td class="body" align="center" rowspan="2" align="center">
+                                        <font size="-1">
+                                            <p>R4.2</p>
+                                    </td>
+                                    <td class="body" align="left">
+                                        <font size="-1">
+                                            <p>normal</p>
+                                    </td>
+                                    <td class="body" align="center">
+                                        <font size="-1">
+                                            <p>181</p>
+                                    </td>
+                                    <td class="body" align="right">
+                                        <font size="-1">
+                                            <p>307,700</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="body" align="left">
+                                        <font size="-1">
+                                            <p>Turbo</p>
+                                    </td>
+                                    <td class="body" align="center">
+                                        <font size="-1">
+                                            <p>26</p>
+                                    </td>
+                                    <td class="body" align="right">
+                                        <font size="-1">
+                                            <p>2,142,500</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="body" align="center" rowspan="4" align="center">
+                                        <font size="-1">
+                                            <p>R5</p>
+                                    </td>
+                                    <td class="body" align="left">
+                                        <font size="-1">
+                                            <p>2 mhz</p>
+                                    </td>
+                                    <td class="body" align="center">
+                                        <font size="-1">
+                                            <p>185</p>
+                                    </td>
+                                    <td class="body" align="right">
+                                        <font size="-1">
+                                            <p>301,100</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="body" align="left">
+                                        <font size="-1">
+                                            <p>4 mhz</p>
+                                    </td>
+                                    <td class="body" align="center">
+                                        <font size="-1">
+                                            <p>93</p>
+                                    </td>
+                                    <td class="body" align="right">
+                                        <font size="-1">
+                                            <p>598,900</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="body" align="left">
+                                        <font size="-1">
+                                            <p>8 mhz</p>
+                                    </td>
+                                    <td class="body" align="center">
+                                        <font size="-1">
+                                            <p>47</p>
+                                    </td>
+                                    <td class="body" align="right">
+                                        <font size="-1">
+                                            <p>1,185,200</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="body" align="left">
+                                        <font size="-1">
+                                            <p>Turbo</p>
+                                    </td>
+                                    <td class="body" align="center">
+                                        <font size="-1">
+                                            <p>29</p>
+                                    </td>
+                                    <td class="body" align="right">
+                                        <font size="-1">
+                                            <p>1,920,886</p>
+                                    </td>
+                                </tr>
+                            </table>
+                        </ul>
+
+                        <p>R4.2 ran a little too fast. But R5, when set to 2 mhz, runs the test loop in exactly the same amount of time as a real H8, in minimum-drift conditions.</p>
+
+                        <p><a href="#top" onMouseOver="self.status='go to the top of this page'; return true">go to top</a></p>
+
+
+                        <a name="basic"></a>
+                        <p><b>BASIC Benchmark</b></p>
+
+                        <p>A better CPU performance benchmark is the basic program used by Creative Computing way back in 1984 to rate the performance of some 183 different machines, ranging from a Cray-1 to a TI programmable calculator.</p>
+                        <p>Any benchmark is contrived &#8212; one has to wonder why the authors wanted to compare the performance of a Cray to a TI calculator &#8212; but we have some reason to believe that this benchmark is more real-world than some of
+                            the others above, from the perspective of the mix of machine instructions that are executed in interpreting the program. And since the program writes to the screen only at the very end and does not access the disk, I/O doesn't
+                            get in the way of a good processor speed test.</p>
+
+                        <ul>
+                            <pre>
+00010 REM Ahl's Simple Benchmark
+00020 FOR N=1 TO 100: A=N
+00030 FOR I=1 TO 10
+00040 A=SQR(A): R=R+RND(1)
+00050 NEXT I
+00060 FOR I=1 TO 10
+00070 A=A^2: R=R+RND(1)
+00080 NEXT I
+00090 S=S+A: NEXT N
+00100 PRINT ABS(1010-S/5)
+00110 PRINT ABS(1000-R)
+</pre>
+                        </ul>
+
+                        <p>This program was meant to show floating-point accuracy and the "randomness" of the random number generator, as well as execution speed. All we care about here is execution speed.</p>
+                        <p>Results by external observation.</p>
+
+                        <ul>
+                            <table border="1" cellspacing="0" cellpadding="4">
+                                <caption>
+                                    <font size="-1"><b>Ahl's Simple Benchmark Results</b></caption>
+
+                                <tr align="left" valign="top">
+                                    <th class="body" colspan="2" align="center">
+                                        <font size="-1">
+                                            <p>Host</p>
+                                    </th>
+                                    <th class="body" align="center">
+                                        <font size="-1">
+                                            <p>Time (h:mm:ss)</p>
+                                    </th>
+                                </tr>
+                                <tr align="left" valign="top">
+                                    <td class="body" colspan="2" align="center">
+                                        <font size="-1">
+                                            <p>H8 circa 1984</p>
+                                    </td>
+                                    <td class="body" align="center">
+                                        <font size="-1">
+                                            <p>0:01:35</p>
+                                    </td>
+                                </tr>
+                                <tr align="left" valign="top">
+                                    <td class="body" rowspan="4" width="30px" align="center">
+                                        <font size="-1">
+                                            <p>R5</p>
+                                    </td>
+                                    <td class="body" align="left">
+                                        <font size="-1">
+                                            <p>2 mhz</p>
+                                    </td>
+                                    <td class="body" align="center">
+                                        <font size="-1">
+                                            <p>0:01:36</p>
+                                    </td>
+                                </tr>
+                                <tr align="left" valign="top">
+                                    <td class="body" align="left">
+                                        <font size="-1">
+                                            <p>4 mhz</p>
+                                    </td>
+                                    <td class="body" align="center">
+                                        <font size="-1">
+                                            <p>0:00:44</p>
+                                    </td>
+                                </tr>
+                                <tr align="left" valign="top">
+                                    <td class="body" align="left">
+                                        <font size="-1">
+                                            <p>8 mhz</p>
+                                    </td>
+                                    <td class="body" align="center">
+                                        <font size="-1">
+                                            <p>0:00:21</p>
+                                    </td>
+                                </tr>
+                                <tr align="left" valign="top">
+                                    <td class="body" align="left">
+                                        <font size="-1">
+                                            <p>Turbo</p>
+                                    </td>
+                                    <td class="body" align="center">
+                                        <font size="-1">
+                                            <p>0:00:13</p>
+                                    </td>
+                                </tr>
+                            </table>
+                        </ul>
+
+                        <p>I was a little surprised to run a second longer than a real H8, given the results of the <a href="#speed" onMouseOver="self.status='Go to raw cpu speed'; return true">speed benchmark</a> above. But since my time measurement methods
+                            are crude and I don't know how Creative Computing measured their results, I will leave them as is and call them 'close enough.'</p>
+
+                        <p><a href="#top" onMouseOver="self.status='go to the top of this page'; return true">go to top</a></p>
+
+                        <a name="appl"></a>
+                        <p><b>Turbo Mode and Its Affect on Applications</b></p>
+
+                        <p>We get a significant bump in throughput in Turbo mode, but not quite the seven-times improvement we get in the processor. This is due to the fixed speed of the disk drives and the maximum 2,000 cps we get from the H-19 terminal.</p>
+
+                        <p>For example, I assembled the disk dump program (available on the <a href="release.html#util" onMouseOver="self.status='Go to release page'; return true">release</a> page) using the following command:</p>
+
+                        <pre>
+    asm
+    *=sy2:diskdump
+</pre>
+
+                        <p>I entered the actual command on a separate line to take assembler load time out of the equation. Results by external observation.</p>
+
+                        <ul>
+                            <table border="1" cellspacing="0" cellpadding="4">
+                                <caption>
+                                    <font size="-1"><b>Assembly Time</b></caption>
+
+                                <tr align="left" valign="top">
+                                    <th class="body" align="center">
+                                        <font size="-1">
+                                            <p>Release</p>
+                                    </th>
+                                    <th class="body">
+                                        <font size="-1">
+                                            <p>Speed</p>
+                                    </th>
+                                    <th class="body" align="center">
+                                        <font size="-1">
+                                            <p>Time (h:mm:ss)</p>
+                                    </th>
+                                </tr>
+                                <tr align="left" valign="top">
+                                    <td class="body" rowspan="4" align="center">
+                                        <font size="-1">
+                                            <p>R5</p>
+                                    </td>
+                                    <td class="body">
+                                        <font size="-1">
+                                            <p>2 mhz</p>
+                                    </td>
+                                    <td class="body" align="center">
+                                        <font size="-1">
+                                            <p>0:01:46</p>
+                                    </td>
+                                </tr>
+                                <tr align="left" valign="top">
+                                    <td class="body">
+                                        <font size="-1">
+                                            <p>4 mhz</p>
+                                    </td>
+                                    <td class="body" align="center">
+                                        <font size="-1">
+                                            <p>0:00:59</p>
+                                    </td>
+                                </tr>
+                                <tr align="left" valign="top">
+                                    <td class="body">
+                                        <font size="-1">
+                                            <p>8 mhz</p>
+                                    </td>
+                                    <td class="body" align="center">
+                                        <font size="-1">
+                                            <p>0:00:38</p>
+                                    </td>
+                                </tr>
+                                <tr align="left" valign="top">
+                                    <td class="body">
+                                        <font size="-1">
+                                            <p>Turbo</p>
+                                    </td>
+                                    <td class="body" align="center">
+                                        <font size="-1">
+                                            <p>0:00:31</p>
+                                    </td>
+                                </tr>
+                            </table>
+                        </ul>
+
+                        <p>Looking at CPU time alone, we might expect a Turbo mode completion time of around 15 seconds on the reference machine if we did a linear regression based on the <a href="#speed" onMouseOver="self.status='Go to raw cpu speed'; return true">raw CPU speed</a>                            results above. The extra 16 seconds of execution time is due to the fixed disk rotation delays and other delays imposed by the device driver on this "mechanical" device.</p>
+
+                        <img src="gfx/perf_f3.gif" width="369" height="166" border="0" align="right" alt="assembly time graph">
+
+                        <p>In fact, when moving from 2 mhz to 4 mhz, assembly time was nearly cut in half. But as we got closer to Turbo speeds the improvement was less and less due to the fixed speed of the I/O device. CPU time, which was improving at each
+                            step, was a smaller and smaller portion of total time; improving it had less and less impact on total execution time.</p>
+
+                        <p>The assembler is a heavy user of both the CPU and the disk system, which makes it a good example. In general, the more I/O-bound an application is the less it will benefit from the higher clock rates.</p>
+
+                        <p><a href="#top" onMouseOver="self.status='go to the top of this page'; return true">go to top</a></p>
+                        </font>
+                        <br>
+
+
+            </td>
+        </tr>
+    </table>
+
+    <!-- Footer area -- common to all pages -->
+
+    <hr>
+    <div class="c1">
+        <font size="-1">
+            <a href="index.html" onMouseOver="self.status='Go to Heath8080A home page'; return true">home</a> &nbsp;
+            <a href="release.html" onMouseOver="self.status='Go to release page'; return true">release</a> &nbsp;
+            <a href="support.html" onMouseOver="self.status='Go to support page'; return true">support</a> &nbsp;
+            <a href="design.html" onMouseOver="self.status='Go to design page'; return true">design</a> &nbsp;
+            <a href="resources.html" onMouseOver="self.status='Go to resources page'; return true">resources</a> &nbsp;
+            <a href="legal.html" onMouseOver="self.status='Go to legal page'; return true">legal</a> &nbsp;
+            <a href="sitemap.html" onMouseOver="self.status='Go to site map'; return true">site map</a> &nbsp;
+        </font>
+    </div>
+    <hr>
+    <br>
+
+</body>
+
 <!-- Mirrored from davidwallace2000.home.comcast.net/~davidwallace2000/h8/project8080_archive/design_perf.html by HTTrack Website Copier/3.x [XR&CO'2010], Mon, 10 Sep 2012 13:15:33 GMT -->
-</html>
+
+</html>

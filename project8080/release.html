@@ -1,508 +1,1055 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html><head>
-<!-- Mirrored from davidwallace2000.home.comcast.net/~davidwallace2000/h8/project8080_archive/release.html by HTTrack Website Copier/3.x [XR&CO'2010], Mon, 10 Sep 2012 13:15:12 GMT --><title>Heath8080A - Current Product Release</title><!-- Headers -- common to all pages -->
-
-
-
-
-
-
-<meta name="description" content="This site provides a free Heathkit H8 microcomputer emulator for the Macintosh">
-<meta name="author" content="David A. Shaw">
-<link rev="made" mailto:&#104;&#101;&#97;&#116;&#104;8080&#97;&#64;&#97;&#111;&#108;.&#99;&#111;&#109;="">
-<meta name="generator" content="Optima PageSpinner for MacOS">
-<meta name="robots" content="all">
-<meta name="keywords" content="Heathkit,Heath,H8,H17,H-17,H19,H-19,8080A,Intel 8080A,computer emulation,H8 emulation,Mac,Macintosh,G3,Linux">
-
-<style type="text/css">
-body {background-color: #ffffff}
-
-.left   { background:      #ffffff; vertical-align: top; color: blue }
-.left p { font-family:     verdana
-        }
-
-.head   { background:     #ffffcc; vertical-align: top; color: blue }
-.head p { font-family:    geneva, arial
-        }
-.lhead   { background:     #ffffcc; vertical-align: top; color: blue }
-.lhead p { font-family:    verdana
-         }
-
-.body   { vertical-align: top;}
-
-.body p, ul, ol, dl
-         { font-family:    geneva, arial
-         }
-
-div.c1 { font-family: geneva, arial;  text-align: center }
-div.c2 { font-family: geneva, arial;  text-align: right  }
-
-a:visited {color: green }
-a:hover   {color: red; text-decoration: none }
-
-p.outside {font-family: geneva, arial;font-size: small;}
-
-pre { font-family: courier; font-size: 10px }
-h1, h2 {font-family: "times new roman" }
-</style></head><body>
-<a name="top"></a>
-
-<!-- Page Heading -- common to all pages -->
-
-<table border="0" cellpadding="4" cellspacing="0" width="100%">
-
-<tbody><tr>
-	<td class="lhead">
-		<p><b>Heath8080A &#8212; Current Product Release</b></p>
-	</td>
-	<td class="head" align="right">
-
-<!-- this reads "site" on the index page and "page" on all others -->
-
-		<font size="-1"><p>Page last updated</p></font>
-	</td>
-</tr>
-<tr>
-	<td class="head">
-		<font size="-1"><p><a href="index.html" onmouseover="self.status='Go to home page'; return true">home</a>
-		&nbsp;&nbsp;<a href="release.html" onmouseover="self.status='Go to release page'; return true">release</a>
-		&nbsp;&nbsp;<a href="support.html" onmouseover="self.status='Go to support page'; return true">support</a>
-		&nbsp;&nbsp;<a href="design.html" onmouseover="self.status='Go to design page'; return true">design</a>
-		&nbsp;&nbsp;<a href="resources.html" onmouseover="self.status='Go to resources page'; return true">resources</a>
-		&nbsp;&nbsp;<a href="legal.html" onmouseover="self.status='Go to legal page'; return true">legal</a>
-		&nbsp;&nbsp;<a href="sitemap.html" onmouseover="self.status='Go to site map'; return true">site map</a></p></font>
-	</td>
-	<td class="head" align="right">
-		<font size="-1"><p>8-May-2003</p></font>
-	</td>
-</tr>
-<tr><td>&nbsp;</td></tr>
-
-</tbody></table>
-
-<!-- Standard content ends. Page body starts here.  -->
-
-<table border="0" cellpadding="4" cellspacing="0" width="100%">
-<tbody><tr>
-
-<!-- page index -->
-<td class="left" width="20%">
-<font size="-1">
-<p>On this page....</p>
-<p>
-
-&#8226; <a href="#terms" onmouseover="self.status='release'; return true">terms</a><br>
-&#8226; download this site<br>
-&#8226; <a href="#release" onmouseover="self.status='release'; return true">current release</a><br>&#8226; <a href="#archives" onmouseover="self.status='release'; return true">using archives</a><br>
-&#8226; <a href="#util" onmouseover="self.status='utilities'; return true">hdos utilities</a>
-</p>
-<br>
-
-<p>Other links of interest...</p>
-<p>
-&#8226; Aladdin Systems for StuffIt Expander<br>
-&#8226; <a href="http://developer.apple.com/tools/mpw-tools/" target="_blank" onmouseover="self.status='Connect to Apple MPW page'; return true">Apple</a> for the MPW development environment<br>
-&#8226; <a href="support.html" onmouseover="self.status='support'; return true">product support page</a>
-</p>
-</font>
-</td>
-
-<td class="body">
-
-<font size="-1">
-<p><b>H8 Emulator Release</b></p>
-<p>This page lets you download the current release of the emulator and
-its source code, and a number of useful utilities. You can also get the
-last release to run on Motorola 68K machines.</p>
-
-<hr>
-
-<a name="terms"></a>
-<p><b>Terms</b></p>
-<p>The H8 Emulator is being distributed as freeware. You may feel free
-to redistribute the software as long as you don't charge for it and you
-retain all the copyright notices. Please refer to the Copyright notice
-at the top of the
-<a href="legal.html" onmouseover="self.status='Go to legal page'; return true">legal</a>
-page for details.</p>
-
-<p>For any other uses, please contact the author.</p>
-
-<p><a href="#top" onmouseover="self.status='go to the top of this page'; return true">go to top</a></p>
-
-<hr>
-
-<a name="site"></a>
-<p><b>Download This Site</b></p>
-<p><span style="color: red;">This site will be taken down on or about July 1.</span>
-The project has run its course and I need to free my AOL screen names
-for other use. Near as I can tell based on how the counter has been
-incrementing, I'm the only one accessing the site.</p>
-<p style="text-decoration: line-through;">If you would like to have a copy of the site for continued access to the design notes, etc., click<a href="http://home.comcast.net/site/error/error_404.html"> </a>here to download a copy for installation on your computer.</p>
-<p style="text-decoration: line-through;">Installation instructions:</p>
-<ol style="text-decoration: line-through;">
-	<li>Unzip the archive into an empty folder on your hard drive. (StuffIt Expander will unzip the file on Macintosh.)</li>
-	<li>Open the file "index.html" with your web browser.</li>
-</ol>
-<p>Please <b>do not</b> repost
-the site on another publicly-available server. I retain my copyright
-over this material; the downloaded pages are for your personal use only.</p>
-
-<hr>
-
-<a name="release"></a>
-<p><b>Current Release</b></p>
-<p>Release 5.3.3a was posted to this site on 26-February-2003.</p>
-<p>Please review the <a href="support.html#release" onmouseover="self.status='Go to release notes'; return true">release notes</a> and <a href="support.html#requirements" onmouseover="self.status='Go to system requirements'; return true">system requirements</a>, either on this site or in the help package. And be sure to note how to <a href="#archives">work with the release archives</a>.</p>
-
-<dl>
-<dt>Release 5.3.3a Release Package</dt>
-<dd><p>The release package contains:</p>
-<ul type="disc">
-<li>the emulator itself;</li>
-<li>installation notes;</li>
-<li>the help system;</li>
-<li>demo PAM/8 "tapes";</li>
-<li>one "Extras" disk;</li>
-<li>and one bootable HDOS 2.0 disk.</li>
-</ul>
-
-<p style="text-decoration: line-through;">Release 5.3.3a Executable StuffIt archive (654K)</p>
-</dd>
-
-
-<dt>Operating System</dt>
-<dd><p>The release package does <b>not</b> include a complete operating
-system distribution. They are separate to reduce the size of the
-emulator download, and because the operating system doesn't change from
-release to release. Heck, it hasn't changed in over 20 years!</p>
-<p>If you haven't already downloaded an operating system, you should download one (or both) of the following packages.</p>
-
-<table cellpadding="2" cellspacing="0">
-<tbody><tr align="left" valign="top">
-	<td class="body"><font size="-1"><p><b>HDOS 2.0</b> Release Disks (3)</p></font></td>
-	<td class="body"><font size="-1"><p>StuffIt format -</p></font></td>
-	<td class="body" align="right"><font size="-1"><p>144K</p></font></td>
-	<td class="body"><font size="-1"><p>Zip format -</p></font></td>
-	<td class="body" align="right"><font size="-1"><p>168K</p></font></td>
-</tr>
-<tr align="left" valign="top">
-	<td class="body"><font size="-1"><p><b>HDOS 1.6</b> Release Disk</p></font></td>
-	<td class="body"><font size="-1"><p>StuffIt format -</p></font></td>
-	<td class="body" align="right"><font size="-1"><p>68K</p></font></td>
-	<td class="body"><font size="-1"><p>Zip format -</p></font></td>
-	<td class="body" align="right"><font size="-1"><p>88K</p></font></td>
-</tr>
-</tbody></table>
-<br>
-</dd>
-
-<dt>Source Code</dt>
-<dd><p>You do <b>not</b> need source code to use the emulator; download
-it only if you want to understand how the emulator works or to make
-modifications. The source is written for use with Apple's MPW
-development environment. The good news is that MPW is available at no
-cost from the Apple developer support web site; see the link to the
-left. The bad news is that it's a 25 M/byte download. Yow.</p>
-
-<p>Release 5.3.3a source code StuffIt archive (195K)</p>
-</dd>
-
-<dt>Motorola 68K Release</dt>
-<dd><p><span style="color: rgb(255, 0, 0);">This release is frozen.</span>
-I'm keeping a copy here for a time as a convenience to any 68K-based
-Mac users. The source code for this release is written for the
-Metrowerks CodeWarrior development environment.</p>
-
-<p>Release 4.1.6 Executable StuffIt archive (480K)</p>
-<p>Release 4.1.6 source code StuffIt archive (176K)</p>
-</dd>
-</dl>
-
-<p><a href="#top" onmouseover="self.status='go to the top of this page'; return true">go to top</a></p>
-
-<hr>
-
-<a name="archives"></a>
-<p><b>Working with the archives</b></p>
-
-<p>The emulator release packages are supplied as StuffIt archives. The
-release packages are also encoded in BinHex to preserve the resource
-forks.</p>
-<p>You will need StuffIt Deluxe or StuffIt Expander, release 5.5 or
-better, to expand the archives. See the links to the left. StuffIt
-Expander is free, and there are versions available for both Macintosh
-and PC.</p>
-<p>The operating systems and utility disks are available in both
-StuffIt and Zip format. StuffIt Expander can expand both. PkZip,
-WinZip, and numerous other PC utilities can expand Zip archives.</p>
-
-<p><a href="#top" onmouseover="self.status='go to the top of this page'; return true">go to top</a></p>
-</font>
-<hr>
-
-<a name="util"></a>
-<font size="-1">
-</font><p><font size="-1"><b>HDOS Utilities</b></font></p>
-
-<p><font size="-1">It's my intention to post here a collection of tools
-and utilities for use on the H8. The collection is small and will
-likely remain small. But if there's something that you remember that
-you think I should post, please tell me about it and I'll see what I
-can do.</font></p>
-
-<p><font size="-1">You can find these packages on this site:</font></p>
-
-
-<table border="0" cellpadding="2" cellspacing="0">
-<tbody><tr align="left" valign="top">
-	<th><font size="-1"><p>Package Description</p></font></th>
-	<th align="center"><font size="-1"><p>Updated</p></font></th>
-	<th colspan="4" align="center"><font size="-1"><p>Archive Format and Size</p></font></th>
-</tr>
-<tr align="right" valign="top">
-	<td align="left"><font size="-1"></font><p><font size="-1"><a href="#renum" onmouseover="self.status='Read description'; return true">BH Basic Renumber</a></font></p></td>
-	<td><font size="-1"><p>10/23/2002</p></font></td>
-	<td><font size="-1"><p>StuffIt</p></font></td>
-	<td align="left"><font size="-1"><p>- 40K</p></font></td>
-	<td><font size="-1"><p>Zip</p></font></td>
-	<td align="left"><font size="-1"><p>- 44K</p></font></td>
-</tr>
-<tr align="right" valign="top">
-	<td align="left"><p><font size="-1"><a href="#dbug" onmouseover="self.status='Read description'; return true">DBUG Console Mode fix</a></font></p></td>
-	<td><font size="-1"><p>2/14/2002</p></font></td>
-	<td><font size="-1"><p>StuffIt</p></font></td>
-	<td align="left"><font size="-1"><p>- 20K</p></font></td>
-	<td><font size="-1"><p>Zip</p></font></td>
-	<td align="left"><font size="-1"><p>- 16K</p></font></td>
-</tr>
-<tr align="right" valign="top">
-	<td align="left"><p><font size="-1"><a href="#dump" onmouseover="self.status='Read description'; return true">Disk Dumper</a></font></p></td>
-	<td><font size="-1"><p>12/1/2002</p></font></td>
-	<td><font size="-1"><p>StuffIt</p></font></td>
-	<td align="left"><font size="-1"><p>- 20K</p></font></td>
-	<td><font size="-1"><p>Zip</p></font></td>
-	<td align="left"><font size="-1"><p>- 20K</p></font></td>
-</tr>
-<tr align="right" valign="top">
-	<td align="left"><p><font size="-1"><a href="#utilities" onmouseover="self.status='Read description'; return true">HDOS 2.0 Utilities</a></font></p></td>
-	<td><font size="-1"><p>10/23/2002</p></font></td>
-	<td><font size="-1"><p>StuffIt</p></font></td>
-	<td align="left"><font size="-1"><p>- 44K</p></font></td>
-	<td><font size="-1"><p>Zip</p></font></td>
-	<td align="left"><font size="-1"><p>- 64K</p></font></td>
-</tr>
-<tr align="right" valign="top">
-	<td align="left"><p><font size="-1"><a href="#patch" onmouseover="self.status='Read description'; return true">HDOS 2.0 Patch Files</a></font></p></td>
-	<td><font size="-1"><p>7/24/2002</p></font></td>
-	<td><font size="-1"><p>StuffIt</p></font></td>
-	<td align="left"><font size="-1"><p>- 52K</p></font></td>
-	<td><font size="-1"><p>Zip</p></font></td>
-	<td align="left"><font size="-1"><p>- 60K</p></font></td>
-</tr>
-<tr align="right" valign="top">
-	<td align="left"><p><font size="-1"><a href="#patch" onmouseover="self.status='Read description'; return true">HDOS 1.6 Patch Files</a></font></p></td>
-	<td><font size="-1"><p>7/24/2002</p></font></td>
-	<td><font size="-1"><p>StuffIt</p></font></td>
-	<td align="left"><font size="-1"><p>- 20K</p></font></td>
-	<td><font size="-1"><p>Zip</p></font></td>
-	<td align="left"><font size="-1"><p>- 16K</p></font></td>
-</tr>
-<tr align="right" valign="top">
-	<td align="left"><p><font size="-1"><a href="#driver" onmouseover="self.status='Read description'; return true">HUG Enhanced SY: Device Driver</a></font></p></td>
-	<td><font size="-1"><p>9/21/2002</p></font></td>
-	<td><font size="-1"><p>StuffIt</p></font></td>
-	<td align="left"><font size="-1"><p>- 52K</p></font></td>
-	<td><font size="-1"><p>Zip</p></font></td>
-	<td align="left"><font size="-1"><p>- 72K</p></font></td>
-</tr>
-<tr align="right" valign="top">
-	<td align="left"><p><font size="-1"><a href="#pie" onmouseover="self.status='Read description'; return true">PIE 1.5b Text Editor</a></font></p></td>
-	<td><font size="-1"><p>12/09/2001</p></font></td>
-	<td><font size="-1"><p>StuffIt</p></font></td>
-	<td align="left"><font size="-1"><p>- 28K</p></font></td>
-	<td><font size="-1"><p>Zip</p></font></td>
-	<td align="left"><font size="-1"><p>- 24K</p></font></td>
-</tr>
-</tbody></table>
-
-<p><font size="-1"><a href="#top">go to top</a></font></p>
-
-<dl>
-<font size="-1">
-
-</font><p><font size="-1">Package descriptions follow.</font></p>
-
-<font size="-1"><a name="renum"></a>
-<dt>Benton Harbor Basic Renumber</dt>
-
-<dd><p>This disk contains a handy stand-alone utility that will
-renumber Benton Harbor Basic programs. RENUM properly ignores remark
-statements and quoted strings, and renumbers CNTRL 0 statements. A
-strategy is included for handling the LNO() function.</p>
-<p>A major benefit of RENUM is its ability to renumber a program
-written with no line numbers except those that are necessary targets of
-jumps, and those numbers do not need to be in order. This allows the
-easy construction of BH Basic programs using a text editor, allowing
-code to be inserted or moved at will.</p>
-<p><a href="#util">back to utilities list</a></p>
-
-<a name="dbug"></a>
-</dd><dt>DBUG Console mode fix</dt>
-
-<dd><p>I remember this problem as being very irritating 20 years ago
-but very easy to find and fix, since I had the source listings. 20
-years later, it's still irritating. But much harder to find and fix.</p>
-<p>dbug changes the console mode to character mode, no echo. Its
-command structure depends on these settings. dbug is supposed to
-restore the target program's console mode on a Go or Step command, save
-it on return to dbug, and restore its own while you are in command
-mode. But a misplaced RET instruction causes it to try to run with the
-user's console mode after returning from a Step.</p>
-<p>Simple work-around: type "40326=201 " and press return after every step (note the space after the "201"). Ugh.</p>
-<p>Better fix: slide a short routine up one byte in memory and put that
-RET where it belongs. Then fix the address of one call to the moved
-routine. That's what was done to the version of dbug.abs that's on this
-disk. There's a text file on the disk that describes the process in
-more detail, and includes the tests to run to verify that things are
-working as they are supposed to be after the surgery.</p>
-<p><a href="#util">back to utilities list</a></p>
-</dd>
-
-<a name="dump"></a>
-<dt>Disk Dumper</dt>
-
-<dd><p>If you have a working H8 or H89, here's a utility you can use to
-export your H-17 disks to portable format for use with the emulator.
-The exported disks will work with Dave Wallace's Virtual H8 as well.
-This is assembler source code that will need to be moved to your H8/H89
-and assembled.</p>
-
-<p>Disk Dumper will dump any of the standard H-17 disk formats:</p>
-
-<ul type="disc">
-<li>100K disks formatted under HDOS 1.6;</li>
-<li>40 track, 1 sided disks used with the standard HDOS SY: driver; </li>
-<li>40- and 80-track, single and double-sided disks used with the HUG replacement SY: driver.</li>
-</ul>
-<p>Version 2.0 skips sectors marked to be skipped in RGT.SYS,
-substituting zeros for the skipped sectors. It correctly handles most
-I/O errors, supplying sector fill based on the type of the file. (The
-files RGT.SYS, GRT.SYS, the label, and the active part of the directory
-must be error free or the dump will fail.) And it supplies useful disk
-documentation in the converted disk image.</p>
-<p>Version 2.1 adds a check byte comment following each dumped sector.
-This check byte is compared with the check byte calculated by the
-emulator v5.3.0 or higher and a message is displayed if the check bytes
-don't match. This gives the user some assurance that the dumped disk
-image was transferred correctly to the emulator.</p>
-
-<p>You will need to interface another computer (Mac or PC) to an H8/H89
-serial port in order to capture the dumped disk image. Instructions are
-provided.</p>
-<p><a href="#util">back to utilities list</a></p>
-
-</dd>
-
-<a name="utilities"></a>
-<dt>HDOS 2.0 Utilities</dt>
-
-<dd><p>Useful HDOS 2.0 Utilities. This includes two versions of a
-helpful prologue.sys application and a disk statistics display program
-that mimics the 'stat' command from HDOS 1.6.</p>
-<p>There is also a very useful utility that displays a disk file in
-octal and ASCII dump format and allows you to scroll and browse. If the
-file happens to be in .ABS format, the displacements shown match the
-runtime load addresses, making it very easy to follow program logic.
-This had a bug, kindly found and fixed by <a href="resources.html#credits" onmouseover="self.status='Go to credits'; return true">Stanley Webb</a>, that treated DEL as a printable character.</p>
-<p>Finally, there's a little tool that lets you change the PAM/8 display from the command line.</p>
-<p><a href="#util">back to utilities list</a></p>
-
-</dd>
-
-<a name="patch"></a>
-<dt>HDOS Patch Files (for both HDOS 2.0 and HDOS 1.6)</dt>
-
-<dd><p>Here is a collection of patch files that were originally published by HUG, provided to me by <a href="resources.html#credits" onmouseover="self.status='Go to credits'; return true">Stanley Webb</a>.
-They fix problems and add features to the various utility and
-applications programs that are a part of HDOS. One, for example,
-provides the official HUG patch to the debugger to correct the console
-mode problem (see Console Mode Fix below).</p>
-<p>Stanley also included a patch that he developed for HDOS 2.0 that
-removes the offset-70 date bias, allowing years from 00 through 99 to
-be entered and displayed.</p>
-
-<p>These are supplied as text files on an H-17 portable disk image. The
-24-Jul-2002 update corrects a type-o in one of the HDOS 2.0 patch
-files, and includes the patched version of several of the .abs files
-for your convenience. The HDOS 1.6 disk image was not updated.</p>
-<p>As always, patch a copy and test carefully.</p>
-<p><a href="#util">back to utilities list</a></p>
-
-</dd>
-
-<a name="driver"></a>
-<dt>HUG Enhanced SY: Device Driver</dt>
-
-<dd><p>I am distributing this driver with the written permission of the author, <a href="resources.html#credits" onmouseover="self.status='Go to credits'; return true">Dean K. Gibson</a>. Please note Dean's copyright notices in the source code and documentation.</p>
-<p>This driver is necessary if you want to increase the capacity of
-your emulated disk drives by supporting double-sided and 80-track
-drives. There are significant performance improvements as well. And the
-driver will boot and operates perfectly when the clock speed is set
-faster than 2 mhz.</p>
-<p>But beware: Installation is a non-trivial, multi-step process. Make
-sure you read all the supplied documentation carefully and think out
-the implications of the drive configuration you settle on. And work
-with temporary disks until you have tested the configuration.</p>
-<p>The package includes a Disk Configuration utility that I wrote that
-displays the configuration of the drives and the characteristics of
-mounted media, when used with the HUG SY: driver:</p>
-
-<pre>    &gt;dc<br><br>    H17 Drive Configuration v1.2<br>    HUG Enhanced SY: Driver is installed<br><br>          ----Drive----   --------Disk--------	 ------Free------<br>          Tracks  Sides   Tracks  Sides    SPG	 Clusters Sectors<br>    SY0:    40	    2	    40	    2	    4	     98     392<br>    SY1:    40	    2	    40	    1	    2	    113     226<br>    SY2:    80	    2	    40	    2	    4	     13      52 *<br><br>    * Compatibility Mode - disk can be read, not written.<br></pre>
-<p><a href="#util">back to utilities list</a></p>
-
-</dd>
-
-<a name="pie"></a>
-<dt>PIE 1.5b Text Editor</dt>
-
-<dd><p>I am distributing this version of PIE with written permission from the original author, <a href="resources.html#credits" onmouseover="self.status='Go to credits'; return true">Thomas Crosley</a>, and <a href="resources.html#credits" onmouseover="self.status='Go to credits'; return true">Walt Bilofsky</a> of <a href="http://www.toolworks.com/">The Software Toolworks</a>, who adapted the program to HDOS.</p>
-<p>PIE8 works perfectly with the emulator, and is stupendously better than (shudder) edit.abs, which came with HDOS. I <b>highly</b> recommend that you download this disk!</p>
-<p><a href="#util">back to utilities list</a></p>
-
-</dd></font></dl>
-
-
-<font size="-1">
-<p><a href="#top" onmouseover="self.status='go to the top of this page'; return true">go to top</a></p>
-</font>
-<br>
-
-</td>
-</tr>
-</tbody></table>
-
-<!-- Footer area -- common to all pages -->
-
-<hr>
-<div class="c1"><font size="-1">
-<a href="index.html" onmouseover="self.status='Go to Heath8080A home page'; return true">home</a>
-&nbsp;
-<a href="release.html" onmouseover="self.status='Go to release page'; return true">release</a>
-&nbsp;
-<a href="support.html" onmouseover="self.status='Go to support page'; return true">support</a>
-&nbsp;
-<a href="design.html" onmouseover="self.status='Go to design page'; return true">design</a>
-&nbsp;
-<a href="resources.html" onmouseover="self.status='Go to resources page'; return true">resources</a>
-&nbsp;
-<a href="legal.html" onmouseover="self.status='Go to legal page'; return true">legal</a>
-&nbsp;
-<a href="sitemap.html" onmouseover="self.status='Go to site map'; return true">site map</a>
-&nbsp;
-</font></div>
-<hr>
-<br>
-
-<!-- Mirrored from davidwallace2000.home.comcast.net/~davidwallace2000/h8/project8080_archive/release.html by HTTrack Website Copier/3.x [XR&CO'2010], Mon, 10 Sep 2012 13:15:12 GMT -->
-</body></html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <!-- Mirrored from davidwallace2000.home.comcast.net/~davidwallace2000/h8/project8080_archive/release.html by HTTrack Website Copier/3.x [XR&CO'2010], Mon, 10 Sep 2012 13:15:12 GMT -->
+    <title>Heath8080A - Current Product Release</title>
+    <!-- Headers -- common to all pages -->
+
+    <meta
+      name="description"
+      content="This site provides a free Heathkit H8 microcomputer emulator for the Macintosh"
+    />
+    <meta name="author" content="David A. Shaw" />
+    <link
+      rev="made"
+      mailto:&#104;&#101;&#97;&#116;&#104;8080&#97;&#64;&#97;&#111;&#108;.&#99;&#111;&#109;=""
+    />
+    <meta name="generator" content="Optima PageSpinner for MacOS" />
+    <meta name="robots" content="all" />
+    <meta
+      name="keywords"
+      content="Heathkit,Heath,H8,H17,H-17,H19,H-19,8080A,Intel 8080A,computer emulation,H8 emulation,Mac,Macintosh,G3,Linux"
+    />
+
+    <style type="text/css">
+      body {
+        background-color: #ffffff;
+      }
+
+      .left {
+        background: #ffffff;
+        vertical-align: top;
+        color: blue;
+      }
+      .left p {
+        font-family: verdana;
+      }
+
+      .head {
+        background: #ffffcc;
+        vertical-align: top;
+        color: blue;
+      }
+      .head p {
+        font-family: geneva, arial;
+      }
+      .lhead {
+        background: #ffffcc;
+        vertical-align: top;
+        color: blue;
+      }
+      .lhead p {
+        font-family: verdana;
+      }
+
+      .body {
+        vertical-align: top;
+      }
+
+      .body p,
+      ul,
+      ol,
+      dl {
+        font-family: geneva, arial;
+      }
+
+      div.c1 {
+        font-family: geneva, arial;
+        text-align: center;
+      }
+      div.c2 {
+        font-family: geneva, arial;
+        text-align: right;
+      }
+
+      a:visited {
+        color: green;
+      }
+      a:hover {
+        color: red;
+        text-decoration: none;
+      }
+
+      p.outside {
+        font-family: geneva, arial;
+        font-size: small;
+      }
+
+      pre {
+        font-family: courier;
+        font-size: 10px;
+      }
+      h1,
+      h2 {
+        font-family: "times new roman";
+      }
+    </style>
+  </head>
+  <body>
+    <a name="top"></a>
+
+    <!-- Page Heading -- common to all pages -->
+
+    <table border="0" cellpadding="4" cellspacing="0" width="100%">
+      <tbody>
+        <tr>
+          <td class="lhead">
+            <p><b>Heath8080A &#8212; Current Product Release</b></p>
+          </td>
+          <td class="head" align="right">
+            <!-- this reads "site" on the index page and "page" on all others -->
+
+            <font size="-1"><p>Page last updated</p></font>
+          </td>
+        </tr>
+        <tr>
+          <td class="head">
+            <font size="-1"
+              ><p>
+                <a
+                  href="index.html"
+                  onmouseover="self.status='Go to home page'; return true"
+                  >home</a
+                >
+                &nbsp;&nbsp;<a
+                  href="release.html"
+                  onmouseover="self.status='Go to release page'; return true"
+                  >release</a
+                >
+                &nbsp;&nbsp;<a
+                  href="support.html"
+                  onmouseover="self.status='Go to support page'; return true"
+                  >support</a
+                >
+                &nbsp;&nbsp;<a
+                  href="design.html"
+                  onmouseover="self.status='Go to design page'; return true"
+                  >design</a
+                >
+                &nbsp;&nbsp;<a
+                  href="resources.html"
+                  onmouseover="self.status='Go to resources page'; return true"
+                  >resources</a
+                >
+                &nbsp;&nbsp;<a
+                  href="legal.html"
+                  onmouseover="self.status='Go to legal page'; return true"
+                  >legal</a
+                >
+                &nbsp;&nbsp;<a
+                  href="sitemap.html"
+                  onmouseover="self.status='Go to site map'; return true"
+                  >site map</a
+                >
+              </p></font
+            >
+          </td>
+          <td class="head" align="right">
+            <font size="-1"><p>8-May-2003</p></font>
+          </td>
+        </tr>
+        <tr>
+          <td>&nbsp;</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Standard content ends. Page body starts here.  -->
+
+    <table border="0" cellpadding="4" cellspacing="0" width="100%">
+      <tbody>
+        <tr>
+          <!-- page index -->
+          <td class="left" width="20%">
+            <font size="-1">
+              <p>On this page....</p>
+              <p>
+                &#8226;
+                <a
+                  href="#terms"
+                  onmouseover="self.status='release'; return true"
+                  >terms</a
+                ><br />
+                &#8226; download this site<br />
+                &#8226;
+                <a
+                  href="#release"
+                  onmouseover="self.status='release'; return true"
+                  >current release</a
+                ><br />&#8226;
+                <a
+                  href="#archives"
+                  onmouseover="self.status='release'; return true"
+                  >using archives</a
+                ><br />
+                &#8226;
+                <a
+                  href="#util"
+                  onmouseover="self.status='utilities'; return true"
+                  >hdos utilities</a
+                >
+              </p>
+              <br />
+
+              <p>Other links of interest...</p>
+              <p>
+                &#8226; Aladdin Systems for StuffIt Expander<br />
+                &#8226;
+                <a
+                  href="http://developer.apple.com/tools/mpw-tools/"
+                  target="_blank"
+                  onmouseover="self.status='Connect to Apple MPW page'; return true"
+                  >Apple</a
+                >
+                for the MPW development environment<br />
+                &#8226;
+                <a
+                  href="support.html"
+                  onmouseover="self.status='support'; return true"
+                  >product support page</a
+                >
+              </p>
+            </font>
+          </td>
+
+          <td class="body">
+            <font size="-1">
+              <p><b>H8 Emulator Release</b></p>
+              <p>
+                This page lets you download the current release of the emulator
+                and its source code, and a number of useful utilities. You can
+                also get the last release to run on Motorola 68K machines.
+              </p>
+
+              <hr />
+
+              <a name="terms"></a>
+              <p><b>Terms</b></p>
+              <p>
+                The H8 Emulator is being distributed as freeware. You may feel
+                free to redistribute the software as long as you don't charge
+                for it and you retain all the copyright notices. Please refer to
+                the Copyright notice at the top of the
+                <a
+                  href="legal.html"
+                  onmouseover="self.status='Go to legal page'; return true"
+                  >legal</a
+                >
+                page for details.
+              </p>
+
+              <p>For any other uses, please contact the author.</p>
+
+              <p>
+                <a
+                  href="#top"
+                  onmouseover="self.status='go to the top of this page'; return true"
+                  >go to top</a
+                >
+              </p>
+
+              <hr />
+
+              <a name="site"></a>
+              <p><b>Download This Site</b></p>
+              <p>
+                <span style="color: red;"
+                  >This site will be taken down on or about July 1.</span
+                >
+                The project has run its course and I need to free my AOL screen
+                names for other use. Near as I can tell based on how the counter
+                has been incrementing, I'm the only one accessing the site.
+              </p>
+              <p style="text-decoration: line-through;">
+                If you would like to have a copy of the site for continued
+                access to the design notes, etc., click<a
+                  href="http://home.comcast.net/site/error/error_404.html"
+                >
+                </a
+                >here to download a copy for installation on your computer.
+              </p>
+              <p style="text-decoration: line-through;">
+                Installation instructions:
+              </p>
+              <ol style="text-decoration: line-through;">
+                <li>
+                  Unzip the archive into an empty folder on your hard drive.
+                  (StuffIt Expander will unzip the file on Macintosh.)
+                </li>
+                <li>Open the file "index.html" with your web browser.</li>
+              </ol>
+              <p>
+                Please <b>do not</b> repost the site on another
+                publicly-available server. I retain my copyright over this
+                material; the downloaded pages are for your personal use only.
+              </p>
+
+              <hr />
+
+              <a name="release"></a>
+              <p><b>Current Release</b></p>
+              <p>Release 5.3.3a was posted to this site on 26-February-2003.</p>
+              <p>
+                Please review the
+                <a
+                  href="support.html#release"
+                  onmouseover="self.status='Go to release notes'; return true"
+                  >release notes</a
+                >
+                and
+                <a
+                  href="support.html#requirements"
+                  onmouseover="self.status='Go to system requirements'; return true"
+                  >system requirements</a
+                >, either on this site or in the help package. And be sure to
+                note how to
+                <a href="#archives">work with the release archives</a>.
+              </p>
+
+              <dl>
+                <dt>Release 5.3.3a Release Package</dt>
+                <dd>
+                  <p>The release package contains:</p>
+                  <ul type="disc">
+                    <li>the emulator itself;</li>
+                    <li>installation notes;</li>
+                    <li>the help system;</li>
+                    <li>demo PAM/8 "tapes";</li>
+                    <li>one "Extras" disk;</li>
+                    <li>and one bootable HDOS 2.0 disk.</li>
+                  </ul>
+
+                  <p style="text-decoration: line-through;">
+                    Release 5.3.3a Executable StuffIt archive (654K)
+                  </p>
+                </dd>
+
+                <dt>Operating System</dt>
+                <dd>
+                  <p>
+                    The release package does <b>not</b> include a complete
+                    operating system distribution. They are separate to reduce
+                    the size of the emulator download, and because the operating
+                    system doesn't change from release to release. Heck, it
+                    hasn't changed in over 20 years!
+                  </p>
+                  <p>
+                    If you haven't already downloaded an operating system, you
+                    should download one (or both) of the following packages.
+                  </p>
+
+                  <table cellpadding="2" cellspacing="0">
+                    <tbody>
+                      <tr align="left" valign="top">
+                        <td class="body">
+                          <font size="-1"
+                            ><p><b>HDOS 2.0</b> Release Disks (3)</p></font
+                          >
+                        </td>
+                        <td class="body">
+                          <font size="-1"><p>StuffIt format -</p></font>
+                        </td>
+                        <td class="body" align="right">
+                          <font size="-1"><p>144K</p></font>
+                        </td>
+                        <td class="body">
+                          <font size="-1"><p>Zip format -</p></font>
+                        </td>
+                        <td class="body" align="right">
+                          <font size="-1"><p>168K</p></font>
+                        </td>
+                      </tr>
+                      <tr align="left" valign="top">
+                        <td class="body">
+                          <font size="-1"
+                            ><p><b>HDOS 1.6</b> Release Disk</p></font
+                          >
+                        </td>
+                        <td class="body">
+                          <font size="-1"><p>StuffIt format -</p></font>
+                        </td>
+                        <td class="body" align="right">
+                          <font size="-1"><p>68K</p></font>
+                        </td>
+                        <td class="body">
+                          <font size="-1"><p>Zip format -</p></font>
+                        </td>
+                        <td class="body" align="right">
+                          <font size="-1"><p>88K</p></font>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <br />
+                </dd>
+
+                <dt>Source Code</dt>
+                <dd>
+                  <p>
+                    You do <b>not</b> need source code to use the emulator;
+                    download it only if you want to understand how the emulator
+                    works or to make modifications. The source is written for
+                    use with Apple's MPW development environment. The good news
+                    is that MPW is available at no cost from the Apple developer
+                    support web site; see the link to the left. The bad news is
+                    that it's a 25 M/byte download. Yow.
+                  </p>
+
+                  <p>Release 5.3.3a source code StuffIt archive (195K)</p>
+                </dd>
+
+                <dt>Motorola 68K Release</dt>
+                <dd>
+                  <p>
+                    <span style="color: rgb(255, 0, 0);"
+                      >This release is frozen.</span
+                    >
+                    I'm keeping a copy here for a time as a convenience to any
+                    68K-based Mac users. The source code for this release is
+                    written for the Metrowerks CodeWarrior development
+                    environment.
+                  </p>
+
+                  <p>Release 4.1.6 Executable StuffIt archive (480K)</p>
+                  <p>Release 4.1.6 source code StuffIt archive (176K)</p>
+                </dd>
+              </dl>
+
+              <p>
+                <a
+                  href="#top"
+                  onmouseover="self.status='go to the top of this page'; return true"
+                  >go to top</a
+                >
+              </p>
+
+              <hr />
+
+              <a name="archives"></a>
+              <p><b>Working with the archives</b></p>
+
+              <p>
+                The emulator release packages are supplied as StuffIt archives.
+                The release packages are also encoded in BinHex to preserve the
+                resource forks.
+              </p>
+              <p>
+                You will need StuffIt Deluxe or StuffIt Expander, release 5.5 or
+                better, to expand the archives. See the links to the left.
+                StuffIt Expander is free, and there are versions available for
+                both Macintosh and PC.
+              </p>
+              <p>
+                The operating systems and utility disks are available in both
+                StuffIt and Zip format. StuffIt Expander can expand both. PkZip,
+                WinZip, and numerous other PC utilities can expand Zip archives.
+              </p>
+
+              <p>
+                <a
+                  href="#top"
+                  onmouseover="self.status='go to the top of this page'; return true"
+                  >go to top</a
+                >
+              </p>
+            </font>
+            <hr />
+
+            <a name="util"></a>
+            <font size="-1"> </font>
+            <p>
+              <font size="-1"><b>HDOS Utilities</b></font>
+            </p>
+
+            <p>
+              <font size="-1"
+                >It's my intention to post here a collection of tools and
+                utilities for use on the H8. The collection is small and will
+                likely remain small. But if there's something that you remember
+                that you think I should post, please tell me about it and I'll
+                see what I can do.</font
+              >
+            </p>
+
+            <p>
+              <font size="-1">You can find these packages on this site:</font>
+            </p>
+
+            <table border="0" cellpadding="2" cellspacing="0">
+              <tbody>
+                <tr align="left" valign="top">
+                  <th>
+                    <font size="-1"><p>Package Description</p></font>
+                  </th>
+                  <th align="center">
+                    <font size="-1"><p>Updated</p></font>
+                  </th>
+                  <th colspan="4" align="center">
+                    <font size="-1"><p>Archive Format and Size</p></font>
+                  </th>
+                </tr>
+                <tr align="right" valign="top">
+                  <td align="left">
+                    <font size="-1"></font>
+                    <p>
+                      <font size="-1"
+                        ><a
+                          href="#renum"
+                          onmouseover="self.status='Read description'; return true"
+                          >BH Basic Renumber</a
+                        ></font
+                      >
+                    </p>
+                  </td>
+                  <td>
+                    <font size="-1"><p>10/23/2002</p></font>
+                  </td>
+                  <td>
+                    <font size="-1"><p>StuffIt</p></font>
+                  </td>
+                  <td align="left">
+                    <font size="-1"><p>- 40K</p></font>
+                  </td>
+                  <td>
+                    <font size="-1"><p>Zip</p></font>
+                  </td>
+                  <td align="left">
+                    <font size="-1"><p>- 44K</p></font>
+                  </td>
+                </tr>
+                <tr align="right" valign="top">
+                  <td align="left">
+                    <p>
+                      <font size="-1"
+                        ><a
+                          href="#dbug"
+                          onmouseover="self.status='Read description'; return true"
+                          >DBUG Console Mode fix</a
+                        ></font
+                      >
+                    </p>
+                  </td>
+                  <td>
+                    <font size="-1"><p>2/14/2002</p></font>
+                  </td>
+                  <td>
+                    <font size="-1"><p>StuffIt</p></font>
+                  </td>
+                  <td align="left">
+                    <font size="-1"><p>- 20K</p></font>
+                  </td>
+                  <td>
+                    <font size="-1"><p>Zip</p></font>
+                  </td>
+                  <td align="left">
+                    <font size="-1"><p>- 16K</p></font>
+                  </td>
+                </tr>
+                <tr align="right" valign="top">
+                  <td align="left">
+                    <p>
+                      <font size="-1"
+                        ><a
+                          href="#dump"
+                          onmouseover="self.status='Read description'; return true"
+                          >Disk Dumper</a
+                        ></font
+                      >
+                    </p>
+                  </td>
+                  <td>
+                    <font size="-1"><p>12/1/2002</p></font>
+                  </td>
+                  <td>
+                    <font size="-1"><p>StuffIt</p></font>
+                  </td>
+                  <td align="left">
+                    <font size="-1"><p>- 20K</p></font>
+                  </td>
+                  <td>
+                    <font size="-1"><p>Zip</p></font>
+                  </td>
+                  <td align="left">
+                    <font size="-1"><p>- 20K</p></font>
+                  </td>
+                </tr>
+                <tr align="right" valign="top">
+                  <td align="left">
+                    <p>
+                      <font size="-1"
+                        ><a
+                          href="#utilities"
+                          onmouseover="self.status='Read description'; return true"
+                          >HDOS 2.0 Utilities</a
+                        ></font
+                      >
+                    </p>
+                  </td>
+                  <td>
+                    <font size="-1"><p>10/23/2002</p></font>
+                  </td>
+                  <td>
+                    <font size="-1"><p>StuffIt</p></font>
+                  </td>
+                  <td align="left">
+                    <font size="-1"><p>- 44K</p></font>
+                  </td>
+                  <td>
+                    <font size="-1"><p>Zip</p></font>
+                  </td>
+                  <td align="left">
+                    <font size="-1"><p>- 64K</p></font>
+                  </td>
+                </tr>
+                <tr align="right" valign="top">
+                  <td align="left">
+                    <p>
+                      <font size="-1"
+                        ><a
+                          href="#patch"
+                          onmouseover="self.status='Read description'; return true"
+                          >HDOS 2.0 Patch Files</a
+                        ></font
+                      >
+                    </p>
+                  </td>
+                  <td>
+                    <font size="-1"><p>7/24/2002</p></font>
+                  </td>
+                  <td>
+                    <font size="-1"><p>StuffIt</p></font>
+                  </td>
+                  <td align="left">
+                    <font size="-1"><p>- 52K</p></font>
+                  </td>
+                  <td>
+                    <font size="-1"><p>Zip</p></font>
+                  </td>
+                  <td align="left">
+                    <font size="-1"><p>- 60K</p></font>
+                  </td>
+                </tr>
+                <tr align="right" valign="top">
+                  <td align="left">
+                    <p>
+                      <font size="-1"
+                        ><a
+                          href="#patch"
+                          onmouseover="self.status='Read description'; return true"
+                          >HDOS 1.6 Patch Files</a
+                        ></font
+                      >
+                    </p>
+                  </td>
+                  <td>
+                    <font size="-1"><p>7/24/2002</p></font>
+                  </td>
+                  <td>
+                    <font size="-1"><p>StuffIt</p></font>
+                  </td>
+                  <td align="left">
+                    <font size="-1"><p>- 20K</p></font>
+                  </td>
+                  <td>
+                    <font size="-1"><p>Zip</p></font>
+                  </td>
+                  <td align="left">
+                    <font size="-1"><p>- 16K</p></font>
+                  </td>
+                </tr>
+                <tr align="right" valign="top">
+                  <td align="left">
+                    <p>
+                      <font size="-1"
+                        ><a
+                          href="#driver"
+                          onmouseover="self.status='Read description'; return true"
+                          >HUG Enhanced SY: Device Driver</a
+                        ></font
+                      >
+                    </p>
+                  </td>
+                  <td>
+                    <font size="-1"><p>9/21/2002</p></font>
+                  </td>
+                  <td>
+                    <font size="-1"><p>StuffIt</p></font>
+                  </td>
+                  <td align="left">
+                    <font size="-1"><p>- 52K</p></font>
+                  </td>
+                  <td>
+                    <font size="-1"><p>Zip</p></font>
+                  </td>
+                  <td align="left">
+                    <font size="-1"><p>- 72K</p></font>
+                  </td>
+                </tr>
+                <tr align="right" valign="top">
+                  <td align="left">
+                    <p>
+                      <font size="-1"
+                        ><a
+                          href="#pie"
+                          onmouseover="self.status='Read description'; return true"
+                          >PIE 1.5b Text Editor</a
+                        ></font
+                      >
+                    </p>
+                  </td>
+                  <td>
+                    <font size="-1"><p>12/09/2001</p></font>
+                  </td>
+                  <td>
+                    <font size="-1"><p>StuffIt</p></font>
+                  </td>
+                  <td align="left">
+                    <font size="-1"><p>- 28K</p></font>
+                  </td>
+                  <td>
+                    <font size="-1"><p>Zip</p></font>
+                  </td>
+                  <td align="left">
+                    <font size="-1"><p>- 24K</p></font>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            <p>
+              <font size="-1"><a href="#top">go to top</a></font>
+            </p>
+
+            <dl>
+              <font size="-1"> </font>
+              <p><font size="-1">Package descriptions follow.</font></p>
+
+              <font size="-1"
+                ><a name="renum"></a>
+                <dt>Benton Harbor Basic Renumber</dt>
+
+                <dd>
+                  <p>
+                    This disk contains a handy stand-alone utility that will
+                    renumber Benton Harbor Basic programs. RENUM properly
+                    ignores remark statements and quoted strings, and renumbers
+                    CNTRL 0 statements. A strategy is included for handling the
+                    LNO() function.
+                  </p>
+                  <p>
+                    A major benefit of RENUM is its ability to renumber a
+                    program written with no line numbers except those that are
+                    necessary targets of jumps, and those numbers do not need to
+                    be in order. This allows the easy construction of BH Basic
+                    programs using a text editor, allowing code to be inserted
+                    or moved at will.
+                  </p>
+                  <p><a href="#util">back to utilities list</a></p>
+
+                  <a name="dbug"></a>
+                </dd>
+                <dt>DBUG Console mode fix</dt>
+
+                <dd>
+                  <p>
+                    I remember this problem as being very irritating 20 years
+                    ago but very easy to find and fix, since I had the source
+                    listings. 20 years later, it's still irritating. But much
+                    harder to find and fix.
+                  </p>
+                  <p>
+                    dbug changes the console mode to character mode, no echo.
+                    Its command structure depends on these settings. dbug is
+                    supposed to restore the target program's console mode on a
+                    Go or Step command, save it on return to dbug, and restore
+                    its own while you are in command mode. But a misplaced RET
+                    instruction causes it to try to run with the user's console
+                    mode after returning from a Step.
+                  </p>
+                  <p>
+                    Simple work-around: type "40326=201 " and press return after
+                    every step (note the space after the "201"). Ugh.
+                  </p>
+                  <p>
+                    Better fix: slide a short routine up one byte in memory and
+                    put that RET where it belongs. Then fix the address of one
+                    call to the moved routine. That's what was done to the
+                    version of dbug.abs that's on this disk. There's a text file
+                    on the disk that describes the process in more detail, and
+                    includes the tests to run to verify that things are working
+                    as they are supposed to be after the surgery.
+                  </p>
+                  <p><a href="#util">back to utilities list</a></p>
+                </dd>
+
+                <a name="dump"></a>
+                <dt>Disk Dumper</dt>
+
+                <dd>
+                  <p>
+                    If you have a working H8 or H89, here's a utility you can
+                    use to export your H-17 disks to portable format for use
+                    with the emulator. The exported disks will work with Dave
+                    Wallace's Virtual H8 as well. This is assembler source code
+                    that will need to be moved to your H8/H89 and assembled.
+                  </p>
+
+                  <p>
+                    Disk Dumper will dump any of the standard H-17 disk formats:
+                  </p>
+
+                  <ul type="disc">
+                    <li>100K disks formatted under HDOS 1.6;</li>
+                    <li>
+                      40 track, 1 sided disks used with the standard HDOS SY:
+                      driver;
+                    </li>
+                    <li>
+                      40- and 80-track, single and double-sided disks used with
+                      the HUG replacement SY: driver.
+                    </li>
+                  </ul>
+                  <p>
+                    Version 2.0 skips sectors marked to be skipped in RGT.SYS,
+                    substituting zeros for the skipped sectors. It correctly
+                    handles most I/O errors, supplying sector fill based on the
+                    type of the file. (The files RGT.SYS, GRT.SYS, the label,
+                    and the active part of the directory must be error free or
+                    the dump will fail.) And it supplies useful disk
+                    documentation in the converted disk image.
+                  </p>
+                  <p>
+                    Version 2.1 adds a check byte comment following each dumped
+                    sector. This check byte is compared with the check byte
+                    calculated by the emulator v5.3.0 or higher and a message is
+                    displayed if the check bytes don't match. This gives the
+                    user some assurance that the dumped disk image was
+                    transferred correctly to the emulator.
+                  </p>
+
+                  <p>
+                    You will need to interface another computer (Mac or PC) to
+                    an H8/H89 serial port in order to capture the dumped disk
+                    image. Instructions are provided.
+                  </p>
+                  <p><a href="#util">back to utilities list</a></p>
+                </dd>
+
+                <a name="utilities"></a>
+                <dt>HDOS 2.0 Utilities</dt>
+
+                <dd>
+                  <p>
+                    Useful HDOS 2.0 Utilities. This includes two versions of a
+                    helpful prologue.sys application and a disk statistics
+                    display program that mimics the 'stat' command from HDOS
+                    1.6.
+                  </p>
+                  <p>
+                    There is also a very useful utility that displays a disk
+                    file in octal and ASCII dump format and allows you to scroll
+                    and browse. If the file happens to be in .ABS format, the
+                    displacements shown match the runtime load addresses, making
+                    it very easy to follow program logic. This had a bug, kindly
+                    found and fixed by
+                    <a
+                      href="resources.html#credits"
+                      onmouseover="self.status='Go to credits'; return true"
+                      >Stanley Webb</a
+                    >, that treated DEL as a printable character.
+                  </p>
+                  <p>
+                    Finally, there's a little tool that lets you change the
+                    PAM/8 display from the command line.
+                  </p>
+                  <p><a href="#util">back to utilities list</a></p>
+                </dd>
+
+                <a name="patch"></a>
+                <dt>HDOS Patch Files (for both HDOS 2.0 and HDOS 1.6)</dt>
+
+                <dd>
+                  <p>
+                    Here is a collection of patch files that were originally
+                    published by HUG, provided to me by
+                    <a
+                      href="resources.html#credits"
+                      onmouseover="self.status='Go to credits'; return true"
+                      >Stanley Webb</a
+                    >. They fix problems and add features to the various utility
+                    and applications programs that are a part of HDOS. One, for
+                    example, provides the official HUG patch to the debugger to
+                    correct the console mode problem (see Console Mode Fix
+                    below).
+                  </p>
+                  <p>
+                    Stanley also included a patch that he developed for HDOS 2.0
+                    that removes the offset-70 date bias, allowing years from 00
+                    through 99 to be entered and displayed.
+                  </p>
+
+                  <p>
+                    These are supplied as text files on an H-17 portable disk
+                    image. The 24-Jul-2002 update corrects a type-o in one of
+                    the HDOS 2.0 patch files, and includes the patched version
+                    of several of the .abs files for your convenience. The HDOS
+                    1.6 disk image was not updated.
+                  </p>
+                  <p>As always, patch a copy and test carefully.</p>
+                  <p><a href="#util">back to utilities list</a></p>
+                </dd>
+
+                <a name="driver"></a>
+                <dt>HUG Enhanced SY: Device Driver</dt>
+
+                <dd>
+                  <p>
+                    I am distributing this driver with the written permission of
+                    the author,
+                    <a
+                      href="resources.html#credits"
+                      onmouseover="self.status='Go to credits'; return true"
+                      >Dean K. Gibson</a
+                    >. Please note Dean's copyright notices in the source code
+                    and documentation.
+                  </p>
+                  <p>
+                    This driver is necessary if you want to increase the
+                    capacity of your emulated disk drives by supporting
+                    double-sided and 80-track drives. There are significant
+                    performance improvements as well. And the driver will boot
+                    and operates perfectly when the clock speed is set faster
+                    than 2 mhz.
+                  </p>
+                  <p>
+                    But beware: Installation is a non-trivial, multi-step
+                    process. Make sure you read all the supplied documentation
+                    carefully and think out the implications of the drive
+                    configuration you settle on. And work with temporary disks
+                    until you have tested the configuration.
+                  </p>
+                  <p>
+                    The package includes a Disk Configuration utility that I
+                    wrote that displays the configuration of the drives and the
+                    characteristics of mounted media, when used with the HUG SY:
+                    driver:
+                  </p>
+
+                  <pre>
+    &gt;dc<br /><br />    H17 Drive Configuration v1.2<br />    HUG Enhanced SY: Driver is installed<br /><br />          ----Drive----   --------Disk--------	 ------Free------<br />          Tracks  Sides   Tracks  Sides    SPG	 Clusters Sectors<br />    SY0:    40	    2	    40	    2	    4	     98     392<br />    SY1:    40	    2	    40	    1	    2	    113     226<br />    SY2:    80	    2	    40	    2	    4	     13      52 *<br /><br />    * Compatibility Mode - disk can be read, not written.<br
+                  /></pre>
+                  <p><a href="#util">back to utilities list</a></p>
+                </dd>
+
+                <a name="pie"></a>
+                <dt>PIE 1.5b Text Editor</dt>
+
+                <dd>
+                  <p>
+                    I am distributing this version of PIE with written
+                    permission from the original author,
+                    <a
+                      href="resources.html#credits"
+                      onmouseover="self.status='Go to credits'; return true"
+                      >Thomas Crosley</a
+                    >, and
+                    <a
+                      href="resources.html#credits"
+                      onmouseover="self.status='Go to credits'; return true"
+                      >Walt Bilofsky</a
+                    >
+                    of
+                    <a href="http://www.toolworks.com/"
+                      >The Software Toolworks</a
+                    >, who adapted the program to HDOS.
+                  </p>
+                  <p>
+                    PIE8 works perfectly with the emulator, and is stupendously
+                    better than (shudder) edit.abs, which came with HDOS. I
+                    <b>highly</b> recommend that you download this disk!
+                  </p>
+                  <p><a href="#util">back to utilities list</a></p>
+                </dd></font
+              >
+            </dl>
+
+            <font size="-1">
+              <p>
+                <a
+                  href="#top"
+                  onmouseover="self.status='go to the top of this page'; return true"
+                  >go to top</a
+                >
+              </p>
+            </font>
+            <br />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Footer area -- common to all pages -->
+
+    <hr />
+    <div class="c1">
+      <font size="-1">
+        <a
+          href="index.html"
+          onmouseover="self.status='Go to Heath8080A home page'; return true"
+          >home</a
+        >
+        &nbsp;
+        <a
+          href="release.html"
+          onmouseover="self.status='Go to release page'; return true"
+          >release</a
+        >
+        &nbsp;
+        <a
+          href="support.html"
+          onmouseover="self.status='Go to support page'; return true"
+          >support</a
+        >
+        &nbsp;
+        <a
+          href="design.html"
+          onmouseover="self.status='Go to design page'; return true"
+          >design</a
+        >
+        &nbsp;
+        <a
+          href="resources.html"
+          onmouseover="self.status='Go to resources page'; return true"
+          >resources</a
+        >
+        &nbsp;
+        <a
+          href="legal.html"
+          onmouseover="self.status='Go to legal page'; return true"
+          >legal</a
+        >
+        &nbsp;
+        <a
+          href="sitemap.html"
+          onmouseover="self.status='Go to site map'; return true"
+          >site map</a
+        >
+        &nbsp;
+      </font>
+    </div>
+    <hr />
+    <br />
+
+    <!-- Mirrored from davidwallace2000.home.comcast.net/~davidwallace2000/h8/project8080_archive/release.html by HTTrack Website Copier/3.x [XR&CO'2010], Mon, 10 Sep 2012 13:15:12 GMT -->
+  </body>
+</html>
