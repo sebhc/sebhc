@@ -1,12 +1,25 @@
 # ZILOG MCZ 8 BIT COMPUTERS
 
-![MCZ IMAGE](pics/MCZPIC.png)
-MCB cpu board (required)  
+![MCZ IMAGE](pics/MCZPIC.png)  
+  
+Front view with installed cards (right to left: MCB,MDC2,SIB - note the required slot locations for each card)  
+![MCZ FRONT](pics/PDS-MOD5-FRONT-OPEN-Z8000.JPG)  
+  
+Drive 1 board configuration (addressed as drive **0** in the RIO OS)  
+![MCZ DS0](pics/PDS-MOD5-DS0.JPG)  
+  
+Drive 2 board configuration (addressed as drive **2** in the RIO OS - note the 4 terminator jumpers)  
+![MCZ DS1](pics/PDS-MOD5-DS1.JPG)  
+  
+MCB cpu board (required for functional system)  
 ![MCB IMAGE](pics/PCB01MCBREVE.png)  
-MDC floppy disk controller with 48K RAM (required)  
+  
+MDC floppy disk controller with 48K RAM (required for functional system)  
 ![MDC IMAGE](pics/PCB03MDC2.png)  
+  
 SIB multi serial port board (optional)  
 ![SIB IMAGE](pics/PCB04SIB.png)  
+  
 Z8000 development board (optional)  
 ![Z8000 IMAGE](pics/PCB05Z8000.png)  
   
