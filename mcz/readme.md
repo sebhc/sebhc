@@ -26,4 +26,32 @@
 - currently in development
 
 # DEV NOTES
-..coming soon  
+Read from TTY console:  
+```asm
+SERDAT:	EQU	0DEH
+SERCON:	EQU	0DFH
+RXRDY:	EQU	1
+
+TTYIN:  IN 	A,(SERCON)
+	BIT	RXRDY,A
+	JR	Z,TTYIN	; NOT READY YET.
+	IN	A,(SERDAT)
+```  
+  
+Write to TTY console:
+```asm
+SERDAT:	EQU	0DEH
+SERCON:	EQU	0DFH
+TXRDY:  EQU 0
+
+TTYOUT:	
+	PUSH	AF
+TTYOU1:
+	IN	A,(SERCON)
+	BIT	TXRDY,A
+	JR	Z,TTYOU1
+	POP	AF
+	OUT	(SERDAT),A
+```
+
+![DISK FORMAT](pics/DSKFMT.png)
