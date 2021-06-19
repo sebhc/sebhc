@@ -1,6 +1,16 @@
 # ZILOG MCZ 8 BIT COMPUTERS
 
 ![MCZ IMAGE](pics/MCZPIC.png)
+MCB cpu board (required)  
+![MCB IMAGE](pics/PCB01MCBREVE.png)  
+MDC floppy disk controller with 48K RAM (required)  
+![MDC IMAGE](pics/PCB03MDC2.png)  
+SIB multi serial port board (optional)  
+![SIB IMAGE](pics/PCB04SIB.png)  
+Z8000 development board (optional)  
+![Z8000 IMAGE](pics/PCB05Z8000.png)  
+  
+# DOCUMENTATION
   
 [MCZ-1/20 Hardware Users Manual](docs/03-0018-02_MCZ-1_20_25_Hardware_Users_Manual.pdf)  
 [MCZ-1/20 MDC Hardware Reference Manual](docs/03-3006-02_Z-80_MDC_Hardware_Reference_Manual.pdf)  
@@ -19,7 +29,7 @@
 - 13-3361-06 MCZ/PDS FLOPPY DISK Z8 SDP 4.0
 - 13-3391-03 ASYNC MCZ 1/PDS FD SYSTEM REL 1.1  
 - RIO 2.2 PDS8000 MCZ 1/20 SYSTEM DISK
-- SYSTEM (4 DISK SET)
+- SYSTEM (DEV SOFTWARE FOR Z8000 - 4 DISK SET)
 - RIO 2.06 SYSTEM DISK WITH ZILOG BASIC
 
 # DISK IMAGING SOFTWARE
