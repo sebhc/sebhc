@@ -26,7 +26,7 @@
 - currently in development
 
 # DEV NOTES
-Read from TTY console:  
+**Read from TTY console**  
 ```asm
 SERDAT:	EQU	0DEH
 SERCON:	EQU	0DFH
@@ -34,11 +34,11 @@ RXRDY:	EQU	1
 
 TTYIN:  IN 	A,(SERCON)
 	BIT	RXRDY,A
-	JR	Z,TTYIN	; NOT READY YET.
+	JR	Z,TTYIN		; NOT READY YET.
 	IN	A,(SERDAT)
 ```  
   
-Write to TTY console:
+**Write to TTY console**  
 ```asm
 SERDAT:	EQU	0DEH
 SERCON:	EQU	0DFH
@@ -55,3 +55,46 @@ TTYOU1:
 ```
 
 ![DISK FORMAT](pics/DSKFMT.png)
+  
+**Read a sector**  
+```asm
+RD_DAT  EQU     04H
+TIM256  EQU     61
+DSKDAT	EQU	0CFH
+DSKCOM	EQU	0D0H
+DSSTAT	EQU	0D0H
+
+RDSECT: LD	HL,(BFFADD)	; GET USER DATA AREA.
+        PUSH	HL
+        LD	HL,DS_BUF	; ADDRESS OF SECTOR ADDRESS.
+        LD	A,RD_DAT	; PREPARE TO TURN ON READ AMP.
+        LD	B,TIM256
+
+;       175 T-STATES FROM INTERRUPT
+
+        DJNZ	$		; TIME OUT
+        OUT	(DSKCOM),A
+        LD	BC,8000H+DSKDAT	; 128 BYTES OF SECTOR DATA
+
+; 400 USECS FROM INTERRUPT
+
+        IN	A,(DSKDAT)	; INPUT SECTOR ADDRESS.
+        CP	(HL)		; COMPARE IT.
+        POP	HL		; GET DATA ADDRESS.
+        IN	A,(DSKDAT)	; INPUT TRACK ADDRESS.
+        JP	NZ,WRNGSC
+READIT: INI			; READ 80H BYTES OF DATA
+        NOP
+        NOP
+        NOP
+        JR	NZ,READIT
+        LD	HL,PTRS		; INPUT THE POINTERS.
+        INI
+        LD	B,5
+        INIR
+        IN	A,(DSSTAT)	; CHECK FOR CRC ERROR.
+        BIT	CRC,A
+        LD	A,B		; SET A TO ZERO TO
+        OUT	(DSKCOM),A	; TURN OFF READ.
+        JR	NZ,BADCRC
+```
