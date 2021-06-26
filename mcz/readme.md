@@ -55,6 +55,38 @@ Z8000 development board (optional)
 - [Z8000 DEV MODULE](https://drive.google.com/file/d/1kuacpstJnPm3lpgMFJbeiQ7lnvP4F5DP/view?usp=sharing)
 
 # DISK IMAGING SOFTWARE
+[Host Software V1.0 For OSX](https://drive.google.com/file/d/1I4U-7W6jX-aeH2_-ah2K8iyhC4_YRwpQ/view?usp=sharing)  
+[MCZIMAGER.S Z80 Assembly Language Source File](software/MCZIMAGER.S)  
+  
+How to use the MCZIMAGER software:  
+1. (MCZ) Boot your MCZ computer to RIO
+2. (MCZ) At the RIO prompt (%) type "EDIT MCZIMAGER.S"
+3. (MCZ) You should see a notification that a new file is being edited
+4. (HOST) From the HOST software click on "SEND TXT" and choose the MCZIMAGER.S ASM source file (from above link)
+5. (HOST) The HOST will begin "typing" in the source file into the MCZ line editor
+6. (MCZ) When done press ENTER and you should see the editor prompt ">"
+7. (MCZ) Now type "QUIT" at the editor prompt to write the file to disk
+8. (MCZ) At the RIO prompt (%) type: ASM MCZIMAGER.S
+9. (MCZ) The Z80 Assembler will begin compiling the source file into object code
+10. (MCZ) When done it should report "0 errors"
+11. (MCZ) At the RIO prompt (%) type: LINK $=4400 MCZIMAGER
+12. (MCZ) Now the linker will begin creating an executable program called MCZIMAGER
+13. (MCZ) When done you should now have a program called MCZIMAGER on your MCZ system disk
+14. (MCZ) At the RIO prompt (%) type: MCZIMAGER
+15. (HOST) Create a disk image of your system disk by clicking on the "READ IMG" button
+16. (HOST) Each track of the disk in drive 0 will begin to transfer to the HOST
+17. (HOST) When the last track is transferred save the file to your desktop
+
+  
+1. **To WRITE an image to a floppy disk:**
+2. (MCZ) Launch MCZIMAGER on the MCZ computer if it is not already running
+3. (MCZ) Remove the disk from drive 0 (so it does not get overwritten)
+4. (MCZ) Insert a blank RIO formatted disk in drive 0
+5. (HOST) On the HOST click on the SEND IMG button
+6. (HOST) Choose a disk image to transfer to the MCZ computer
+7. (HOST) When a file is selected the track-by-track transfer will begin
+8. (MCZ) When done the disk in drive 0 will contain the contents of the disk image file
+  
 - 6/24/2021 working disk imaging solution with some caveats
 - As of 6/24/2021 I can read disks and create digital copies including back/forward file pointers
 - As of 6/24/2021 I can write disk images to a floppy on the MCZ system
