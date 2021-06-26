@@ -39,12 +39,19 @@ Z8000 development board (optional)
 - [13-1000-01 UNABRIDGED SYSTEM DISK](https://drive.google.com/file/d/1S8CdG0heZX6rx3Lu4Yhft_gOVtjvQO3g/view?usp=sharing)
 - [13-3001-01 MCZ 1/05 1/20 1/25 1/30 RIO OPERATING SYSTEM](https://drive.google.com/file/d/1lxR58Ioxn_rV4gfGed1RWfSN5SNofkwC/view?usp=sharing)
 - [13-3001-03 MCZ RIO 2.2 WITH MCZIMAGER AND BASIC](https://drive.google.com/file/d/1qn5fDMmVz75WKUL_7HKzWmwiM-IDD1iZ/view?usp=sharing)
+- [13-3001-03 MCZ/PDS RIO 2.2](https://drive.google.com/file/d/12AsWyJgidSBs8qwPeehfMdyAvEYc4_Nv/view?usp=sharing)
 - [13-3309-05 MCZ/PDS FLOPPY DISK Z8000 SDP 3.0](https://drive.google.com/file/d/1dPCjObwaHzy8frUUW2HsT1oG9Zo23pXo/view?usp=sharing)
 - [13-3361-06 MCZ/PDS FLOPPY DISK Z8 SDP 4.0](https://drive.google.com/file/d/1NoaU3jMIE_HGKojCwaUJ6-3J85oi17aZ/view?usp=sharing)
-- 13-3391-03 ASYNC MCZ 1/PDS FD SYSTEM REL 1.1  
+- [13-3391-03 ASYNC MCZ 1/PDS FD SYSTEM REL 1.1](https://drive.google.com/file/d/1j5vn7_MgA3J5fTIL2R7T6lwrLziEWqBq/view?usp=sharing)
 - [RIO 2.2 PDS8000 MCZ 1/20 SYSTEM DISK](https://drive.google.com/file/d/1GXXkUx8c5iuZNeWE2ZX732U0AsFuD3TK/view?usp=sharing)
-- SYSTEM (DEV SOFTWARE FOR Z8000 - 4 DISK SET)
-- RIO 2.06 SYSTEM DISK WITH ZILOG BASIC
+- [SYSTEM (DEV SOFTWARE FOR Z8000 - 1 OF 4)](https://drive.google.com/file/d/1Dcsd-38Wq5MzV1vkYWjHhNE3PtAXvzvR/view?usp=sharing)
+- [SYSTEM (DEV SOFTWARE FOR Z8000 - 2 OF 4)](https://drive.google.com/file/d/1fTGEOyvsGMFwBxHb-6tkocO4zJlBHH7O/view?usp=sharing)
+- [SYSTEM (DEV SOFTWARE FOR Z8000 - 3 OF 4)](https://drive.google.com/file/d/17OHB0qkfkceu39YZDeohybeWXgP_rd6d/view?usp=sharing)
+- [SYSTEM (DEV SOFTWARE FOR Z8000 - 4 OF 4)](https://drive.google.com/file/d/1J8_X7wnGGqapTyQAjRGW7n-IMwLiRBfC/view?usp=sharing)
+- [Z8000 ASM](https://drive.google.com/file/d/1DcKXiebNaZmLAqRVR2I8HIPpLGz2e5Ds/view?usp=sharing)
+- [Z8000 BACKUP](https://drive.google.com/file/d/1ju-9qQ9mMlZd72wH3_2eotzPv3F93HAT/view?usp=sharing)
+- [Z8000 DEV MODULE SOURCE](https://drive.google.com/file/d/1CRevT1DjZgiZUNM5yZnOlTRbYYkOP71m/view?usp=sharing)
+- [Z8000 DEV MODULE](https://drive.google.com/file/d/1kuacpstJnPm3lpgMFJbeiQ7lnvP4F5DP/view?usp=sharing)
 
 # DISK IMAGING SOFTWARE
 - 6/24/2021 working disk imaging solution with some caveats
