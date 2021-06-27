@@ -58,6 +58,10 @@ Z8000 development board (optional)
 [Host Software V1.0 For OSX](https://drive.google.com/file/d/1vN9gfXpg1oHRtHYmax2SpriUPYqASEiV/view?usp=sharing)  
 [MCZIMAGER.S Z80 Assembly Language Source File](software/MCZIMAGER.S)  
   
+The host software has a built-in Heathkit H19 terminal emulator for connecting to the MCZ computer. Just plug
+in your computer to the terminal port of the MCZ computer via a USB to serial port cable then choose to connect
+using the USB serial port device. You should now be able to type in commands and receive text from the MCZ computer.  
+  
 How to use the MCZIMAGER software:  
 1. (MCZ) Boot your MCZ computer to RIO
 2. (MCZ) At the RIO prompt (%) type "EDIT MCZIMAGER.S"
