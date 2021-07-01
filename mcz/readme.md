@@ -96,9 +96,6 @@ How to use the MCZIMAGER software:
 - As of 6/24/2021 I can write disk images to a floppy on the MCZ system
 - Caveats:
 - Currently requires a RIO bootable system and will only write to preformatted RIO disks
-- Plan moving forward:
-- Convert FORMAT program to binary hex so can upload using MCZ debug console so can format disks (does not work - requires RIO OS functions)
-- Convert MCZIMAGER client to binary hex so can upload using MCZ debug console so can receive disk images and write to floppy disk
 - Imager currently uses MCZ console serial port to send/receive disk images
 - Host software is written in Unity C# so can port to pretty much all platforms (Linux, OSX, PC)
 
