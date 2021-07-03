@@ -55,50 +55,63 @@ Z8000 development board (optional)
 - [Z8000 DEV MODULE](https://drive.google.com/file/d/1kuacpstJnPm3lpgMFJbeiQ7lnvP4F5DP/view?usp=sharing)
 
 # DISK IMAGING SOFTWARE
-[Host Software V1.0 For OSX](https://drive.google.com/file/d/1vN9gfXpg1oHRtHYmax2SpriUPYqASEiV/view?usp=sharing)  
+[Host Software for OS X](https://drive.google.com/file/d/1vN9gfXpg1oHRtHYmax2SpriUPYqASEiV/view?usp=sharing)  
+[Host Software for Windows x64](https://drive.google.com/file/d/13KzslJgTaaXtDMLhdkHzPB4BdWDIiiaX/view?usp=sharing)  
+[Host Software for Linux x64](https://drive.google.com/file/d/1b-9KkMlEc3CboC27UF4KFiXcicf9oaLZ/view?usp=sharing)  
 [MCZIMAGER.S Z80 Assembly Language Source File](software/MCZIMAGER.S)  
   
 The host software has a built-in Heathkit H19 terminal emulator for connecting to the MCZ computer. Just plug
 in your computer to the terminal port of the MCZ computer via a USB to serial port cable then choose to connect
 using the USB serial port device. You should now be able to type in commands and receive text from the MCZ computer.  
   
-How to use the MCZIMAGER software:  
-1. (MCZ) Boot your MCZ computer to RIO
-2. (MCZ) At the RIO prompt (%) type "EDIT MCZIMAGER.S"
-3. (MCZ) You should see a notification that a new file is being edited
-4. (HOST) From the HOST software click on "SEND TXT" and choose the MCZIMAGER.S ASM source file (from above link)
-5. (HOST) The HOST will begin "typing" in the source file into the MCZ line editor
-6. (MCZ) When done press ENTER and you should see the editor prompt ">"
-7. (MCZ) Now type "QUIT" at the editor prompt to write the file to disk
-8. (MCZ) At the RIO prompt (%) type: ASM MCZIMAGER.S
-9. (MCZ) The Z80 Assembler will begin compiling the source file into object code
-10. (MCZ) When done it should report "0 errors"
-11. (MCZ) At the RIO prompt (%) type: LINK $=4400 MCZIMAGER
-12. (MCZ) Now the linker will begin creating an executable program called MCZIMAGER
-13. (MCZ) When done you should now have a program called MCZIMAGER on your MCZ system disk
-14. (MCZ) At the RIO prompt (%) type: MCZIMAGER
-15. (HOST) Create a disk image of your system disk by clicking on the "READ IMG" button
-16. (HOST) Each track of the disk in drive 0 will begin to transfer to the HOST
-17. (HOST) When the last track is transferred save the file to your desktop
-
+**How to use the MCZIMAGER software:**
+1. (HOST) Launch the MCZImagerHOST software and connect via USB serial port to the MCZ computer
+2. (MCZ) Turn on your MCZ computer and press RESET until you see the debug console prompt '>'
+3. (HOST) Turn off Safe Mode in the MCZImager HOST software (uncheck the box)
+4. (HOST) Click the "SEND IMAGER" button and click "OK" on the notification panel
+5. (HOST) The host software will begin to "type" in the hex code for the MCZImager and then it will execute the program on the MCZ computer
+6. (MCZ) Make sure there is a blank disk in drive 0 of the MCZ computer
+7. (HOST) Click the "SEND IMG" button then choose a RIO OS disk image (download from above)
+8. (HOST) Click OK on the warning panel that the disk in drive 0 will be overwritten
+9. (MCZ) When done uploading and writing the disk image to the floppy drive you can now press RESET and press ENTER to boot to the RIO OS
   
-1. **To WRITE an image to a floppy disk:**
-2. (MCZ) Launch MCZIMAGER on the MCZ computer if it is not already running
-3. (MCZ) Remove the disk from drive 0 (so it does not get overwritten)
-4. (MCZ) Insert a blank RIO formatted disk in drive 0
-5. (HOST) On the HOST click on the SEND IMG button
-6. (HOST) Choose a disk image to transfer to the MCZ computer
-7. (HOST) When a file is selected the track-by-track transfer will begin
-8. (MCZ) When done the disk in drive 0 will contain the contents of the disk image file
+**To build the MCZImager program on the MCZ computer:**
+1. (HOST) Launch the MCZImagerHOST software
+2. (MCZ) Boot your MCZ computer to RIO
+3. (MCZ) At the RIO prompt (%) type "EDIT MCZIMAGER.S"
+4. (MCZ) You should see a notification that a new file is being edited
+5. (HOST) From the HOST software click on "SEND TXT" and choose the MCZIMAGER.S ASM source file (from above link)
+6. (HOST) The HOST will begin "typing" in the source file into the MCZ line editor
+7. (MCZ) When done press ENTER and you should see the editor prompt ">"
+8. (MCZ) Now type "QUIT" at the editor prompt to write the file to disk
+9. (MCZ) At the RIO prompt (%) type: ASM MCZIMAGER.S
+10. (MCZ) The Z80 Assembler will begin compiling the source file into object code
+11. (MCZ) When done it should report "0 errors"
+12. (MCZ) At the RIO prompt (%) type: LINK $=4400 MCZIMAGER
+13. (MCZ) Now the linker will begin creating an executable program called MCZIMAGER
+14. (MCZ) When done you should now have a program called MCZIMAGER on your MCZ system disk
+15. (MCZ) At the RIO prompt (%) type: MCZIMAGER
+16. (HOST) Create a disk image of your system disk by clicking on the "READ IMG" button
+17. (HOST) Each track of the disk in drive 0 will begin to transfer to the HOST
+18. (HOST) When the last track is transferred save the file to your desktop
   
-- 6/24/2021 working disk imaging solution with some caveats
+  
+**To WRITE an image to a floppy disk:**
+1. (MCZ) Launch MCZIMAGER on the MCZ computer if it is not already running
+2. (MCZ) Remove the disk from drive 0 (so it does not get overwritten)
+3. (MCZ) Insert a blank RIO formatted disk in drive 0
+4. (HOST) On the HOST click on the SEND IMG button
+5. (HOST) Choose a disk image to transfer to the MCZ computer
+6. (HOST) When a file is selected the track-by-track transfer will begin
+7. (MCZ) When done the disk in drive 0 will contain the contents of the disk image file
+  
+- 7/3/2021 working disk imaging solution
+- 7/3/2021 can create a bootable disk on a system with no access to software  
 - As of 6/24/2021 I can read disks and create digital copies including back/forward file pointers
 - As of 6/24/2021 I can write disk images to a floppy on the MCZ system
-- Caveats:
-- Currently requires a RIO bootable system and will only write to preformatted RIO disks
-- Imager currently uses MCZ console serial port to send/receive disk images
+- Imager currently uses MCZ terminal serial port to send/receive disk images (no other serial port is needed)
 - Host software is written in Unity C# so can port to pretty much all platforms (Linux, OSX, PC)
-
+  
 # DEV NOTES
 **Some of the problems I had to solve while developing the imager software**
   
