@@ -492,3 +492,6 @@ WASEC1:
 **MCZ PROM LISTING**  
 [MCZ PROM SOURCE LISTING](src/MCZ.PROM.78089.L)  
 [MCZ PROM SOURCE CODE](src/MCZ.PROM.78089.S)  
+  
+More info about **Zilog MCZ** systems can be found at Herb Johnson's web site:
+[retrotechnology.com](https://www.retrotechnology.com/restore/zilog.html)
