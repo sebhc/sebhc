@@ -58,7 +58,14 @@ Z8000 development board (optional)
 [Host Software for OS X](https://drive.google.com/file/d/1vN9gfXpg1oHRtHYmax2SpriUPYqASEiV/view?usp=sharing)  
 [Host Software for Windows x64](https://drive.google.com/file/d/13KzslJgTaaXtDMLhdkHzPB4BdWDIiiaX/view?usp=sharing)  
 [Host Software for Linux x64](https://drive.google.com/file/d/1b-9KkMlEc3CboC27UF4KFiXcicf9oaLZ/view?usp=sharing)  
+[Host Software Unity C# Source Code](https://drive.google.com/file/d/1il-U8H9HPVprYwmn-_M73DYB2V7kkWYj/view?usp=sharing)  
+- Built on top of my Heathkit H19 terminal emulator (included)
+- Unzip the file to a folder
+- Download Unity 2020.3.7f1
+- Point Unity to folder and load Assets/H19/Scenes/main.unity
+- MCZImagerHost source is in Assets/MCZImager/Code/MCZImager.cs
 [MCZIMAGER.S Z80 Assembly Language Source File](software/MCZIMAGER.S)  
+- This is the Zilog MCZ side of the imaging software - it handles reading/writing the disks.
   
 The host software has a built-in Heathkit H19 terminal emulator for connecting to the MCZ computer. Just plug
 in your computer to the terminal port of the MCZ computer via a USB to serial port cable then choose to connect
