@@ -514,7 +514,7 @@ WASEC1:
 [MCZ PROM SOURCE LISTING](src/MCZ.PROM.78089.L)  
 [MCZ PROM SOURCE CODE](src/MCZ.PROM.78089.S)  
   
-More info about **Zilog MCZ** systems can be found at the following links:
+More info about **Zilog MCZ** systems can be found at the following links:  
 [Herb Johnson's retrotechnology.com](https://www.retrotechnology.com/restore/zilog.html)  
 [Vintage Computer Exhibit Canada](https://vintagecomputer.ca/zilog-z80-development-system/)  
 [RIO & PLZ reloaded](http://rio.early8bitz.de/index.htm)  
