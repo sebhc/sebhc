@@ -57,6 +57,9 @@ Z8000 development board (optional)
 # DISK IMAGING SOFTWARE
 Disk images are saved in the **MCZ disk format**. The format is defined as follows:  
 Sector: **(1 byte sector number) (1 byte track number) (128 bytes data) (2 byte back ptr) (2 byte fwd ptr) (2 byte crc)** (136 bytes)  
+(**NOTE**: Sector number always has the high bit set. It is the start bit marker so the hardware, after reading all zeros in the preamble,  
+  can detect the start of data. So sector 0 will actually be 80H and sector 31 will be 9FH on the disk. This is followed by the track  
+  number ranging from 0 to 76)  
 One track: 32 sectors (4,352 bytes)  
 One disk: 77 tracks (335,104 bytes)  
   
