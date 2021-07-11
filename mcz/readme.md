@@ -55,6 +55,11 @@ Z8000 development board (optional)
 - [Z8000 DEV MODULE](https://drive.google.com/file/d/1kuacpstJnPm3lpgMFJbeiQ7lnvP4F5DP/view?usp=sharing)
 
 # DISK IMAGING SOFTWARE
+Disk images are saved in the **MCZ disk format**. The format is defined as follows:  
+Sector: **(1 byte sector number) (1 byte track number) (128 bytes data) (2 byte back ptr) (2 byte fwd ptr) (2 byte crc)** (136 bytes)  
+One track: 32 sectors (4,352 bytes)  
+One disk: 77 tracks (335,104 bytes)  
+  
 [Host Software for OS X](https://drive.google.com/file/d/1vN9gfXpg1oHRtHYmax2SpriUPYqASEiV/view?usp=sharing)  
 [Host Software for Windows x64](https://drive.google.com/file/d/13KzslJgTaaXtDMLhdkHzPB4BdWDIiiaX/view?usp=sharing)  
 [Host Software for Linux x64](https://drive.google.com/file/d/1b-9KkMlEc3CboC27UF4KFiXcicf9oaLZ/view?usp=sharing)  
