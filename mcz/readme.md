@@ -63,21 +63,28 @@ Sector: **(1 byte sector number) (1 byte track number) (128 bytes data) (2 byte 
 One track: 32 sectors (4,352 bytes)  
 One disk: 77 tracks (335,104 bytes)  
   
+**Host software executables:**  
 [Host Software for OS X](https://drive.google.com/file/d/1vN9gfXpg1oHRtHYmax2SpriUPYqASEiV/view?usp=sharing)  
 [Host Software for Windows x64](https://drive.google.com/file/d/13KzslJgTaaXtDMLhdkHzPB4BdWDIiiaX/view?usp=sharing)  
 [Host Software for Linux x64](https://drive.google.com/file/d/1b-9KkMlEc3CboC27UF4KFiXcicf9oaLZ/view?usp=sharing)  
+  
+**Host software source code:**  
 [Host Software Unity C# Source Code](https://drive.google.com/file/d/1il-U8H9HPVprYwmn-_M73DYB2V7kkWYj/view?usp=sharing)  
+**How to build the host software:**  
 - Built on top of my Heathkit H19 terminal emulator (included)
 - Unzip the file to a folder
 - Download Unity 2020.3.7f1
 - Point Unity to folder and load Assets/H19/Scenes/main.unity
-- MCZImagerHost source is in Assets/MCZImager/Code/MCZImager.cs  
+- MCZImagerHost source code is in Assets/MCZImager/Code/MCZImager.cs  
   
 [MCZIMAGER.S Z80 Assembly Language Source File](software/MCZIMAGER.S)  
-- This is the Zilog MCZ side of the imaging software - it handles reading/writing the disks.  
+This is the Zilog MCZ side of the imaging software - it handles reading/writing the disks. When clicking on **SEND IMAGER**
+in the host software it will upload the MCZIMAGER Z80 hex code byte by byte to the MCZ debug console and when done the
+MCZIMAGER will be launched automatically. This allows a system with no boot disk to be able to receive a RIO boot disk image
+and write it to a floppy disk so that the system can be booted.  
   
 The host software has a built-in Heathkit H19 terminal emulator for connecting to the MCZ computer. Just plug
-in your computer to the terminal port of the MCZ computer via a USB to serial port cable then choose to connect
+in your host computer to the terminal port of the MCZ computer via a USB to serial port cable then choose to connect
 using the USB serial port device. You should now be able to type in commands and receive text from the MCZ computer.  
   
 **How to use the MCZIMAGER software:**
