@@ -135,7 +135,7 @@ using the USB serial port device. You should now be able to type in commands and
 - Imager currently uses MCZ terminal serial port to send/receive disk images (no other serial port is needed)
 - Host software is written in Unity C# so can port to pretty much all platforms (Linux, OSX, PC)
 
-**Contact [Les Bird](lesbird65@gmail.com)**
+**Contact [Les Bird](mailto:lesbird65@gmail.com)**
   
 # DEV NOTES
 **Some of the problems I had to solve while developing the imager software**
