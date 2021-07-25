@@ -23,6 +23,12 @@ SIB multi serial port board (optional)
 Z8000 development board (optional)  
 ![Z8000 IMAGE](pics/PCB05Z8000.png)  
   
+PCB Layout diagram  
+![PCB LAYOUT1](pics/MCZPCBLAYOUT1.jpg)  
+  
+PCB Layout in chassis  
+![PCB LAYOUT2](pics/MCZPCBLAYOUT2.jpg)  
+  
 # DOCUMENTATION
   
 [MCZ-1/20 Hardware Users Manual](docs/03-0018-02_MCZ-1_20_25_Hardware_Users_Manual.pdf)  
