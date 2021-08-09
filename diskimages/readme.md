@@ -14,3 +14,7 @@ KryoFlux settings for a Heathkit 8inch disk:
 - Track Distance: 80
 - Target RPM: 360
 
+[05-001 HDOS 2.0 Working System Disk 05-22-81 8-inch DS](https://drive.google.com/file/d/1syshHoYu9zlGVvcObm3bC7lkmQMOpGo3/view?usp=sharing)  
+[05-002 CP89 Version 1.0 Source Backup 10-10-81 8-inch DS](https://drive.google.com/file/d/1GQZTcBlmgoGNJNE-w1Nh9Fiq11nv1orZ/view?usp=sharing)  
+[05-003 CP89 Version 1.0 Source Backup 07-29-81 8-inch DS](https://drive.google.com/file/d/1PGyjcBUeVRWBmAbF1j1E48Z-rC2FSMtZ/view?usp=sharing)  
+[05-005 ED19 Full Screen Editor Sources Script Version 2.1 12-17-81 8-inch DS](https://drive.google.com/file/d/1YIuc7nShLZSyVmdAw6CDtAriD9r3Yykz/view?usp=sharing)  
