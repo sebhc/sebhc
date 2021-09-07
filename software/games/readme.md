@@ -19,6 +19,8 @@ HUG SEA BATTLE GAME (885-1103)
 <a href="https://github.com/sebhc/sebhc/blob/master/software/games/885-1103_Sea_Battle_Game.h8d">HDOS</a><br>
 HUG CP/M FAST ACTION GAMES (885-1228)
 <a href="https://github.com/sebhc/sebhc/blob/master/software/games/885-1228_CPM_Fast_Action_Games.h8d">CP/M</a><br>
+GALACTIC EXPLORER
+<a href="https://github.com/sebhc/sebhc/blob/master/software/games/CGALEXP.H8D">CP/M</a><br>
 GRAV
 <a href="https://github.com/sebhc/sebhc/blob/master/software/games/HCPMGRAV.H8D">HDOS and CPM</a><br>
 GRAV2
