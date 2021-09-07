@@ -31,7 +31,8 @@ MUNCHKIN
 <a href="https://github.com/sebhc/sebhc/blob/master/software/games/MUNCHKIN.H8D">HDOS</a><br>
 PIRATES
 <a href="https://github.com/sebhc/sebhc/blob/master/software/games/HCPMPIRA.H8D">HDOS and CPM</a><br>
-SPACE ODYSSEY<br>
+SPACE ODYSSEY
+<a href="https://github.com/sebhc/sebhc/blob/master/software/games/space_odyssey.h8d">HDOS</a><br>
 YWING2
 <a href="https://github.com/sebhc/sebhc/blob/master/software/games/HCPMYWII.H8D">HDOS and CPM</a><br>
 <br>
