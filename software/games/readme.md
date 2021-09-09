@@ -22,7 +22,7 @@ HUG CP/M FAST ACTION GAMES (885-1228)
 GALACTIC EXPLORER
 <a href="https://github.com/sebhc/sebhc/blob/master/software/games/CGALEXP.H8D">CP/M</a><br>
 GRAV
-<a href="https://github.com/sebhc/sebhc/blob/master/software/games/HCPMGRAV.H8D">HDOS and CPM</a><br>
+<a href="https://github.com/sebhc/sebhc/blob/master/software/games/HCPMGRAV.H8D">HDOS and CP/M</a><br>
 GRAV2
 <a href="https://github.com/sebhc/sebhc/blob/master/software/games/CPM_2.2.03-4.h8d">CP/M / </a> 
 <a href="https://github.com/sebhc/sebhc/blob/master/software/games/HDOS_GRAPHIC_GAMES_2.h8d">HDOS</a><br>
@@ -30,16 +30,18 @@ INVADERS<br>
 MUNCHKIN
 <a href="https://github.com/sebhc/sebhc/blob/master/software/games/MUNCHKIN.H8D">HDOS</a><br>
 PIRATES
-<a href="https://github.com/sebhc/sebhc/blob/master/software/games/HCPMPIRA.H8D">HDOS and CPM</a><br>
+<a href="https://github.com/sebhc/sebhc/blob/master/software/games/HCPMPIRA.H8D">HDOS and CP/M</a><br>
 SPACE ODYSSEY
 <a href="https://github.com/sebhc/sebhc/blob/master/software/games/space_odyssey.h8d">HDOS</a><br>
 YWING2
-<a href="https://github.com/sebhc/sebhc/blob/master/software/games/HCPMYWII.H8D">HDOS and CPM</a><br>
+<a href="https://github.com/sebhc/sebhc/blob/master/software/games/HCPMYWII.H8D">HDOS and CP/M</a><br>
 <br>
 
 #### COLOR GRAPHICS CARD (HA-8-3)
 
 HUG COLOR RAIDERS AND GOOP (885-1114)
 <a href="https://github.com/sebhc/sebhc/blob/master/software/games/885-1114_H8_Color_Raiders-Goop.h8d">HDOS</a><br>
-<a href="https://github.com/sebhc/sebhc/blob/master/software/games/CPM_Assembler120A2.H8D">LES BIRD SPACEWAR</a><br>
-<a href="https://github.com/sebhc/sebhc/blob/master/software/games/CPM_Assembler120A3.H8D">LES BIRD WARLORDS</a><br>
+LES BIRD SPACEWAR (HA-8-3)
+<a href="https://github.com/sebhc/sebhc/blob/master/software/games/CPM_Assembler120A2.H8D">CP/M</a><br>
+LES BIRD WARLORDS (HA-8-3)
+<a href="https://github.com/sebhc/sebhc/blob/master/software/games/CPM_Assembler120A3.H8D">CP/M</a><br>
