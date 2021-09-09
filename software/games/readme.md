@@ -41,5 +41,5 @@ YWING2
 
 HUG COLOR RAIDERS AND GOOP (885-1114)
 <a href="https://github.com/sebhc/sebhc/blob/master/software/games/885-1114_H8_Color_Raiders-Goop.h8d">HDOS</a><br>
-LES BIRD SPACEWAR<br>
-LES BIRD WARLORDS<br>
+<a href="https://github.com/sebhc/sebhc/blob/master/software/games/CPM_Assembler120A2.H8D">LES BIRD SPACEWAR</a><br>
+<a href="https://github.com/sebhc/sebhc/blob/master/software/games/CPM_Assembler120A3.H8D">LES BIRD WARLORDS</a><br>
