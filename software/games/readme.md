@@ -21,6 +21,8 @@ HUG CP/M FAST ACTION GAMES (885-1228)
 <a href="https://github.com/sebhc/sebhc/blob/master/software/games/885-1228_CPM_Fast_Action_Games.h8d">CP/M</a><br>
 GALACTIC EXPLORER
 <a href="https://github.com/sebhc/sebhc/blob/master/software/games/CGALEXP.H8D">CP/M</a><br>
+GALACTIC WARRIOR
+<a href="https://github.com/sebhc/sebhc/blob/master/software/games/HDOS_CPM_103GALACTIC_WARRIOR_V1_1_1S40T.h8d">HDOS and CP/M</a><br>
 GRAV
 <a href="https://github.com/sebhc/sebhc/blob/master/software/games/HCPMGRAV.H8D">HDOS and CP/M</a><br>
 GRAV2
@@ -29,14 +31,18 @@ GRAV2
 INVADERS<br>
 INVASION
 <a href="https://github.com/sebhc/sebhc/blob/master/software/games/HDOS_101INVASION_V1_2_1S40T.h8d">HDOS</a><br>
-MISSLE CONTROL
+MISSLE CONTROL V1.1
+<a href="https://github.com/sebhc/sebhc/blob/master/software/games/HDOS_CPM_202MISSILE_CONTROL_V1_1_1S40T.h8d">HDOS and CP/M</a><br>
+MISSLE CONTROL V1.2A
 <a href="https://github.com/sebhc/sebhc/blob/master/software/games/HDOS_103MISSILE_CONTROL_V1_2A_1S40T.h8d">HDOS</a><br>
 MUNCHKIN
 <a href="https://github.com/sebhc/sebhc/blob/master/software/games/MUNCHKIN.H8D">HDOS</a><br>
 PIRATES
 <a href="https://github.com/sebhc/sebhc/blob/master/software/games/HCPMPIRA.H8D">HDOS and CP/M</a><br>
 SPACE ODYSSEY
-<a href="https://github.com/sebhc/sebhc/blob/master/software/games/space_odyssey.h8d">HDOS</a><br>
+<a href="https://github.com/sebhc/sebhc/blob/master/software/games/HDOS_CPM_107SPACE_ODYSSEY_I_V1.0_1S40T.h8d">HDOS and CP/M</a><br>
+YWING1
+<a href="https://github.com/sebhc/sebhc/blob/master/software/games/HDOS_CPM_104Y-WING_FIGHTER_V1-0A_1S40T.h8d">HDOS and CP/M</a><br>
 YWING2
 <a href="https://github.com/sebhc/sebhc/blob/master/software/games/HCPMYWII.H8D">HDOS and CP/M</a><br>
 <br>
