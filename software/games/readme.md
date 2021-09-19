@@ -27,7 +27,10 @@ GRAV2
 <a href="https://github.com/sebhc/sebhc/blob/master/software/games/CPM_2.2.03-4.h8d">CP/M / </a> 
 <a href="https://github.com/sebhc/sebhc/blob/master/software/games/HDOS_GRAPHIC_GAMES_2.h8d">HDOS</a><br>
 INVADERS<br>
-<a href="https://github.com/sebhc/sebhc/blob/master/software/games/HDOS_101INVASION_V1_2_1S40T.h8d">INVASION</a><br>
+INVASION
+<a href="https://github.com/sebhc/sebhc/blob/master/software/games/HDOS_101INVASION_V1_2_1S40T.h8d">HDOS</a><br>
+MISSLE CONTROL
+<a href="https://github.com/sebhc/sebhc/blob/master/software/games/HDOS_103MISSILE_CONTROL_V1_2A_1S40T.h8d">HDOS</a><br>
 MUNCHKIN
 <a href="https://github.com/sebhc/sebhc/blob/master/software/games/MUNCHKIN.H8D">HDOS</a><br>
 PIRATES
