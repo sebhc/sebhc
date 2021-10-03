@@ -55,4 +55,4 @@ HUG COLOR RAIDERS AND GOOP (885-1114)
 LES BIRD SPACEWAR (HA-8-3)
 <a href="https://github.com/sebhc/sebhc/blob/master/software/games/CPM_Assembler120A2.H8D">CP/M</a><br>
 LES BIRD WARLORDS (HA-8-3)
-<a href="https://github.com/sebhc/sebhc/blob/master/software/games/CPM_Assembler120A3.H8D">CP/M</a><br>
+<a href="https://github.com/sebhc/sebhc/blob/master/software/games/CPM_Games900B4.H8D">CP/M</a><br>
