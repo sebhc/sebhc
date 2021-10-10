@@ -1,0 +1,2108 @@
+SEBHC DISK IMAGE CATALOG
+========================
+80 Disk Images
+1458 Total Files
+
+00-001.H8D
+HDOS 1.5 Issue #50.04.00 (Copyright(C) Heath Co 1979)890-1-4
+======== === ==== =========
+  FILE   EXT SIZE   DATE   
+======== === ==== =========
+HDOS     SYS   26 10-Jun-79
+HDOSOVL0 SYS   26 10-Jun-79
+HDOSOVL1 SYS   10 10-Jun-79
+SYSCMD   SYS   10 10-Jun-79
+PIP      ABS   18 10-Jun-79
+ERRORMSG SYS   11 12-Jun-79
+SET      ABS   11 10-Jun-79
+FLAGS    ABS    5 10-Jun-79
+ONECOPY  ABS   19 10-Jun-79
+EDIT     ABS   16 10-Jun-79
+ASM      ABS   27 10-Jun-79
+DBUG     ABS   14 10-Jun-79
+BASIC    ABS   41 10-Jun-79
+INIT     ABS   20 10-Jun-79
+SYSGEN   ABS   14 10-Jun-79
+TEST     ABS   22 10-Jun-79
+PATCH    ABS   11 10-Jun-79
+BASCON   ABS   12 10-Jun-79
+TXTCON   ABS    9 10-Jun-79
+ND       DVD    4 10-Jun-79
+ATH84    DVD    6 10-Jun-79
+ATH85    DVD    6 10-Jun-79
+LPHRD    DVD    7 10-Jun-79
+SYSHELP  DOC    3 10-Jun-79
+HELP            2 10-Jun-79
+HDOS     ACM    2 19-Jul-79
+RGT      SYS    1 10-Jun-79
+GRT      SYS    1 10-Jun-79
+DIRECT   SYS   18 10-Jun-79
+======== === ==== =========
+Files 29, Total 372, Free 6
+
+00-002.H8D
+HDOS 1.0 Issue #50.05.00 (Copyright(C) Heath Co 1980)890-1-5
+======== === ==== =========
+  FILE   EXT SIZE   DATE   
+======== === ==== =========
+HDOS     SYS   30 15-Feb-80
+HDOSOVL0 SYS   26 15-Feb-80
+HDOSOVL1 SYS   10 15-Feb-80
+SYSCMD   SYS   10 15-Feb-80
+PIP      ABS   19 15-Feb-80
+ERRORMSG SYS   11 19-Feb-80
+SET      ABS   11 15-Feb-80
+FLAGS    ABS    5 15-Feb-80
+ONECOPY  ABS   20 15-Feb-80
+EDIT     ABS   17 15-Feb-80
+ASM      ABS   28 15-Feb-80
+DBUG     ABS   15 15-Feb-80
+BASIC    ABS   42 15-Feb-80
+INIT     ABS   20 15-Feb-80
+SYSGEN   ABS   14 15-Feb-80
+TEST     ABS   22 15-Feb-80
+PATCH    ABS   11 15-Feb-80
+ND       DVD    4 15-Feb-80
+ATH84    DVD    6 15-Feb-80
+ATH85    DVD    6 15-Feb-80
+LPH14    DVD    7 15-Feb-80
+LPH24    DVD    7 15-Feb-80
+LPH44    DVD    7 15-Feb-80
+SYSHELP  DOC    3 15-Feb-80
+HELP            2 15-Feb-80
+HDOS     ACM    2 15-Feb-80
+RGT      SYS    1 15-Feb-80
+GRT      SYS    1 15-Feb-80
+DIRECT   SYS   18 15-Feb-80
+======== === ==== =========
+Files 29, Total 375, Free 2
+
+00-009.H8D
+HDOS 2.0 Issue #50.06.00 (Copyright(C) Heath Co 1980) 890-64
+======== === ==== =========
+  FILE   EXT SIZE   DATE   
+======== === ==== =========
+HDOS     SYS   31 03-Nov-80
+HDOSOVL0 SYS   26 03-Nov-80
+HDOSOVL1 SYS   11 03-Nov-80
+SYSCMD   SYS   12 03-Nov-80
+PIP      ABS   19 03-Nov-80
+SY       DVD   10 03-Nov-80
+DK       DVD   15 03-Nov-80
+ERRORMSG SYS   11 03-Nov-80
+SET      ABS   12 03-Nov-80
+FLAGS    ABS    4 03-Nov-80
+ONECOPY  ABS   20 03-Nov-80
+EDIT     ABS   17 03-Nov-80
+BASIC    ABS   42 03-Nov-80
+PATCH    ABS   11 03-Nov-80
+INIT     ABS   29 03-Nov-80
+SYSGEN   ABS   21 03-Nov-80
+TEST17   ABS   32 03-Nov-80
+TEST47   ABS   29 03-Nov-80
+SYSHELP  DOC    3 03-Nov-80
+HELP            2 03-Nov-80
+RGT      SYS    1 01-Jan-79
+GRT      SYS    1 01-Jan-79
+DIRECT   SYS   18 01-Jan-79
+======== === ==== =========
+Files 23, Total 377, Free 0
+
+00-010.H8D
+HDOS 2.0 Software Tools  (Copyright(C) Heath Co 1980)890-103
+======== === ==== =========
+  FILE   EXT SIZE   DATE   
+======== === ==== =========
+BOOT     ABS    4 29-Oct-80
+ASM      ABS   33 07-Oct-80
+XREF     ABS   13 07-Oct-80
+DBUG     ABS   15 07-Oct-80
+ND       DVD    4 07-Oct-80
+ATH84    DVD    6 07-Oct-80
+ATH85    DVD    6 07-Oct-80
+ATH44    DVD    7 07-Oct-80
+LPH14    DVD    7 07-Oct-80
+LPH24    DVD    7 07-Oct-80
+LPH44    DVD    7 07-Oct-80
+ABSDEF   ACM    1 07-Oct-80
+ASCII    ACM    3 07-Oct-80
+BITS     ACM    2 07-Oct-80
+BOODEF   ACM    3 07-Oct-80
+CCO      ACM    2 07-Oct-80
+CHL      ACM    1 07-Oct-80
+DADA     ACM    1 07-Oct-80
+DDDEF    ACM    2 07-Oct-80
+DDFDEF   ACM    2 07-Oct-80
+DDS      ACM    5 07-Oct-80
+DEVDEF   ACM    5 07-Oct-80
+DIRDEF   ACM    3 07-Oct-80
+DOS      ACM    3 07-Oct-80
+DU66     ACM    1 07-Oct-80
+DVDDEF   ACM    3 07-Oct-80
+DVDIO    ACM   14 07-Oct-80
+ECDEF    ACM    6 07-Oct-80
+EDCON    ACM    2 07-Oct-80
+EDRAM    ACM    4 07-Oct-80
+EDVEC    ACM    3 07-Oct-80
+ESINT    ACM   14 07-Oct-80
+ESVAL    ACM    7 07-Oct-80
+FILDEF   ACM    1 07-Oct-80
+H17DEF   ACM    5 07-Oct-80
+H17ROM   ACM    1 07-Oct-80
+H47DEF   ACM   12 29-Oct-80
+H47LIB   ACM   56 21-Oct-80
+H47PAR   ACM    1 07-Oct-80
+HDSROM   ACM    3 07-Oct-80
+RGT      SYS    1 07-Oct-80
+GRT      SYS    1 07-Oct-80
+DIRECT   SYS   18 07-Oct-80
+HLCPDE   ACM    2 07-Oct-80
+HOSDEF   ACM    6 07-Oct-80
+HOSEQU   ACM    3 07-Oct-80
+INIDEF   ACM    3 07-Oct-80
+IOCDEF   ACM    5 07-Oct-80
+ITL      ACM    2 07-Oct-80
+LABDEF   ACM    5 07-Oct-80
+MCU      ACM    2 07-Oct-80
+MLU      ACM    2 07-Oct-80
+MOVE     ACM    2 07-Oct-80
+MTR      ACM   14 07-Oct-80
+OVLDEF   ACM    2 07-Oct-80
+PICDEF   ACM    1 07-Oct-80
+RCHAR    ACM    1 07-Oct-80
+RTL      ACM    4 07-Oct-80
+SAVALL   ACM    3 07-Oct-80
+SETCAL   ACM    2 07-Oct-80
+SOB      ACM    2 07-Oct-80
+======== === ==== =========
+Files 61, Total 356, Free 0
+
+00-011.H8D
+HDOS 2.0 Driver Source  (Copyright(C) Heath Co 1980)890-104
+======== === ==== =========
+  FILE   EXT SIZE   DATE   
+======== === ==== =========
+ATH44    ASM   68 07-Oct-80
+ATH84    ASM   34 29-Oct-80
+DDDVD    ASM   31 29-Oct-80
+DDINIT   ASM   64 03-Dec-80
+LPH24    ASM   46 07-Oct-80
+MAKMSD   ASM   11 07-Oct-80
+ND       ASM   10 07-Oct-80
+SYDVD    ASM   34 07-Oct-80
+SYINIT   ASM   37 08-Oct-80
+GLASSTTY ASM   16 07-Oct-80
+TBRA     ACM    2 07-Oct-80
+TYPTX    ACM    2 07-Oct-80
+U8250    ACM    9 07-Oct-80
+U8251    ACM    5 07-Oct-80
+ZEROS    ACM    1 07-Oct-80
+RGT      SYS    1 07-Oct-80
+GRT      SYS    1 07-Oct-80
+DIRECT   SYS    8 07-Oct-80
+======== === ==== =========
+Files 18, Total 380, Free 2
+
+01-001.H8D
+01-001 FULL SCREEN EDITOR BACKUP - COMMON MODULES
+======== === ==== =========
+  FILE   EXT SIZE   DATE   
+======== === ==== =========
+GETLINE  ASM   67 14-Jan-81
+GETLSUB  ASM   13 14-Jan-81
+H19      ASM   13 14-Jan-81
+TERMSUB  ASM   22 14-Jan-81
+BUFSUB2  ASM   25 14-Jan-81
+EDSTRT   ASM   16 14-Jan-81
+ED19     ASM    7 14-Jan-81
+BUFSUB1  ASM   37 14-Jan-81
+COMMSUB  ASM   28 14-Jan-81
+COMDAT1  ASM   19 14-Jan-81
+MAINSUB  ASM   24 14-Jan-81
+DSPLSUB  ASM   15 14-Jan-81
+RGT      SYS    1 27-Aug-80
+GRT      SYS    1 27-Aug-80
+DIRECT   SYS   18 27-Aug-80
+======== === ==== =========
+Files 15, Total 306, Free 74
+
+01-002.H8D
+01-002 CP89 SOURCE BACKUP - ACM + COMMON MODULES
+======== === ==== =========
+  FILE   EXT SIZE   DATE   
+======== === ==== =========
+MTR      ACM   14 05-Apr-81
+ESVAL    ACM    7 05-Apr-81
+ECDEF    ACM    7 05-Apr-81
+ROMSUBS  ACM    5 05-Apr-81
+DIRDEF   ACM    4 05-Apr-81
+ASCII    ACM    7 05-Apr-81
+CPCOMM   ASM   33 05-Apr-81
+CPDEFS   ACM   29 05-Apr-81
+H19      ACM   14 05-Apr-81
+DDDEF    ACM    2 05-Apr-81
+CPCOMM   ACM   22 05-Apr-81
+DDFDEF   ACM    2 05-Apr-81
+DVDDEF   ACM    3 05-Apr-81
+EDVEC    ACM    4 05-Apr-81
+ESINT    ACM   14 05-Apr-81
+HOSEQU   ACM    3 05-Apr-81
+FILDEF   ACM    1 05-Apr-81
+H17DEF   ACM    5 05-Apr-81
+EDRAM    ACM    5 05-Apr-81
+DEVDEF   ACM    6 05-Apr-81
+EDCON    ACM    4 05-Apr-81
+H47DEF   ACM   12 05-Apr-81
+H47PAR   ACM    1 05-Apr-81
+HOSDEF   ACM    6 05-Apr-81
+RGT      SYS    1 31-Jan-81
+GRT      SYS    1 31-Jan-81
+DIRECT   SYS   18 31-Jan-81
+======== === ==== =========
+Files 27, Total 230, Free 146
+
+01-003.H8D
+EF}zzy }y  | }zzy
+}  } } y | }  }
+}{{x }  y| }{{xG by R
+======== === ==== =========
+  FILE   EXT SIZE   DATE   
+======== === ==== =========
+HDOS     SYS   30 03-Feb-81
+HDOSOVL0 SYS   26 03-Feb-81
+HDOSOVL1 SYS   10 03-Feb-81
+SYSCMD   SYS    4 16-Apr-81
+DNDRUN   ABS    8 16-Apr-81
+DND      BAS   95 16-Apr-81
+DND      DAT    6 16-Apr-81
+START    BAS   14 16-Apr-81
+MENU     BAS    2 16-Apr-81
+DUP      ABS    7 16-Apr-81
+DND      DOC   52 28-Apr-81
+README   DOC   14 28-Apr-81
+MBASIC   ABS   80 07-Jul-81
+WALT            2 03-Apr-82
+PAUL            2 14-Nov-82
+JOANNE          2 11-Jul-81
+JUNKO           2 22-Nov-81
+JFM             2 14-Nov-82
+DAVID           2 14-Nov-82
+SHIT            2 14-Nov-82
+RGT      SYS    1 03-Feb-81
+GRT      SYS    1 03-Feb-81
+DIRECT   SYS   18 03-Feb-81
+======== === ==== =========
+Files 23, Total 382, Free 4
+
+01-004.H8D
+01-004 FULL SCREEN EDITOR BACKUP - INITIALIZATION & ACMS
+======== === ==== =========
+  FILE   EXT SIZE   DATE   
+======== === ==== =========
+EDCOMM   ACM   24 14-Jan-81
+ESVAL    ACM    7 14-Jan-81
+ECDEF    ACM    7 14-Jan-81
+ROMSUBS  ACM    5 14-Jan-81
+HOSDEF   ACM    6 14-Jan-81
+ASCII    ACM    7 14-Jan-81
+ED19     ACM   10 14-Jan-81
+EDDEFS   ACM   31 14-Jan-81
+H19      ACM   14 14-Jan-81
+ED19     ABS   19 14-Jan-81
+ED19C    ABS   19 14-Jan-81
+ED19M    ABS   22 14-Jan-81
+ED19I    ABS   15 14-Jan-81
+INITDAT  ASM   22 14-Jan-81
+TABSUB   ASM   14 14-Jan-81
+ED19I    ASM    8 14-Jan-81
+EDINIT   ASM   45 14-Jan-81
+EDTERM   ASM   12 14-Jan-81
+INITSUB  ASM   36 14-Jan-81
+RGT      SYS    1 27-Aug-80
+GRT      SYS    1 27-Aug-80
+DIRECT   SYS   18 27-Aug-80
+======== === ==== =========
+Files 22, Total 343, Free 36
+
+01-005.H8D
+01-005 STOCK MANAGEMENT BASIC PROGRAMS & DATA
+======== === ==== =========
+  FILE   EXT SIZE   DATE   
+======== === ==== =========
+STOCKINT BAS   46 12-Mar-80
+STOCKCMD BAS   29 12-Mar-80
+STOCKOPN BAS   21 12-Mar-80
+STOCKTMD BAS   35 12-Mar-80
+STOCKBUY BAS   33 12-Mar-80
+STOCKCLS BAS   14 12-Mar-80
+STOCKSEL BAS   49 12-Mar-80
+STOCKASG BAS   34 12-Mar-80
+STOCK    BAS   20 12-Mar-80
+WALTS    CAT    1 20-Mar-80
+IBM      POR    5 20-Mar-80
+STOCK    WK1    5 20-Mar-80
+STOCK    WK2    5 20-Mar-80
+RGT      SYS    1 03-Feb-80
+GRT      SYS    1 03-Feb-80
+DIRECT   SYS   18 03-Feb-80
+======== === ==== =========
+Files 16, Total 317, Free 62
+
+01-006.H8D
+01-006 STOCK MANAGEMENT PROGRAM SOURCE MOD + SUB
+======== === ==== =========
+  FILE   EXT SIZE   DATE   
+======== === ==== =========
+STOCKBUY MOD   14 09-Mar-80
+STOCK    MOD   17 17-Mar-80
+STOCKINT MOD   34 09-Mar-80
+STOCKCMD MOD   19 08-Mar-80
+STOCKCLS MOD    6 08-Mar-80
+STOCKTMD MOD   19 08-Mar-80
+STOCKOPN MOD    7 08-Mar-80
+STOCKHLP MOD   16 02-Mar-80
+STOCKSEL MOD   16 09-Mar-80
+S30000   SUB    5 08-Mar-80
+S31000   SUB    3 08-Mar-80
+S32000   SUB    4 08-Mar-80
+S33000   SUB    3 08-Mar-80
+S36000   SUB    2 08-Mar-80
+S37000   SUB    4 08-Mar-80
+S34000   SUB    4 08-Mar-80
+S35000   SUB    4 08-Mar-80
+STOCKASG OLD    9 04-Mar-80
+S39000   SUB    3 08-Mar-80
+STOCKASG MOD   14 08-Mar-80
+LINK     BAS    8 09-Mar-80
+S42000   SUB    6 08-Mar-80
+S43000   SUB    8 08-Mar-80
+S44000   SUB    2 08-Mar-80
+S46000   SUB    2 08-Mar-80
+S47000   SUB    2 09-Mar-80
+S45000   SUB    8 08-Mar-80
+MLINK    BAS   21 12-Mar-80
+BASGRAPH SUB   38 25-Mar-80
+RGT      SYS    1 02-Mar-80
+GRT      SYS    1 02-Mar-80
+DIRECT   SYS   18 02-Mar-80
+======== === ==== =========
+Files 32, Total 318, Free 60
+
+01-007.H8D
+01-007 FULL SCREEN EDITOR BACKUP - MAIN EDITOR
+======== === ==== =========
+  FILE   EXT SIZE   DATE   
+======== === ==== =========
+BKDSPC   ASM    6 14-Jan-81
+EDSTRTM  ASM    4 14-Jan-81
+INPMODE  ASM   22 14-Jan-81
+BKEXEC   ASM   19 14-Jan-81
+BKSUBS   ASM   26 14-Jan-81
+ED19M    ASM    8 14-Jan-81
+BKCMD1   ASM   21 14-Jan-81
+EDMAIN   ASM   30 14-Jan-81
+EDMINT   ASM    7 14-Jan-81
+DELECMD  ASM   10 14-Jan-81
+BKMODE   ASM   19 14-Jan-81
+EDITCMD  ASM   12 14-Jan-81
+MAINDAT  ASM   33 14-Jan-81
+SCRLCMD  ASM   34 14-Jan-81
+BKANAL   ASM   34 14-Jan-81
+RGT      SYS    1 27-Aug-80
+GRT      SYS    1 27-Aug-80
+DIRECT   SYS   18 27-Aug-80
+======== === ==== =========
+Files 18, Total 305, Free 78
+
+01-008.H8D
+
+!! GRT TABLE IS CORRUPT !!
+
+01-009.H8D
+CP/M DISK IMAGE
+======== === ==== =========
+  FILE   EXT SIZE   DATE   
+======== === ==== =========
+BIOS     ??S    6 -- N/A --
+ASM      COM    8 -- N/A --
+CONFIGUR COM   14 -- N/A --
+DDT      COM    5 -- N/A --
+DUP      COM    5 -- N/A --
+ED       COM    7 -- N/A --
+FORMAT   COM    6 -- N/A --
+LOAD     COM    2 -- N/A --
+MOVCPM17 COM   11 -- N/A --
+PIP      COM    8 -- N/A --
+STAT     COM    6 -- N/A --
+SUBMIT   COM    2 -- N/A --
+SYSGEN   COM    2 -- N/A --
+XSUB     COM    1 -- N/A --
+======== === ==== =========
+Files 14, Total 83, Free 7
+
+01-010.H8D
+01-010 UTILITY PROGRAMS - SOURCE
+======== === ==== =========
+  FILE   EXT SIZE   DATE   
+======== === ==== =========
+ED19     ACM    9 03-Jan-80
+DUP      ASM   55 30-Nov-80
+DUMP     ASM   58 30-Nov-80
+MOUNTALL ABS    1 04-Mar-81
+ESVAL    ACM    7 24-Dec-80
+ECDEF    ACM    7 24-Dec-80
+ROMSUBS  ACM    5 24-Dec-80
+MOUNTALL ASM    7 04-Mar-81
+HOSDEF   ACM    6 24-Dec-80
+ASCII    ACM    7 24-Dec-80
+CPLOGO   ASM    8 22-Mar-81
+CP89P    ASM   18 22-Mar-81
+CP89P    ABS    6 22-Mar-81
+H47DIAG  BAS   22 10-Apr-82
+RGT      SYS    1 30-Nov-80
+GRT      SYS    1 30-Nov-80
+DIRECT   SYS   18 30-Nov-80
+======== === ==== =========
+Files 17, Total 236, Free 144
+
+01-012.H8D
+01-012 FULL SCREEN EDITOR SOURCE - COMMAND MODULES
+======== === ==== =========
+  FILE   EXT SIZE   DATE   
+======== === ==== =========
+EDSTRTC  ASM    4 14-Dec-80
+TEXTIO   ASM   30 18-Dec-80
+MERGCMD  ASM   18 06-Dec-80
+CMMDDAT  ASM   11 15-Dec-80
+ED19C    ASM    6 15-Feb-81
+RSETCMD  ASM   19 10-Dec-80
+GETPUT   ASM   20 18-Dec-80
+CHNGCMD  ASM   28 05-Jan-80
+ENDCMD   ASM   15 18-Dec-80
+MISCCMD  ASM    6 06-Jan-81
+SRCHCMD  ASM   47 05-Jan-80
+RGT      SYS    1 22-Oct-80
+GRT      SYS    1 22-Oct-80
+DIRECT   SYS   18 22-Oct-80
+======== === ==== =========
+Files 14, Total 224, Free 160
+
+01-013.H8D
+01-013 GAMES DISK NO. 1
+======== === ==== =========
+  FILE   EXT SIZE   DATE   
+======== === ==== =========
+README   DOC   15 28-May-80
+SPACEWAR ABS   67 28-May-80
+LIFE     ABS    8 28-May-80
+FOOTBALL BAS   28 28-May-80
+MENU     DAT    2 29-Dec-80
+RGT      SYS    1 28-May-80
+GRT      SYS    1 28-May-80
+DIRECT   SYS   18 28-May-80
+======== === ==== =========
+Files 8, Total 140, Free 246
+
+01-014.H8D
+01-014 GAMES DISK NO. 2
+======== === ==== =========
+  FILE   EXT SIZE   DATE   
+======== === ==== =========
+LINES    BAS    7 14-Feb-81
+PIRATE   BAS    8 27-Dec-80
+SUBMARIN BAS   16 28-May-80
+DIET     BAS   32 14-Feb-81
+ANIMAL   BAS   20 28-May-80
+ANIMAL   DAT    4 28-May-80
+VEGAS    BAS   29 14-Feb-81
+OTHELLO  BAS   42 14-Feb-81
+BASEBALL BAS   38 28-May-80
+BIORYTHM BAS   21 14-Feb-81
+GRWUMPUS BAS   35 14-Feb-81
+OTHELLO  SAB   42 16-May-81
+RGT      SYS    1 28-May-80
+GRT      SYS    1 28-May-80
+DIRECT   SYS   18 28-May-80
+======== === ==== =========
+Files 15, Total 314, Free 70
+
+01-015.H8D
+01-015 DND SOURCE DISK #1
+======== === ==== =========
+  FILE   EXT SIZE   DATE   
+======== === ==== =========
+DND      BAS  127 08-Jul-81
+START    BAS   17 08-Jul-81
+MENU     BAS    3 08-Jul-81
+BAS      PRF    1 08-Aug-81
+RGT      SYS    1 08-Jul-81
+GRT      SYS    1 08-Jul-81
+DIRECT   SYS   18 08-Jul-81
+======== === ==== =========
+Files 7, Total 168, Free 216
+
+01-016.H8D
+01-016 ACP TEST SYSTEM DISK
+======== === ==== =========
+  FILE   EXT SIZE   DATE   
+======== === ==== =========
+HDOS     SYS   31 01-Jun-82
+HDOSOVL0 SYS   26 01-Jun-82
+HDOSOVL1 SYS   11 01-Jun-82
+SYSCMD   SYS   30 11-Jun-82
+PIP      ABS   19 01-Jun-82
+SY       DVD   10 01-Jun-82
+ERRORMSG SYS   11 01-Jun-82
+SET      ABS   12 01-Jun-82
+FLAGS    ABS    4 01-Jun-82
+ONECOPY  ABS   20 01-Jun-82
+DK       DVD   15 01-Jun-82
+SYSHELP  DOC    3 01-Jun-82
+HELP            2 01-Jun-82
+PC       DVD    5 01-Jun-82
+PROLOGUE SYS    5 11-Jun-82
+RGT      SYS    1 01-Jun-82
+GRT      SYS    1 01-Jun-82
+DIRECT   SYS   18 01-Jun-82
+======== === ==== =========
+Files 18, Total 224, Free 156
+
+01-017.H8D
+01-017 FULL SCREEN EDITOR SOURCE - MAIN MODULES
+======== === ==== =========
+  FILE   EXT SIZE   DATE   
+======== === ==== =========
+BKDSPC   ASM    6 14-Dec-80
+EDSTRTM  ASM    4 14-Dec-80
+INPMODE  ASM   22 07-Jan-81
+BKEXEC   ASM   19 06-Dec-80
+BKSUBS   ASM   26 06-Dec-80
+ED19M    ASM    8 15-Feb-81
+BKCMD1   ASM   21 24-Dec-80
+EDMAIN   ASM   30 14-Dec-80
+EDMINT   ASM    7 15-Dec-80
+DELECMD  ASM   10 06-Dec-80
+BKMODE   ASM   19 07-Jan-81
+EDITCMD  ASM   12 08-Dec-80
+MAINDAT  ASM   33 06-Jan-81
+SCRLCMD  ASM   34 07-Jan-81
+BKANAL   ASM   34 07-Jan-81
+RGT      SYS    1 27-Aug-80
+GRT      SYS    1 27-Aug-80
+DIRECT   SYS   18 27-Aug-80
+======== === ==== =========
+Files 18, Total 305, Free 78
+
+01-018.H8D
+01-018 TYPE'N TALK DEVICE DRIVER SOURCE                     
+======== === ==== =========
+  FILE   EXT SIZE   DATE   
+======== === ==== =========
+TKDVD    ASM   74 22-Oct-81
+DDDEF    ACM    2 20-Oct-81
+DEVDEF   ACM    5 20-Oct-81
+DVDDEF   ACM    3 20-Oct-81
+ECDEF    ACM    6 20-Oct-81
+ESVAL    ACM    7 20-Oct-81
+HOSEQU   ACM    3 20-Oct-81
+MTR      ACM   14 20-Oct-81
+PICDEF   ACM    1 20-Oct-81
+SETCAL   ACM    2 20-Oct-81
+U8250    ACM    9 20-Oct-81
+ASM      ABS   33 22-Oct-81
+ASCIIX   ACM    7 22-Oct-81
+SYSCMD   SYS   30 21-Oct-81
+PIP      ABS   19 21-Oct-81
+ERRORMSG SYS   11 21-Oct-81
+ED19     ABS   19 21-Oct-81
+ED19C    ABS   27 21-Oct-81
+ED19M    ABS   28 21-Oct-81
+ED19I    ABS   19 21-Oct-81
+ASM      PRF    1 21-Oct-81
+ACM      PRF    1 22-Oct-81
+RGT      SYS    1 18-Feb-81
+GRT      SYS    1 18-Feb-81
+DIRECT   SYS   18 18-Feb-81
+======== === ==== =========
+Files 25, Total 341, Free 32
+
+01-019.H8D
+01-019 HDOS 1.6 FULL SYSTEM DISK
+======== === ==== =========
+  FILE   EXT SIZE   DATE   
+======== === ==== =========
+HDOS     SYS   30 02-Aug-80
+HDOSOVL0 SYS   26 02-Aug-80
+HDOSOVL1 SYS   10 02-Aug-80
+SYSCMD   SYS   10 02-Aug-80
+ERRORMSG SYS   11 02-Aug-80
+PIP      ABS   19 02-Aug-80
+SET      ABS   11 02-Aug-80
+FLAGS    ABS    5 02-Aug-80
+ONECOPY  ABS   20 02-Aug-80
+ND       DVD    4 02-Aug-80
+ATH84    DVD    6 02-Aug-80
+ATH85    DVD    6 02-Aug-80
+LPH14    DVD    7 02-Aug-80
+LPH24    DVD    7 02-Aug-80
+LPH44    DVD    7 02-Aug-80
+SYSHELP  DOC    3 02-Aug-80
+HELP            2 02-Aug-80
+EDIT     ABS   17 02-Aug-80
+ASM      ABS   28 02-Aug-80
+DBUG     ABS   15 02-Aug-80
+BASIC    ABS   42 02-Aug-80
+INIT     ABS   20 02-Aug-80
+TEST     ABS   22 02-Aug-80
+SYSGEN   ABS   14 02-Aug-80
+PATCH    ABS   11 02-Aug-80
+RGT      SYS    1 02-Aug-80
+GRT      SYS    1 02-Aug-80
+DIRECT   SYS   18 02-Aug-80
+======== === ==== =========
+Files 28, Total 373, Free 4
+
+01-020.H8D
+01-020 CP89 DEMONSTRATION SYSTEM
+======== === ==== =========
+  FILE   EXT SIZE   DATE   
+======== === ==== =========
+HDOS     SYS   31 11-Apr-81
+HDOSOVL0 SYS   26 11-Apr-81
+HDOSOVL1 SYS   11 11-Apr-81
+SYSCMD   ABS   12 11-Apr-81
+PIP      ABS   19 11-Apr-81
+SY       DVD   10 11-Apr-81
+DK       DVD   15 11-Apr-81
+SYSCMD   SYS   26 02-Oct-81
+PROLOGUE SYS    8 03-Aug-81
+CP       DVD    3 03-Aug-81
+CP89D0   ABS   25 03-Aug-81
+CP89M0   ABS   23 03-Aug-81
+CP89M1   ABS   33 03-Aug-81
+CP89M2   ABS   21 03-Aug-81
+ERRORMSG SYS   11 11-Apr-81
+CP89M3   ABS   27 03-Aug-81
+CP89M5   ABS    6 03-Aug-81
+CPRETURN ABS    1 03-Aug-81
+RGT      SYS    1 11-Apr-81
+GRT      SYS    1 11-Apr-81
+DIRECT   SYS   18 11-Apr-81
+======== === ==== =========
+Files 21, Total 328, Free 48
+
+01-021.H8D
+01-021 ACP VERSION 1.0 SOURCE DISK #2
+======== === ==== =========
+  FILE   EXT SIZE   DATE   
+======== === ==== =========
+GETLSUB  ASM   13 06-May-81
+H19      ASM   13 06-May-81
+ACPSUBS  ASM   10 06-May-81
+ACP      ASM    6 06-May-81
+FKSUBS   ASM   12 06-May-81
+GETLINE  ASM   65 06-May-81
+MAINSUB  ASM   16 06-May-81
+ACPDATA  ASM   44 06-May-81
+ACTSUBS  ASM   27 06-May-81
+CMDSUBS  ASM   36 06-May-81
+TERMSUB  ASM   16 06-May-81
+ACPINIT  ASM   15 06-May-81
+COMMSUB  ASM   20 06-May-81
+ACPMAIN  ASM   33 06-May-81
+ACM      PRF    1 08-May-81
+ASM      PRF    1 08-May-81
+PC       TMP    0 08-May-81
+X        X      0 12-May-81
+RGT      SYS    1 06-May-81
+GRT      SYS    1 06-May-81
+DIRECT   SYS   18 06-May-81
+======== === ==== =========
+Files 21, Total 348, Free 28
+
+01-022.H8D
+01-022 CP89 SOURCE BACKUP - DISK & FILE MODULES
+======== === ==== =========
+  FILE   EXT SIZE   DATE   
+======== === ==== =========
+DSKDATA  ASM    2 05-Apr-81
+SRCHSUB  ASM   12 05-Apr-81
+FILESUB  ASM   48 05-Apr-81
+DISKSUB  ASM   40 05-Apr-81
+CP89PRO  ASM   22 05-Apr-81
+ALOCSUB  ASM   24 05-Apr-81
+FILMENU  ASM   20 05-Apr-81
+DKINIT   ASM    6 05-Apr-81
+CP89D0   ASM    5 05-Apr-81
+CP89P0   ASM   29 05-Apr-81
+RGT      SYS    1 05-Apr-81
+GRT      SYS    1 05-Apr-81
+DIRECT   SYS   18 05-Apr-81
+======== === ==== =========
+Files 13, Total 228, Free 158
+
+01-023.H8D
+01-023 HDOS VER 2.0 - ACP DEMO SYSTEM DISK
+======== === ==== =========
+  FILE   EXT SIZE   DATE   
+======== === ==== =========
+HDOS     SYS   31 30-Apr-81
+HDOSOVL0 SYS   26 30-Apr-81
+HDOSOVL1 SYS   11 30-Apr-81
+SYSCMD   SYS   29 14-May-81
+PIP      ABS   19 30-Apr-81
+SY       DVD   10 30-Apr-81
+ERRORMSG SYS    7 30-Apr-81
+SET      ABS   12 30-Apr-81
+FLAGS    ABS    4 30-Apr-81
+ONECOPY  ABS   20 30-Apr-81
+SYSACCT  SYS    2 12-May-81
+HELPPIP  DOC    2 06-May-81
+ED19     ABS   19 01-May-81
+ED19I    ABS   19 01-May-81
+ED19M    ABS   22 01-May-81
+PROLOGUE SYS    5 14-May-81
+ED19C    ABS   21 01-May-81
+PC       DVD    5 14-May-81
+STATUS   ABS    7 14-May-81
+LIFE     ABS    8 22-Jun-81
+SYSID    SYS    1 05-May-81
+HELPKEY  DOC    3 06-May-81
+HELPPRG  DOC    3 06-May-81
+HELPCMD  DOC    4 06-May-81
+RGT      SYS    1 30-Apr-81
+GRT      SYS    1 30-Apr-81
+DIRECT   SYS   18 30-Apr-81
+======== === ==== =========
+Files 27, Total 310, Free 64
+
+01-024.H8D
+01-024 MICROSOFT BASIC GAMES DISK #2
+======== === ==== =========
+  FILE   EXT SIZE   DATE   
+======== === ==== =========
+SINK     BAS   23 29-Dec-80
+DEATHSTR BAS   44 29-Dec-80
+MARKET   BAS   39 29-Dec-80
+DORNBACK BAS   45 29-Dec-80
+CAMEL    BAS   22 29-Dec-80
+MARKINST BAS   28 29-Dec-80
+MASTMIND BAS   20 29-Dec-80
+CRYPTO   BAS   18 29-Dec-80
+MENU     DAT    2 29-Dec-80
+RGT      SYS    1 29-Dec-80
+GRT      SYS    1 29-Dec-80
+DIRECT   SYS   18 29-Dec-80
+======== === ==== =========
+Files 12, Total 261, Free 124
+
+01-025.H8D
+01-025 BASIC ACCOUNTING PROGRAMS
+======== === ==== =========
+  FILE   EXT SIZE   DATE   
+======== === ==== =========
+CRAS     DOC   23 28-Feb-81
+PASS2    BAS   40 01-Mar-81
+BAS      PRF    1 28-Dec-81
+CRAS2    BAS   38 28-Feb-81
+CRAS3    BAS   29 28-Feb-81
+CRAS4    BAS   42 28-Feb-81
+CRAS5    BAS   23 28-Feb-81
+PASS6    BAS   17 01-Mar-81
+PASS     MNU    2 28-Feb-81
+PASS     BAS   13 28-Feb-81
+PASS7    BAS   10 01-Mar-81
+X        X      3 28-Feb-81
+PASS1    BAS   36 01-Mar-81
+MNU      PRF    1 28-Dec-81
+RGT      SYS    1 28-Feb-81
+GRT      SYS    1 28-Feb-81
+DIRECT   SYS   18 28-Feb-81
+======== === ==== =========
+Files 17, Total 298, Free 82
+
+01-026.H8D
+01-026 HDOS 2.0 - ED89 DEVELOPMENT SYSTEM
+======== === ==== =========
+  FILE   EXT SIZE   DATE   
+======== === ==== =========
+HDOS     SYS   31 04-Mar-81
+HDOSOVL0 SYS   26 04-Mar-81
+HDOSOVL1 SYS   11 04-Mar-81
+SYSCMD   SYS   12 04-Mar-81
+PIP      ABS   19 04-Mar-81
+SY       DVD   10 04-Mar-81
+ERRORMSG SYS   11 04-Mar-81
+ASM      ABS   33 04-Mar-81
+XREF     ABS   13 04-Mar-81
+DBUG     ABS   15 04-Mar-81
+DK       DVD   15 04-Mar-81
+LP       DVD    7 04-Mar-81
+PROLOGUE SYS    1 04-Mar-81
+ED19     ABS   19 04-Mar-81
+ED19C    ABS   19 04-Mar-81
+ED19M    ABS   22 04-Mar-81
+ED19I    ABS   15 04-Mar-81
+ED19     ACM   10 04-Mar-81
+C3101    ABS   16 04-Mar-81
+B3101    ABS   46 04-Mar-81
+RGT      SYS    1 04-Mar-81
+GRT      SYS    1 04-Mar-81
+DIRECT   SYS   18 04-Mar-81
+======== === ==== =========
+Files 23, Total 371, Free 4
+
+01-027.H8D
+01-041 HDOS 2.0 & CP89 TEST SYSTEM
+======== === ==== =========
+  FILE   EXT SIZE   DATE   
+======== === ==== =========
+HDOS     SYS   31 17-Jul-81
+HDOSOVL0 SYS   26 17-Jul-81
+HDOSOVL1 SYS   11 17-Jul-81
+SYSCMD   SYS   12 17-Jul-81
+PIP      ABS   19 17-Jul-81
+SY       DVD   10 17-Jul-81
+ERRORMSG SYS   11 17-Jul-81
+SET      ABS   12 17-Jul-81
+FLAGS    ABS    4 17-Jul-81
+ONECOPY  ABS   20 17-Jul-81
+DK       DVD   15 17-Jul-81
+SYSHELP  DOC    3 17-Jul-81
+HELP            2 17-Jul-81
+INIT     ABS   29 17-Jul-81
+TEST17   ABS   32 17-Jul-81
+TEST47   ABS   29 17-Jul-81
+SYSGEN   ABS   21 17-Jul-81
+RGT      SYS    1 17-Jul-81
+GRT      SYS    1 17-Jul-81
+DIRECT   SYS   18 17-Jul-81
+======== === ==== =========
+Files 20, Total 307, Free 72
+
+01-028.H8D
+010-028 HDOS 2.0 - BASIC DEVELOPMENT SYSTEM
+======== === ==== =========
+  FILE   EXT SIZE   DATE   
+======== === ==== =========
+HDOS     SYS   31 04-Mar-81
+HDOSOVL0 SYS   26 04-Mar-81
+HDOSOVL1 SYS   11 04-Mar-81
+SYSCMD   SYS   12 04-Mar-81
+PIP      ABS   19 04-Mar-81
+SY       DVD   10 04-Mar-81
+ERRORMSG SYS   11 04-Mar-81
+BAS      PRF    1 28-Dec-81
+LP       DVD    7 04-Mar-81
+DK       DVD   15 04-Mar-81
+PROLOGUE SYS    1 04-Mar-81
+ED19     ABS   19 04-Mar-81
+ED19C    ABS   19 04-Mar-81
+ED19M    ABS   22 04-Mar-81
+ED19I    ABS   15 04-Mar-81
+MBASIC   ABS   80 04-Mar-81
+MENU     BAS   13 04-Mar-81
+PRINT    BAS   19 04-Mar-81
+RGT      SYS    1 04-Mar-81
+GRT      SYS    1 04-Mar-81
+DIRECT   SYS   18 04-Mar-81
+======== === ==== =========
+Files 21, Total 351, Free 24
+
+01-029.H8D
+01-029 CP89 SOURCE BACKUP - MENU MODULES
+======== === ==== =========
+  FILE   EXT SIZE   DATE   
+======== === ==== =========
+PIPMENU  ASM   13 05-Apr-81
+SRCHSUB  ASM   12 05-Apr-81
+CP89M5   ASM    7 05-Apr-81
+UTLMSUB  ASM    6 05-Apr-81
+RENMENU  ASM    8 05-Apr-81
+CP89M0   ASM    8 05-Apr-81
+CP89M1   ASM   17 05-Apr-81
+HSTMENU  ASM   26 05-Apr-81
+STAMENU  ASM   27 05-Apr-81
+STATSUB  ASM   30 05-Apr-81
+CPYMENU  ASM   13 05-Apr-81
+FLGMENU  ASM    9 05-Apr-81
+MSTMSUB  ASM   13 05-Apr-81
+DELMENU  ASM    7 05-Apr-81
+PRTMENU  ASM   13 05-Apr-81
+DMPMENU  ASM    8 05-Apr-81
+CPYMSUB  ASM    1 05-Apr-81
+RENMSUB  ASM    1 05-Apr-81
+DELMSUB  ASM    1 05-Apr-81
+FLGMSUB  ASM    1 05-Apr-81
+DMPMSUB  ASM    1 05-Apr-81
+PRTMSUB  ASM    1 05-Apr-81
+PIPMSUB  ASM    1 05-Apr-81
+UTLMENU  ASM   21 05-Apr-81
+HSTSSUB  ASM    3 05-Apr-81
+MSTMENU  ASM   38 05-Apr-81
+RGT      SYS    1 23-Feb-81
+GRT      SYS    1 23-Feb-81
+DIRECT   SYS   18 23-Feb-81
+======== === ==== =========
+Files 29, Total 306, Free 64
+
+01-030.H8D
+01-030 ACP DEMO SYSTEM WORKING DISK
+======== === ==== =========
+  FILE   EXT SIZE   DATE   
+======== === ==== =========
+PIP      ABS   19 30-Apr-81
+SYSCMD   SYS   29 14-May-81
+ERRORMSG SYS    7 30-Apr-81
+SYSACCT  SYS    2 07-May-81
+ED19     ABS   19 05-May-81
+ED19I    ABS   19 05-May-81
+ED19C    ABS   21 05-May-81
+ED19M    ABS   22 05-May-81
+C3101    ABS   16 05-May-81
+B3101    ABS   46 05-May-81
+RDT      ABS   25 15-May-81
+RDTA     ABS   23 15-May-81
+SPACEWAR ABS   67 22-Jun-81
+LIFE     ABS    8 22-Jun-81
+RGT      SYS    1 30-Apr-81
+GRT      SYS    1 30-Apr-81
+DIRECT   SYS   18 30-Apr-81
+======== === ==== =========
+Files 17, Total 343, Free 36
+
+01-031.H8D
+01-031 CP89 SOURCE BACKUP - MAIN MODULES
+======== === ==== =========
+  FILE   EXT SIZE   DATE   
+======== === ==== =========
+COMMSUB  ASM   26 05-Apr-81
+MAINSUB  ASM   13 05-Apr-81
+MENUSUB  ASM   56 05-Apr-81
+TERMSUB  ASM   17 05-Apr-81
+GETLINE  ASM   65 05-Apr-81
+CPMAIN   ASM   20 05-Apr-81
+CPINIT   ASM   35 05-Apr-81
+GETKEY   ASM   13 05-Apr-81
+CPDATA   ASM   20 05-Apr-81
+CP89     ASM    7 05-Apr-81
+GETLSUB  ASM   13 05-Apr-81
+H19      ASM   13 05-Apr-81
+RGT      SYS    1 31-Jan-81
+GRT      SYS    1 31-Jan-81
+DIRECT   SYS   18 31-Jan-81
+======== === ==== =========
+Files 15, Total 318, Free 62
+
+01-032.H8D
+01-032 HOME TERMINAL SUPPORT - SOURCE
+======== === ==== =========
+  FILE   EXT SIZE   DATE   
+======== === ==== =========
+ASC1     ASM   94 10-Jan-81
+TH       ASM   56 10-Jan-81
+ASCB3    ASM   41 10-Jan-81
+ASCB1    ASM   23 10-Jan-81
+ASCB2    ASM   18 10-Jan-81
+ASCB5    ASM   33 10-Jan-81
+ASCB     ASM    1 10-Jan-81
+ASCB6    ASM   25 10-Jan-81
+ASCB4    ASM   18 10-Jan-81
+HDOS     ACM    6 10-Jan-81
+C3101    ABS   16 10-Jan-81
+RGT      SYS    1 10-Jan-81
+GRT      SYS    1 10-Jan-81
+DIRECT   SYS   18 10-Jan-81
+======== === ==== =========
+Files 14, Total 351, Free 32
+
+01-033.H8D
+CP/M DISK IMAGE
+======== === ==== =========
+  FILE   EXT SIZE   DATE   
+======== === ==== =========
+BIOS     ?SM   55 -- N/A --
+MAKEBIOS ?OM    2 -- N/A --
+MAKEBIOS ?UB    1 -- N/A --
+PREL     COM    2 -- N/A --
+======== === ==== =========
+Files 4, Total 60, Free 30
+
+01-034.H8D
+01-034 MICROSOFT BASIC GAMES DISK #1
+======== === ==== =========
+  FILE   EXT SIZE   DATE   
+======== === ==== =========
+PLANE    BAS   39 29-Dec-80
+TICTAC   BAS   12 29-Dec-80
+NIM      BAS   37 29-Dec-80
+HANGMAN  BAS   21 29-Dec-80
+QUBIC    BAS   34 29-Dec-80
+OTHELLO  BAS   18 29-Dec-80
+SINK     BAS   23 29-Dec-80
+BACKGAMM BAS   45 29-Dec-80
+BATTLE   BAS   39 29-Dec-80
+MENU     DAT    2 29-Dec-80
+HANOI    BAS   13 29-Dec-80
+INIT1           1 01-Mar-81
+SLOTS    BAS   22 29-Dec-80
+TITLES          1 01-Mar-81
+BALANCES        1 01-Mar-81
+OPENBAL         1 01-Mar-81
+MEBAL           1 01-Mar-81
+TRAN01          1 01-Mar-81
+INIT2           1 01-Mar-81
+RGT      SYS    1 29-Dec-80
+GRT      SYS    1 29-Dec-80
+DIRECT   SYS   18 29-Dec-80
+======== === ==== =========
+Files 22, Total 332, Free 42
+
+01-035.H8D
+01-035 FULL SCREEN EDITOR SOURCE - ACM MODULES
+======== === ==== =========
+  FILE   EXT SIZE   DATE   
+======== === ==== =========
+ED19     ABS   19 08-Jan-81
+EDCOMM   ACM   24 03-Jan-81
+ESVAL    ACM    7 03-Jan-81
+ECDEF    ACM    7 03-Jan-81
+ROMSUBS  ACM    5 03-Jan-81
+H19      NEW   24 04-Jan-81
+HOSDEF   ACM    6 03-Jan-81
+ASCII    ACM    7 03-Jan-81
+ED19     ACM   10 14-Jan-81
+EDDEFS   ACM   31 06-Jan-81
+ED19C    ABS   19 06-Jan-81
+ED19M    ABS   22 07-Jan-81
+ED19I    ABS   15 14-Feb-81
+H19      ACM   14 04-Jan-81
+CP19     ABS   22 15-Jan-80
+CPDEFS   ACM   19 15-Jan-80
+RGT      SYS    1 03-Jan-81
+GRT      SYS    1 03-Jan-81
+DIRECT   SYS   18 03-Jan-81
+======== === ==== =========
+Files 19, Total 271, Free 108
+
+01-036.H8D
+CP/M DISK IMAGE
+======== === ==== =========
+  FILE   EXT SIZE   DATE   
+======== === ==== =========
+BRS      COM   13 -- N/A --
+DUMP     ASM    5 -- N/A --
+DUMP     COM    1 -- N/A --
+LIST     COM    2 -- N/A --
+MOVCPM37 COM   11 -- N/A --
+MOVCPM47 COM   11 -- N/A --
+MOVCPM67 COM   11 -- N/A --
+PREL     COM    2 -- N/A --
+SETLP    COM    1 -- N/A --
+======== === ==== =========
+Files 9, Total 57, Free 33
+
+01-037.H8D
+CP/M DISK IMAGE
+======== === ==== =========
+  FILE   EXT SIZE   DATE   
+======== === ==== =========
+BIOS     ??S    5 -- N/A --
+ASM      COM    8 -- N/A --
+ASSIGN   COM    2 -- N/A --
+CONFIGUR COM   14 -- N/A --
+DDT      COM    5 -- N/A --
+DUP      COM    5 -- N/A --
+ED       COM    7 -- N/A --
+FORMAT   COM    6 -- N/A --
+LOAD     COM    2 -- N/A --
+MOVCPM17 COM   11 -- N/A --
+PIP      COM    8 -- N/A --
+STAT     COM    6 -- N/A --
+SUBMIT   COM    2 -- N/A --
+SYSGEN   COM    2 -- N/A --
+XSUB     COM    1 -- N/A --
+======== === ==== =========
+Files 15, Total 84, Free 6
+
+01-038.H8D
+01-038 HDOS 2.0 COMPLETE SYSTEM DISK
+======== === ==== =========
+  FILE   EXT SIZE   DATE   
+======== === ==== =========
+HDOS     SYS   31 03-Mar-81
+HDOSOVL0 SYS   26 03-Mar-81
+HDOSOVL1 SYS   11 03-Mar-81
+SYSCMD   SYS   12 03-Mar-81
+PIP      ABS   19 03-Mar-81
+SY       DVD   10 03-Mar-81
+ERRORMSG SYS   11 03-Mar-81
+SET      ABS   12 03-Mar-81
+FLAGS    ABS    4 03-Mar-81
+ONECOPY  ABS   20 03-Mar-81
+DK       DVD   15 03-Mar-81
+SYSHELP  DOC    3 03-Mar-81
+HELP            2 03-Mar-81
+INIT     ABS   29 03-Mar-81
+TEST17   ABS   32 03-Mar-81
+TEST47   ABS   29 03-Mar-81
+SYSGEN   ABS   21 03-Mar-81
+RGT      SYS    1 03-Mar-81
+GRT      SYS    1 03-Mar-81
+DIRECT   SYS   18 03-Mar-81
+======== === ==== =========
+Files 20, Total 307, Free 72
+
+01-039.H8D
+01-039 HDOS 2.0 WORKING SYSTEM DISK
+======== === ==== =========
+  FILE   EXT SIZE   DATE   
+======== === ==== =========
+HDOS     SYS   31 03-Mar-81
+HDOSOVL0 SYS   26 03-Mar-81
+HDOSOVL1 SYS   11 03-Mar-81
+SYSCMD   SYS   12 03-Mar-81
+PIP      ABS   19 03-Mar-81
+SY       DVD   10 03-Mar-81
+ERRORMSG SYS   11 03-Mar-81
+SET      ABS   12 03-Mar-81
+FLAGS    ABS    4 03-Mar-81
+INIT     ABS   29 03-Mar-81
+DK       DVD   15 03-Mar-81
+TEST47   ABS   29 18-Apr-81
+TEST17   ABS   32 18-Apr-81
+DUP      ABS   10 03-Jun-81
+LP       DVD    7 03-Mar-81
+ED19     ABS   19 03-Mar-81
+ED19C    ABS   19 03-Mar-81
+ED19M    ABS   22 03-Mar-81
+ED19I    ABS   15 03-Mar-81
+PROLOGUE SYS    1 04-Mar-81
+DUMP     ABS    7 04-Mar-81
+X        PRF    1 12-Dec-81
+BOOT     ABS    4 03-Jan-82
+RGT      SYS    1 03-Mar-81
+GRT      SYS    1 03-Mar-81
+DIRECT   SYS   18 03-Mar-81
+======== === ==== =========
+Files 26, Total 366, Free 8
+
+01-040.H8D
+CP/M DISK IMAGE
+======== === ==== =========
+  FILE   EXT SIZE   DATE   
+======== === ==== =========
+BIOS     ??S    5 -- N/A --
+MOVCPM5  COM   11 -- N/A --
+MOVCPM8  COM   11 -- N/A --
+PIP      COM    8 -- N/A --
+SUBMIT   COM    2 -- N/A --
+STAT     COM    6 -- N/A --
+XSUB     COM    1 -- N/A --
+ED       COM    7 -- N/A --
+ASM      COM    8 -- N/A --
+DDT      COM    5 -- N/A --
+LOAD     COM    2 -- N/A --
+CONFIGUR COM   10 -- N/A --
+SYSGEN   COM    2 -- N/A --
+DUMP     COM    1 -- N/A --
+DUMP     ASM    5 -- N/A --
+DUP      COM    3 -- N/A --
+FORMAT   COM    3 -- N/A --
+======== === ==== =========
+Files 17, Total 90, Free 0
+
+01-041.H8D
+01-041 HDOS 2.0 & CP89 TEST SYSTEM
+======== === ==== =========
+  FILE   EXT SIZE   DATE   
+======== === ==== =========
+HDOS     SYS   31 17-Jul-81
+HDOSOVL0 SYS   26 17-Jul-81
+HDOSOVL1 SYS   11 17-Jul-81
+SYSCMD   SYS   12 17-Jul-81
+PIP      ABS   19 17-Jul-81
+SY       DVD   10 17-Jul-81
+ERRORMSG SYS   11 17-Jul-81
+SET      ABS   12 17-Jul-81
+FLAGS    ABS    4 17-Jul-81
+ONECOPY  ABS   20 17-Jul-81
+DK       DVD   15 17-Jul-81
+SYSHELP  DOC    3 17-Jul-81
+HELP            2 17-Jul-81
+INIT     ABS   29 17-Jul-81
+TEST17   ABS   32 17-Jul-81
+TEST47   ABS   29 17-Jul-81
+SYSGEN   ABS   21 17-Jul-81
+RGT      SYS    1 17-Jul-81
+GRT      SYS    1 17-Jul-81
+DIRECT   SYS   18 17-Jul-81
+======== === ==== =========
+Files 20, Total 307, Free 72
+
+02-001.H8D
+HDOS Device Driver  Type 'TYPE README.DOC'  P/N 885-1019
+======== === ==== =========
+  FILE   EXT SIZE   DATE   
+======== === ==== =========
+HDOS     SYS   26 02-Nov-79
+HDOSOVL0 SYS   26 02-Nov-79
+HDOSOVL1 SYS   10 02-Nov-79
+SYSCMD   SYS   10 02-Nov-79
+ASCII    ACM    3 02-Nov-79
+PIP      ABS   18 02-Nov-79
+HOSDEF   ACM    4 02-Nov-79
+ESVAL    ACM    6 02-Nov-79
+DDDVD    BAK   37 02-Nov-79
+DVDIO    ACM   11 02-Nov-79
+DDDEF    ACM    2 02-Nov-79
+DVDDEF   004    1 02-Nov-79
+ECDEF    ACM    5 02-Nov-79
+SETCAL   ACM    2 02-Nov-79
+ROMSUBS  ACM    6 02-Nov-79
+PICDEF   ACM    1 02-Nov-79
+ASM      ABS   27 02-Nov-79
+HOSEQU   ACM    3 02-Nov-79
+U8251    ACM    5 02-Nov-79
+U8250    ACM    8 02-Nov-79
+DDDVD    ASM   37 17-Dec-79
+BPDVD    ASM   39 02-Nov-79
+DVDDEF   005    3 26-Nov-79
+README   DOC    4 26-Nov-79
+RGT      SYS    1 02-Nov-79
+GRT      SYS    1 02-Nov-79
+DIRECT   SYS   18 02-Nov-79
+======== === ==== =========
+Files 27, Total 314, Free 62
+
+02-002.H8D
+HDOS Editor  "TYPE README.DOC"  HUG p/n 885-1022
+======== === ==== =========
+  FILE   EXT SIZE   DATE   
+======== === ==== =========
+HDOS     SYS   26 27-Aug-79
+HDOSOVL0 SYS   26 27-Aug-79
+HDOSOVL1 SYS   10 27-Aug-79
+SYSCMD   SYS   10 27-Aug-79
+README   DOC   78 05-Feb-80
+PIP      ABS   18 27-Aug-79
+ED       ASM  156 27-Aug-79
+ED       ABS   14 27-Aug-79
+HOSDEF   ACM    5 27-Aug-79
+RGT      SYS    1 27-Aug-79
+GRT      SYS    1 27-Aug-79
+DIRECT   SYS   18 27-Aug-79
+======== === ==== =========
+Files 12, Total 363, Free 24
+
+02-003.H8D
+Runoff Text Processor   'Type Readme.Doc'  P/N HUG 885-1025-
+======== === ==== =========
+  FILE   EXT SIZE   DATE   
+======== === ==== =========
+HDOS     SYS   26 21-Sep-79
+HDOSOVL0 SYS   26 21-Sep-79
+HDOSOVL1 SYS   10 21-Sep-79
+SYSCMD   SYS   10 21-Sep-79
+ERRORMSG SYS   11 21-Sep-79
+PIP      ABS   18 21-Sep-79
+RUNOFF   ABS   24 21-Sep-79
+RUNOFF   RAW   66 21-Sep-79
+README   DOC    1 21-Sep-79
+LP       DVD    7 21-Sep-79
+RGT      SYS    1 21-Sep-79
+GRT      SYS    1 21-Sep-79
+DIRECT   SYS   18 21-Sep-79
+======== === ==== =========
+Files 13, Total 219, Free 166
+
+02-004.H8D
+HUG DISK II   HUG P/N 885-1029
+======== === ==== =========
+  FILE   EXT SIZE   DATE   
+======== === ==== =========
+README   DOC   15 31-Mar-80
+SPACEWAR ABS   67 31-Mar-80
+LIFE     ABS    8 31-Mar-80
+DEATHSTR BAS   43 31-Mar-80
+MARKET   BAS   39 31-Mar-80
+MARKINST BAS   25 31-Mar-80
+CAMEL    BAS   22 31-Mar-80
+FOOTBALL BAS   28 31-Mar-80
+QUBIC    BAS   23 31-Mar-80
+QUBIC    DAT   14 31-Mar-80
+RGT      SYS    1 31-Mar-80
+GRT      SYS    1 31-Mar-80
+DIRECT   SYS   18 31-Mar-80
+======== === ==== =========
+Files 13, Total 304, Free 78
+
+02-005.H8D
+HUG DISK III  'TYPE README.DOC' GAME II HUG P/N 885-1030
+======== === ==== =========
+  FILE   EXT SIZE   DATE   
+======== === ==== =========
+README   DOC    8 06-Jun-79
+ATOM2000 BAS  110 06-Jun-79
+SUBMARIN BAS   16 06-Jun-79
+CRYPTO   BAS   20 06-Jun-79
+ANIMAL   BAS   20 06-Jun-79
+ANIMAL   DAT    4 06-Jun-79
+MASTMIND BAS   20 06-Jun-79
+BATLSHIP BAS   37 06-Jun-79
+BASEBALL BAS   38 06-Jun-79
+PIP      ABS   17 17-May-79
+HDOS     SYS   24 17-May-79
+HDOSOVL  SYS   24 17-May-79
+SYSCMD   SYS   12 17-May-79
+RGT      SYS    1 17-May-79
+GRT      SYS    1 17-May-79
+DIRECT   SYS   18 17-May-79
+======== === ==== =========
+Files 16, Total 370, Free 16
+
+02-006.H8D
+HUG DISK V   HUG P/N 885-1032
+======== === ==== =========
+  FILE   EXT SIZE   DATE   
+======== === ==== =========
+README   DOC   30 31-Mar-80
+MORSE    DOC    5 31-Mar-80
+MORSE    ASM   14 31-Mar-80
+MORSE    ABS    6 31-Mar-80
+GETREC   ACM    4 31-Mar-80
+GETMSG   ACM    2 31-Mar-80
+PUTREC   ACM    4 31-Mar-80
+HDOSN    ACM    6 31-Mar-80
+ERROR    ACM    3 31-Mar-80
+CHKNUM   ACM    1 31-Mar-80
+DECBIN   ACM    2 31-Mar-80
+FORMAT   DOC   10 31-Mar-80
+FORMAT   ASM   22 31-Mar-80
+FORMAT   ABS    6 31-Mar-80
+CALENDAR BAS   26 31-Mar-80
+MAP      ABS   15 31-Mar-80
+KCAT     ABS    4 31-Mar-80
+ZCAT     ABS    4 31-Mar-80
+DATE     BAS    1 31-Mar-80
+PRNTFILE BAS   14 31-Mar-80
+WEATHER  BAS   28 31-Mar-80
+DATA     DAT   16 31-Mar-80
+FRCST    DAT    4 31-Mar-80
+RECORDS  DAT   40 31-Mar-80
+RECLIB   BAS   12 31-Mar-80
+LIBBLD   BAS    5 31-Mar-80
+LIBREC   DAT    8 31-Mar-80
+RGT      SYS    1 31-Mar-80
+GRT      SYS    1 31-Mar-80
+DIRECT   SYS   18 31-Mar-80
+======== === ==== =========
+Files 30, Total 312, Free 70
+
+02-007.H8D
+HUG DISK VI H8-SOFTWARE  HUG P/N 885-1044
+======== === ==== =========
+  FILE   EXT SIZE   DATE   
+======== === ==== =========
+README   DOC   10 31-Mar-80
+SYSCAT   DOC   18 31-Mar-80
+SYSCAT   ASM   48 31-Mar-80
+SYSCAT   ABS    8 31-Mar-80
+PUTCAT   ASM   14 31-Mar-80
+PUTCAT   ABS    5 31-Mar-80
+SORTER   DOC    6 31-Mar-80
+SORTER   ASM   32 31-Mar-80
+SORTER   ABS    4 31-Mar-80
+DDFORMAT DOC    1 31-Mar-80
+DDFORMAT TXT   22 31-Mar-80
+DDFORMAT ABS   19 31-Mar-80
+HEADER   DOC   10 31-Mar-80
+HEADER   BAS   22 31-Mar-80
+GRAPH    BAS    7 31-Mar-80
+CALCULAT ASM   34 31-Mar-80
+CALCULAT ABS    7 31-Mar-80
+RGT      SYS    1 31-Mar-80
+GRT      SYS    1 31-Mar-80
+DIRECT   SYS   18 31-Mar-80
+======== === ==== =========
+Files 20, Total 287, Free 96
+
+02-008.H8D
+DISK VII  HDOS UTILITY PACKAGE  H8/H89  HUG P/N 885-1060
+======== === ==== =========
+  FILE   EXT SIZE   DATE   
+======== === ==== =========
+README   DOC    9 11-Feb-80
+FDUMP    DOC   32 11-Feb-80
+FDUMP    ASM   31 11-Feb-80
+FDUMP    ABS    5 11-Feb-80
+ABSDUMP  DOC   14 11-Feb-80
+ABSDUMP  ASM   27 11-Feb-80
+ABSDUMP  ABS    4 11-Feb-80
+CLIST    DOC   17 11-Feb-80
+CLIST    ASM   34 11-Feb-80
+CLIST    ABS   16 11-Feb-80
+BAUD     DOC    3 11-Feb-80
+BAUD     ASM    7 11-Feb-80
+BAUD     ABS    1 11-Feb-80
+NEWNAME  DOC    4 11-Feb-80
+NEWNAME  ASM    8 11-Feb-80
+NEWNAME  ABS    2 11-Feb-80
+SUBMIT   DOC    8 11-Feb-80
+SUBMIT   ASM   11 11-Feb-80
+SUBMIT   ABS    3 11-Feb-80
+SORT     ACM   14 11-Feb-80
+DEVOUT   ACM    3 11-Feb-80
+HDOS     ACM   14 11-Feb-80
+ASCII    ACM    4 11-Feb-80
+CONSL    ACM    3 11-Feb-80
+TTIO     ACM    6 11-Feb-80
+STUFF    ACM    3 11-Feb-80
+CLSTSUB1 ACM   28 11-Feb-80
+CLSTSUB2 ACM   18 11-Feb-80
+U8250    ACM    8 11-Feb-80
+ECDEF    ACM    4 11-Feb-80
+DVDDEF   ACM    4 11-Feb-80
+DDASUB   ACM    1 11-Feb-80
+RGT      SYS    1 07-Feb-80
+GRT      SYS    1 07-Feb-80
+DIRECT   SYS   18 07-Feb-80
+======== === ==== =========
+Files 35, Total 366, Free 8
+
+02-009.H8D
+HUG Disk VIII  Utility Disk H8/H89  HUG p/n 885-1062 Disk A
+======== === ==== =========
+  FILE   EXT SIZE   DATE   
+======== === ==== =========
+README   DOC   12 29-Feb-80
+MEMTEST  DOC   13 29-Feb-80
+MEMTEST  ASM   24 29-Feb-80
+MEMTEST  ABS    5 29-Feb-80
+DUP      DOC   11 29-Feb-80
+DUP      ASM   55 29-Feb-80
+DUP      ABS   10 29-Feb-80
+DUMP     DOC   20 29-Feb-80
+DUMP     ASM   54 29-Feb-80
+DUMP     ABS    7 29-Feb-80
+DSMASM   DOC   13 29-Feb-80
+DSM      DOC   72 29-Feb-80
+DSM      ABS   35 29-Feb-80
+NREAD    ACM    2 29-Feb-80
+ASDXB    ACM    4 29-Feb-80
+HOSDEF   ACM    5 29-Feb-80
+HDOS     ACM   17 29-Feb-80
+RGT      SYS    1 14-Feb-80
+GRT      SYS    1 14-Feb-80
+DIRECT   SYS   18 14-Feb-80
+======== === ==== =========
+Files 20, Total 379, Free 0
+
+02-010.H8D
+HUG DISK VIII  Utility Disk  H8/H89  P/N 885-1062 Disk B
+======== === ==== =========
+  FILE   EXT SIZE   DATE   
+======== === ==== =========
+DSMINIT  ACM   62 14-Feb-80
+DSMCODE  ACM   54 14-Feb-80
+DSMSUBS  ACM   68 14-Feb-80
+DSMDATA  ACM   10 14-Feb-80
+DSMEXIT  ACM   26 14-Feb-80
+DSMHDOS  ACM    7 14-Feb-80
+DSMOUT   ACM   28 14-Feb-80
+DSMSTART ACM   48 14-Feb-80
+DSM      ASM    7 14-Feb-80
+DSMFINAL ACM   55 14-Feb-80
+RGT      SYS    1 14-Feb-80
+GRT      SYS    1 14-Feb-80
+DIRECT   SYS   18 14-Feb-80
+======== === ==== =========
+Files 13, Total 385, Free 0
+
+02-011.H8D
+HUG  FLOATING POINT PACKAGE  H8/H17//H89 P/N 885-1063
+======== === ==== =========
+  FILE   EXT SIZE   DATE   
+======== === ==== =========
+README   DOC    9 05-Apr-80
+SCICAL   DOC   16 05-Apr-80
+SCICAL   ABS   44 05-Apr-80
+SCICAL   EXP    1 05-Apr-80
+INTEGER  DOC   21 05-Apr-80
+INTEGER  ACM   15 05-Apr-80
+INTEGER  EXP    8 05-Apr-80
+FLPOINT  DOC   20 05-Apr-80
+FLPOINT  ACM   23 05-Apr-80
+FLPOINT  EXP    7 05-Apr-80
+FLINPUT  DOC   15 05-Apr-80
+FLINPUT  ACM   21 05-Apr-80
+FLINPUT  EXP    2 05-Apr-80
+FLOUT    DOC    9 05-Apr-80
+FLOUT    ACM   16 05-Apr-80
+FLOUT    EXP    2 05-Apr-80
+FUNCTS   DOC   19 05-Apr-80
+FUNCTS   ACM   23 05-Apr-80
+CALCUL   DOC    4 05-Apr-80
+CALCUL   TBL   23 05-Apr-80
+RGT      SYS    1 22-Feb-80
+GRT      SYS    1 22-Feb-80
+DIRECT   SYS   18 22-Feb-80
+======== === ==== =========
+Files 23, Total 318, Free 58
+
+02-012.H8D
+HUG DISK IX - MISCELLANOUS SOFTWARE P/N 885-1064
+======== === ==== =========
+  FILE   EXT SIZE   DATE   
+======== === ==== =========
+README   DOC   16 30-Apr-80
+SAVEIT   DOC   10 30-Apr-80
+SAMPLE   DOC   11 30-Apr-80
+SAVEIT   ASM   12 30-Apr-80
+SAVEIT   ABS    4 30-Apr-80
+PRINTL   DOC   10 30-Apr-80
+PRINTL   ASM   97 30-Apr-80
+PRINTL   LPD   11 30-Apr-80
+PRINTL   ATD   11 30-Apr-80
+TIME     DOC   16 30-Apr-80
+TIME     ASM   15 30-Apr-80
+TIME     ABS    4 30-Apr-80
+CK       ASM   39 30-Apr-80
+CK       DVD    6 30-Apr-80
+CMDLINE  DOC   38 30-Apr-80
+CMDUTIL  ACM   28 30-Apr-80
+HDOS     ACM   18 30-Apr-80
+ASCII    ACM    3 30-Apr-80
+PICDEF   ACM    1 30-Apr-80
+SETCAL   ACM    2 30-Apr-80
+DVDDEF   ACM    1 30-Apr-80
+TIMEFLYS ABS    2 30-Apr-80
+RGT      SYS    1 30-Apr-80
+GRT      SYS    1 30-Apr-80
+DIRECT   SYS   18 30-Apr-80
+======== === ==== =========
+Files 25, Total 375, Free 4
+
+02-013.H8D
+HUG  FIXED POINT PACKAGE     HUG P/N 885-1065
+======== === ==== =========
+  FILE   EXT SIZE   DATE   
+======== === ==== =========
+README   DOC    9 18-Mar-80
+LOAN     DOC   13 18-Mar-80
+LOAN     ASM   86 18-Mar-80
+LOAN     ABS   15 18-Mar-80
+FXDPT    DOC   47 18-Mar-80
+FXDPT    ACM   98 18-Mar-80
+HDOS2    ACM    5 18-Mar-80
+RGT      SYS    1 18-Mar-80
+GRT      SYS    1 18-Mar-80
+DIRECT   SYS   18 18-Mar-80
+======== === ==== =========
+Files 10, Total 293, Free 90
+
+02-014.H8D
+HUG DISK X MISCELLANEOUS SOFTWARE  P/N 885-1066
+======== === ==== =========
+  FILE   EXT SIZE   DATE   
+======== === ==== =========
+README   DOC   22 30-Apr-80
+CRUNCH   DOC   20 30-Apr-80
+CRUNCH   ABS    8 30-Apr-80
+CRUNCH   ASM   60 30-Apr-80
+EXPAND   DOC   13 30-Apr-80
+EXPAND   ABS    5 30-Apr-80
+EXPAND   ASM   25 30-Apr-80
+COMPARE  DOC    3 30-Apr-80
+COMPARE  ABS    3 30-Apr-80
+COMPARE  ASM   24 30-Apr-80
+MEMORY   DOC   20 30-Apr-80
+MEMORY   ABS    3 30-Apr-80
+MEMORY   ASM   37 30-Apr-80
+HDOS     ACM    6 30-Apr-80
+ASCII    ACM    1 30-Apr-80
+GBF      ACM    5 30-Apr-80
+HUFF     ACM   29 30-Apr-80
+HDOSMEM  ACM   25 30-Apr-80
+EXAMPLE  ABS    3 30-Apr-80
+RGT      SYS    1 30-Apr-80
+GRT      SYS    1 30-Apr-80
+DIRECT   SYS   18 30-Apr-80
+======== === ==== =========
+Files 22, Total 332, Free 44
+
+02-015.H8D
+EFs s s s facHBvat ` ` ` cHBBu u ead ead G885-1068
+======== === ==== =========
+  FILE   EXT SIZE   DATE   
+======== === ==== =========
+SLOTS    BAS   19 14-May-80
+PLANE    BAS   31 06-May-80
+HANOI    BAS   11 06-May-80
+NIM      BAS   30 06-May-80
+HANGMAN  BAS   18 06-May-80
+OTHELLO  BAS   15 06-May-80
+DORNBACK BAS   38 14-May-80
+QUBIC    BAS   30 06-May-80
+TICTAC   BAS   11 06-May-80
+BATTLE   BAS   34 14-May-80
+BACKGAMM BAS   36 06-May-80
+SINK     BAS   18 14-May-80
+README   DOC   12 07-May-80
+RGT      SYS    1 10-Dec-79
+GRT      SYS    1 10-Dec-79
+DIRECT   SYS   18 10-Dec-79
+======== === ==== =========
+Files 16, Total 323, Free 60
+
+02-016.H8D
+EFs s s s facHBvat ` ` ` cHBBu u ead ead G885-1067
+======== === ==== =========
+  FILE   EXT SIZE   DATE   
+======== === ==== =========
+README   DOC   16 30-Nov-80
+REVERSI  DOC    6 30-Nov-80
+REVERSI  ASM   88 30-Nov-80
+REVERSI  ABS    9 30-Nov-80
+PINBALL  DOC   26 30-Nov-80
+PINBALL  ABS   18 30-Nov-80
+LINES    BAS    7 30-Nov-80
+DIET     BAS   32 30-Nov-80
+VEGAS    BAS   29 30-Nov-80
+OTHELLO  DOC    5 30-Nov-80
+OTHELLO  BAS   42 30-Nov-80
+BIORYTHM BAS   21 30-Nov-80
+GRWUMPUS BAS   35 30-Nov-80
+RGT      SYS    1 16-Nov-80
+GRT      SYS    1 16-Nov-80
+DIRECT   SYS   18 16-Nov-80
+======== === ==== =========
+Files 16, Total 354, Free 28
+
+02-017.H8D
+HUG DISK XIII MISC. SOFTWARE HUG P/N 885-1069
+======== === ==== =========
+  FILE   EXT SIZE   DATE   
+======== === ==== =========
+README   DOC   12 30-Apr-80
+INFO     DOC    4 30-Apr-80
+INFO     ASM   18 30-Apr-80
+INFO     ABS    2 30-Apr-80
+REN      DOC   32 30-Apr-80
+REN      ASM   78 30-Apr-80
+REN      ABS    5 30-Apr-80
+XREF     DOC   16 30-Apr-80
+XREF     ASM   66 30-Apr-80
+XREF04   ABS    7 30-Apr-80
+XREF05   ABS    7 30-Apr-80
+READ     DOC    3 30-Apr-80
+READ     ASM    5 30-Apr-80
+READ     ABS    2 30-Apr-80
+HDOS     ACM   11 30-Apr-80
+H17ROM   ACM    4 30-Apr-80
+HDOSINFO ACM    4 30-Apr-80
+HDOSREN  ACM    6 30-Apr-80
+HDOSXREF ACM   14 30-Apr-80
+RGT      SYS    1 31-Mar-80
+GRT      SYS    1 31-Mar-80
+DIRECT   SYS   18 31-Mar-80
+======== === ==== =========
+Files 22, Total 316, Free 66
+
+02-018.H8D
+HUG DISK XIV HOME FINANCIAL PACKAGE  H8/H89 P/N # 885-1070
+======== === ==== =========
+  FILE   EXT SIZE   DATE   
+======== === ==== =========
+README   DOC   20 19-Mar-80
+UTILITY  BAS    7 19-Mar-80
+UTILITY  DAT    1 19-Mar-80
+INVEST   BAS   34 19-Mar-80
+CRAS     DOC   23 19-Mar-80
+CRAS0    BAS    5 19-Mar-80
+CRAS1    BAS   37 19-Mar-80
+CRAS2    BAS   38 19-Mar-80
+CRAS3    BAS   29 19-Mar-80
+CRAS4    BAS   42 19-Mar-80
+CRAS5    BAS   23 19-Mar-80
+MEDEXP1  DOC    8 19-Mar-80
+MEDEXP2  DOC    9 19-Mar-80
+MEDEXP3  DOC    8 19-Mar-80
+MEDEXP   BAS    9 19-Mar-80
+MEDEXP2  BAS    7 19-Mar-80
+MEDEXP3  BAS    5 19-Mar-80
+MEDEXP4  BAS    7 19-Mar-80
+MEDEXP5  BAS    6 19-Mar-80
+MEDEXP6  BAS    4 19-Mar-80
+MEDEXP7  BAS    4 19-Mar-80
+MEDAT0   DAT    1 19-Mar-80
+MEDAT1   DAT    5 19-Mar-80
+MEDAT101 DAT    1 19-Mar-80
+RGT      SYS    1 15-Mar-80
+GRT      SYS    1 15-Mar-80
+DIRECT   SYS   18 15-Mar-80
+======== === ==== =========
+Files 27, Total 353, Free 20
+
+02-019.H8D
+HUG DISK XVI MISC. SOFTWARE   HUG P/N 885-1083
+======== === ==== =========
+  FILE   EXT SIZE   DATE   
+======== === ==== =========
+README   DOC   15 09-Aug-80
+NOSPACE  DOC    5 09-Aug-80
+NOSPACE  ASM   11 09-Aug-80
+NOSPACE  ABS    3 09-Aug-80
+WCT      DOC   18 09-Aug-80
+WCT      ASM   24 09-Aug-80
+WCT      ABS    5 09-Aug-80
+TTREAD   DOC    5 09-Aug-80
+TTREAD   ASM   11 09-Aug-80
+TTREAD   ABS    2 09-Aug-80
+MOUNTALL DOC    6 09-Aug-80
+MOUNTALL ASM    7 09-Aug-80
+MOUNTALL ABS    1 09-Aug-80
+RECOVER  DOC    9 09-Aug-80
+RECOVER  ASM   62 09-Aug-80
+RECOVER  ABS    9 09-Aug-80
+ASCIIREC ACM    7 09-Aug-80
+HDOSREC  ACM   35 09-Aug-80
+HDOS     ACM   14 09-Aug-80
+NOSPHDOS ACM   14 09-Aug-80
+ASCII    ACM    1 09-Aug-80
+HDOSWCT  ACM    7 09-Aug-80
+PNB      ACM    8 09-Aug-80
+IOAIDS   ACM    6 09-Aug-80
+GNB      ACM    5 09-Aug-80
+SYDEF    ACM    3 09-Aug-80
+H17TSA   ACM    7 09-Aug-80
+MTHOSDEF ACM    5 09-Aug-80
+RGT      SYS    1 09-Aug-80
+GRT      SYS    1 09-Aug-80
+DIRECT   SYS   18 09-Aug-80
+======== === ==== =========
+Files 31, Total 325, Free 44
+
+02-020.H8D
+EFc f c f facHBvat ` ` ` cHBBd e ead ead G885-1088
+======== === ==== =========
+  FILE   EXT SIZE   DATE   
+======== === ==== =========
+README   DOC   21 03-Feb-81
+LUNAR    BAS   30 03-Feb-81
+BLKJACK  BAS   21 03-Feb-81
+BLKJACK  DOC   13 03-Feb-81
+NIT      BAS   73 03-Feb-81
+NIT      CMT   16 03-Feb-81
+DTC      BAS   81 03-Feb-81
+NITDTC   DOC   10 03-Feb-81
+BOWLING  BAS   28 03-Feb-81
+GUESS    BAS   17 03-Feb-81
+ROBCHAS  BAS   32 19-Mar-81
+ROBCHAS  DAT    9 03-Feb-81
+RGT      SYS    1 23-Jan-81
+GRT      SYS    1 23-Jan-81
+DIRECT   SYS   18 23-Jan-81
+======== === ==== =========
+Files 15, Total 371, Free 10
+
+02-021.H8D
+CP/M DISK IMAGE
+======== === ==== =========
+  FILE   EXT SIZE   DATE   
+======== === ==== =========
+HDOS2CPM ASM   27 -- N/A --
+CONFIG   ASM   21 -- N/A --
+FORMAT   ASM    9 -- N/A --
+FTCOPY   ASM   13 -- N/A --
+LIST     ASM    7 -- N/A --
+DLIST    ASM    6 -- N/A --
+SDIR     ASM    6 -- N/A --
+README   DOC    1 -- N/A --
+======== === ==== =========
+Files 8, Total 90, Free 0
+
+02-022.H8D
+CP/M DISK IMAGE
+======== === ==== =========
+  FILE   EXT SIZE   DATE   
+======== === ==== =========
+DFLIST   ASM    9 -- N/A --
+MAC40    LIB    3 -- N/A --
+DU       DOC    2 -- N/A --
+DU       ASM   13 -- N/A --
+OPCODE   LIB    3 -- N/A --
+DU       COM    2 -- N/A --
+CRCK     ASM    3 -- N/A --
+CRCK     COM   17 -- N/A --
+MACRO    LIB    2 -- N/A --
+DUMP     ASM   20 -- N/A --
+README   DOC    1 -- N/A --
+DUMP     COM    4 -- N/A --
+======== === ==== =========
+Files 12, Total 79, Free 11
+
+02-023.H8D
+RDT DEBUGGING TOOL FOR HDOS   HUG P/N 885-1092
+======== === ==== =========
+  FILE   EXT SIZE   DATE   
+======== === ==== =========
+README   DOC   11 19-Feb-81
+RDT      ABS   25 17-Feb-81
+RDTS     ABS   15 17-Feb-81
+RDT      ASM  155 17-Feb-81
+DIS      ACM   24 17-Feb-81
+DIST     ACM   48 17-Feb-81
+RGT      SYS    1 14-Nov-80
+GRT      SYS    1 14-Nov-80
+DIRECT   SYS    6 14-Nov-80
+======== === ==== =========
+Files 9, Total 286, Free 98
+
+02-024.H8D
+CPMCOPY Distribution Disk Copyright (C) 1981 J.J. Thompson
+======== === ==== =========
+  FILE   EXT SIZE   DATE   
+======== === ==== =========
+CPMCOPY  ABS   24 28-Feb-81
+CPMCOPY  DOC   20 28-Feb-81
+RGT      SYS    1 13-Mar-81
+GRT      SYS    1 13-Mar-81
+DIRECT   SYS   18 13-Mar-81
+======== === ==== =========
+Files 5, Total 64, Free 324
+
+02-025.H8D
+CP/M DISK IMAGE
+======== === ==== =========
+  FILE   EXT SIZE   DATE   
+======== === ==== =========
+HOSCOPY  COM    4 -- N/A --
+HOSCOPY  DOC    6 -- N/A --
+HOSCOPYM COM    4 -- N/A --
+======== === ==== =========
+Files 3, Total 14, Free 76
+
+02-026.H8D
+HUG MODEM COMMUNICATIONS SYSTEM  HUG P/N 885-1050
+======== === ==== =========
+  FILE   EXT SIZE   DATE   
+======== === ==== =========
+README   DOC   36 31-Mar-80
+HDOSX    ACM   17 31-Mar-80
+ASCII    ACM    1 31-Mar-80
+MCS      ABS    9 31-Mar-80
+MCS      ASM   72 31-Mar-80
+RGT      SYS    1 31-Mar-80
+GRT      SYS    1 31-Mar-80
+DIRECT   SYS   18 31-Mar-80
+======== === ==== =========
+Files 8, Total 155, Free 230
+
+02-027.H8D
+EF}zzy }y  | }zzy
+}  } } y | }  }
+}{{x }  y| }{{xG by R
+======== === ==== =========
+  FILE   EXT SIZE   DATE   
+======== === ==== =========
+HDOS     SYS   30 03-Feb-81
+HDOSOVL0 SYS   26 03-Feb-81
+HDOSOVL1 SYS   10 03-Feb-81
+SYSCMD   SYS    4 16-Apr-81
+DNDRUN   ABS    8 16-Apr-81
+DND      BAS   95 16-Apr-81
+DND      DAT    6 16-Apr-81
+START    BAS   14 16-Apr-81
+MENU     BAS    2 16-Apr-81
+DUP      ABS    7 16-Apr-81
+DND      DOC   52 28-Apr-81
+README   DOC   14 28-Apr-81
+RGT      SYS    1 03-Feb-81
+GRT      SYS    1 03-Feb-81
+DIRECT   SYS   18 03-Feb-81
+======== === ==== =========
+Files 15, Total 288, Free 98
+
+02-028.H8D
+HUG TINY PASCAL FOR HDOS DISK  HUG P/N 885-1086
+======== === ==== =========
+  FILE   EXT SIZE   DATE   
+======== === ==== =========
+README   DOC   14 10-Nov-80
+PASCAL   DOC   45 10-Nov-80
+PASCAL   ABS   44 10-Nov-80
+TRANSLAT ABS   21 10-Nov-80
+HANOI    PAS   17 10-Nov-80
+HANOI    ABS   22 10-Nov-80
+HANOIH19 PAS   19 10-Nov-80
+HANOIH19 ABS   24 10-Nov-80
+MATHCHEK PAS    9 10-Nov-80
+MATHCHEK ABS   14 10-Nov-80
+RANDOM19 PAS    6 10-Nov-80
+RANDOM19 ABS   13 10-Nov-80
+RNDNUM   PAS    4 10-Nov-80
+RNDNUM   ABS   12 10-Nov-80
+PALIN    PAS    7 10-Nov-80
+PALIN    ABS   15 10-Nov-80
+TTREAD   DOC    4 10-Nov-80
+TTREAD   ABS    2 10-Nov-80
+MOREHELP DOC    3 10-Nov-80
+RGT      SYS    1 10-Nov-80
+GRT      SYS    1 10-Nov-80
+DIRECT   SYS   18 10-Nov-80
+======== === ==== =========
+Files 22, Total 315, Free 64
+
+02-029.H8D
+HUG FIG-FORTH P/N 885-1094  DISK NO. 1
+======== === ==== =========
+  FILE   EXT SIZE   DATE   
+======== === ==== =========
+README   DOC   16 11-May-81
+FORTH    ABS   28 11-May-81
+FORTH    ASM  155 11-May-81
+HDOSF    ACM    3 11-May-81
+H17TSA   ACM   10 11-May-81
+FORTH    DOC  104 11-May-81
+RGT      SYS    1 18-Oct-80
+GRT      SYS    1 18-Oct-80
+DIRECT   SYS    6 18-Oct-80
+======== === ==== =========
+Files 9, Total 324, Free 62
+
+02-031.H8D
+HUG SY: DEVICE DRIVER P/N 885-1095
+======== === ==== =========
+  FILE   EXT SIZE   DATE   
+======== === ==== =========
+README   DOC   14 15-Jun-81
+SY       DVD   12 15-Jun-81
+DKH17    ASM   23 15-Jun-81
+DKH17I   ASM   16 15-Jun-81
+DKH17    REL    6 15-Jun-81
+DKH17I   REL    6 15-Jun-81
+DVDDKGEN ABS    3 15-Jun-81
+DVDDKGEN ASM    6 15-Jun-81
+MFREADY  ACM    7 15-Jun-81
+MFDVD    ACM   49 15-Jun-81
+MFINIT   ACM   33 15-Jun-81
+INITAUTO ABS   28 15-Jun-81
+SYDVD    DOC   84 16-Jun-81
+RGT      SYS    1 21-Oct-80
+GRT      SYS    1 21-Oct-80
+DIRECT   SYS    6 21-Oct-80
+======== === ==== =========
+Files 16, Total 295, Free 88
+
+02-032.H8D
+MACRO, CTOH, HTERM, AND OTHER UTILITIES  HUG P/N 885-1089
+======== === ==== =========
+  FILE   EXT SIZE   DATE   
+======== === ==== =========
+README   DOC   25 03-Sep-81
+MACRO    ABS   22 24-Aug-81
+MACRO    DOC  108 24-Aug-81
+EXAMPLE  LIB    2 24-Aug-81
+EXAMPLE  MAC    3 24-Aug-81
+EXAMPLE  ASM    6 24-Aug-81
+EXAMPLE  ABS    1 24-Aug-81
+HTERM    ABS    9 24-Aug-81
+HTERM4   ABS    9 24-Aug-81
+HTERM    ASM   56 24-Aug-81
+CTOH     ABS    7 03-Sep-81
+CTOH     ASM   55 03-Sep-81
+IHEX     ABS    5 24-Aug-81
+IHEX     ASM   22 24-Aug-81
+IABS     ABS    4 24-Aug-81
+IABS     ASM   26 24-Aug-81
+TAB2SPC  ABS    4 24-Aug-81
+RGT      SYS    1 07-Oct-80
+GRT      SYS    1 07-Oct-80
+DIRECT   SYS    8 07-Oct-80
+======== === ==== =========
+Files 20, Total 374, Free 6
+
+02-033.H8D
+EF
+			    `
+		sws sws sws p q
+		z_p     `     qrz
+======== === ==== =========
+  FILE   EXT SIZE   DATE   
+======== === ==== =========
+README   DOC    9 01-Aug-81
+SEABATTL DOC   78 01-Aug-81
+SEABATTL ASM  154 01-Aug-81
+ASCII    ACM    4 01-Aug-81
+HDOS     ACM    5 01-Aug-81
+SEABATTL ABS   22 01-Aug-81
+RGT      SYS    1 23-Jul-81
+GRT      SYS    1 23-Jul-81
+DIRECT   SYS   18 23-Jul-81
+======== === ==== =========
+Files 9, Total 292, Free 94
+
+02-034.H8D
+HDOS MBASIC GRAPHIC GAMES  HUG P/N 885-1111
+======== === ==== =========
+  FILE   EXT SIZE   DATE   
+======== === ==== =========
+README   DOC   22 18-Nov-81
+WORD     BAS   77 18-Nov-81
+WORD     INS   13 18-Nov-81
+WORDS    DAT   14 18-Nov-81
+SECTOR   BAS   72 18-Nov-81
+MASTRMND BAS   17 18-Nov-81
+POKER    BAS   27 18-Nov-81
+WINNING  BAS   11 18-Nov-81
+ACEY     BAS   59 18-Nov-81
+CHECKERS BAS   13 18-Nov-81
+CHECKERS DOC    5 18-Nov-81
+ONECHECK BAS   18 18-Nov-81
+RGT      SYS    1 18-Nov-81
+GRT      SYS    1 18-Nov-81
+DIRECT   SYS   18 18-Nov-81
+======== === ==== =========
+Files 15, Total 368, Free 12
+
+02-035.H8D
+COLOR RAIDERS AND GOOP  HUG P/N 885-1114
+======== === ==== =========
+  FILE   EXT SIZE   DATE   
+======== === ==== =========
+README   DOC   13 23-Nov-81
+RAIDERS  ABS   34 23-Nov-81
+RAIDERS  ASM  202 23-Nov-81
+GOOP     ABS    9 23-Nov-81
+GOOP     ASM   60 23-Nov-81
+GOOP     DOC    9 23-Nov-81
+RGT      SYS    1 23-Nov-81
+GRT      SYS    1 23-Nov-81
+DIRECT   SYS   18 23-Nov-81
+======== === ==== =========
+Files 9, Total 347, Free 38
+
+02-036.H8D
+HUG HDOS FAST ACTION GAMES   HUG P/N 885-1113
+======== === ==== =========
+  FILE   EXT SIZE   DATE   
+======== === ==== =========
+README   DOC   22 10-Nov-81
+BREAK19  ABS   45 10-Nov-81
+BREAK19  PAS   53 10-Nov-81
+SKI      ABS    9 10-Nov-81
+SKI      ASM   43 10-Nov-81
+SNAKE    ABS   19 10-Nov-81
+SNAKE    ASM  102 10-Nov-81
+BUGS     ABS    4 10-Nov-81
+BUGS     ASM   50 10-Nov-81
+BUGS     DOC   19 10-Nov-81
+RGT      SYS    1 10-Sep-81
+GRT      SYS    1 10-Sep-81
+DIRECT   SYS    4 10-Sep-81
+======== === ==== =========
+Files 13, Total 372, Free 10
+
+Total Files 1458, Total Size 6260736 KB
+
