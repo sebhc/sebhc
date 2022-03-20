@@ -23,6 +23,9 @@ SIB multi serial port board (optional)
 Z8000 development board (optional)  
 ![Z8000 IMAGE](pics/PCB05Z8000.png)  
   
+MCB cpu board with 2716 (up from 2708) jumper selectable ROMs  
+![MCB IMAGE 2716](pics/MCB-DUAL-PROM.jpg)  
+  
 PCB Layout diagram  
 ![PCB LAYOUT1](pics/MCZPCBLAYOUT1.jpg)  
   
@@ -35,6 +38,10 @@ PCB Layout in chassis
 [MCZ-1/20 MCB Hardware Users Manual](docs/03-0007-03_Z80-MCB_Hardware_Users_Manual.pdf)  
 [MCZ-1/20 MDC Hardware Reference Manual](docs/03-3006-02_Z-80_MDC_Hardware_Reference_Manual.pdf)  
 [MCZ-1/20 FLOPPY PROM Users Guide](docs/03-3106-01A_MCZ-1_20A_and_MCZ-1_25A_Microcomputers_Floppy_Prom_User_Guide_Dec79.pdf)  
+[MCZ PROM USERS GUIDE 79318 REV-N](docs/03-0075-01A-MCZ-1_PROM_Users_Guide.pdf)  
+[MDC DEBUGGER ROM resident debugger](software/MDC_Debugger.zip)  
+[MDC DEBUGGER Documentation](software/MDC-DEBUGGER.pdf)  
+[MDC DEBUGGER Notes](software/MDC-DEBUGGER.txt)  
   
 # RIO OPERATING SYSTEM
   
