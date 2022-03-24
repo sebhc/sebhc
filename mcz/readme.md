@@ -56,6 +56,8 @@ PCB Layout in chassis
 - [13-3001-03 MCZ RIO 2.2 WITH MCZIMAGER AND BASIC](https://drive.google.com/file/d/1PvH10bllp8FezJ73ol3FloSkpHJ_Rezg/view?usp=sharing)
 - [13-3001-03 MCZ/PDS RIO 2.2](https://drive.google.com/file/d/12AsWyJgidSBs8qwPeehfMdyAvEYc4_Nv/view?usp=sharing)
 - [13-3309-05 MCZ/PDS FLOPPY DISK Z8000 SDP 3.0](https://drive.google.com/file/d/1dPCjObwaHzy8frUUW2HsT1oG9Zo23pXo/view?usp=sharing)
+- [13-3051-04_MCZ/PDS RIO UTILITIES](https://drive.google.com/file/d/1sqiU6eUO31Ks_RXoG2AWzNPqymztKu9b/view?usp=sharing)
+- [13-3301-03 MCZ/PDS RIO PLZ V3](https://drive.google.com/file/d/1fNBpTJ5mkheS9F_Wg8HiwNK7FQqZP4GX/view?usp=sharing)
 - [13-3361-06 MCZ/PDS FLOPPY DISK Z8 SDP 4.0](https://drive.google.com/file/d/1NoaU3jMIE_HGKojCwaUJ6-3J85oi17aZ/view?usp=sharing)
 - [13-3391-03 ASYNC MCZ 1/PDS FD SYSTEM REL 1.1](https://drive.google.com/file/d/1j5vn7_MgA3J5fTIL2R7T6lwrLziEWqBq/view?usp=sharing)
 - [RIO 2.2 PDS8000 MCZ 1/20 SYSTEM DISK](https://drive.google.com/file/d/1GXXkUx8c5iuZNeWE2ZX732U0AsFuD3TK/view?usp=sharing)
