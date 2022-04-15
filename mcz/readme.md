@@ -42,6 +42,7 @@ PCB Layout in chassis
 [MDC DEBUGGER ROM resident debugger](software/MDC_Debugger.zip)  
 [MDC DEBUGGER Documentation](software/MDC-DEBUGGER.pdf)  
 [MDC DEBUGGER Notes](software/MDC-DEBUGGER.txt)  
+[RIO ELECTRIC BLACKBOARD](software/ELECTRIC-BLACKBOARD.pdf)
   
 # RIO OPERATING SYSTEM
   
@@ -51,6 +52,8 @@ PCB Layout in chassis
 # SOFTWARE DISK IMAGES
 **System Software**  (335KB)
 - [00-0000-00 PROM 79318N MCZ/PDS](https://drive.google.com/file/d/11IDIGXVm_UAiZ8vEd7OroIIDChiGdDS8/view?usp=sharing)
+- [13-0000-00 PROM 78089N MCZ/PDS](https://drive.google.com/file/d/1Tmk4yN_ngRB8gTk1G67SNT8PanQgBXsj/view?usp=sharing)
+- [13-0161-00 RIO ELECTRIC BLACKBOARD](https://drive.google.com/file/d/1FZl0lmfDTUQkUNGHiQ8bjNRLt9DNnFnF/view?usp=sharing)
 - [13-1000-01 UNABRIDGED SYSTEM DISK](https://drive.google.com/file/d/1S8CdG0heZX6rx3Lu4Yhft_gOVtjvQO3g/view?usp=sharing)
 - [13-3001-01 MCZ 1/05 1/20 1/25 1/30 RIO OPERATING SYSTEM](https://drive.google.com/file/d/1lxR58Ioxn_rV4gfGed1RWfSN5SNofkwC/view?usp=sharing)
 - [13-3001-03 MCZ RIO 2.2 WITH MCZIMAGER AND BASIC](https://drive.google.com/file/d/1PvH10bllp8FezJ73ol3FloSkpHJ_Rezg/view?usp=sharing)
