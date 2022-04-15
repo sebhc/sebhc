@@ -42,7 +42,7 @@ PCB Layout in chassis
 [MDC DEBUGGER ROM resident debugger](software/MDC_Debugger.zip)  
 [MDC DEBUGGER Documentation](software/MDC-DEBUGGER.pdf)  
 [MDC DEBUGGER Notes](software/MDC-DEBUGGER.txt)  
-[RIO ELECTRIC BLACKBOARD](software/ELECTRIC-BLACKBOARD.pdf)
+[RIO ELECTRIC BLACKBOARD](software/00-2227-01_RIO-ELECTRIC-BLACKBOARD.pdf)  
   
 # RIO OPERATING SYSTEM
   
