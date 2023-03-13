@@ -1,7 +1,8 @@
 ## H8-4 SERIAL PORT CARD
 
-NEW AS OF 3/12/2023<br>
+##### NEW AS OF 3/12/2023<br>
 Redesigned from the ground up to replace the obsolete 74LS242s with a 74LS540, 74LS541 and 74LS640<br>
+<br>
 ![H8-4 V2 PCB SILK SCREEN](https://github.com/sebhc/sebhc/blob/master/wiki/H8-4/H8-4-V22.png)<br>
 <br>
 ![H8-4 PCB SILK SCREEN](https://github.com/sebhc/sebhc/blob/master/wiki/H8-4/H8-4_Silk.jpg)<br>
