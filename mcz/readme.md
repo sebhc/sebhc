@@ -44,6 +44,7 @@ PCB Layout in chassis
 [MDC DEBUGGER Notes](software/MDC-DEBUGGER.txt)  
 [RIO ELECTRIC BLACKBOARD](software/00-2227-01_RIO-ELECTRIC-BLACKBOARD.pdf)  
 [ZILOG BASIC INTERPRETER SNAPSHOTS](docs/ZilogBasicSnapshots.pdf)  
+[ZILOG BASIC INTERPRETER FULL MANUAL](https://drive.google.com/file/d/1I86cFcF3fkklyBeWaRzTRWgx7sc_chp1/view?usp=sharing)  
   
 # RIO OPERATING SYSTEM
   
