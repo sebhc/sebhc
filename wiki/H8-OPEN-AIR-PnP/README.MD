@@ -28,12 +28,20 @@ BOARD LAYOUT<br>
 XRAY VIEW<br>
 ![H8-FP XRAY](https://github.com/sebhc/sebhc/blob/master/wiki/H8FP/H8-FP-XRAY.png)<br>
 
+FRONT PANEL BACKPLANE ADAPTER<br>
+![H8-FP ADAPTER](https://github.com/sebhc/sebhc/blob/master/wiki/H8FP/H8-FP-V12-Adapter.png)<br>
+
+FRONT PANEL GERBERS [ZIP](https://github.com/sebhc/sebhc/blob/master/wiki/H8FP/H8-FP-V12R1-Gerbers.zip)<br>
+ADAPTER GERBERS [ZIP](https://github.com/sebhc/sebhc/blob/master/wiki/H8FP/H8-FP-V12-Adapter-Gerbers.zip)
+
 ### H8-BP BACKPLANE WITH 10 USABLE SLOTS
 BOARD LAYOUT<br>
 ![H8-BP LAYOUT](https://github.com/sebhc/sebhc/blob/master/wiki/H8BP/H8-BP-LAYOUT.png)<br>
 
 XRAY VIEW<br>
 ![H8-BP XRAY](https://github.com/sebhc/sebhc/blob/master/wiki/H8BP/H8-BP-XRAY.png)<br>
+
+BACKPLANE GERBERS [ZIP](https://github.com/sebhc/sebhc/blob/master/wiki/H8BP/H8-BP-V14-Gerbers.zip)
 
 ### H8-Z80-ORG0-64K
 BOARD LAYOUT<br>
