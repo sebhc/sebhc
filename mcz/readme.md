@@ -1,5 +1,7 @@
 # ZILOG MCZ 8 BIT COMPUTERS
 
+GO TO [DISK IMAGES](https://github.com/sebhc/sebhc/blob/master/mcz/readme.md#software-disk-images)
+
 ![MCZ IMAGE](pics/MCZPIC.png)  
   
 Front view with installed cards (right to left: MCB,MDC2,SIB - note the required slot locations for each card)  
@@ -61,6 +63,17 @@ PCB Layout in chassis
 - [13-3001-03 MCZ RIO 2.2 WITH MCZIMAGER AND BASIC](https://drive.google.com/file/d/1PvH10bllp8FezJ73ol3FloSkpHJ_Rezg/view?usp=sharing)
 - [13-3001-03 MCZ/PDS RIO 2.2](https://drive.google.com/file/d/12AsWyJgidSBs8qwPeehfMdyAvEYc4_Nv/view?usp=sharing)
 - [13-3051-04_MCZ/PDS RIO UTILITIES](https://drive.google.com/file/d/1sqiU6eUO31Ks_RXoG2AWzNPqymztKu9b/view?usp=sharing)
+- [13-3201-01A MCZ RIO COMMANDS SOURCE 1 OF 2](https://drive.google.com/file/d/1saziu8n6a8LOG2TGQWU49vHydeyUg2go/view?usp=drive_link)
+- [13-3202-01A MCZ RIO COMMANDS SOURCE 2 OF 2)(https://drive.google.com/file/d/13d2lmsxSg7Rnqcj-NI8mq8H7ob3PMEMp/view?usp=drive_link)
+- [13-3208-02 RIO COMMANDS SOURCE 1 OF 2](https://drive.google.com/file/d/1Nm469r4wuTp9NEPmduU_bDAbomCrDl69/view?usp=drive_link)
+- [13-3209-01 RIO COMMANDS SOURCE 2 OF 2](https://drive.google.com/file/d/1tNqhLz0HM3J7HsBJrKgjuhLm5Wnpqidw/view?usp=drive_link)
+- [13-3210-01 NBUG AND ZBUG SOURCES](https://drive.google.com/file/d/1nJo-YWFJg9Ya0GncyMVFAb1JpLgycTP3/view?usp=drive_link)
+- [13-3210-01 RIO NBUG AND ZBUG SOURCES](https://drive.google.com/file/d/1-_u2GygzjTroZzqkI_2cw1YiaAhrbsn7/view?usp=drive_link)
+- [13-3214-01 RIO ASSEMBLER AND LINK SOURCES 1 OF 2](https://drive.google.com/file/d/15JDfetWiNmk6mRT8KIsLshd1eqA8-mhB/view?usp=drive_link)
+- [13-3215-01 RIO ASSEMBLER AND LINK SOURCES 2 OF 2](https://drive.google.com/file/d/1Ted4x1RuxlT18G8wGVMIrLYSR_zUI1gj/view?usp=drive_link)
+- [13-3222-02 RIO EDIT SOURCES](https://drive.google.com/file/d/1ODNtIIKqvK3WnS06JKLQrEiqByC8FfQ7/view?usp=drive_link)
+- [13-3263-03A MCZ 1 35 PROM SOURCE 4K 790226 33-0084-34 37 REV D](https://drive.google.com/file/d/1nJcC7c7XXivaUM_21jn-V6AZG2en4BuF/view?usp=drive_link)
+- [13-3263-05_MCZ 1 35 HARD DISK PROM SOURCE 33-0084-34 37 REV F](https://drive.google.com/file/d/1Bwi1Dnf9mwjZqwaWEBVTRdQSY_ZU8S9s/view?usp=drive_link)
 - [13-3301-03 MCZ/PDS RIO PLZ V3](https://drive.google.com/file/d/1fNBpTJ5mkheS9F_Wg8HiwNK7FQqZP4GX/view?usp=sharing)
 - [13-3309-05 MCZ/PDS FLOPPY DISK Z8000 SDP 3.0](https://drive.google.com/file/d/1dPCjObwaHzy8frUUW2HsT1oG9Zo23pXo/view?usp=sharing)
 - [13-3311-03 MCZ/PDS BASIC V3](https://drive.google.com/file/d/1KE3sBJ1nx5s9h2nTUuihUrKjtLbWR6tv/view?usp=sharing)
