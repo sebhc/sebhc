@@ -64,7 +64,7 @@ PCB Layout in chassis
 - [13-3001-03 MCZ/PDS RIO 2.2](https://drive.google.com/file/d/12AsWyJgidSBs8qwPeehfMdyAvEYc4_Nv/view?usp=sharing)
 - [13-3051-04_MCZ/PDS RIO UTILITIES](https://drive.google.com/file/d/1sqiU6eUO31Ks_RXoG2AWzNPqymztKu9b/view?usp=sharing)
 - [13-3201-01A MCZ RIO COMMANDS SOURCE 1 OF 2](https://drive.google.com/file/d/1saziu8n6a8LOG2TGQWU49vHydeyUg2go/view?usp=drive_link)
-- [13-3202-01A MCZ RIO COMMANDS SOURCE 2 OF 2)(https://drive.google.com/file/d/13d2lmsxSg7Rnqcj-NI8mq8H7ob3PMEMp/view?usp=drive_link)
+- [13-3202-01A MCZ RIO COMMANDS SOURCE 2 OF 2](https://drive.google.com/file/d/13d2lmsxSg7Rnqcj-NI8mq8H7ob3PMEMp/view?usp=drive_link)
 - [13-3208-02 RIO COMMANDS SOURCE 1 OF 2](https://drive.google.com/file/d/1Nm469r4wuTp9NEPmduU_bDAbomCrDl69/view?usp=drive_link)
 - [13-3209-01 RIO COMMANDS SOURCE 2 OF 2](https://drive.google.com/file/d/1tNqhLz0HM3J7HsBJrKgjuhLm5Wnpqidw/view?usp=drive_link)
 - [13-3210-01 NBUG AND ZBUG SOURCES](https://drive.google.com/file/d/1nJo-YWFJg9Ya0GncyMVFAb1JpLgycTP3/view?usp=drive_link)
