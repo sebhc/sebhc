@@ -1,0 +1,32 @@
+BEGINNER'S GUIDE TO PROGRAMMING THE TANG NANO 9K FOR H8-8-3
+
+
+* FILES
+Download the following files:
+
+GoWin software for programming the Tang Nano 9K:
+https://drive.google.com/file/d/1lB1vCNhVgvPf0qITUEax5nn2ccpB3HWh/view
+
+F18A Clone V1 file stream for Tang Nano 9K:
+https://github.com/sebhc/sebhc/blob/master/wiki/F18ACLONE/tn9k_f18A.fs
+
+
+* SETUP AND PROGRAMMING
+- Unzip and install the GoWin software, accept all of the defaults.
+- Run the GoWin program.
+- Under the Tools heading, select Programmer.  There may be several
+  small windows that appear, close/cancel until the one remaining is:
+  "Gowin Programmer Version 1.9.8.11 Education build 21024"
+- Click under 'Series' and select: GW1NR
+- Click under 'Device' and select: GW1NR-9C
+- Click under 'Operation' and select: embFlash Erase,Program
+- Click under 'FS File' navigate to and select: tn9k_f18A.fs
+- Connect the Tang Nano 9K to your computer using the USB cable
+  NOTE: Connect directly to computer - DO NOT USE a USB hub!
+- On the Menu Bar, select: USB Cable Setting.  If the cable/device
+  isn't found automatically, you may need to manually select the
+  correct choice.  Press Save to save your setup.
+- On the Menu Bar, select the Program/Configure button to begin
+  programming the Tang Nano 9K.  This should take ~15 seconds.
+
+
