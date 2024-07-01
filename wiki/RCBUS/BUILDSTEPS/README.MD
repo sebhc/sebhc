@@ -20,7 +20,7 @@
 
 ![STEP5](https://github.com/sebhc/sebhc/blob/master/wiki/RCBUS/BUILDSTEPS/BUILD06.jpg)
 
-6. Solder in the two 2x5 header pins for the joysticks
+6. Solder in the two 2x5 header pins for the joysticks and the RCBus right angle headers
 
 ![STEP6](https://github.com/sebhc/sebhc/blob/master/wiki/RCBUS/BUILDSTEPS/BUILD07.jpg)
 
