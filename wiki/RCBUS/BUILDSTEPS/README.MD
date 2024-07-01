@@ -36,7 +36,7 @@
 
 ![STEP9](https://github.com/sebhc/sebhc/blob/master/wiki/RCBUS/BUILDSTEPS/BUILD10.jpg)
 
-10. Solder female 24 pin headers onto the underside of the Tang Nano 9K
+10. Solder female 24 pin sockets onto the underside of the Tang Nano 9K
 
 ![STEP10](https://github.com/sebhc/sebhc/blob/master/wiki/RCBUS/BUILDSTEPS/BUILD14.jpg)
  ![STEP10](https://github.com/sebhc/sebhc/blob/master/wiki/RCBUS/BUILDSTEPS/BUILD15.jpg)
