@@ -36,7 +36,7 @@
 
 ![STEP9](https://github.com/sebhc/sebhc/blob/master/wiki/RCBUS/BUILDSTEPS/BUILD10.jpg)
 
-10. Solder female 24 pin sockets onto the underside of the Tang Nano 9K. To program the Tang Nano 9K with the F18A core visit this page [here](https://github.com/sebhc/sebhc/wiki/F18A-TMS9918-FPGA-EMULATOR) - specifically you will want to download the <b>tn9k_f18a.fs</b> file stream file and the GoWin software. When installing the GoWin software you only need to install the programmer software not the design software.
+10. Solder 1x24 pin female sockets onto the underside of the Tang Nano 9K. To program the Tang Nano 9K with the F18A core visit this page [here](https://github.com/sebhc/sebhc/wiki/F18A-TMS9918-FPGA-EMULATOR) - specifically you will want to download the <b>tn9k_f18a.fs</b> file stream file and the GoWin software. [Here](https://github.com/sebhc/sebhc/blob/master/wiki/F18ACLONE/Programming_Tang_Nano_9K_for_H8-8-3.txt) are the steps for programming the Tang Nano. When installing the GoWin software you only need to install the programmer software not the design software.
 
 ![STEP10](https://github.com/sebhc/sebhc/blob/master/wiki/RCBUS/BUILDSTEPS/BUILD14.jpg)
  ![STEP10](https://github.com/sebhc/sebhc/blob/master/wiki/RCBUS/BUILDSTEPS/BUILD15.jpg)
