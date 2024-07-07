@@ -45,7 +45,7 @@
 
 ![STEP11](https://github.com/sebhc/sebhc/blob/master/wiki/RCBUS/BUILDSTEPS/BUILD11.jpg)
 
-12. PLAY GAMES!
+12. PLAY [GAMES](https://github.com/lesbird/MSX8)!
 
 ![STEP12](https://github.com/sebhc/sebhc/blob/master/wiki/RCBUS/BUILDSTEPS/BUILD12.jpg)
  ![STEP12](https://github.com/sebhc/sebhc/blob/master/wiki/RCBUS/BUILDSTEPS/BUILD13.jpg)
