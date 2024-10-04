@@ -10,3 +10,4 @@ If you have your own 3D printer Bambu Lab PLA is $60 and print time is 45 hours 
 
 ![PICTURE](https://github.com/sebhc/sebhc/blob/master/wiki/H8CASE/H8%20Case%203D%20printed.jpg)
 
+![PICTURE](https://github.com/sebhc/sebhc/blob/master/wiki/H8CASE/H8%20Case%203D%20printed%20top%20open.jpg)
